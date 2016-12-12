@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cz.cvut.dp.nss</groupId>
+    <artifactId>dp-nss</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>DP-NSS</name>
+
+    <properties>
+        <main.basedir>${project.basedir}</main.basedir>
+        <java.version>1.8</java.version>
+
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- toto slouzi pouze jako obal funkcnich modulu - muzeme tedy vypustit urcite faze -->
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <maven.install.skip>true</maven.install.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven.site.skip>true</maven.site.skip>
+
+    </properties>
+
+    <modules>
+        <module>dp-nss-services</module>
+    </modules>
+
+    <dependencies>
+
+        <!-- logging, log4j is used in services -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <!-- kvuli lepsi sprave verzi. moduly se budou odkazovat jiz bez verze knihovny -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- modules -->
+            <dependency>
+                <groupId>cz.cvut.dp.nss</groupId>
+                <artifactId>dp-nss-services-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cz.cvut.dp.nss</groupId>
+                <artifactId>dp-nss-services-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- logging -->
+            <!-- LOG4J -->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.17</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+
+
+            <!-- SPRING PARENT -->
+            <!-- v dependecies pomu potomku se nebudu muset odkazovat na verzi spring, vse se vyresi samo ke spokojenosti verzi -->
+            <dependency>
+                <groupId>io.spring.platform</groupId>
+                <artifactId>platform-bom</artifactId>
+                <version>2.0.8.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+</project>
