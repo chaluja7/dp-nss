@@ -2,6 +2,7 @@ package cz.cvut.dp.nss.persistence.generic;
 
 import cz.cvut.dp.nss.services.common.AbstractEntity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,37 +11,37 @@ import java.util.List;
  * @author jakubchalupa
  * @since 24.11.14 - 12.12.16
  */
-public interface GenericDao<T extends AbstractEntity> {
+public interface GenericDao<ENT extends AbstractEntity<ID>, ID extends Serializable> {
 
     /**
      * persist entity
-     * @param t entity to persist
+     * @param entity entity to persist
      */
-    void create(T t);
+    void create(ENT entity);
 
     /**
      * update entity
-     * @param t entity to update
+     * @param entity entity to update
      */
-    void update(T t);
+    void update(ENT entity);
 
     /**
      * find entity by id
      * @param id entity id
      * @return founded entity
      */
-    T find(long id);
+    ENT find(ID id);
 
     /**
      * delete entity
      * @param id entity id (to delete)
      */
-    void delete(long id);
+    void delete(ID id);
 
     /**
      * will find all entities of a type
      * @return list of all entities by type
      */
-    List<T> findAll();
+    List<ENT> getAll();
 
 }

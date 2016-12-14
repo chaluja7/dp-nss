@@ -1,80 +1,127 @@
 package cz.cvut.dp.nss.services.route;
 
+import cz.cvut.dp.nss.services.agency.Agency;
 import cz.cvut.dp.nss.services.common.AbstractEntity;
-import cz.cvut.dp.nss.services.line.Line;
-import cz.cvut.dp.nss.services.routeStop.RouteStop;
-import org.hibernate.validator.constraints.NotBlank;
+import cz.cvut.dp.nss.services.trip.Trip;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A path of a Line.
+ * Entita, na kterou jsou navazene jednotlive tripy dane spolecnosti (agency)
  *
  * @author jakubchalupa
  * @since 24.11.14 - 12.12.16
  */
 @Entity
-@Table(name = "routes")
-public class Route extends AbstractEntity {
+@Table(name = "routes",
+    indexes = {@Index(name = "route_type_index", columnList = "routeType"),
+        @Index(name = "route_agency_index", columnList = "agency_id")})
+public class Route extends AbstractEntity<String> {
 
-    @Column(unique = true)
-    @NotBlank
-    private String name;
+    /**
+     * kratke oznaceni
+     */
+    @Column(nullable = false)
+    @Size(min = 1, max = 255)
+    private String shortName;
 
+    /**
+     * dlouhe oznaceni
+     */
+    @Column
+    @Size(max = 255)
+    private String longName;
+
+    /**
+     * typ dopravniho prostredku
+     */
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private RouteType routeType;
+
+    /**
+     * barva, ktera se bude pouzivat pri oznaceni
+     */
+    @Column
+    @Size(max = 255)
+    private String color;
+
+    /**
+     * spolecnost provozujici tuto routu
+     */
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "agency_id")
+    private Agency agency;
+
+    /**
+     * tripy navazene na tuto routu
+     */
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "route")
-    @OrderBy("distance ASC")
-    private List<RouteStop> routeStops;
+    private List<Trip> trips;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "route")
-    private List<Line> lines;
-
-    public String getName() {
-        return name;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
-    public List<RouteStop> getRouteStops() {
-        if(routeStops == null) {
-            routeStops = new ArrayList<>();
+    public String getLongName() {
+        return longName;
+    }
+
+    public void setLongName(String longName) {
+        this.longName = longName;
+    }
+
+    public RouteType getRouteType() {
+        return routeType;
+    }
+
+    public void setRouteType(RouteType routeType) {
+        this.routeType = routeType;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Agency getAgency() {
+        return agency;
+    }
+
+    public void setAgency(Agency agency) {
+        this.agency = agency;
+    }
+
+    public List<Trip> getTrips() {
+        if(trips == null) {
+            trips = new ArrayList<>();
         }
 
-        return routeStops;
+        return trips;
     }
 
-    public void setRouteStops(List<RouteStop> routeStops) {
-        this.routeStops = routeStops;
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
     }
 
-    public void addRouteStop(RouteStop routeStop) {
-        if(!getRouteStops().contains(routeStop)) {
-            routeStops.add(routeStop);
+    public void addTrip(Trip trip) {
+        if(!getTrips().contains(trip)) {
+            trips.add(trip);
         }
 
-        routeStop.setRoute(this);
+        trip.setRoute(this);
     }
 
-    public List<Line> getLines() {
-        if(lines == null) {
-            lines = new ArrayList<>();
-        }
-
-        return lines;
-    }
-
-    public void setLines(List<Line> lines) {
-        this.lines = lines;
-    }
-
-    public void addLine(Line line) {
-        if(!getLines().contains(line)) {
-            lines.add(line);
-        }
-
-        line.setRoute(this);
-    }
 }

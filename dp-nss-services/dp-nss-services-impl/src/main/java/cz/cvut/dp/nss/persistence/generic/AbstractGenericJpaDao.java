@@ -4,6 +4,7 @@ import cz.cvut.dp.nss.services.common.AbstractEntity;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,40 +13,40 @@ import java.util.List;
  * @author jakubchalupa
  * @since 24.11.14 - 12.12.16
  */
-public abstract class AbstractGenericJpaDao<T extends AbstractEntity> implements GenericDao<T> {
+public abstract class AbstractGenericJpaDao<ENT extends AbstractEntity<ID>, ID extends Serializable> implements GenericDao<ENT, ID> {
 
     @Autowired
     protected SessionFactory sessionFactory;
 
-    protected final Class<T> type;
+    protected final Class<ENT> type;
 
-    public AbstractGenericJpaDao(Class<T> type) {
+    public AbstractGenericJpaDao(Class<ENT> type) {
         this.type = type;
     }
 
     @Override
-    public void create(T t) {
-        sessionFactory.getCurrentSession().persist(t);
+    public void create(ENT entity) {
+        sessionFactory.getCurrentSession().persist(entity);
     }
 
     @Override
-    public void update(T t) {
-        sessionFactory.getCurrentSession().merge(t);
+    public void update(ENT entity) {
+        sessionFactory.getCurrentSession().merge(entity);
     }
 
     @Override
-    public T find(long id) {
+    public ENT find(ID id) {
         return sessionFactory.getCurrentSession().get(type, id);
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(ID id) {
         sessionFactory.getCurrentSession().delete(find(id));
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<T> findAll() {
+    public List<ENT> getAll() {
         return sessionFactory.getCurrentSession().createQuery("from " + type.getName()).list();
     }
 }

@@ -1,84 +1,138 @@
 package cz.cvut.dp.nss.services.stop;
 
 import cz.cvut.dp.nss.services.common.AbstractEntity;
-import cz.cvut.dp.nss.services.ride.Ride;
-import cz.cvut.dp.nss.services.station.Station;
-import org.hibernate.annotations.Type;
+import cz.cvut.dp.nss.services.stopTime.StopTime;
 
 import javax.persistence.*;
-import java.time.LocalTime;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * One stop of a ride.
+ * Stanice (napr. Praha hl. n.)
  *
  * @author jakubchalupa
  * @since 24.11.14 - 12.12.16
  */
 @Entity
 @Table(name = "stops",
-    indexes = {@Index(name = "stop_arrival_index", columnList = "arrival"),
-        @Index(name = "stop_departure_index", columnList = "departure"),
-        @Index(name = "stop_station_index", columnList = "station_id"),
-        @Index(name = "stop_ride_index", columnList = "ride_id")})
-public class Stop extends AbstractEntity {
+    indexes = {@Index(name = "stop_parent_index", columnList = "parent_stop_id")})
+public class Stop extends AbstractEntity<String> {
 
+    /**
+     * nazev
+     */
+    @Column(unique = true)
+    @Size(min = 1, max = 255)
+    private String name;
+
+    /**
+     * latitude
+     */
     @Column
-    @Type(type = "org.hibernate.type.LocalDateType")
-    private LocalTime arrival;
+    @Min(-90)
+    @Max(90)
+    private Double lat;
 
+    /**
+     * longitude
+     */
     @Column
-    @Type(type = "org.hibernate.type.LocalDateType")
-    private LocalTime departure;
+    @Min(-180)
+    @Max(180)
+    private Double lon;
 
-    @Column
-    private Integer stopOrder;
+    /**
+     * nadrazena stanice (pokud je tato v nejakem komplexu)
+     */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_stop_id")
+    private Stop parentStop;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "station_id")
-    private Station station;
+    /**
+     * list podrizenych stanic teto
+     */
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentStop")
+    private List<Stop> childStops;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "ride_id")
-    private Ride ride;
+    /**
+     * vsechna zastaveni na teto stanici
+     */
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "stop")
+    private List<StopTime> stopTimes;
 
-    public LocalTime getArrival() {
-        return arrival;
+    public String getName() {
+        return name;
     }
 
-    public void setArrival(LocalTime arrival) {
-        this.arrival = arrival;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public LocalTime getDeparture() {
-        return departure;
+    public Double getLat() {
+        return lat;
     }
 
-    public void setDeparture(LocalTime departure) {
-        this.departure = departure;
+    public void setLat(Double lat) {
+        this.lat = lat;
     }
 
-    public Integer getStopOrder() {
-        return stopOrder;
+    public Double getLon() {
+        return lon;
     }
 
-    public void setStopOrder(Integer stopOrder) {
-        this.stopOrder = stopOrder;
+    public void setLon(Double lon) {
+        this.lon = lon;
     }
 
-    public Station getStation() {
-        return station;
+    public Stop getParentStop() {
+        return parentStop;
     }
 
-    public void setStation(Station station) {
-        this.station = station;
+    public void setParentStop(Stop parentStop) {
+        this.parentStop = parentStop;
     }
 
-    public Ride getRide() {
-        return ride;
+    public List<Stop> getChildStops() {
+        if(childStops == null) {
+            childStops = new ArrayList<>();
+        }
+
+        return childStops;
     }
 
-    public void setRide(Ride ride) {
-        this.ride = ride;
+    public void setChildStops(List<Stop> childStops) {
+        this.childStops = childStops;
     }
 
+    public void addChildStop(Stop stop) {
+        if(getChildStops().contains(stop)) {
+            childStops.add(stop);
+        }
+
+        stop.setParentStop(this);
+    }
+
+    public List<StopTime> getStopTimes() {
+        if(stopTimes == null) {
+            stopTimes = new ArrayList<>();
+        }
+
+        return stopTimes;
+    }
+
+    public void setStopTimes(List<StopTime> stopTimes) {
+        this.stopTimes = stopTimes;
+    }
+
+    public void addStopTime(StopTime stopTime) {
+        if(!getStopTimes().contains(stopTime)) {
+            stopTimes.add(stopTime);
+        }
+
+        stopTime.setStop(this);
+
+    }
 }

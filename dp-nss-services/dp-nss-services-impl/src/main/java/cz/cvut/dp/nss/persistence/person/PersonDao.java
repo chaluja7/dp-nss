@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  * @since 24.11.14 - 12.12.16
  */
 @Repository
-public class PersonDao extends AbstractGenericJpaDao<Person> {
+public class PersonDao extends AbstractGenericJpaDao<Person, Long> {
 
     public PersonDao() {
         super(Person.class);

@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "persons")
-public class Person extends AbstractEntity {
+public class Person extends AbstractEntity<Long> {
 
     @Column(unique = true)
     @NotBlank
