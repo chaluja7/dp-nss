@@ -1,6 +1,6 @@
 package cz.cvut.dp.nss.services.stopTime;
 
-import cz.cvut.dp.nss.services.common.AbstractEntity;
+import cz.cvut.dp.nss.services.common.AbstractGeneratedIdEntity;
 import cz.cvut.dp.nss.services.stop.Stop;
 import cz.cvut.dp.nss.services.trip.Trip;
 import org.hibernate.annotations.Type;
@@ -21,7 +21,7 @@ import java.time.LocalTime;
         @Index(name = "stop_time_departure_index", columnList = "departure"),
         @Index(name = "stop_time_stop_index", columnList = "stop_id"),
         @Index(name = "stop_time_trip_index", columnList = "trip_id")})
-public class StopTime extends AbstractEntity<Long> {
+public class StopTime extends AbstractGeneratedIdEntity {
 
     /**
      * cas prijezdu

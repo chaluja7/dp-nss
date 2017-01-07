@@ -1,7 +1,7 @@
 package cz.cvut.dp.nss.services.trip;
 
 import cz.cvut.dp.nss.services.calendar.Calendar;
-import cz.cvut.dp.nss.services.common.AbstractEntity;
+import cz.cvut.dp.nss.services.common.AbstractAssignedIdEntity;
 import cz.cvut.dp.nss.services.route.Route;
 import cz.cvut.dp.nss.services.stopTime.StopTime;
 
@@ -20,8 +20,7 @@ import java.util.List;
 @Table(name = "trips",
     indexes = {@Index(name = "trip_route_index", columnList = "route_id"),
         @Index(name = "trip_calendar_index", columnList = "calendar_id")})
-public class Trip extends AbstractEntity<String> {
-
+public class Trip extends AbstractAssignedIdEntity {
 
     /**
      * napis na ceduly dopravniho prostredku (napr. cislo busu, konecna stanice apod.)

@@ -1,7 +1,7 @@
 package cz.cvut.dp.nss.services.route;
 
 import cz.cvut.dp.nss.services.agency.Agency;
-import cz.cvut.dp.nss.services.common.AbstractEntity;
+import cz.cvut.dp.nss.services.common.AbstractAssignedIdEntity;
 import cz.cvut.dp.nss.services.trip.Trip;
 
 import javax.persistence.*;
@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "routes",
     indexes = {@Index(name = "route_type_index", columnList = "routeType"),
         @Index(name = "route_agency_index", columnList = "agency_id")})
-public class Route extends AbstractEntity<String> {
+public class Route extends AbstractAssignedIdEntity {
 
     /**
      * kratke oznaceni

@@ -9,29 +9,11 @@
 
     <context:component-scan base-package="cz.cvut.dp.nss.services"/>
     <context:component-scan base-package="cz.cvut.dp.nss.persistence"/>
+    <context:component-scan base-package="cz.cvut.dp.nss.context"/>
 
     <tx:annotation-driven transaction-manager="transactionManager" />
 
     <context:property-placeholder location="classpath:dp-nssLocal.properties" />
-
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="cz.cvut.dp.nss.services"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                <prop key="hibernate.show_sql">${hibernate.showSql}</prop>
-                <prop key="hibernate.format_sql">${hibernate.formatSql}</prop>
-                <prop key="hibernate.hbm2ddl.auto">${hibernate.auto}</prop>
-                <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
-    </bean>
-
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driver}" />
@@ -41,6 +23,30 @@
         <property name="maxIdle" value="10" />
         <property name="maxActive" value="20" />
         <property name="poolPreparedStatements" value="true" />
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="cz.cvut.dp.nss.services"/>
+
+        <property name="hibernateProperties">
+            <map>
+                <entry key="hibernate.dialect" value="${hibernate.dialect}"/>
+                <entry key="hibernate.show_sql" value="${hibernate.showSql}"/>
+                <entry key="hibernate.format_sql" value="${hibernate.formatSql}"/>
+                <entry key="hibernate.hbm2ddl.auto" value="${hibernate.auto}"/>
+                <entry key="hibernate.current_session_context_class" value="org.springframework.orm.hibernate5.SpringSessionContext"/>
+
+                <entry key="hibernate.multiTenancy" value="SCHEMA"/>
+                <entry key="hibernate.tenant_identifier_resolver" value-ref="currentTenantResolverImpl"/>
+                <entry key="hibernate.multi_tenant_connection_provider" value-ref="schemaPerTenantConnectionProvider"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="autodetectDataSource" value="false"/>
+        <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
 </beans>

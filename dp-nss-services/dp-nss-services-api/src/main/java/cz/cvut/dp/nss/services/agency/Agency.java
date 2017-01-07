@@ -1,6 +1,6 @@
 package cz.cvut.dp.nss.services.agency;
 
-import cz.cvut.dp.nss.services.common.AbstractEntity;
+import cz.cvut.dp.nss.services.common.AbstractAssignedIdEntity;
 import cz.cvut.dp.nss.services.route.Route;
 
 import javax.persistence.*;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "agencies")
-public class Agency extends AbstractEntity<String> {
+public class Agency extends AbstractAssignedIdEntity {
 
     /**
      * jmeno

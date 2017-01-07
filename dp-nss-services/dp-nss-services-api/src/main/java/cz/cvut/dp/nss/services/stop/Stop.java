@@ -1,6 +1,6 @@
 package cz.cvut.dp.nss.services.stop;
 
-import cz.cvut.dp.nss.services.common.AbstractEntity;
+import cz.cvut.dp.nss.services.common.AbstractAssignedIdEntity;
 import cz.cvut.dp.nss.services.stopTime.StopTime;
 
 import javax.persistence.*;
@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "stops",
     indexes = {@Index(name = "stop_parent_index", columnList = "parent_stop_id")})
-public class Stop extends AbstractEntity<String> {
+public class Stop extends AbstractAssignedIdEntity {
 
     /**
      * nazev

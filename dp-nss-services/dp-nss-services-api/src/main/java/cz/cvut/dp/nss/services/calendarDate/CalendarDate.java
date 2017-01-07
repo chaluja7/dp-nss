@@ -1,7 +1,7 @@
 package cz.cvut.dp.nss.services.calendarDate;
 
 import cz.cvut.dp.nss.services.calendar.Calendar;
-import cz.cvut.dp.nss.services.common.AbstractEntity;
+import cz.cvut.dp.nss.services.common.AbstractGeneratedIdEntity;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -16,7 +16,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "calendar_date", indexes = {@Index(name = "calendar_date_calendar_index", columnList = "calendar_id")})
-public class CalendarDate extends AbstractEntity<Long> {
+public class CalendarDate extends AbstractGeneratedIdEntity {
 
     /**
      * datum vyjimky z Calendar

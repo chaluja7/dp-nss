@@ -1,7 +1,7 @@
 package cz.cvut.dp.nss.services.calendar;
 
 import cz.cvut.dp.nss.services.calendarDate.CalendarDate;
-import cz.cvut.dp.nss.services.common.AbstractEntity;
+import cz.cvut.dp.nss.services.common.AbstractAssignedIdEntity;
 import cz.cvut.dp.nss.services.common.DateTimeUtils;
 import cz.cvut.dp.nss.services.trip.Trip;
 import org.hibernate.annotations.Type;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "calendar")
-public class Calendar extends AbstractEntity<String> {
+public class Calendar extends AbstractAssignedIdEntity {
 
     /**
      * plati v pondeli?
