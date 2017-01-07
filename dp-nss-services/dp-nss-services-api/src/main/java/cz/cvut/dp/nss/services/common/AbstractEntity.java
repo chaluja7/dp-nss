@@ -31,7 +31,6 @@ public abstract class AbstractEntity<ID extends Serializable> implements Seriali
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 37 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
-        return hash;
+        return 37 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
     }
 }

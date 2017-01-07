@@ -6,6 +6,7 @@ import cz.cvut.dp.nss.services.stopTime.StopTime;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,8 @@ public class Stop extends AbstractAssignedIdEntity {
     /**
      * latitude
      */
-    @Column
+    @Column(nullable = false)
+    @NotNull
     @Min(-90)
     @Max(90)
     private Double lat;
@@ -39,7 +41,8 @@ public class Stop extends AbstractAssignedIdEntity {
     /**
      * longitude
      */
-    @Column
+    @Column(nullable = false)
+    @NotNull
     @Min(-180)
     @Max(180)
     private Double lon;

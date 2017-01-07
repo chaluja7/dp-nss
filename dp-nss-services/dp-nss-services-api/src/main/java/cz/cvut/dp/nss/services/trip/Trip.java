@@ -50,6 +50,13 @@ public class Trip extends AbstractAssignedIdEntity {
     @OrderBy("sequence ASC")
     private List<StopTime> stopTimes;
 
+    /**
+     * identifikator prujezdnich bodu tohoto tripu
+     */
+    @Column(name = "shape_id")
+    @Size(max = 255)
+    private String shapeId;
+
     public String getHeadSign() {
         return headSign;
     }
@@ -92,5 +99,13 @@ public class Trip extends AbstractAssignedIdEntity {
         }
 
         stopTime.setTrip(this);
+    }
+
+    public String getShapeId() {
+        return shapeId;
+    }
+
+    public void setShapeId(String shapeId) {
+        this.shapeId = shapeId;
     }
 }
