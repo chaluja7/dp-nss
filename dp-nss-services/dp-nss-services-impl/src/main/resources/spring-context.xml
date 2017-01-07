@@ -2,14 +2,17 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:batch="http://www.springframework.org/schema/batch"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd">
 
     <context:component-scan base-package="cz.cvut.dp.nss.services"/>
     <context:component-scan base-package="cz.cvut.dp.nss.persistence"/>
     <context:component-scan base-package="cz.cvut.dp.nss.context"/>
+    <context:component-scan base-package="cz.cvut.dp.nss.batch"/>
 
     <tx:annotation-driven transaction-manager="transactionManager" />
 
@@ -47,6 +50,51 @@
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="autodetectDataSource" value="false"/>
         <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+
+
+
+
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <!-- toto je velmi dulezite, default by (u postgre) mel byt READ_COMMITED coz je dle dokumentace OK -->
+        <property name="isolationLevelForCreate" value="ISOLATION_DEFAULT"/>
+    </bean>
+
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository" />
+    </bean>
+
+    <batch:job id="batchJob">
+        <batch:step id="step1">
+            <batch:tasklet>
+                <batch:chunk reader="batchReader" processor="batchProcessor" writer="batchWriter" commit-interval="2" />
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+
+    <bean id="batchReader" class="cz.cvut.dp.nss.batch.BatchReader" scope="step">
+
+        <!-- Read a csv file -->
+        <property name="resource" value="classpath:pid/agency.txt" />
+
+        <property name="linesToSkip" value="1"/>
+
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <!-- split it -->
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="names" value="id,name,url,timezone,lang,phone" />
+                        <property name="delimiter" value=","/>
+                    </bean>
+                </property>
+                <property name="fieldSetMapper">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" />
+                </property>
+            </bean>
+        </property>
     </bean>
 
 </beans>

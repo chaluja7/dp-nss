@@ -19,9 +19,9 @@ import java.util.List;
 public class Agency extends AbstractAssignedIdEntity {
 
     /**
-     * jmeno
+     * jmeno, schvalne neni unique dle specifikace
      */
-    @Column(unique = true)
+    @Column
     @Size(min = 1, max = 255)
     private String name;
 
@@ -35,8 +35,8 @@ public class Agency extends AbstractAssignedIdEntity {
     /**
      * telefon na kontaktni osobu
      */
-    @Column(length = 16)
-    @Size(max = 16)
+    @Column
+    @Size(max = 255)
     private String phone;
 
     /**
