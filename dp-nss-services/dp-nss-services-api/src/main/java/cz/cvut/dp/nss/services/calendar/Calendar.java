@@ -84,13 +84,13 @@ public class Calendar extends AbstractAssignedIdEntity {
     /**
      * kolekce vyjimkovych datumu (kdy jede/nejede navic v intervalu startDate - endDate)
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "calendar")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "calendar")
     private List<CalendarDate> calendarDates;
 
     /**
      * tripy pro ktere plati tento interval platnosti
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "calendar")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "calendar")
     private List<Trip> trips;
 
     public boolean isMonday() {

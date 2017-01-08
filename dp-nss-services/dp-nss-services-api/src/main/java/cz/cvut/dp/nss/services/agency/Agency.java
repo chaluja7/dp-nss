@@ -42,7 +42,7 @@ public class Agency extends AbstractAssignedIdEntity {
     /**
      * trati provozovane touto spolecnosti
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "agency")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "agency")
     private List<Route> routes;
 
     public String getName() {

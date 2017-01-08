@@ -1,4 +1,4 @@
-package cz.cvut.dp.nss.batch;
+package cz.cvut.dp.nss.batch.agency;
 
 import cz.cvut.dp.nss.services.agency.Agency;
 import cz.cvut.dp.nss.services.agency.AgencyService;
@@ -12,8 +12,8 @@ import java.util.List;
  * @author jakubchalupa
  * @since 07.01.17
  */
-@Component(value = "batchWriter")
-public class BatchWriter implements ItemWriter<Agency> {
+@Component(value = "agencyBatchWriter")
+public class AgencyBatchWriter implements ItemWriter<Agency> {
 
     @Autowired
     protected AgencyService agencyService;

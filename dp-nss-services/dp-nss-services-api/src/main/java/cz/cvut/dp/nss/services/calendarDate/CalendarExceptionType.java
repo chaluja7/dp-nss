@@ -1,12 +1,14 @@
 package cz.cvut.dp.nss.services.calendarDate;
 
+import cz.cvut.dp.nss.services.common.DomainCode;
+
 /**
  * Typ vyjimky CalendarDate.
  *
  * @author jakubchalupa
  * @since 14.12.16
  */
-public enum CalendarExceptionType {
+public enum CalendarExceptionType implements DomainCode {
 
     /**
      * vyjimecne jede
@@ -18,14 +20,14 @@ public enum CalendarExceptionType {
      */
     EXCLUDE(2);
 
-    private final int typeCode;
+    private final int code;
 
-    CalendarExceptionType(int typeCode) {
-        this.typeCode = typeCode;
+    CalendarExceptionType(int code) {
+        this.code = code;
     }
 
-    public int getTypeCode() {
-        return typeCode;
+    @Override
+    public int getCode() {
+        return code;
     }
-
 }

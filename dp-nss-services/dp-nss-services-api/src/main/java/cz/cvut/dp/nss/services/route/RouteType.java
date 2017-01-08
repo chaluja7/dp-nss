@@ -1,12 +1,14 @@
 package cz.cvut.dp.nss.services.route;
 
+import cz.cvut.dp.nss.services.common.DomainCode;
+
 /**
  * Existujici prepravni prostredky.
  *
  * @author jakubchalupa
  * @since 24.11.14 - 12.12.16
  */
-public enum RouteType {
+public enum RouteType implements DomainCode {
 
     /**
      * tramvaj
@@ -48,13 +50,14 @@ public enum RouteType {
      */
     FUNICULAR(7);
 
-    private final int routeTypeCode;
+    private final int code;
 
-    RouteType(int routeTypeCode) {
-        this.routeTypeCode = routeTypeCode;
+    RouteType(int code) {
+        this.code = code;
     }
 
-    public int getRouteTypeCode() {
-        return routeTypeCode;
+    @Override
+    public int getCode() {
+        return code;
     }
 }

@@ -54,14 +54,14 @@ public class Route extends AbstractAssignedIdEntity {
     /**
      * spolecnost provozujici tuto routu
      */
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "agency_id")
     private Agency agency;
 
     /**
      * tripy navazene na tuto routu
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "route")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "route")
     private List<Trip> trips;
 
     public String getShortName() {

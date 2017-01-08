@@ -23,9 +23,9 @@ import java.util.List;
 public class Stop extends AbstractAssignedIdEntity {
 
     /**
-     * nazev
+     * nazev, opravdu neni schvalne unikatni (gtfs povoluje duplicity v ramci datasetu)
      */
-    @Column(unique = true)
+    @Column
     @Size(min = 1, max = 255)
     private String name;
 
@@ -57,7 +57,7 @@ public class Stop extends AbstractAssignedIdEntity {
     /**
      * list podrizenych stanic teto
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentStop")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "parentStop")
     private List<Stop> childStops;
 
     /**

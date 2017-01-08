@@ -1,4 +1,4 @@
-package cz.cvut.dp.nss.batch;
+package cz.cvut.dp.nss.batch.route;
 
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.transform.DefaultFieldSet;
@@ -8,12 +8,11 @@ import org.springframework.core.io.Resource;
  * @author jakubchalupa
  * @since 07.01.17
  */
-public class BatchReader extends FlatFileItemReader<DefaultFieldSet> {
+public class RouteBatchReader extends FlatFileItemReader<DefaultFieldSet> {
 
     @Override
     protected DefaultFieldSet doRead() throws Exception {
-        DefaultFieldSet defaultFieldSet = super.doRead();
-        return defaultFieldSet;
+        return super.doRead();
     }
 
     @Override

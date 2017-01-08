@@ -59,6 +59,7 @@
     <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
         <property name="transactionManager" ref="transactionManager" />
         <!-- toto je velmi dulezite, default by (u postgre) mel byt READ_COMMITED coz je dle dokumentace OK -->
+        <!-- viz http://docs.spring.io/spring-batch/reference/html/configureJob.html#txConfigForJobRepository -->
         <property name="isolationLevelForCreate" value="ISOLATION_DEFAULT"/>
     </bean>
 
@@ -66,30 +67,256 @@
         <property name="jobRepository" ref="jobRepository" />
     </bean>
 
-    <batch:job id="batchJob">
-        <batch:step id="step1">
+    <batch:job id="gtfsImportBatchJob">
+        <batch:step id="step1" next="step2">
             <batch:tasklet>
-                <batch:chunk reader="batchReader" processor="batchProcessor" writer="batchWriter" commit-interval="2" />
+                <batch:chunk reader="agencyBatchReader" processor="agencyBatchProcessor" writer="agencyBatchWriter" commit-interval="10" />
             </batch:tasklet>
         </batch:step>
+        <batch:step id="step2" next="step3">
+            <batch:tasklet>
+                <batch:chunk reader="routeBatchReader" processor="routeBatchProcessor" writer="routeBatchWriter" commit-interval="50" />
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="step3" next="step4">
+            <batch:tasklet>
+                <batch:chunk reader="calendarBatchReader" processor="calendarBatchProcessor" writer="calendarBatchWriter" commit-interval="10" />
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="step4" next="step5">
+            <batch:tasklet>
+                <batch:chunk reader="calendarDateBatchReader" processor="calendarDateBatchProcessor" writer="calendarDateBatchWriter" commit-interval="50" />
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="step5" next="step6">
+            <batch:tasklet>
+                <batch:chunk reader="stopBatchReader" processor="stopParentBatchProcessor" writer="stopBatchWriter" commit-interval="50" />
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="step6" next="step7">
+            <batch:tasklet>
+                <batch:chunk reader="stopBatchReader" processor="stopChildBatchProcessor" writer="stopBatchWriter" commit-interval="50" />
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="step7" next="step8">
+            <batch:tasklet>
+                <batch:chunk reader="shapeBatchReader" processor="shapeBatchProcessor" writer="shapeBatchWriter" commit-interval="100" />
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="step8" next="step9">
+            <batch:tasklet>
+                <batch:chunk reader="tripBatchReader" processor="tripBatchProcessor" writer="tripBatchWriter" commit-interval="100" />
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="step9">
+            <batch:tasklet>
+                <batch:chunk reader="stopTimeBatchReader" processor="stopTimeBatchProcessor" writer="stopTimeBatchWriter" commit-interval="100" />
+            </batch:tasklet>
+        </batch:step>
+
     </batch:job>
 
-    <bean id="batchReader" class="cz.cvut.dp.nss.batch.BatchReader" scope="step">
+    <bean id="agencyBatchReader" class="cz.cvut.dp.nss.batch.agency.AgencyBatchReader" scope="step">
 
-        <!-- Read a csv file -->
-        <property name="resource" value="classpath:pid/agency.txt" />
+        <!-- csv soubor k importu -->
+        <property name="resource" value="#{jobParameters['agencyLocation']}" />
 
+        <!-- preskoc zahlavi -->
         <property name="linesToSkip" value="1"/>
 
+        <!-- mapovani radku csv-->
         <property name="lineMapper">
             <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-                <!-- split it -->
+                <!-- rozseknuti hodnot radku-->
                 <property name="lineTokenizer">
                     <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
                         <property name="names" value="id,name,url,timezone,lang,phone" />
                         <property name="delimiter" value=","/>
                     </bean>
                 </property>
+                <!-- do processoru budeme posilat DefaultFieldSet kde se budeme do mapy dotazovat na property -->
+                <property name="fieldSetMapper">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="routeBatchReader" class="cz.cvut.dp.nss.batch.route.RouteBatchReader" scope="step">
+
+        <!-- csv soubor k importu -->
+        <property name="resource" value="#{jobParameters['routesLocation']}" />
+
+        <!-- preskoc zahlavi -->
+        <property name="linesToSkip" value="1"/>
+
+        <!-- mapovani radku csv-->
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <!-- rozseknuti hodnot radku-->
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="names" value="id,agencyId,shortName,longName,type,color" />
+                        <property name="delimiter" value=","/>
+                    </bean>
+                </property>
+                <!-- do processoru budeme posilat DefaultFieldSet kde se budeme do mapy dotazovat na property -->
+                <property name="fieldSetMapper">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="calendarBatchReader" class="cz.cvut.dp.nss.batch.calendar.CalendarBatchReader" scope="step">
+
+        <!-- csv soubor k importu -->
+        <property name="resource" value="#{jobParameters['calendarLocation']}" />
+
+        <!-- preskoc zahlavi -->
+        <property name="linesToSkip" value="1"/>
+
+        <!-- mapovani radku csv-->
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <!-- rozseknuti hodnot radku-->
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="names" value="id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,startDate,endDate" />
+                        <property name="delimiter" value=","/>
+                    </bean>
+                </property>
+                <!-- do processoru budeme posilat DefaultFieldSet kde se budeme do mapy dotazovat na property -->
+                <property name="fieldSetMapper">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="calendarDateBatchReader" class="cz.cvut.dp.nss.batch.calendarDate.CalendarDateBatchReader" scope="step">
+
+        <!-- csv soubor k importu -->
+        <property name="resource" value="#{jobParameters['calendarDateLocation']}" />
+
+        <!-- preskoc zahlavi -->
+        <property name="linesToSkip" value="1"/>
+
+        <!-- mapovani radku csv-->
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <!-- rozseknuti hodnot radku-->
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="names" value="calendarId,date,exceptionType" />
+                        <property name="delimiter" value=","/>
+                    </bean>
+                </property>
+                <!-- do processoru budeme posilat DefaultFieldSet kde se budeme do mapy dotazovat na property -->
+                <property name="fieldSetMapper">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="shapeBatchReader" class="cz.cvut.dp.nss.batch.shape.ShapeBatchReader" scope="step">
+
+        <!-- csv soubor k importu -->
+        <property name="resource" value="#{jobParameters['shapesLocation']}" />
+
+        <!-- preskoc zahlavi -->
+        <property name="linesToSkip" value="1"/>
+
+        <!-- mapovani radku csv-->
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <!-- rozseknuti hodnot radku-->
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="names" value="id,lat,lon,sequence" />
+                        <property name="delimiter" value=","/>
+                    </bean>
+                </property>
+                <!-- do processoru budeme posilat DefaultFieldSet kde se budeme do mapy dotazovat na property -->
+                <property name="fieldSetMapper">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="stopBatchReader" class="cz.cvut.dp.nss.batch.stop.StopBatchReader" scope="step">
+
+        <!-- csv soubor k importu -->
+        <property name="resource" value="#{jobParameters['stopsLocation']}" />
+
+        <!-- preskoc zahlavi -->
+        <property name="linesToSkip" value="1"/>
+
+        <!-- mapovani radku csv-->
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <!-- rozseknuti hodnot radku-->
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="names" value="id,name,lat,lon,locationType,parentId" />
+                        <property name="delimiter" value=","/>
+                    </bean>
+                </property>
+                <!-- do processoru budeme posilat DefaultFieldSet kde se budeme do mapy dotazovat na property -->
+                <property name="fieldSetMapper">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="tripBatchReader" class="cz.cvut.dp.nss.batch.trip.TripBatchReader" scope="step">
+
+        <!-- csv soubor k importu -->
+        <property name="resource" value="#{jobParameters['tripsLocation']}" />
+
+        <!-- preskoc zahlavi -->
+        <property name="linesToSkip" value="1"/>
+
+        <!-- mapovani radku csv-->
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <!-- rozseknuti hodnot radku-->
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="names" value="routeId,calendarId,id,headSign,shapeId" />
+                        <property name="delimiter" value=","/>
+                    </bean>
+                </property>
+                <!-- do processoru budeme posilat DefaultFieldSet kde se budeme do mapy dotazovat na property -->
+                <property name="fieldSetMapper">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="stopTimeBatchReader" class="cz.cvut.dp.nss.batch.stopTime.StopTimeBatchReader" scope="step">
+
+        <!-- csv soubor k importu -->
+        <property name="resource" value="#{jobParameters['stopTimesLocation']}" />
+
+        <!-- preskoc zahlavi -->
+        <property name="linesToSkip" value="1"/>
+
+        <!-- mapovani radku csv-->
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <!-- rozseknuti hodnot radku-->
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="names" value="tripId,arrivalTime,departureTime,stopId,sequence" />
+                        <property name="delimiter" value=","/>
+                    </bean>
+                </property>
+                <!-- do processoru budeme posilat DefaultFieldSet kde se budeme do mapy dotazovat na property -->
                 <property name="fieldSetMapper">
                     <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" />
                 </property>
