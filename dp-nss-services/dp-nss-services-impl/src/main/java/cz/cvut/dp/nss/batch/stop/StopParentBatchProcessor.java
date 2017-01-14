@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.batch.stop;
 
+import cz.cvut.dp.nss.services.common.EnumUtils;
 import cz.cvut.dp.nss.services.stop.Stop;
+import cz.cvut.dp.nss.services.stop.StopWheelchairBoardingType;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.file.transform.DefaultFieldSet;
 import org.springframework.stereotype.Component;
@@ -34,6 +36,13 @@ public class StopParentBatchProcessor implements ItemProcessor<DefaultFieldSet, 
         stop.setName((String) properties.get("stop_name"));
         stop.setLat(Double.parseDouble((String) properties.get("stop_lat")));
         stop.setLon(Double.parseDouble((String) properties.get("stop_lon")));
+
+        String wheelchairString = (String) properties.get("wheelchair_boarding");
+        if(StringUtils.hasText(wheelchairString)) {
+            stop.setStopWheelchairBoardingType(EnumUtils.fromCode(Integer.parseInt(wheelchairString), StopWheelchairBoardingType.class));
+        } else {
+            stop.setStopWheelchairBoardingType(StopWheelchairBoardingType.NO_INFO);
+        }
 
         return stop;
     }

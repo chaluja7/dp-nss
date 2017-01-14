@@ -57,6 +57,13 @@ public class Trip extends AbstractAssignedIdEntity {
     @Size(max = 255)
     private String shapeId;
 
+    /**
+     * typ dostupnosti tripu pro vozickare
+     */
+    @Column(name = "wheelchair")
+    @Enumerated(EnumType.STRING)
+    private TripWheelchairAccessibleType tripWheelchairAccessibleType;
+
     public String getHeadSign() {
         return headSign;
     }
@@ -107,5 +114,13 @@ public class Trip extends AbstractAssignedIdEntity {
 
     public void setShapeId(String shapeId) {
         this.shapeId = shapeId;
+    }
+
+    public TripWheelchairAccessibleType getTripWheelchairAccessibleType() {
+        return tripWheelchairAccessibleType;
+    }
+
+    public void setTripWheelchairAccessibleType(TripWheelchairAccessibleType tripWheelchairAccessibleType) {
+        this.tripWheelchairAccessibleType = tripWheelchairAccessibleType;
     }
 }

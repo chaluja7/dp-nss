@@ -48,6 +48,13 @@ public class Stop extends AbstractAssignedIdEntity {
     private Double lon;
 
     /**
+     * dostupnost stanice pro vozickare
+     */
+    @Column(name = "wheelchair")
+    @Enumerated(EnumType.STRING)
+    private StopWheelchairBoardingType stopWheelchairBoardingType;
+
+    /**
      * nadrazena stanice (pokud je tato v nejakem komplexu)
      */
     @ManyToOne(fetch = FetchType.EAGER)
@@ -88,6 +95,14 @@ public class Stop extends AbstractAssignedIdEntity {
 
     public void setLon(Double lon) {
         this.lon = lon;
+    }
+
+    public StopWheelchairBoardingType getStopWheelchairBoardingType() {
+        return stopWheelchairBoardingType;
+    }
+
+    public void setStopWheelchairBoardingType(StopWheelchairBoardingType stopWheelchairBoardingType) {
+        this.stopWheelchairBoardingType = stopWheelchairBoardingType;
     }
 
     public Stop getParentStop() {

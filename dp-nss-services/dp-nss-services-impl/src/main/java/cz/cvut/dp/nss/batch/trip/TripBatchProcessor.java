@@ -2,11 +2,14 @@ package cz.cvut.dp.nss.batch.trip;
 
 import cz.cvut.dp.nss.batch.BatchStringUtils;
 import cz.cvut.dp.nss.services.calendar.Calendar;
+import cz.cvut.dp.nss.services.common.EnumUtils;
 import cz.cvut.dp.nss.services.route.Route;
 import cz.cvut.dp.nss.services.trip.Trip;
+import cz.cvut.dp.nss.services.trip.TripWheelchairAccessibleType;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.file.transform.DefaultFieldSet;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Properties;
 
@@ -25,6 +28,13 @@ public class TripBatchProcessor implements ItemProcessor<DefaultFieldSet, Trip> 
         trip.setId((String) properties.get("trip_id"));
         trip.setShapeId(BatchStringUtils.notEmptyStringOrNull((String) properties.get("shape_id")));
         trip.setHeadSign(BatchStringUtils.notEmptyStringOrNull((String) properties.get("trip_headsign")));
+
+        String wheelchairString = (String) properties.get("wheelchair_accessible");
+        if(StringUtils.hasText(wheelchairString)) {
+            trip.setTripWheelchairAccessibleType(EnumUtils.fromCode(Integer.parseInt(wheelchairString), TripWheelchairAccessibleType.class));
+        } else {
+            trip.setTripWheelchairAccessibleType(TripWheelchairAccessibleType.NO_INFO);
+        }
 
         //obe jsou required
         Calendar calendar = new Calendar();
