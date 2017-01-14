@@ -7,6 +7,7 @@ import cz.cvut.dp.nss.services.trip.Trip;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.file.transform.DefaultFieldSet;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalTime;
 import java.util.Properties;
@@ -24,18 +25,22 @@ public class StopTimeBatchProcessor implements ItemProcessor<DefaultFieldSet, St
 
         StopTime stopTime = new StopTime();
 
-        String arrivalTime = fix24DateTime((String) properties.get("arrivalTime"));
-        String departureTime = fix24DateTime((String) properties.get("departureTime"));
-        stopTime.setArrival(LocalTime.parse(arrivalTime, DateTimeUtils.GTFS_TIME_PATTERN_DATE_TIME_FORMATTER));
-        stopTime.setDeparture(LocalTime.parse(departureTime, DateTimeUtils.GTFS_TIME_PATTERN_DATE_TIME_FORMATTER));
-        stopTime.setSequence(Integer.parseInt((String) properties.get("sequence")));
+        String arrivalTime = fix24DateTime((String) properties.get("arrival_time"));
+        String departureTime = fix24DateTime((String) properties.get("departure_time"));
+        if(arrivalTime != null) {
+            stopTime.setArrival(LocalTime.parse(arrivalTime, DateTimeUtils.GTFS_TIME_PATTERN_DATE_TIME_FORMATTER));
+        }
+        if(departureTime != null) {
+            stopTime.setDeparture(LocalTime.parse(departureTime, DateTimeUtils.GTFS_TIME_PATTERN_DATE_TIME_FORMATTER));
+        }
+        stopTime.setSequence(Integer.parseInt((String) properties.get("stop_sequence")));
 
         Trip trip = new Trip();
-        trip.setId((String) properties.get("tripId"));
+        trip.setId((String) properties.get("trip_id"));
         stopTime.setTrip(trip);
 
         Stop stop = new Stop();
-        stop.setId((String) properties.get("stopId"));
+        stop.setId((String) properties.get("stop_id"));
         stopTime.setStop(stop);
 
         return stopTime;
@@ -48,6 +53,8 @@ public class StopTimeBatchProcessor implements ItemProcessor<DefaultFieldSet, St
      * @return opraven date time z rozsahu H: 00 - 23
      */
     private static String fix24DateTime(String dateTime) {
+        if(!StringUtils.hasText(dateTime)) return null;
+
         if(dateTime.startsWith("24")) {
             dateTime = "00" + dateTime.substring(2, dateTime.length());
         }

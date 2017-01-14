@@ -24,14 +24,18 @@ public class RouteBatchProcessor implements ItemProcessor<DefaultFieldSet, Route
         Properties properties = defaultFieldSet.getProperties();
 
         Route route = new Route();
-        route.setId((String) properties.get("id"));
-        route.setShortName((String) properties.get("shortName"));
-        route.setLongName(BatchStringUtils.notEmptyStringOrNull((String) properties.get("longName")));
-        route.setColor(BatchStringUtils.notEmptyStringOrNull((String) properties.get("color")));
-        route.setRouteType(EnumUtils.fromCode(Integer.parseInt((String) properties.get("type")), RouteType.class));
+        route.setId((String) properties.get("route_id"));
+        route.setShortName((String) properties.get("route_short_name"));
+        route.setLongName(BatchStringUtils.notEmptyStringOrNull((String) properties.get("route_long_name")));
+        if(!StringUtils.hasText(route.getShortName())) {
+            //short name nemusi byt vyplnene, pokud je vyplnene long name
+            route.setShortName(route.getLongName());
+        }
+        route.setColor(BatchStringUtils.notEmptyStringOrNull((String) properties.get("route_color")));
+        route.setRouteType(EnumUtils.fromCode(Integer.parseInt((String) properties.get("route_type")), RouteType.class));
 
         //agencyId nemusi byt prirazeno
-        String agencyId = (String) properties.get("agencyId");
+        String agencyId = (String) properties.get("agency_id");
         if(StringUtils.hasText(agencyId)) {
             //vytvorim si virtualni agency, ktere priradim pouze jeji id. ta uz musi existovat v DB!
             Agency agency = new Agency();

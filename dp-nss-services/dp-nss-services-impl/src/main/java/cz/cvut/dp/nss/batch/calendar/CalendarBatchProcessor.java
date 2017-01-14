@@ -22,7 +22,7 @@ public class CalendarBatchProcessor implements ItemProcessor<DefaultFieldSet, Ca
         Properties properties = defaultFieldSet.getProperties();
 
         Calendar calendar = new Calendar();
-        calendar.setId((String) properties.get("id"));
+        calendar.setId((String) properties.get("service_id"));
         calendar.setMonday(BatchStringUtils.booleanValue((String) properties.get("monday")));
         calendar.setTuesday(BatchStringUtils.booleanValue((String) properties.get("tuesday")));
         calendar.setWednesday(BatchStringUtils.booleanValue((String) properties.get("wednesday")));
@@ -31,8 +31,8 @@ public class CalendarBatchProcessor implements ItemProcessor<DefaultFieldSet, Ca
         calendar.setSaturday(BatchStringUtils.booleanValue((String) properties.get("saturday")));
         calendar.setSunday(BatchStringUtils.booleanValue((String) properties.get("sunday")));
 
-        calendar.setStartDate(LocalDate.parse((String) properties.get("startDate"), DateTimeUtils.GTFS_DATE_PATTERN_DATE_TIME_FORMATTER));
-        calendar.setEndDate(LocalDate.parse((String) properties.get("endDate"), DateTimeUtils.GTFS_DATE_PATTERN_DATE_TIME_FORMATTER));
+        calendar.setStartDate(LocalDate.parse((String) properties.get("start_date"), DateTimeUtils.GTFS_DATE_PATTERN_DATE_TIME_FORMATTER));
+        calendar.setEndDate(LocalDate.parse((String) properties.get("end_date"), DateTimeUtils.GTFS_DATE_PATTERN_DATE_TIME_FORMATTER));
 
         return calendar;
     }

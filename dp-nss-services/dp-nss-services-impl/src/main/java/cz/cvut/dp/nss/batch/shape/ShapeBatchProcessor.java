@@ -20,9 +20,9 @@ public class ShapeBatchProcessor implements ItemProcessor<DefaultFieldSet, Shape
         Properties properties = defaultFieldSet.getProperties();
 
         Shape shape = new Shape();
-        shape.setId(new ShapeId((String) properties.get("id"), Integer.parseInt((String) properties.get("sequence"))));
-        shape.setLat(Double.parseDouble((String) properties.get("lat")));
-        shape.setLon(Double.parseDouble((String) properties.get("lon")));
+        shape.setId(new ShapeId((String) properties.get("shape_id"), Integer.parseInt((String) properties.get("shape_pt_sequence"))));
+        shape.setLat(Double.parseDouble((String) properties.get("shape_pt_lat")));
+        shape.setLon(Double.parseDouble((String) properties.get("shape_pt_lon")));
 
         return shape;
     }

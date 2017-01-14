@@ -24,19 +24,17 @@ import java.time.LocalTime;
 public class StopTime extends AbstractGeneratedIdEntity {
 
     /**
-     * cas prijezdu
+     * cas prijezdu, opravdu dle GTFS muze byt null (cas se pak bere z nejblizsi predchazejici zastavky, kde arrival je)
      */
-    @Column(nullable = false)
+    @Column
     @Type(type = "org.hibernate.type.LocalTimeType")
-    @NotNull
     private LocalTime arrival;
 
     /**
-     * cas odjezdu
+     * cas odjezdu, opravdu dle GTFS muze byt null (cas se pak bere z nejblizsi predchazejici zastavky, kde departure je)
      */
-    @Column(nullable = false)
+    @Column
     @Type(type = "org.hibernate.type.LocalTimeType")
-    @NotNull
     private LocalTime departure;
 
     /**

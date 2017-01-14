@@ -25,11 +25,11 @@ public class CalendarDateBatchProcessor implements ItemProcessor<DefaultFieldSet
 
         CalendarDate calendarDate = new CalendarDate();
         calendarDate.setDate(LocalDate.parse((String) properties.get("date"), DateTimeUtils.GTFS_DATE_PATTERN_DATE_TIME_FORMATTER));
-        calendarDate.setExceptionType(EnumUtils.fromCode(Integer.parseInt((String) properties.get("exceptionType")), CalendarExceptionType.class));
+        calendarDate.setExceptionType(EnumUtils.fromCode(Integer.parseInt((String) properties.get("exception_type")), CalendarExceptionType.class));
 
         //a musim priradit virtualni (jiz v db existujici!) calendar s id
         Calendar calendar = new Calendar();
-        calendar.setId((String) properties.get("calendarId"));
+        calendar.setId((String) properties.get("service_id"));
         calendarDate.setCalendar(calendar);
 
         return calendarDate;

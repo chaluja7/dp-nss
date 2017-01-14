@@ -18,7 +18,7 @@ public class StopChildBatchProcessor implements ItemProcessor<DefaultFieldSet, S
     @Override
     public Stop process(DefaultFieldSet defaultFieldSet) throws Exception {
         Properties properties = defaultFieldSet.getProperties();
-        String parentStopId = (String) properties.get("parentId");
+        String parentStopId = (String) properties.get("parent_station");
         if(!StringUtils.hasText(parentStopId)) {
             //nyni nechci ukladat parent stanice, protoze ty by jiz mely byt v db. takto se uz to nedostane dal do writeru
            return null;

@@ -22,12 +22,12 @@ public class AgencyBatchProcessor implements ItemProcessor<DefaultFieldSet, Agen
         Properties properties = defaultFieldSet.getProperties();
 
         Agency agency = new Agency();
-        agency.setName((String) properties.get("name"));
-        agency.setUrl((String) properties.get("url"));
-        agency.setPhone(BatchStringUtils.notEmptyStringOrNull((String) properties.get("phone")));
+        agency.setName((String) properties.get("agency_name"));
+        agency.setUrl((String) properties.get("agency_url"));
+        agency.setPhone(BatchStringUtils.notEmptyStringOrNull((String) properties.get("agency_phone")));
 
         //id je nepovinne (wtf?), ale u nas je to primarni klic, tak musim nejake unikatni vybrat
-        String id = (String) properties.get("id");
+        String id = (String) properties.get("agency_id");
         if(!StringUtils.hasText(id)) {
             id = "agency-" + UUID.randomUUID().toString();
         }

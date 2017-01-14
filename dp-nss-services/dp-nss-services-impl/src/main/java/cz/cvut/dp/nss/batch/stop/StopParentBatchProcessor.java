@@ -18,7 +18,7 @@ public class StopParentBatchProcessor implements ItemProcessor<DefaultFieldSet, 
     @Override
     public Stop process(DefaultFieldSet defaultFieldSet) throws Exception {
         Properties properties = defaultFieldSet.getProperties();
-        String parentStopId = (String) properties.get("parentId");
+        String parentStopId = (String) properties.get("parent_station");
         if(StringUtils.hasText(parentStopId)) {
             //nyni nechci ukladat stanice, ktere maji parent station, protoze parent station jeste nemusi byt v db
             //takto se to uz nedostane dal do writeru
@@ -30,10 +30,10 @@ public class StopParentBatchProcessor implements ItemProcessor<DefaultFieldSet, 
 
     static Stop getParentStopFromProperties(Properties properties) {
         Stop stop = new Stop();
-        stop.setId((String) properties.get("id"));
-        stop.setName((String) properties.get("name"));
-        stop.setLat(Double.parseDouble((String) properties.get("lat")));
-        stop.setLon(Double.parseDouble((String) properties.get("lon")));
+        stop.setId((String) properties.get("stop_id"));
+        stop.setName((String) properties.get("stop_name"));
+        stop.setLat(Double.parseDouble((String) properties.get("stop_lat")));
+        stop.setLon(Double.parseDouble((String) properties.get("stop_lon")));
 
         return stop;
     }

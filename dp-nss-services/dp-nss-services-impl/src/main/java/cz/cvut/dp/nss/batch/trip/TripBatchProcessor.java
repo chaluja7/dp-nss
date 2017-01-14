@@ -22,17 +22,17 @@ public class TripBatchProcessor implements ItemProcessor<DefaultFieldSet, Trip> 
         Properties properties = defaultFieldSet.getProperties();
 
         Trip trip = new Trip();
-        trip.setId((String) properties.get("id"));
-        trip.setShapeId(BatchStringUtils.notEmptyStringOrNull((String) properties.get("shapeId")));
-        trip.setHeadSign(BatchStringUtils.notEmptyStringOrNull((String) properties.get("headSign")));
+        trip.setId((String) properties.get("trip_id"));
+        trip.setShapeId(BatchStringUtils.notEmptyStringOrNull((String) properties.get("shape_id")));
+        trip.setHeadSign(BatchStringUtils.notEmptyStringOrNull((String) properties.get("trip_headsign")));
 
         //obe jsou required
         Calendar calendar = new Calendar();
-        calendar.setId((String) properties.get("calendarId"));
+        calendar.setId((String) properties.get("service_id"));
         trip.setCalendar(calendar);
 
         Route route = new Route();
-        route.setId((String) properties.get("routeId"));
+        route.setId((String) properties.get("route_id"));
         trip.setRoute(route);
 
         return trip;

@@ -2,7 +2,6 @@ package cz.cvut.dp.nss.batch.agency;
 
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.transform.DefaultFieldSet;
-import org.springframework.core.io.Resource;
 
 /**
  * @author jakubchalupa
@@ -23,11 +22,6 @@ public class AgencyBatchReader extends FlatFileItemReader<DefaultFieldSet> {
     @Override
     protected void doClose() throws Exception {
         super.doClose();
-    }
-
-    @Override
-    public void setResource(Resource resource) {
-        super.setResource(resource);
     }
 
 }
