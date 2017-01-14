@@ -90,27 +90,27 @@
         </batch:step>
         <batch:step id="step5" next="step6">
             <batch:tasklet>
-                <batch:chunk reader="stopBatchReader" processor="stopParentBatchProcessor" writer="stopBatchWriter" commit-interval="50" />
+                <batch:chunk reader="stopBatchReader" processor="stopParentBatchProcessor" writer="stopBatchWriter" commit-interval="100" />
             </batch:tasklet>
         </batch:step>
         <batch:step id="step6" next="step7">
             <batch:tasklet>
-                <batch:chunk reader="stopBatchReader" processor="stopChildBatchProcessor" writer="stopBatchWriter" commit-interval="50" />
+                <batch:chunk reader="stopBatchReader" processor="stopChildBatchProcessor" writer="stopBatchWriter" commit-interval="100" />
             </batch:tasklet>
         </batch:step>
         <batch:step id="step7" next="step8">
             <batch:tasklet>
-                <batch:chunk reader="shapeBatchReader" processor="shapeBatchProcessor" writer="shapeBatchWriter" commit-interval="100" />
+                <batch:chunk reader="shapeBatchReader" processor="shapeBatchProcessor" writer="shapeBatchWriter" commit-interval="150" />
             </batch:tasklet>
         </batch:step>
         <batch:step id="step8" next="step9">
             <batch:tasklet>
-                <batch:chunk reader="tripBatchReader" processor="tripBatchProcessor" writer="tripBatchWriter" commit-interval="100" />
+                <batch:chunk reader="tripBatchReader" processor="tripBatchProcessor" writer="tripBatchWriter" commit-interval="150" />
             </batch:tasklet>
         </batch:step>
         <batch:step id="step9">
             <batch:tasklet>
-                <batch:chunk reader="stopTimeBatchReader" processor="stopTimeBatchProcessor" writer="stopTimeBatchWriter" commit-interval="100" />
+                <batch:chunk reader="stopTimeBatchReader" processor="stopTimeBatchProcessor" writer="stopTimeBatchWriter" commit-interval="150" />
             </batch:tasklet>
         </batch:step>
 
