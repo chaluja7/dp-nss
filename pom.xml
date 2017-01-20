@@ -95,6 +95,14 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-neo4j -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-neo4j</artifactId>
+                <version>4.1.6.RELEASE</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 

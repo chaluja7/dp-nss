@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>dp-nss-services</artifactId>
+        <groupId>cz.cvut.dp.nss</groupId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <artifactId>dp-nss-services-graph</artifactId>
+    <packaging>jar</packaging>
+
+    <name>DP-NSS-SERVICES-GRAPH</name>
+
+    <properties>
+        <main.basedir>${project.basedir}/../..</main.basedir>
+    </properties>
+
+    <dependencies>
+
+        <!-- other modules -->
+        <dependency>
+            <groupId>cz.cvut.dp.nss</groupId>
+            <artifactId>dp-nss-services-api</artifactId>
+        </dependency>
+
+
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+
+        <!-- test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- neo4j -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-neo4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-bolt-driver</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>org.neo4j</groupId>-->
+        <!--<artifactId>neo4j</artifactId>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>org.neo4j</groupId>-->
+            <!--<artifactId>neo4j-kernel</artifactId>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>org.neo4j.app</groupId>-->
+            <!--<artifactId>neo4j-server</artifactId>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>com.mysema.querydsl</groupId>-->
+        <!--<artifactId>querydsl-apt</artifactId>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>org.springframework.data</groupId>-->
+        <!--<artifactId>spring-data-neo4j-tx</artifactId>-->
+        <!--</dependency>-->
+
+
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.neo4j</groupId>
+                <artifactId>neo4j-ogm-core</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.neo4j</groupId>
+                <artifactId>neo4j-ogm-bolt-driver</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+
+            <!--<dependency>-->
+            <!--<groupId>org.neo4j</groupId>-->
+            <!--<artifactId>neo4j-ogm-embedded-driver</artifactId>-->
+            <!--<version>2.1.1</version>-->
+            <!--</dependency>-->
+
+
+            <!--<dependency>-->
+            <!--<groupId>org.neo4j</groupId>-->
+            <!--<artifactId>neo4j</artifactId>-->
+            <!--<version>3.1.0</version>-->
+            <!--</dependency>-->
+
+            <!--<dependency>-->
+                <!--<groupId>org.neo4j</groupId>-->
+                <!--<artifactId>neo4j-kernel</artifactId>-->
+                <!--<version>3.1.0</version>-->
+            <!--</dependency>-->
+
+            <!--<dependency>-->
+                <!--<groupId>org.neo4j.app</groupId>-->
+                <!--<artifactId>neo4j-server</artifactId>-->
+                <!--<version>3.1.0</version>-->
+            <!--</dependency>-->
+
+            <!--<dependency>-->
+            <!--<groupId>org.springframework.data</groupId>-->
+            <!--<artifactId>spring-data-neo4j-tx</artifactId>-->
+            <!--<version>2.2.0.RELEASE</version>-->
+            <!--</dependency>-->
+
+        </dependencies>
+    </dependencyManagement>
+
+</project>

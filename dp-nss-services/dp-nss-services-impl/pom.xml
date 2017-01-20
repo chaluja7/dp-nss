@@ -44,7 +44,8 @@
                                 <exclude>none</exclude>
                             </excludes>
                             <includes>
-                                <include>**/*IT.java</include>
+                                <!-- pozor!!! zde je docasne suit, protoze chci IT testy spoustet pouze v jeho ramci-->
+                                <include>**/*Suite.java</include>
                             </includes>
                         </configuration>
                     </execution>
