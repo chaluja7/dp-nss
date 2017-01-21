@@ -8,4 +8,11 @@ import cz.cvut.dp.nss.graph.services.common.NodeService;
  */
 public interface TripNodeService extends NodeService<TripNode> {
 
+    /**
+     * najde trip dle tripId
+     * @param tripId stopId
+     * @return tripNode dle tripId
+     */
+    TripNode findByTripId(String tripId);
+
 }

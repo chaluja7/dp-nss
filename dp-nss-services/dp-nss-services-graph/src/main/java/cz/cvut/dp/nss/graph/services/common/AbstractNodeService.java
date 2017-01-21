@@ -22,14 +22,12 @@ public abstract class AbstractNodeService<NODE extends AbstractNode, REPO extend
     }
 
     @Override
-    //@Neo4jTransactional
     public NODE save(NODE rideNode) {
         return repo.save(rideNode);
     }
 
     @Override
-    public NODE findById(Long id) {
-        return repo.findOne(id);
+    public void deleteAll() {
+        repo.deleteAll();
     }
-
 }

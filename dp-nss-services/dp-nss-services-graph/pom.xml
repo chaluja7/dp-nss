@@ -18,6 +18,8 @@
 
     <properties>
         <main.basedir>${project.basedir}/../..</main.basedir>
+        <neo4j.version>3.1.0</neo4j.version>
+        <neo4j-ogm.version>2.1.1</neo4j-ogm.version>
     </properties>
 
     <dependencies>
@@ -45,6 +47,17 @@
             <artifactId>spring-beans</artifactId>
         </dependency>
 
+
+        <!--TODO moc se mi to nelibi, ale potrebuji mit request scope pristupny pro getSession beanu-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <!--TODO moc se mi to nelibi-->
+
+
+
+
         <!-- test -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -67,40 +80,22 @@
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-ogm-core</artifactId>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-ogm-bolt-driver</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
-        <!--<dependency>-->
-        <!--<groupId>org.neo4j</groupId>-->
-        <!--<artifactId>neo4j</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-kernel</artifactId>
+        </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>org.neo4j</groupId>-->
-            <!--<artifactId>neo4j-kernel</artifactId>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.neo4j.app</groupId>-->
-            <!--<artifactId>neo4j-server</artifactId>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-        <!--<groupId>com.mysema.querydsl</groupId>-->
-        <!--<artifactId>querydsl-apt</artifactId>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.data</groupId>-->
-        <!--<artifactId>spring-data-neo4j-tx</artifactId>-->
-        <!--</dependency>-->
-
+        <dependency>
+            <groupId>org.neo4j.app</groupId>
+            <artifactId>neo4j-server</artifactId>
+        </dependency>
 
     </dependencies>
 
@@ -110,45 +105,63 @@
             <dependency>
                 <groupId>org.neo4j</groupId>
                 <artifactId>neo4j-ogm-core</artifactId>
-                <version>2.1.1</version>
+                <version>${neo4j-ogm.version}</version>
+                <scope>compile</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.neo4j</groupId>
                 <artifactId>neo4j-ogm-bolt-driver</artifactId>
-                <version>2.1.1</version>
+                <version>${neo4j-ogm.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
-            <!--<dependency>-->
-            <!--<groupId>org.neo4j</groupId>-->
-            <!--<artifactId>neo4j-ogm-embedded-driver</artifactId>-->
-            <!--<version>2.1.1</version>-->
-            <!--</dependency>-->
+
+            <dependency>
+                <groupId>org.neo4j</groupId>
+                <artifactId>neo4j</artifactId>
+                <version>${neo4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.neo4j</groupId>
+                <artifactId>neo4j-kernel</artifactId>
+                <version>${neo4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.neo4j.app</groupId>
+                <artifactId>neo4j-server</artifactId>
+                <version>${neo4j.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.neo4j</groupId>
+                        <artifactId>neo4j-cypher-compiler-2.3</artifactId>
+                    </exclusion>
+                    <!--fixme really ? -->
+                    <!--<exclusion>-->
+                        <!--<groupId>org.neo4j</groupId>-->
+                        <!--<artifactId>neo4j-cypher-compiler-3.0</artifactId>-->
+                    <!--</exclusion>-->
+                </exclusions>
+            </dependency>
+
+            <!-- KVULI MOZNYM KONFLIKTUM URCIME PEVNE VERZE -->
+            <dependency>
+                <groupId>org.neo4j</groupId>
+                <artifactId>neo4j-ogm-http-driver</artifactId>
+                <version>${neo4j-ogm.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>1.53</version>
+            </dependency>
+            <!-- KVULI MOZNYM KONFLIKTUM URCIME PEVNE VERZE -->
 
 
-            <!--<dependency>-->
-            <!--<groupId>org.neo4j</groupId>-->
-            <!--<artifactId>neo4j</artifactId>-->
-            <!--<version>3.1.0</version>-->
-            <!--</dependency>-->
-
-            <!--<dependency>-->
-                <!--<groupId>org.neo4j</groupId>-->
-                <!--<artifactId>neo4j-kernel</artifactId>-->
-                <!--<version>3.1.0</version>-->
-            <!--</dependency>-->
-
-            <!--<dependency>-->
-                <!--<groupId>org.neo4j.app</groupId>-->
-                <!--<artifactId>neo4j-server</artifactId>-->
-                <!--<version>3.1.0</version>-->
-            <!--</dependency>-->
-
-            <!--<dependency>-->
-            <!--<groupId>org.springframework.data</groupId>-->
-            <!--<artifactId>spring-data-neo4j-tx</artifactId>-->
-            <!--<version>2.2.0.RELEASE</version>-->
-            <!--</dependency>-->
 
         </dependencies>
     </dependencyManagement>

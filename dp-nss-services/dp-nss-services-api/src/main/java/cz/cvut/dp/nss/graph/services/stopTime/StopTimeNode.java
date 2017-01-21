@@ -7,6 +7,8 @@ import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
 /**
+ * CREATE CONSTRAINT ON (n:StopTimeNode) ASSERT n.stopTimeId IS UNIQUE
+ *
  * @author jakubchalupa
  * @since 18.01.17
  */
@@ -37,8 +39,35 @@ public class StopTimeNode extends AbstractNode {
     @Property
     private Long departureInMillis;
 
+    /**
+     * Trip tohoto zastaveni
+     */
     @Relationship(type = "IN_TRIP", direction = Relationship.OUTGOING)
     private TripNode tripNode;
+
+    /**
+     * pristi zastaveni v ramci tripu
+     */
+    @Relationship(type = "NEXT_STOP", direction = Relationship.OUTGOING)
+    private StopTimeNode nextStop;
+
+    /**
+     * predchozi zastaveni v ramci tripu
+     */
+    @Relationship(type = "NEXT_STOP", direction = Relationship.OUTGOING)
+    private StopTimeNode prevStop;
+
+    /**
+     * pristi prestupni zastaveni z jineho tripu v ramci stanice
+     */
+    @Relationship(type = "NEXT_AWAITING_STOP", direction = Relationship.OUTGOING)
+    private StopTimeNode nextAwaitingStop;
+
+    /**
+     * predchozi prestupni zastaveni z jineho tripu v ramci stanice
+     */
+    @Relationship(type = "NEXT_AWAITING_STOP", direction = Relationship.INCOMING)
+    private StopTimeNode prevAwaitingStop;
 
     public Long getStopTimeId() {
         return stopTimeId;
@@ -78,5 +107,37 @@ public class StopTimeNode extends AbstractNode {
 
     public void setTripNode(TripNode tripNode) {
         this.tripNode = tripNode;
+    }
+
+    public StopTimeNode getNextStop() {
+        return nextStop;
+    }
+
+    public void setNextStop(StopTimeNode nextStop) {
+        this.nextStop = nextStop;
+    }
+
+    public StopTimeNode getPrevStop() {
+        return prevStop;
+    }
+
+    public void setPrevStop(StopTimeNode prevStop) {
+        this.prevStop = prevStop;
+    }
+
+    public StopTimeNode getNextAwaitingStop() {
+        return nextAwaitingStop;
+    }
+
+    public void setNextAwaitingStop(StopTimeNode nextAwaitingStop) {
+        this.nextAwaitingStop = nextAwaitingStop;
+    }
+
+    public StopTimeNode getPrevAwaitingStop() {
+        return prevAwaitingStop;
+    }
+
+    public void setPrevAwaitingStop(StopTimeNode prevAwaitingStop) {
+        this.prevAwaitingStop = prevAwaitingStop;
     }
 }

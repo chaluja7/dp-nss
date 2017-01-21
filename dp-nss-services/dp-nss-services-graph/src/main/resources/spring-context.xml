@@ -7,7 +7,6 @@
 
     <context:component-scan base-package="cz.cvut.dp.nss.graph.services" />
 
-    <!-- neo4jConfiguration verze 4.x.x nema xml konfiguraci, musim tedy pouzit javovou -->
-    <bean class="cz.cvut.dp.nss.graph.Neo4jConfig" />
+    <bean class="cz.cvut.dp.nss.graph.Neo4jConfig"/>
 
 </beans>

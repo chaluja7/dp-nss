@@ -16,10 +16,8 @@ public interface NodeService<NODE extends AbstractNode> {
     NODE save(NODE node);
 
     /**
-     * najde NODE dle id
-     * @param id id nodu
-     * @return NODE dle id
+     * odstrani vsechny uzly daneho typu
      */
-    NODE findById(Long id);
+    void deleteAll();
 
 }

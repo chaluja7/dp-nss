@@ -44,7 +44,7 @@
                                 <exclude>none</exclude>
                             </excludes>
                             <includes>
-                                <!-- pozor!!! zde je docasne suit, protoze chci IT testy spoustet pouze v jeho ramci-->
+                                <!-- FIXME pozor!!! zde je docasne suit, protoze chci IT testy spoustet pouze v jeho ramci-->
                                 <include>**/*Suite.java</include>
                             </includes>
                         </configuration>

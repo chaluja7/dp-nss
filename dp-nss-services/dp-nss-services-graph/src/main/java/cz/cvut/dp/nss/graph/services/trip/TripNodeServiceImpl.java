@@ -17,4 +17,8 @@ public class TripNodeServiceImpl extends AbstractNodeService<TripNode, TripNodeR
         super(repository);
     }
 
+    @Override
+    public TripNode findByTripId(String tripId) {
+        return repo.findByTripId(tripId);
+    }
 }

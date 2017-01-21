@@ -3,6 +3,7 @@ package cz.cvut.dp.nss.graph.services;
 import cz.cvut.dp.nss.graph.services.trip.TripNode;
 import cz.cvut.dp.nss.graph.services.trip.TripNodeService;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,16 +16,23 @@ public class TripNodeServiceIT extends AbstractServiceIT {
     @Autowired
     private TripNodeService tripNodeService;
 
+    public static final String TRIP_ID = "tripX";
+
+    @Before
+    public void before() {
+        tripNodeService.deleteAll();
+    }
+
     @Test
     public void testCreateAndGet() {
-        TripNode tripNode = getTripNode("trip1", "calendar1");
+        final String tripId = "tripX";
+        TripNode tripNode = getTripNode(tripId, "calendarX");
 
         tripNode = tripNodeService.save(tripNode);
         Assert.assertNotNull(tripNode.getId());
 
-        //TODO nefunguje
-//        tripNode = tripNodeService.findById(tripNode.getId());
-//        Assert.assertNotNull(tripNode);
+        tripNode = tripNodeService.findByTripId(tripId);
+        Assert.assertNotNull(tripNode);
     }
 
     public static TripNode getTripNode(String tripId, String calendarId) {

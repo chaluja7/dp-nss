@@ -8,4 +8,11 @@ import cz.cvut.dp.nss.graph.services.common.NodeService;
  */
 public interface StopTimeNodeService extends NodeService<StopTimeNode> {
 
+    /**
+     * najde stopTime dle stopTimeId
+     * @param stopTimeId stopId
+     * @return stopTime dle stopTimeId
+     */
+    StopTimeNode findByStopTimeId(Long stopTimeId);
+
 }

@@ -5,6 +5,9 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 
 /**
+ * CREATE CONSTRAINT ON (n:TripNode) ASSERT n.tripId IS UNIQUE
+ *
+ *
  * @author jakubchalupa
  * @since 18.01.17
  */

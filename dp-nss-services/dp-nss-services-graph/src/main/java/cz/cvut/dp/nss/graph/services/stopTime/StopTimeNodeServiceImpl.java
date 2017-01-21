@@ -17,4 +17,8 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
         super(repository);
     }
 
+    @Override
+    public StopTimeNode findByStopTimeId(Long stopTimeId) {
+        return repo.findByStopTimeId(stopTimeId);
+    }
 }
