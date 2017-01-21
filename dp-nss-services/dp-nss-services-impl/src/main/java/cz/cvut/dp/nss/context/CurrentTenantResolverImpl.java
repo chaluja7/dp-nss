@@ -14,13 +14,11 @@ import org.springframework.stereotype.Component;
 @Component(value = "currentTenantResolverImpl")
 public class CurrentTenantResolverImpl implements CurrentTenantIdentifierResolver {
 
-    private static final String DEFAULT_TENANT = "public";
-
     @Override
     public String resolveCurrentTenantIdentifier() {
         String identifier = SchemaThreadLocal.get();
         if(identifier == null) {
-            identifier = DEFAULT_TENANT;
+            identifier = SchemaThreadLocal.SCHEMA_DEFAULT;
         }
 
         return identifier;

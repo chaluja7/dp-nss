@@ -1,5 +1,9 @@
 package cz.cvut.dp.nss.context;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Databaze je rozdelena do schemat (postgre). Pred kazdym ctenim musi byt schema urceno.
  * Toto je spravne misto, schema pak putuje unikatne celou aplikaci per thread.
@@ -26,6 +30,20 @@ public class SchemaThreadLocal {
      * thread local kontext. schvalne pojmenovany camelCase aby bylo jasnejsi, ze je vzdy per request
      */
     private static final ThreadLocal<String> schemaThreadLocal = new ThreadLocal<>();
+
+    public static final Set<String> availableSchemas;
+
+    public static final String SCHEMA_DEFAULT = "default";
+
+    public static final String SCHEMA_PID = "pid";
+
+    static {
+        Set<String> set = new HashSet<>();
+        set.add(SCHEMA_PID);
+
+        //TODO zeptat se, zda to nemusi byt synchronized, ale snad ne :)
+        availableSchemas = Collections.unmodifiableSet(set);
+    }
 
     public static void set(String schema) {
         schemaThreadLocal.set(schema);

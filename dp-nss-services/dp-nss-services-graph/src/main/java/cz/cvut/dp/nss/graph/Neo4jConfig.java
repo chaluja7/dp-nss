@@ -1,5 +1,6 @@
 package cz.cvut.dp.nss.graph;
 
+import cz.cvut.dp.nss.context.SchemaThreadLocal;
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,11 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.util.Assert;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * pro verzi 4.1.6 viz
@@ -19,31 +25,55 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class Neo4jConfig extends Neo4jConfiguration {
 
-    @Bean
-    public org.neo4j.ogm.config.Configuration getConfiguration() {
-        org.neo4j.ogm.config.Configuration config = new org.neo4j.ogm.config.Configuration();
-        config.driverConfiguration()
-            .setDriverClassName("org.neo4j.ogm.drivers.bolt.driver.BoltDriver")
-            .setURI("bolt://neo4j:neo@localhost:7687");
-//            .setEncryptionLevel("NONE")
-//            .setTrustStrategy("TRUST_ON_FIRST_USE")
-//            .setTrustCertFile("/tmp/cert");
+    private static final String BOLT_DRIVER_CLASS = "org.neo4j.ogm.drivers.bolt.driver.BoltDriver";
 
-        return config;
+    private static final String ENTITY_PACKAGES = "cz.cvut.dp.nss.graph.services";
+
+    private static final Map<String, org.neo4j.ogm.config.Configuration> CONFIGURATION_MAP;
+
+    static {
+        org.neo4j.ogm.config.Configuration configDefault = new org.neo4j.ogm.config.Configuration();
+        configDefault.driverConfiguration()
+            .setDriverClassName(BOLT_DRIVER_CLASS)
+            .setURI("bolt://neo4j:neo@localhost:7687");
+
+        Map<String, org.neo4j.ogm.config.Configuration> map = new HashMap<>();
+        map.put(SchemaThreadLocal.SCHEMA_DEFAULT, configDefault);
+        //mapa nemusi byt synchronized - je definovana jako static final a nikdy se do ni uz nebude zapisovat
+        //TODO radsi se zeptat :)
+        CONFIGURATION_MAP = Collections.unmodifiableMap(map);
+    }
+
+    @Bean
+    public Map<String, SessionFactory> getSessionFactoryMaps() {
+        Map<String, SessionFactory> map = new HashMap<>();
+
+        for(Map.Entry<String, org.neo4j.ogm.config.Configuration> entry : CONFIGURATION_MAP.entrySet()) {
+            map.put(entry.getKey(), new SessionFactory(entry.getValue(), ENTITY_PACKAGES));
+        }
+
+        //TODO nemelo by to byt synchronized? zeptat se
+        return Collections.unmodifiableMap(map);
     }
 
     @Bean
     public SessionFactory getSessionFactory() {
-        //parametr jsou package, kde jsou oanotovane graph entity
-        return new SessionFactory(getConfiguration(), "cz.cvut.dp.nss.graph.services");
+        //bude pouzito jen pro metadata, proto si mohu dovolit si zde vybrat jednu
+        //tato metoda totiz musi byt prepsana :)
+        return getSessionFactoryMaps().get(SchemaThreadLocal.SCHEMA_DEFAULT);
     }
 
-    //FIXME nemel by zde byt session scope?
     @Bean
-    @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+    @Scope(scopeName = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public Session getSession() throws Exception {
-        Session session = super.getSession();
-        return session;
+        String identifier = SchemaThreadLocal.get();
+        if(identifier == null) {
+            identifier = SchemaThreadLocal.SCHEMA_DEFAULT;
+        }
+
+        SessionFactory sessionFactory = getSessionFactoryMaps().get(identifier);
+        Assert.notNull(sessionFactory, "You must provide a SessionFactory instance in your Spring configuration classes");
+        return sessionFactory.openSession();
     }
 
 }
