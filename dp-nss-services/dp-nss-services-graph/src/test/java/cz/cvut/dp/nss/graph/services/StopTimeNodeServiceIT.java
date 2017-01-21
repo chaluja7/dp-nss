@@ -42,37 +42,90 @@ public class StopTimeNodeServiceIT extends AbstractServiceIT {
 
     @Test
     public void testGraph() {
-        final String tripId = "tripY";
-        TripNode tripNode = TripNodeServiceIT.getTripNode(tripId, "calendar1");
-        tripNodeService.save(tripNode);
+        final String stop1 = "X";
+        final String stop2 = "Y";
+        final String stop3 = "Z";
 
-        final Long middleStopTimeId = 3L;
-        //a zkusim vytvorit strukturu s par hranamy
-        StopTimeNode stopTimeNode1 = getStopTimeNode(2L, "X", 1L, 2L, tripNode, null);
-        stopTimeNodeService.save(stopTimeNode1);
+        TripNode tripNode1 = TripNodeServiceIT.getTripNode("tripA", "calendar1");
+        tripNodeService.save(tripNode1);
 
-        StopTimeNode stopTimeNode2 = getStopTimeNode(middleStopTimeId, "Y", 3L, 4L, tripNode, stopTimeNode1);
+        //a zkusim vytvorit strukturu s par hranamy - 1. trip
+        StopTimeNode stopTimeNode3 = getStopTimeNode(4L, stop3, 5L, 6L, tripNode1, null);
+        stopTimeNodeService.save(stopTimeNode3);
+
+        StopTimeNode stopTimeNode2 = getStopTimeNode(3L, stop2, 3L, 4L, tripNode1, stopTimeNode3);
         stopTimeNodeService.save(stopTimeNode2);
 
-        StopTimeNode stopTimeNode3 = getStopTimeNode(4L, "Z", 4L, 5L, tripNode, stopTimeNode2);
-        stopTimeNodeService.save(stopTimeNode3);
+        StopTimeNode stopTimeNode1 = getStopTimeNode(2L, stop1, 1L, 2L, tripNode1, stopTimeNode2);
+        stopTimeNodeService.save(stopTimeNode1);
 
         //a test get
         StopTimeNode retrieved = stopTimeNodeService.findByStopTimeId(3L);
         Assert.assertNotNull(retrieved);
-//        Assert.assertNotNull(retrieved.getTripNode());
-//        Assert.assertNotNull(retrieved.getPrevStop());
-//        Assert.assertNotNull(retrieved.getNextStop());
+        Assert.assertNotNull(retrieved.getTripNode());
+        Assert.assertNotNull(retrieved.getNextStop());
+
+
+        //2. trip
+        TripNode tripNode2 = TripNodeServiceIT.getTripNode("tripB", "calendar1");
+        tripNodeService.save(tripNode2);
+
+        StopTimeNode stopTimeNode6 = getStopTimeNode(7L, stop3, 11L, 12L, tripNode2, null);
+        stopTimeNodeService.save(stopTimeNode6);
+
+        StopTimeNode stopTimeNode5 = getStopTimeNode(6L, stop2, 9L, 10L, tripNode2, stopTimeNode6);
+        stopTimeNodeService.save(stopTimeNode5);
+
+        StopTimeNode stopTimeNode4 = getStopTimeNode(5L, stop1, 7L, 8L, tripNode2, stopTimeNode5);
+        stopTimeNodeService.save(stopTimeNode4);
+
+        //a test get
+        retrieved = stopTimeNodeService.findByStopTimeId(6L);
+        Assert.assertNotNull(retrieved);
+        Assert.assertNotNull(retrieved.getTripNode());
+        Assert.assertNotNull(retrieved.getNextStop());
+
+        //3. trip
+        TripNode tripNode3 = TripNodeServiceIT.getTripNode("tripC", "calendar2");
+        tripNodeService.save(tripNode3);
+
+        StopTimeNode stopTimeNode9 = getStopTimeNode(10L, stop3, 17L, 18L, tripNode3, null);
+        stopTimeNodeService.save(stopTimeNode9);
+
+        StopTimeNode stopTimeNode8 = getStopTimeNode(9L, stop2, 15L, 16L, tripNode3, stopTimeNode9);
+        stopTimeNodeService.save(stopTimeNode8);
+
+        StopTimeNode stopTimeNode7 = getStopTimeNode(8L, stop1, 13L, 14L, tripNode3, stopTimeNode8);
+        stopTimeNodeService.save(stopTimeNode7);
+
+        //a test get
+        retrieved = stopTimeNodeService.findByStopTimeId(9L);
+        Assert.assertNotNull(retrieved);
+        Assert.assertNotNull(retrieved.getTripNode());
+        Assert.assertNotNull(retrieved.getNextStop());
+
+        //a jeste propojime uzly na jedne stanici
+        stopTimeNodeService.connectStopTimeNodesOnStopWithWaitingRelationship(stop1);
+        stopTimeNodeService.connectStopTimeNodesOnStopWithWaitingRelationship(stop2);
+        stopTimeNodeService.connectStopTimeNodesOnStopWithWaitingRelationship(stop3);
+
+        //a test get
+        retrieved = stopTimeNodeService.findByStopTimeId(3L);
+        Assert.assertNotNull(retrieved);
+        Assert.assertNotNull(retrieved.getTripNode());
+        Assert.assertNotNull(retrieved.getNextStop());
+        Assert.assertNotNull(retrieved.getNextAwaitingStop());
+
     }
 
-    public static StopTimeNode getStopTimeNode(Long stopTimeId, String stopId, Long arrivalInMillis, Long departureInMillis, TripNode tripNode, StopTimeNode prevStop) {
+    public static StopTimeNode getStopTimeNode(Long stopTimeId, String stopId, Long arrivalInMillis, Long departureInMillis, TripNode tripNode, StopTimeNode nextStop) {
         StopTimeNode stopTimeNode = new StopTimeNode();
         stopTimeNode.setStopTimeId(stopTimeId);
         stopTimeNode.setStopId(stopId);
         stopTimeNode.setArrivalInMillis(arrivalInMillis);
         stopTimeNode.setDepartureInMillis(departureInMillis);
         stopTimeNode.setTripNode(tripNode);
-        stopTimeNode.setPrevStop(prevStop);
+        stopTimeNode.setNextStop(nextStop);
 
         return stopTimeNode;
     }

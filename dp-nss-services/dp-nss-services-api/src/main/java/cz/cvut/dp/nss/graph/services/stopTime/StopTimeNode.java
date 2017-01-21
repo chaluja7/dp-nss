@@ -52,22 +52,10 @@ public class StopTimeNode extends AbstractNode {
     private StopTimeNode nextStop;
 
     /**
-     * predchozi zastaveni v ramci tripu
-     */
-    @Relationship(type = "NEXT_STOP", direction = Relationship.OUTGOING)
-    private StopTimeNode prevStop;
-
-    /**
      * pristi prestupni zastaveni z jineho tripu v ramci stanice
      */
     @Relationship(type = "NEXT_AWAITING_STOP", direction = Relationship.OUTGOING)
     private StopTimeNode nextAwaitingStop;
-
-    /**
-     * predchozi prestupni zastaveni z jineho tripu v ramci stanice
-     */
-    @Relationship(type = "NEXT_AWAITING_STOP", direction = Relationship.INCOMING)
-    private StopTimeNode prevAwaitingStop;
 
     public Long getStopTimeId() {
         return stopTimeId;
@@ -117,14 +105,6 @@ public class StopTimeNode extends AbstractNode {
         this.nextStop = nextStop;
     }
 
-    public StopTimeNode getPrevStop() {
-        return prevStop;
-    }
-
-    public void setPrevStop(StopTimeNode prevStop) {
-        this.prevStop = prevStop;
-    }
-
     public StopTimeNode getNextAwaitingStop() {
         return nextAwaitingStop;
     }
@@ -133,11 +113,4 @@ public class StopTimeNode extends AbstractNode {
         this.nextAwaitingStop = nextAwaitingStop;
     }
 
-    public StopTimeNode getPrevAwaitingStop() {
-        return prevAwaitingStop;
-    }
-
-    public void setPrevAwaitingStop(StopTimeNode prevAwaitingStop) {
-        this.prevAwaitingStop = prevAwaitingStop;
-    }
 }

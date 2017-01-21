@@ -19,6 +19,11 @@ import java.util.Map;
 /**
  * pro verzi 4.1.6 viz
  * http://docs.spring.io/spring-data/neo4j/docs/current/reference/html/#_configuration
+ *
+ * Simuluje se zde vlastni "multi tenancy", protoze neo4j a spring data to zatim nepodporuje
+ * Drzi se session factory na kazdou instanci neo4j (pro ruzne jizdni radi)
+ * Session se pak bere v requestu dle nastaveni v SchemaThreadLocal stejne jako je tomu v CurrentTenantResolverImpl.java
+ * Tam funguje implementace hibernate multi tenancy
  */
 @Configuration
 @EnableNeo4jRepositories(basePackages = "cz.cvut.dp.nss.graph.repository")
