@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-context.xml"})
 //@Transactional(transactionManager = "transactionManager")
+@WebAppConfiguration
 public abstract class AbstractServiceIT {
 
     protected static final String GTFS_LOCATION = "file:/Users/jakubchalupa/Documents/FEL/MGR/DP/gtfs/test/annapolis-transit_20150811_1647/";
@@ -28,7 +30,7 @@ public abstract class AbstractServiceIT {
     @Before
     public void before() {
         //toto je zbytecne, protoze public by se pouzil defaultne, ale je to zde pro ukazku, jak funkcionalitu vyuzit.
-        SchemaThreadLocal.set("public");
+        SchemaThreadLocal.set(SchemaThreadLocal.SCHEMA_DEFAULT);
     }
 
     @After

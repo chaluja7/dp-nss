@@ -28,16 +28,30 @@ public class StopTimeNode extends AbstractNode {
     private String stopId;
 
     /**
-     * cas prijezdu v ramci dne v millis
+     * nazev stanice - v ramci neo4j slouzi pro grupovani stanic k sobe
+     * stopId totiz muze byt jine napr. pro Mustek - A a Mustek - B. To by pak znamenalo, ze by nebyl mozny prestup
+     * v ramci traverzovani grafem
      */
     @Property
-    private Long arrivalInMillis;
+    private String stopName;
 
     /**
-     * cas odjezdu v ramci dne v millis
+     * cas prijezdu v ramci dne v sekundach
      */
     @Property
-    private Long departureInMillis;
+    private Integer arrivalInSeconds;
+
+    /**
+     * cas odjezdu v ramci dne v sekundach
+     */
+    @Property
+    private Integer departureInSeconds;
+
+    /**
+     * poradi uzlu v ramci tripu
+     */
+    @Property
+    private Integer sequence;
 
     /**
      * Trip tohoto zastaveni
@@ -73,20 +87,36 @@ public class StopTimeNode extends AbstractNode {
         this.stopId = stopId;
     }
 
-    public Long getArrivalInMillis() {
-        return arrivalInMillis;
+    public String getStopName() {
+        return stopName;
     }
 
-    public void setArrivalInMillis(Long arrivalInMillis) {
-        this.arrivalInMillis = arrivalInMillis;
+    public void setStopName(String stopName) {
+        this.stopName = stopName;
     }
 
-    public Long getDepartureInMillis() {
-        return departureInMillis;
+    public Integer getArrivalInSeconds() {
+        return arrivalInSeconds;
     }
 
-    public void setDepartureInMillis(Long departureInMillis) {
-        this.departureInMillis = departureInMillis;
+    public void setArrivalInSeconds(Integer arrivalInSeconds) {
+        this.arrivalInSeconds = arrivalInSeconds;
+    }
+
+    public Integer getDepartureInSeconds() {
+        return departureInSeconds;
+    }
+
+    public void setDepartureInSeconds(Integer departureInSeconds) {
+        this.departureInSeconds = departureInSeconds;
+    }
+
+    public Integer getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
     }
 
     public TripNode getTripNode() {

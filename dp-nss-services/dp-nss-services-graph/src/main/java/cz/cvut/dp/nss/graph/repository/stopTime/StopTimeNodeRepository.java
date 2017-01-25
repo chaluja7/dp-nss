@@ -26,10 +26,10 @@ public interface StopTimeNodeRepository extends GraphRepository<StopTimeNode> {
 
     /**
      * vrati serazene stopy nalezici jedne stanici. Vyuziva se pro propojovani stopu na stanici hranami prestupnimi
-     * @param stopId id stanice
+     * @param stopName nazev stanice
      * @return serazene stopTimes na stanici dle casu
      */
-    @Query("match (n:StopTimeNode {stopId: {0}}) return n order by case when n.departureInMillis is not null then n.departureInMillis else n.arrivalInMillis end")
-    List<StopTimeNode> findByStopIdOrderByActionTime(String stopId);
+    @Query("match (n:StopTimeNode {stopName: {0}}) return n order by case when n.departureInMillis is not null then n.departureInMillis else n.arrivalInMillis end")
+    List<StopTimeNode> findByStopNameOrderByActionTime(String stopName);
 
 }

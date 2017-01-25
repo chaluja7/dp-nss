@@ -14,7 +14,9 @@
     <context:component-scan base-package="cz.cvut.dp.nss.context"/>
     <context:component-scan base-package="cz.cvut.dp.nss.batch"/>
 
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <context:component-scan base-package="cz.cvut.dp.nss.graph"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager" order="0"/>
 
     <context:property-placeholder location="classpath:dp-nssLocal.properties" />
 
@@ -37,7 +39,7 @@
                 <entry key="hibernate.dialect" value="${hibernate.dialect}"/>
                 <entry key="hibernate.show_sql" value="${hibernate.showSql}"/>
                 <entry key="hibernate.format_sql" value="${hibernate.formatSql}"/>
-                <entry key="hibernate.hbm2ddl.auto" value="${hibernate.auto}"/>
+                <!--<entry key="hibernate.hbm2ddl.auto" value="${hibernate.auto}"/>-->
                 <entry key="hibernate.current_session_context_class" value="org.springframework.orm.hibernate5.SpringSessionContext"/>
 
                 <entry key="hibernate.multiTenancy" value="SCHEMA"/>
@@ -180,6 +182,14 @@
                 <batch:listener ref="batchHeaderLineDynamicCallbackHandler"/>
                 <batch:listener ref="batchLineDynamicTokenizer"/>
             </batch:listeners>
+        </batch:step>
+    </batch:job>
+
+    <batch:job id="graphImportTripBatchJob">
+        <batch:step id="graphImportTripStep1">
+            <batch:tasklet>
+                <batch:chunk reader="graphTripBatchReader" processor="graphTripBatchProcessor" writer="graphTripBatchWriter" commit-interval="6" />
+            </batch:tasklet>
         </batch:step>
     </batch:job>
 

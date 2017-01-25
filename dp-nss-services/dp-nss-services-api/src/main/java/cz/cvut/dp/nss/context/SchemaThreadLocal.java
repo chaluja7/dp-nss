@@ -33,7 +33,7 @@ public class SchemaThreadLocal {
 
     public static final Set<String> availableSchemas;
 
-    public static final String SCHEMA_DEFAULT = "default";
+    public static final String SCHEMA_DEFAULT = "public";
 
     public static final String SCHEMA_PID = "pid";
 

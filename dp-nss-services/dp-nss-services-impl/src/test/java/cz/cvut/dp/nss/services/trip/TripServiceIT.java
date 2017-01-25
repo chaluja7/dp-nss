@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author jakubchalupa
@@ -80,6 +81,12 @@ public class TripServiceIT extends AbstractServiceIT {
         routeService.delete(route.getId());
         agencyService.delete(agency.getId());
         calendarService.delete(calendar.getId());
+    }
+
+    @Test
+    public void testGetAllForInsertToGraph() {
+        List<Trip> allForInsertToGraph = tripService.getAllForInsertToGraph();
+        Assert.assertNotNull(allForInsertToGraph);
     }
 
     public static Trip getTrip(final String id, Calendar calendar, Route route, String headSign) {

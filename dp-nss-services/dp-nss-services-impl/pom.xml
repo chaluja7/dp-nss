@@ -62,6 +62,11 @@
             <artifactId>dp-nss-services-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>cz.cvut.dp.nss</groupId>
+            <artifactId>dp-nss-services-graph</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
         <!-- spring -->
         <dependency>

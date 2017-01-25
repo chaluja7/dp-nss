@@ -25,13 +25,13 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
     }
 
     @Override
-    public List<StopTimeNode> findByStopIdOrderByActionTime(String stopId) {
-        return repo.findByStopIdOrderByActionTime(stopId);
+    public List<StopTimeNode> findByStopNameOrderByActionTime(String stopName) {
+        return repo.findByStopNameOrderByActionTime(stopName);
     }
 
     @Override
-    public void connectStopTimeNodesOnStopWithWaitingRelationship(String stopId) {
-        List<StopTimeNode> stopTimeNodesX = findByStopIdOrderByActionTime(stopId);
+    public void connectStopTimeNodesOnStopWithWaitingRelationship(String stopName) {
+        List<StopTimeNode> stopTimeNodesX = findByStopNameOrderByActionTime(stopName);
 
         int i = 0;
         StopTimeNode firstStopNode = null;

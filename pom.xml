@@ -64,6 +64,12 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>cz.cvut.dp.nss</groupId>
+                <artifactId>dp-nss-services-graph</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <!-- logging -->
             <!-- LOG4J -->
             <dependency>

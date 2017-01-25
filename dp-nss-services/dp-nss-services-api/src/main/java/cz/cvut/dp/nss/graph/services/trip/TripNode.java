@@ -1,8 +1,12 @@
 package cz.cvut.dp.nss.graph.services.trip;
 
 import cz.cvut.dp.nss.graph.services.common.AbstractNode;
+import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNode;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
+import org.neo4j.ogm.annotation.Relationship;
+
+import java.util.List;
 
 /**
  * CREATE CONSTRAINT ON (n:TripNode) ASSERT n.tripId IS UNIQUE
@@ -26,6 +30,12 @@ public class TripNode extends AbstractNode {
     @Property
     private String calendarId;
 
+    /**
+     * navazana zastaveni
+     */
+    @Relationship(type = "IN_TRIP", direction = Relationship.INCOMING)
+    private List<StopTimeNode> stopTimeNodes;
+
     public String getTripId() {
         return tripId;
     }
@@ -40,5 +50,13 @@ public class TripNode extends AbstractNode {
 
     public void setCalendarId(String calendarId) {
         this.calendarId = calendarId;
+    }
+
+    public List<StopTimeNode> getStopTimeNodes() {
+        return stopTimeNodes;
+    }
+
+    public void setStopTimeNodes(List<StopTimeNode> stopTimeNodes) {
+        this.stopTimeNodes = stopTimeNodes;
     }
 }

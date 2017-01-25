@@ -18,16 +18,16 @@ public interface StopTimeNodeService extends NodeService<StopTimeNode> {
     StopTimeNode findByStopTimeId(Long stopTimeId);
 
     /**
-     * vrati serazene stopy nalezici jedne stanici. Vyuziva se pro propojovani stopu na stanici hranami prestupnimi
-     * @param stopId id stanice
+     * vrati serazene stopy nalezici jedne stanici (dle jmena). Vyuziva se pro propojovani stopu na stanici hranami prestupnimi
+     * @param stopName nazev stanice
      * @return serazene stopTimes na stanici dle casu
      */
-    List<StopTimeNode> findByStopIdOrderByActionTime(String stopId);
+    List<StopTimeNode> findByStopNameOrderByActionTime(String stopName);
 
     /**
      * propoji stopTimes prestupnymi hranami (tedy v ramci jedne stanice)
-     * @param stopId id stanice
+     * @param stopName nazev stanice, kde chceme propojovat (tedy vyzadujeme unikatni nazvy opravdu totoznych stanic v ramci datasetu)
      */
-    void connectStopTimeNodesOnStopWithWaitingRelationship(String stopId);
+    void connectStopTimeNodesOnStopWithWaitingRelationship(String stopName);
 
 }

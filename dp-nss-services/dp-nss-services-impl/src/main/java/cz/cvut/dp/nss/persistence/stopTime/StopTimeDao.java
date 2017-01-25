@@ -2,7 +2,7 @@ package cz.cvut.dp.nss.persistence.stopTime;
 
 import cz.cvut.dp.nss.persistence.generic.AbstractGenericJpaDao;
 import cz.cvut.dp.nss.services.stopTime.StopTime;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 /**
  * JPA implementation of StopTimeDao.
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * @author jakubchalupa
  * @since 05.01.17
  */
-@Repository
+@Component
 public class StopTimeDao extends AbstractGenericJpaDao<StopTime, Long> {
 
     public StopTimeDao() {

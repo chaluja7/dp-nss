@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Abstract JPA generic dao.
+ * Implementace by mely spravne byt oanotovany @Repository, ale ta anotace se pak mele s neo4j repositories
+ * Dao jsou tedy oanotovany pomoci @Component (spring v tom v tomto pripade nedela rozdil)
  *
  * @author jakubchalupa
  * @since 24.11.14 - 12.12.16
@@ -45,8 +47,7 @@ public abstract class AbstractGenericJpaDao<ENT extends AbstractEntity<ID>, ID e
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<ENT> getAll() {
-        return sessionFactory.getCurrentSession().createQuery("from " + type.getName()).list();
+        return sessionFactory.getCurrentSession().createQuery("from " + type.getName(), type).list();
     }
 }

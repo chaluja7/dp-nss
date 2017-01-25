@@ -2,7 +2,7 @@ package cz.cvut.dp.nss.persistence.stop;
 
 import cz.cvut.dp.nss.persistence.generic.AbstractGenericJpaDao;
 import cz.cvut.dp.nss.services.stop.Stop;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 /**
  * JPA implementation of StopDao.
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * @author jakubchalupa
  * @since 05.01.17
  */
-@Repository
+@Component
 public class StopDao extends AbstractGenericJpaDao<Stop, String> {
 
     public StopDao() {
