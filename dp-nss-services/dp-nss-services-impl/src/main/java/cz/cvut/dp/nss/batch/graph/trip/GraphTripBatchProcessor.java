@@ -1,4 +1,4 @@
-package cz.cvut.dp.nss.batch.graph;
+package cz.cvut.dp.nss.batch.graph.trip;
 
 import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNode;
 import cz.cvut.dp.nss.graph.services.trip.TripNode;

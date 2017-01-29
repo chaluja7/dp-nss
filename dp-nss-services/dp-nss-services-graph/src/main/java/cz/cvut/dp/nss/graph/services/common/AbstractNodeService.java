@@ -22,9 +22,9 @@ public abstract class AbstractNodeService<NODE extends AbstractNode, REPO extend
     }
 
     @Override
-    public NODE save(NODE rideNode) {
+    public NODE save(NODE node) {
         //defaultne chci ukladat maximalne jednoho souseda/hranu
-        return repo.save(rideNode, 1);
+        return repo.save(node, 1);
     }
 
     @Override

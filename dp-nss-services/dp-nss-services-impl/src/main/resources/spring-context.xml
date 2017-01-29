@@ -193,6 +193,14 @@
         </batch:step>
     </batch:job>
 
+    <batch:job id="graphConnectStopBatchJob">
+        <batch:step id="graphConnectStopStep1">
+            <batch:tasklet>
+                <batch:chunk reader="graphStopBatchReader" processor="graphStopBatchProcessor" writer="graphStopBatchWriter" commit-interval="2" />
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+
     <bean id="agencyBatchReader" class="cz.cvut.dp.nss.batch.agency.AgencyBatchReader" scope="step">
 
         <!-- csv soubor k importu -->

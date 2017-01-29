@@ -16,7 +16,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author jakubchalupa
@@ -85,8 +88,22 @@ public class TripServiceIT extends AbstractServiceIT {
 
     @Test
     public void testGetAllForInsertToGraph() {
-        List<Trip> allForInsertToGraph = tripService.getAllForInsertToGraph();
+        List<Trip> allForInsertToGraph = tripService.getAllForInsertToGraph(0, 1000);
         Assert.assertNotNull(allForInsertToGraph);
+    }
+
+    @Test
+    public void testIteratorOverTripsForInsertToGraph() {
+        Iterator<Trip> tripIterator = tripService.iteratorOverTripsForInsertToGraph();
+        Set<String> tripsIds = new HashSet<>();
+        while(tripIterator.hasNext()) {
+            Trip next = tripIterator.next();
+            Assert.assertNotNull(next);
+
+            tripsIds.add(next.getId());
+        }
+
+        Assert.assertNotNull(tripsIds);
     }
 
     public static Trip getTrip(final String id, Calendar calendar, Route route, String headSign) {

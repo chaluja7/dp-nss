@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
     GtfsImportAgencyBatchIT.class, GtfsImportRouteBatchIT.class, GtfsImportCalendarBatchIT.class,
     GtfsImportCalendarDateBatchIT.class, GtfsImportStopBatchIT.class, GtfsImportShapeBatchIT.class,
-    GtfsImportTripBatchIT.class, GtfsImportStopTimeBatchIT.class
+    GtfsImportTripBatchIT.class, GtfsImportStopTimeBatchIT.class,
+    GraphImportTripBatchIT.class, GraphConnectStopBatchIT.class
 })
 public class GtfsImportBatchSuite {
 

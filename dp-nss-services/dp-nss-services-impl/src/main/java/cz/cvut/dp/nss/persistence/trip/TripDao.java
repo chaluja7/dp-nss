@@ -14,23 +14,25 @@ import java.util.List;
  * @since 05.01.17
  */
 @Component
+@SuppressWarnings("JpaQlInspection")
 public class TripDao extends AbstractGenericJpaDao<Trip, String> {
 
     public TripDao() {
         super(Trip.class);
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Trip> getAllForInsertToGraph() {
+    /**
+     * @param start index prvniho vraceneho zaznamu
+     * @param limit max pocet vracenych zaznamu
+     * @return vsechny tripy dle rozsahu s najoinovanymi calendar, stopTimes a stops
+     */
+    public List<Trip> getAllForInsertToGraph(final int start, final int limit) {
         final String queryString = "select distinct t from Trip t left outer join fetch t.calendar c " +
             "left outer join fetch t.stopTimes st left outer join fetch st.stop s order by t.id asc, st.sequence asc";
 
         Query<Trip> query = sessionFactory.getCurrentSession().createQuery(queryString, Trip.class);
-
-        //TODO pozor ze se muze vratit vic nez 1000 radku!
-//        query.setFirstResult();
-//        query.setMaxResults();
-
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
 
         return query.list();
     }

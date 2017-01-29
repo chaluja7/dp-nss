@@ -1,4 +1,4 @@
-package cz.cvut.dp.nss.batch.graph;
+package cz.cvut.dp.nss.batch.graph.trip;
 
 import cz.cvut.dp.nss.services.trip.Trip;
 import cz.cvut.dp.nss.services.trip.TripService;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 
-import java.util.ListIterator;
+import java.util.Iterator;
 
 /**
  * @author jakubchalupa
@@ -21,7 +21,7 @@ public class GraphTripBatchReader extends AbstractItemCountingItemStreamItemRead
     @Autowired
     protected TripService tripService;
 
-    private ListIterator<Trip> trips;
+    private Iterator<Trip> trips;
 
     public GraphTripBatchReader() {
         this.setName(ClassUtils.getShortName(GraphTripBatchReader.class));
@@ -38,7 +38,7 @@ public class GraphTripBatchReader extends AbstractItemCountingItemStreamItemRead
 
     @Override
     protected void doOpen() throws Exception {
-        trips = tripService.getAllForInsertToGraph().listIterator();
+        trips = tripService.iteratorOverTripsForInsertToGraph();
     }
 
     @Override

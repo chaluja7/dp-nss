@@ -5,6 +5,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author jakubchalupa
  * @since 05.01.17
@@ -49,6 +54,26 @@ public class StopServiceIT extends AbstractServiceIT {
 
         //check null get
         Assert.assertNull(stopService.get(retrieved.getId()));
+    }
+
+    @Test
+    public void testGetAllInRange() {
+        List<Stop> allInRange = stopService.getAllInRange(0, 1000);
+        Assert.assertNotNull(allInRange);
+    }
+
+    @Test
+    public void testIteratorOverAllStops() {
+        Iterator<Stop> stopIterator = stopService.iteratorOverAllStops();
+        Set<String> stopIds = new HashSet<>();
+        while(stopIterator.hasNext()) {
+            Stop next = stopIterator.next();
+            Assert.assertNotNull(next);
+
+            stopIds.add(next.getId());
+        }
+
+        Assert.assertNotNull(stopIds);
     }
 
     public static Stop getStop(final String id, String name, Double lat, Double lon) {
