@@ -35,9 +35,9 @@ public class CalendarDate extends AbstractGeneratedIdEntity {
     private CalendarExceptionType exceptionType;
 
     /**
-     * zaznam v calendar, ke kteremu patri vyjimka. schvalne je EAGER.
+     * zaznam v calendar, ke kteremu patri vyjimka.
      */
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "calendar_id")
     private Calendar calendar;
 

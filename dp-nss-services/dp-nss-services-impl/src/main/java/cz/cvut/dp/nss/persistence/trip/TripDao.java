@@ -22,18 +22,13 @@ public class TripDao extends AbstractGenericJpaDao<Trip, String> {
     }
 
     /**
-     * @param start index prvniho vraceneho zaznamu
-     * @param limit max pocet vracenych zaznamu
-     * @return vsechny tripy dle rozsahu s najoinovanymi calendar, stopTimes a stops
+     * @return vsechny tripy s najoinovanymi calendar, stopTimes a stops
      */
-    public List<Trip> getAllForInsertToGraph(final int start, final int limit) {
+    public List<Trip> getAllForInsertToGraph() {
         final String queryString = "select distinct t from Trip t left outer join fetch t.calendar c " +
             "left outer join fetch t.stopTimes st left outer join fetch st.stop s order by t.id asc, st.sequence asc";
 
         Query<Trip> query = sessionFactory.getCurrentSession().createQuery(queryString, Trip.class);
-        query.setFirstResult(start);
-        query.setMaxResults(limit);
-
         return query.list();
     }
 

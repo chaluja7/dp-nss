@@ -32,14 +32,14 @@ public class Trip extends AbstractAssignedIdEntity {
     /**
      * interval platnosti jizdy
      */
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "calendar_id")
     private Calendar calendar;
 
     /**
      * oznacena trasa teto jizdy
      */
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "route_id")
     private Route route;
 

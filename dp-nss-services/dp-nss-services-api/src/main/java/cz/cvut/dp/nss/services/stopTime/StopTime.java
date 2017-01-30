@@ -47,7 +47,7 @@ public class StopTime extends AbstractGeneratedIdEntity {
     /**
      * stanice, na ktere se zastavuje
      */
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "stop_id")
     private Stop stop;
 

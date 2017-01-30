@@ -38,7 +38,7 @@ public class GraphTripBatchReader extends AbstractItemCountingItemStreamItemRead
 
     @Override
     protected void doOpen() throws Exception {
-        trips = tripService.iteratorOverTripsForInsertToGraph();
+        trips = tripService.getAllForInsertToGraph().iterator();
     }
 
     @Override

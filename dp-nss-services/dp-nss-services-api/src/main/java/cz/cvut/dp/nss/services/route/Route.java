@@ -54,7 +54,7 @@ public class Route extends AbstractAssignedIdEntity {
     /**
      * spolecnost provozujici tuto routu
      */
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agency_id")
     private Agency agency;
 
