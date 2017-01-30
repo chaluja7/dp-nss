@@ -43,17 +43,20 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
 
             if(stopNodeFrom != null) {
                 stopNodeFrom.setNextAwaitingStop(stopNodeTo);
-                save(stopNodeFrom);
             }
 
             //propojeni v kruhu (posledni s prvnim)
             if(i != 0 && i == stopTimeNodesX.size() - 1) {
                 stopNodeTo.setNextAwaitingStop(firstStopNode);
-                save(stopNodeTo);
             }
 
             stopNodeFrom = stopNodeTo;
             i++;
+        }
+
+        if(firstStopNode != null) {
+            //vsechno ulozim najednou
+            save(firstStopNode, -1);
         }
     }
 }

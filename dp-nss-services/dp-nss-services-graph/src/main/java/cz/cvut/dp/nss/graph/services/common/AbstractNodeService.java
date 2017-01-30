@@ -28,6 +28,11 @@ public abstract class AbstractNodeService<NODE extends AbstractNode, REPO extend
     }
 
     @Override
+    public NODE save(NODE node, int depth) {
+        return repo.save(node, depth);
+    }
+
+    @Override
     public void deleteAll() {
         repo.deleteAll();
     }

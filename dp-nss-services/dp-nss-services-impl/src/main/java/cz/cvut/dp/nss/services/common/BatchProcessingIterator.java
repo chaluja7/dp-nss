@@ -15,6 +15,8 @@ public abstract class BatchProcessingIterator<T> implements Iterator<T> {
 
     private int numberOfIteration = 0;
 
+    private List<T> entityList;
+
     protected Iterator<T> entityIterator;
 
     /**
@@ -40,10 +42,18 @@ public abstract class BatchProcessingIterator<T> implements Iterator<T> {
     protected abstract void loadNextChunk();
 
     /**
+     * @return true, pokud je mozne, ze v db jsou jeste dalsi zatim neprojete zaznamy
+     */
+    protected boolean mayHaveNextChunk() {
+        return !(entityList.size() < MAX_NUMBER_OF_RESULTS_PER_QUERY);
+    }
+
+    /**
      * @param list list s dalsi varkou dat
      * metoda se postara o spravnou inicializaci promennych iteratoru
      */
     protected void setNextChunk(List<T> list) {
+        entityList = list;
         entityIterator = list.iterator();
         numberOfIteration++;
     }

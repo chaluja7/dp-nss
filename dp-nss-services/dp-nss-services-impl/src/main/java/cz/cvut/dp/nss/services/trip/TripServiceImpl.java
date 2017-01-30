@@ -56,7 +56,9 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
             Trip trip = entityIterator.next();
             //Pokud jiz neni zadny dalsi prvek (pro pristi volani next()) nactu nova data, pokud jeste existuji
             if(!entityIterator.hasNext()) {
-                loadNextChunk();
+                if(mayHaveNextChunk()) {
+                    loadNextChunk();
+                }
             }
 
             return trip;

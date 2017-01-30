@@ -55,7 +55,9 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
             Stop stop = entityIterator.next();
             //Pokud jiz neni zadny dalsi prvek (pro pristi volani next()) nactu nova data, pokud jeste existuji
             if(!entityIterator.hasNext()) {
-                loadNextChunk();
+                if(mayHaveNextChunk()) {
+                    loadNextChunk();
+                }
             }
 
             return stop;

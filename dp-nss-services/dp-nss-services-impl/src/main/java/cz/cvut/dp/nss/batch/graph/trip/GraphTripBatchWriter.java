@@ -1,6 +1,5 @@
 package cz.cvut.dp.nss.batch.graph.trip;
 
-import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNode;
 import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNodeService;
 import cz.cvut.dp.nss.graph.services.trip.TripNode;
 import cz.cvut.dp.nss.graph.services.trip.TripNodeService;
@@ -27,12 +26,7 @@ public class GraphTripBatchWriter implements ItemWriter<TripNode> {
     public void write(List<? extends TripNode> items) throws Exception {
         for(TripNode tripNode : items) {
             //ulozi se jak trip tak navazene (a uz propojene) stopTimes
-            tripNodeService.save(tripNode);
-
-            for(StopTimeNode stopTimeNode : tripNode.getStopTimeNodes()) {
-                stopTimeNodeService.save(stopTimeNode);
-            }
-
+            tripNodeService.save(tripNode, -1);
         }
     }
 
