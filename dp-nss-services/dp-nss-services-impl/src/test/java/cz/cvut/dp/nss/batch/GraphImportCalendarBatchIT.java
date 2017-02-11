@@ -1,7 +1,7 @@
 package cz.cvut.dp.nss.batch;
 
-import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNodeService;
-import cz.cvut.dp.nss.graph.services.trip.TripNodeService;
+import cz.cvut.dp.nss.graph.services.calendar.CalendarNodeService;
+import cz.cvut.dp.nss.graph.services.calendarDate.CalendarDateNodeService;
 import cz.cvut.dp.nss.services.AbstractServiceIT;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,31 +16,31 @@ import org.springframework.beans.factory.annotation.Qualifier;
  * @author jakubchalupa
  * @since 07.01.17
  */
-public class GraphImportTripBatchIT extends AbstractServiceIT {
+public class GraphImportCalendarBatchIT extends AbstractServiceIT {
 
     @Autowired
     private JobLauncher jobLauncher;
 
     @Autowired
-    @Qualifier(value = "graphImportTripBatchJob")
-    private Job graphImportTripBatchJob;
+    @Qualifier(value = "graphImportCalendarBatchJob")
+    private Job graphImportCalendarBatchJob;
 
     @Autowired
-    private TripNodeService tripNodeService;
+    private CalendarNodeService calendarNodeService;
 
     @Autowired
-    private StopTimeNodeService stopTimeNodeService;
+    private CalendarDateNodeService calendarDateNodeService;
 
     @Before
     public void setUp() {
         super.before();
-        tripNodeService.deleteAll();
-        stopTimeNodeService.deleteAll();
+        calendarDateNodeService.deleteAll();
+        calendarNodeService.deleteAll();
     }
 
     @Test
     public void testImport() throws Throwable {
-        JobExecution execution = jobLauncher.run(graphImportTripBatchJob, new JobParameters());
+        JobExecution execution = jobLauncher.run(graphImportCalendarBatchJob, new JobParameters());
         failOnJobFailure(execution);
     }
 

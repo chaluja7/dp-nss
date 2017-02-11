@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author jakubchalupa
@@ -57,6 +58,12 @@ public class CalendarServiceIT extends AbstractServiceIT {
 
         //check null get
         Assert.assertNull(calendarService.get(retrieved.getId()));
+    }
+
+    @Test
+    public void testGetAllForInsertToGraph() {
+        List<Calendar> allForInsertToGraph = calendarService.getAllForInsertToGraph();
+        Assert.assertNotNull(allForInsertToGraph);
     }
 
     public static Calendar getCalendar(final String id, LocalDate startDate, LocalDate endDate, boolean monday, boolean sunday) {

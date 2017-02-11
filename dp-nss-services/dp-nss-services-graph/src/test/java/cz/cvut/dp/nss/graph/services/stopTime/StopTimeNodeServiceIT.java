@@ -1,9 +1,9 @@
-package cz.cvut.dp.nss.graph.services;
+package cz.cvut.dp.nss.graph.services.stopTime;
 
-import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNode;
-import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNodeService;
+import cz.cvut.dp.nss.graph.services.AbstractServiceIT;
 import cz.cvut.dp.nss.graph.services.trip.TripNode;
 import cz.cvut.dp.nss.graph.services.trip.TripNodeService;
+import cz.cvut.dp.nss.graph.services.trip.TripNodeServiceIT;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

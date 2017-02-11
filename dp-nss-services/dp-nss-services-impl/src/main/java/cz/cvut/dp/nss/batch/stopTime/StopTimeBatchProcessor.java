@@ -47,16 +47,19 @@ public class StopTimeBatchProcessor implements ItemProcessor<DefaultFieldSet, St
     }
 
     /**
-     * pokud cas zacina 24 tak ho prevede na 00
-     * opravdu gtfs format PID obsahuje jak 00:??:?? tak 24:??:??
+     * pokud cas zacina 24 a vice tak ho prevede na modulo 24
      * @param dateTime string dateTime
-     * @return opraven date time z rozsahu H: 00 - 23
+     * @return opraveny date time z rozsahu H: 00 - 23
      */
     private static String fix24DateTime(String dateTime) {
         if(!StringUtils.hasText(dateTime)) return null;
 
-        if(dateTime.startsWith("24")) {
-            dateTime = "00" + dateTime.substring(2, dateTime.length());
+        String[] split = dateTime.split(":");
+        int hours = Integer.parseInt(split[0]);
+        if(hours >= 24) {
+            hours = hours % 24;
+            String hoursString = hours < 10 ? "0" + hours : hours + "";
+            dateTime = hoursString + dateTime.substring(2, dateTime.length());
         }
 
         return dateTime;

@@ -45,7 +45,6 @@ public class Neo4jConfig extends Neo4jConfiguration {
         Map<String, org.neo4j.ogm.config.Configuration> map = new HashMap<>();
         map.put(SchemaThreadLocal.SCHEMA_DEFAULT, configDefault);
         //mapa nemusi byt synchronized - je definovana jako static final a nikdy se do ni uz nebude zapisovat
-        //TODO radsi se zeptat :)
         CONFIGURATION_MAP = Collections.unmodifiableMap(map);
     }
 
@@ -57,7 +56,6 @@ public class Neo4jConfig extends Neo4jConfiguration {
             map.put(entry.getKey(), new SessionFactory(entry.getValue(), ENTITY_PACKAGES));
         }
 
-        //TODO nemelo by to byt synchronized? zeptat se
         return Collections.unmodifiableMap(map);
     }
 

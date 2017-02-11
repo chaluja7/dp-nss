@@ -1,7 +1,6 @@
-package cz.cvut.dp.nss.graph.services;
+package cz.cvut.dp.nss.graph.services.trip;
 
-import cz.cvut.dp.nss.graph.services.trip.TripNode;
-import cz.cvut.dp.nss.graph.services.trip.TripNodeService;
+import cz.cvut.dp.nss.graph.services.AbstractServiceIT;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +14,6 @@ public class TripNodeServiceIT extends AbstractServiceIT {
 
     @Autowired
     private TripNodeService tripNodeService;
-
-    public static final String TRIP_ID = "tripX";
 
     @Before
     public void before() {

@@ -54,6 +54,20 @@ public class StopTimeNode extends AbstractNode {
     private Integer sequence;
 
     /**
+     * id tripu - vicemene duplicita - dalo by se zjistit pres hranu IN_TRIP, pro ucely vyhledavani je ale dobre
+     * mit ho takto
+     */
+    @Property
+    private String tripId;
+
+    /**
+     * true, pokud je tento stopTime v ramci tripu "pres pulnoc" - tedy cestou z pocatecniho uzlu tripu k tomuto
+     * jsme se prehoupli pres pulnoc. Jinak receno departureInSeconds < tripStartNode.departureInSeconds
+     */
+    @Property
+    private Boolean overMidnightDepartureInTrip;
+
+    /**
      * Trip tohoto zastaveni
      */
     @Relationship(type = "IN_TRIP", direction = Relationship.OUTGOING)
@@ -111,12 +125,35 @@ public class StopTimeNode extends AbstractNode {
         this.departureInSeconds = departureInSeconds;
     }
 
+    /**
+     * @return prvni ne-null z departure, arrival. Null, pokud jsou oba null.
+     */
+    public int getDepartureOrArrivalInSeconds() {
+        return departureInSeconds != null ? departureInSeconds : arrivalInSeconds;
+    }
+
     public Integer getSequence() {
         return sequence;
     }
 
     public void setSequence(Integer sequence) {
         this.sequence = sequence;
+    }
+
+    public String getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(String tripId) {
+        this.tripId = tripId;
+    }
+
+    public Boolean getOverMidnightDepartureInTrip() {
+        return overMidnightDepartureInTrip;
+    }
+
+    public void setOverMidnightDepartureInTrip(Boolean overMidnightDepartureInTrip) {
+        this.overMidnightDepartureInTrip = overMidnightDepartureInTrip;
     }
 
     public TripNode getTripNode() {

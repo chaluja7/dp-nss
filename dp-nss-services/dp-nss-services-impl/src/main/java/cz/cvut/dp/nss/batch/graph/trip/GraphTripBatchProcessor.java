@@ -25,6 +25,7 @@ public class GraphTripBatchProcessor implements ItemProcessor<Trip, TripNode> {
         tripNode.setCalendarId(trip.getCalendar().getId());
 
         List<StopTimeNode> stopTimeNodes = new ArrayList<>();
+        StopTimeNode firstStopTimeNode = null;
         StopTimeNode prevStopTimeNode = null;
         //pocitame s tim, ze stopTimes jsou serazene dle sequence VZESTUPNE!
         for(StopTime stopTime : trip.getStopTimes()) {
@@ -33,6 +34,7 @@ public class GraphTripBatchProcessor implements ItemProcessor<Trip, TripNode> {
             stopTimeNode.setStopId(stopTime.getStop().getId());
             stopTimeNode.setStopName(getFixedStopName(stopTime.getStop().getName()));
             stopTimeNode.setSequence(stopTime.getSequence());
+            stopTimeNode.setTripId(trip.getId());
             stopTimeNode.setTripNode(tripNode);
 
             if(prevStopTimeNode != null) {
@@ -57,7 +59,18 @@ public class GraphTripBatchProcessor implements ItemProcessor<Trip, TripNode> {
                 stopTimeNode.setArrivalInSeconds(prevStopTimeNode.getArrivalInSeconds());
             }
 
+            stopTimeNode.setOverMidnightDepartureInTrip(false);
+            if(firstStopTimeNode != null) {
+                //dle prvniho urcuji, zda je aktualni pres pulnoc s departureTime
+                if(firstStopTimeNode.getDepartureOrArrivalInSeconds() > stopTimeNode.getDepartureOrArrivalInSeconds()) {
+                    stopTimeNode.setOverMidnightDepartureInTrip(true);
+                }
+            }
+
             stopTimeNodes.add(stopTimeNode);
+            if(firstStopTimeNode == null) {
+                firstStopTimeNode = stopTimeNode;
+            }
             prevStopTimeNode = stopTimeNode;
         }
         tripNode.setStopTimeNodes(stopTimeNodes);

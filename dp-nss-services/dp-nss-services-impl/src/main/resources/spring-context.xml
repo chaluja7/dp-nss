@@ -201,6 +201,14 @@
         </batch:step>
     </batch:job>
 
+    <batch:job id="graphImportCalendarBatchJob">
+        <batch:step id="graphImportCalendarStep1">
+            <batch:tasklet>
+                <batch:chunk reader="graphCalendarBatchReader" processor="graphCalendarBatchProcessor" writer="graphCalendarBatchWriter" commit-interval="6" />
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+
     <bean id="agencyBatchReader" class="cz.cvut.dp.nss.batch.agency.AgencyBatchReader" scope="step">
 
         <!-- csv soubor k importu -->

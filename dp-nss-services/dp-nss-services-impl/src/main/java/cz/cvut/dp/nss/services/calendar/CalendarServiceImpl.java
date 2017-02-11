@@ -4,6 +4,10 @@ import cz.cvut.dp.nss.persistence.calendar.CalendarDao;
 import cz.cvut.dp.nss.services.common.AbstractEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Implementation of CalendarService.
@@ -19,4 +23,9 @@ public class CalendarServiceImpl extends AbstractEntityService<Calendar, String,
         super(dao);
     }
 
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public List<Calendar> getAllForInsertToGraph() {
+        return dao.getAllForInsertToGraph();
+    }
 }
