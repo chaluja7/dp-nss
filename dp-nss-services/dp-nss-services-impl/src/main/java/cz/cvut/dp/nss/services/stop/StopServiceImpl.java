@@ -32,7 +32,7 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
     private StopService stopService;
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Stop> getAllInRange(int start, int limit) {
         return dao.getAllInRange(start, limit);
     }

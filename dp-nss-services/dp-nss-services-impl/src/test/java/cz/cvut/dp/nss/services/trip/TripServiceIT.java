@@ -85,7 +85,7 @@ public class TripServiceIT extends AbstractServiceIT {
 
     @Test
     public void testGetAllForInsertToGraph() {
-        List<Trip> allForInsertToGraph = tripService.getAllForInsertToGraph();
+        List<TripWrapper> allForInsertToGraph = tripService.getAllForInsertToGraph();
         Assert.assertNotNull(allForInsertToGraph);
     }
 

@@ -54,10 +54,22 @@
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
+    <!-- GRAPH CONTEXT -->
+    <import resource="spring-graph-context.xml"/>
 
 
+    <!-- SPRING JDBC -->
+    <bean class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" id="namedParameterJdbcTemplate" >
+        <constructor-arg type="javax.sql.DataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="jdbcSearchDao" class="cz.cvut.dp.nss.persistence.trip.JdbcTripDao">
+        <property name="dataSource" ref="dataSource" />
+        <property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate" />
+    </bean>
 
 
+    <!-- SPRING BATCH -->
     <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
         <property name="transactionManager" ref="transactionManager" />
         <!-- toto je velmi dulezite, default by (u postgre) mel byt READ_COMMITED coz je dle dokumentace OK -->
@@ -196,7 +208,7 @@
     <batch:job id="graphConnectStopBatchJob">
         <batch:step id="graphConnectStopStep1">
             <batch:tasklet>
-                <batch:chunk reader="graphStopBatchReader" processor="graphStopBatchProcessor" writer="graphStopBatchWriter" commit-interval="2" />
+                <batch:chunk reader="graphStopBatchReader" processor="graphStopBatchProcessor" writer="graphStopBatchWriter" commit-interval="1" />
             </batch:tasklet>
         </batch:step>
     </batch:job>
@@ -204,7 +216,7 @@
     <batch:job id="graphImportCalendarBatchJob">
         <batch:step id="graphImportCalendarStep1">
             <batch:tasklet>
-                <batch:chunk reader="graphCalendarBatchReader" processor="graphCalendarBatchProcessor" writer="graphCalendarBatchWriter" commit-interval="6" />
+                <batch:chunk reader="graphCalendarBatchReader" processor="graphCalendarBatchProcessor" writer="graphCalendarBatchWriter" commit-interval="20" />
             </batch:tasklet>
         </batch:step>
     </batch:job>

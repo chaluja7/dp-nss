@@ -15,6 +15,6 @@ public interface TripService extends EntityService<Trip, String> {
     /**
      * @return vsechny tripy s najoinovanymi calendar, stopTimes a stops
      */
-    List<Trip> getAllForInsertToGraph();
+    List<TripWrapper> getAllForInsertToGraph();
 
 }

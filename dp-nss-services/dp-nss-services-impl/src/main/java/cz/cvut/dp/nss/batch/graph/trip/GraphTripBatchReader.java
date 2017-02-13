@@ -1,7 +1,7 @@
 package cz.cvut.dp.nss.batch.graph.trip;
 
-import cz.cvut.dp.nss.services.trip.Trip;
 import cz.cvut.dp.nss.services.trip.TripService;
+import cz.cvut.dp.nss.services.trip.TripWrapper;
 import org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -16,19 +16,19 @@ import java.util.Iterator;
  */
 @Component(value = "graphTripBatchReader")
 @Scope("step")
-public class GraphTripBatchReader extends AbstractItemCountingItemStreamItemReader<Trip> {
+public class GraphTripBatchReader extends AbstractItemCountingItemStreamItemReader<TripWrapper> {
 
     @Autowired
     protected TripService tripService;
 
-    private Iterator<Trip> trips;
+    private Iterator<TripWrapper> trips;
 
     public GraphTripBatchReader() {
         this.setName(ClassUtils.getShortName(GraphTripBatchReader.class));
     }
 
     @Override
-    protected Trip doRead() throws Exception {
+    protected TripWrapper doRead() throws Exception {
         if(trips.hasNext()) {
             return trips.next();
         }

@@ -26,31 +26,31 @@ public abstract class AbstractEntityService<ENT extends AbstractEntity<ID>, ID e
     }
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public ENT get(ID id) {
         return dao.find(id);
     }
 
     @Override
-    @Transactional
+    @Transactional("transactionManager")
     public void update(ENT entity) {
         dao.update(entity);
     }
 
     @Override
-    @Transactional
+    @Transactional("transactionManager")
     public void create(ENT entity) {
         dao.create(entity);
     }
 
     @Override
-    @Transactional
+    @Transactional("transactionManager")
     public void delete(ID id) {
         dao.delete(id);
     }
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public List<ENT> getAll() {
         return dao.getAll();
     }

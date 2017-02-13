@@ -2,8 +2,8 @@ package cz.cvut.dp.nss.batch.graph.trip;
 
 import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNode;
 import cz.cvut.dp.nss.graph.services.trip.TripNode;
-import cz.cvut.dp.nss.services.stopTime.StopTime;
-import cz.cvut.dp.nss.services.trip.Trip;
+import cz.cvut.dp.nss.services.stopTime.StopTimeWrapper;
+import cz.cvut.dp.nss.services.trip.TripWrapper;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
@@ -16,23 +16,23 @@ import java.util.List;
  * @since 07.01.17
  */
 @Component(value = "graphTripBatchProcessor")
-public class GraphTripBatchProcessor implements ItemProcessor<Trip, TripNode> {
+public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripNode> {
 
     @Override
-    public TripNode process(Trip trip) throws Exception {
+    public TripNode process(TripWrapper trip) throws Exception {
         TripNode tripNode = new TripNode();
         tripNode.setTripId(trip.getId());
-        tripNode.setCalendarId(trip.getCalendar().getId());
+        tripNode.setCalendarId(trip.getCalendarId());
 
         List<StopTimeNode> stopTimeNodes = new ArrayList<>();
         StopTimeNode firstStopTimeNode = null;
         StopTimeNode prevStopTimeNode = null;
         //pocitame s tim, ze stopTimes jsou serazene dle sequence VZESTUPNE!
-        for(StopTime stopTime : trip.getStopTimes()) {
+        for(StopTimeWrapper stopTime : trip.getStopTimeWrappers()) {
             StopTimeNode stopTimeNode = new StopTimeNode();
             stopTimeNode.setStopTimeId(stopTime.getId());
-            stopTimeNode.setStopId(stopTime.getStop().getId());
-            stopTimeNode.setStopName(getFixedStopName(stopTime.getStop().getName()));
+            stopTimeNode.setStopId(stopTime.getStopId());
+            stopTimeNode.setStopName(getFixedStopName(stopTime.getStopName()));
             stopTimeNode.setSequence(stopTime.getSequence());
             stopTimeNode.setTripId(trip.getId());
             stopTimeNode.setTripNode(tripNode);

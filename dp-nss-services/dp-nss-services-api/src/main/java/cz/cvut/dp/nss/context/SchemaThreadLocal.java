@@ -39,9 +39,9 @@ public class SchemaThreadLocal {
 
     static {
         Set<String> set = new HashSet<>();
+        set.add(SCHEMA_DEFAULT);
         set.add(SCHEMA_PID);
 
-        //TODO zeptat se, zda to nemusi byt synchronized, ale snad ne :)
         availableSchemas = Collections.unmodifiableSet(set);
     }
 
@@ -55,6 +55,11 @@ public class SchemaThreadLocal {
 
     public static String get() {
         return schemaThreadLocal.get();
+    }
+
+    public static String getOrDefault() {
+        String s = schemaThreadLocal.get();
+        return s != null ? s : SCHEMA_DEFAULT;
     }
 
 }

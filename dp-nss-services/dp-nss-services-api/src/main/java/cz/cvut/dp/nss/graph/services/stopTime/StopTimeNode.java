@@ -8,6 +8,7 @@ import org.neo4j.ogm.annotation.Relationship;
 
 /**
  * CREATE CONSTRAINT ON (n:StopTimeNode) ASSERT n.stopTimeId IS UNIQUE
+ * CREATE INDEX ON :StopTimeNode(stopName)
  *
  * @author jakubchalupa
  * @since 18.01.17

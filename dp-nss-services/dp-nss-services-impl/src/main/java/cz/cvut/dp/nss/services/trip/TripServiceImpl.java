@@ -1,5 +1,6 @@
 package cz.cvut.dp.nss.services.trip;
 
+import cz.cvut.dp.nss.persistence.trip.JdbcTripDao;
 import cz.cvut.dp.nss.persistence.trip.TripDao;
 import cz.cvut.dp.nss.services.common.AbstractEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,13 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
         super(dao);
     }
 
+    @Autowired
+    private JdbcTripDao jdbcTripDao;
+
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<Trip> getAllForInsertToGraph() {
-        return dao.getAllForInsertToGraph();
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
+    public List<TripWrapper> getAllForInsertToGraph() {
+        return jdbcTripDao.getAllForInsertToGraph();
     }
 
 }

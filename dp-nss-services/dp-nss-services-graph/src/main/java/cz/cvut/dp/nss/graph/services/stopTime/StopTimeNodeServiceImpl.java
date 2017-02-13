@@ -4,6 +4,7 @@ import cz.cvut.dp.nss.graph.repository.stopTime.StopTimeNodeRepository;
 import cz.cvut.dp.nss.graph.services.common.AbstractNodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
     }
 
     @Override
+    @Transactional("neo4jTransactionManager")
     public void connectStopTimeNodesOnStopWithWaitingRelationship(String stopName) {
         List<StopTimeNode> stopTimeNodesX = findByStopNameOrderByActionTime(stopName);
 
@@ -43,20 +45,18 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
 
             if(stopNodeFrom != null) {
                 stopNodeFrom.setNextAwaitingStop(stopNodeTo);
+                save(stopNodeFrom, 1);
             }
 
             //propojeni v kruhu (posledni s prvnim)
             if(i != 0 && i == stopTimeNodesX.size() - 1) {
                 stopNodeTo.setNextAwaitingStop(firstStopNode);
+                save(stopNodeTo, 1);
             }
 
             stopNodeFrom = stopNodeTo;
             i++;
         }
 
-        if(firstStopNode != null) {
-            //vsechno ulozim najednou
-            save(firstStopNode, -1);
-        }
     }
 }

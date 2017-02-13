@@ -44,6 +44,8 @@ public class Neo4jConfig extends Neo4jConfiguration {
 
         Map<String, org.neo4j.ogm.config.Configuration> map = new HashMap<>();
         map.put(SchemaThreadLocal.SCHEMA_DEFAULT, configDefault);
+        //TODO ukazuje na jednu databazi - opravit po pridani nove
+        map.put(SchemaThreadLocal.SCHEMA_PID, configDefault);
         //mapa nemusi byt synchronized - je definovana jako static final a nikdy se do ni uz nebude zapisovat
         CONFIGURATION_MAP = Collections.unmodifiableMap(map);
     }

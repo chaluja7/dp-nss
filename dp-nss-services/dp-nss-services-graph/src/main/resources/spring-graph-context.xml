@@ -1,12 +1,21 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:component-scan base-package="cz.cvut.dp.nss.graph.services" />
 
     <bean class="cz.cvut.dp.nss.graph.Neo4jConfig"/>
+
+    <!-- NEO4J transaction -->
+    <bean id="neo4jTransactionManager" class="org.springframework.data.neo4j.transaction.Neo4jTransactionManager">
+        <constructor-arg ref="getSession"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="neo4jTransactionManager" order="1"/>
 
 </beans>

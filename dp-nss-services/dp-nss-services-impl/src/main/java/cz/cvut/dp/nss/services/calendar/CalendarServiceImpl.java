@@ -24,7 +24,7 @@ public class CalendarServiceImpl extends AbstractEntityService<Calendar, String,
     }
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Calendar> getAllForInsertToGraph() {
         return dao.getAllForInsertToGraph();
     }

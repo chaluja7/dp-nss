@@ -22,7 +22,7 @@ public class PersonServiceImpl extends AbstractEntityService<Person, Long, Perso
     }
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public Person getByUsername(String username) {
         return dao.getPersonByUsername(username);
     }
