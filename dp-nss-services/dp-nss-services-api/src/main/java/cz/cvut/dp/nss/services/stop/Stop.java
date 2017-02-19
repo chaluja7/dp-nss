@@ -26,6 +26,7 @@ public class Stop extends AbstractAssignedIdEntity {
      * nazev, opravdu neni schvalne unikatni (gtfs povoluje duplicity v ramci datasetu)
      */
     @Column
+    @NotNull
     @Size(min = 1, max = 255)
     private String name;
 

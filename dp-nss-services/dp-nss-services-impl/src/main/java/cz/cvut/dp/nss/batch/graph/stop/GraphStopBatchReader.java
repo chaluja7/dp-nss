@@ -1,5 +1,6 @@
 package cz.cvut.dp.nss.batch.graph.stop;
 
+import cz.cvut.dp.nss.batch.graph.trip.GraphTripBatchProcessor;
 import cz.cvut.dp.nss.services.stop.Stop;
 import cz.cvut.dp.nss.services.stop.StopService;
 import org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader;
@@ -18,7 +19,7 @@ import java.util.Set;
  */
 @Component(value = "graphStopBatchReader")
 @Scope("step")
-public class GraphStopBatchReader extends AbstractItemCountingItemStreamItemReader<Stop> {
+public class GraphStopBatchReader extends AbstractItemCountingItemStreamItemReader<String> {
 
     @Autowired
     protected StopService stopService;
@@ -35,13 +36,14 @@ public class GraphStopBatchReader extends AbstractItemCountingItemStreamItemRead
     }
 
     @Override
-    protected Stop doRead() throws Exception {
+    protected String doRead() throws Exception {
         if(stops.hasNext()) {
             Stop stop = stops.next();
+            String stopName = GraphTripBatchProcessor.getFixedStopName(stop.getName());
 
-            if(!alreadyUsedNames.contains(stop.getName())) {
-                alreadyUsedNames.add(stop.getName());
-                return stop;
+            if(!alreadyUsedNames.contains(stopName)) {
+                alreadyUsedNames.add(stopName);
+                return stopName;
             } else {
                 return doRead();
             }

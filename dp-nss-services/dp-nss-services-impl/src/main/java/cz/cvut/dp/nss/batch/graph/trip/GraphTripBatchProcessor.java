@@ -82,7 +82,7 @@ public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripN
      * @param stopName jmeno stanice
      * @return jmeno stanice upraveno pro neo4j (napr. z "Mustek - A" udela jen "Mustek") - kvuli moznosti prestupu
      */
-    private static String getFixedStopName(String stopName) {
+    public static String getFixedStopName(String stopName) {
         if(stopName == null) return null;
 
         if(stopName.endsWith(" - A") || stopName.endsWith(" - B") || stopName.endsWith(" - C")) {

@@ -1,6 +1,5 @@
 package cz.cvut.dp.nss.batch.graph.stop;
 
-import cz.cvut.dp.nss.services.stop.Stop;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
@@ -9,11 +8,11 @@ import org.springframework.stereotype.Component;
  * @since 07.01.17
  */
 @Component(value = "graphStopBatchProcessor")
-public class GraphStopBatchProcessor implements ItemProcessor<Stop, String> {
+public class GraphStopBatchProcessor implements ItemProcessor<String, String> {
 
     @Override
-    public String process(Stop stop) throws Exception {
-        return stop.getName();
+    public String process(String stopName) throws Exception {
+        return stopName;
     }
 
 }
