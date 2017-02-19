@@ -13,7 +13,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
  * @since 15.05.15
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-context.xml"})
+@ContextConfiguration(locations = {"classpath:spring-graph-context.xml"})
 @WebAppConfiguration
 public abstract class AbstractServiceIT {
 

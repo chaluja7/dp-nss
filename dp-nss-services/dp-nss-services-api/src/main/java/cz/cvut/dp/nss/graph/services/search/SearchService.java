@@ -1,8 +1,8 @@
 package cz.cvut.dp.nss.graph.services.search;
 
 import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResultWrapper;
+import org.joda.time.DateTime;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,9 +18,13 @@ public interface SearchService {
      * @param departure datum odjezdu
      * @param maxHoursAfterDeparture max pocet hodin, o ktere muze spoj vyjet pozdeji nez departure
      * @param maxTransfers max pocet prestupu
-     * @param maxResults max pocet vracenych vysledku
      * @return list vysledku
      */
-    List<SearchResultWrapper> findPathByDepartureDate(String stopFromName, String stopToName, LocalDateTime departure, int maxHoursAfterDeparture, int maxTransfers, int maxResults);
+    List<SearchResultWrapper> findPathByDepartureDate(String stopFromName, String stopToName, DateTime departure, int maxHoursAfterDeparture, int maxTransfers);
+
+    /**
+     * zavola initCalendarDates na neo4j
+     */
+    void initCalendarDates();
 
 }

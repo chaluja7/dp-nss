@@ -97,6 +97,12 @@
             <artifactId>neo4j-server</artifactId>
         </dependency>
 
+        <!-- JODA TIME -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -160,8 +166,6 @@
                 <version>1.53</version>
             </dependency>
             <!-- KVULI MOZNYM KONFLIKTUM URCIME PEVNE VERZE -->
-
-
 
         </dependencies>
     </dependencyManagement>

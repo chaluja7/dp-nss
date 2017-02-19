@@ -37,6 +37,12 @@
             <artifactId>spring-data-neo4j</artifactId>
         </dependency>
 
+        <!-- JODA TIME -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
