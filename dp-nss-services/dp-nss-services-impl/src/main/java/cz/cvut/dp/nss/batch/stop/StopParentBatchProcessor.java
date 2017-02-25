@@ -22,7 +22,7 @@ public class StopParentBatchProcessor implements ItemProcessor<DefaultFieldSet, 
         Properties properties = defaultFieldSet.getProperties();
         String parentStopId = (String) properties.get("parent_station");
         if(StringUtils.hasText(parentStopId)) {
-            //nyni nechci ukladat stanice, ktere maji parent station, protoze parent station jeste nemusi byt v db
+            //nyni nechci ukladat stanice, ktere maji parent stop, protoze parent stop jeste nemusi byt v db
             //takto se to uz nedostane dal do writeru
            return null;
         }

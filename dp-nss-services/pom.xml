@@ -22,23 +22,4 @@
 
     <name>DP-NSS-SERVICES</name>
 
-    <properties>
-        <hibernate.version>5.2.5.Final</hibernate.version>
-    </properties>
-
-    <dependencies/>
-
-    <dependencyManagement>
-        <dependencies>
-
-            <!--HIBERNATE-->
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
-                <version>${hibernate.version}</version>
-            </dependency>
-
-        </dependencies>
-    </dependencyManagement>
-
 </project>

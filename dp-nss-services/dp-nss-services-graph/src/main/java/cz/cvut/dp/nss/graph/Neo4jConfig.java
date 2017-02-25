@@ -71,10 +71,7 @@ public class Neo4jConfig extends Neo4jConfiguration {
     @Bean
     @Scope(scopeName = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public Session getSession() throws Exception {
-        String identifier = SchemaThreadLocal.get();
-        if(identifier == null) {
-            identifier = SchemaThreadLocal.SCHEMA_DEFAULT;
-        }
+        String identifier = SchemaThreadLocal.getOrDefault();
 
         SessionFactory sessionFactory = getSessionFactoryMaps().get(identifier);
         Assert.notNull(sessionFactory, "You must provide a SessionFactory instance in your Spring configuration classes");

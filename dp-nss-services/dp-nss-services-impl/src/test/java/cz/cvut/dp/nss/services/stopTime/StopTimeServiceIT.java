@@ -89,9 +89,17 @@ public class StopTimeServiceIT extends AbstractServiceIT {
         retrieved.setSequence(sequence);
         stopTimeService.update(retrieved);
 
-        //check
-        retrieved = stopTimeService.get(retrieved.getId());
+        //check with stop
+        retrieved = stopTimeService.getWithStop(retrieved.getId());
         Assert.assertNotNull(retrieved);
+        Assert.assertNotNull(retrieved.getStop());
+        Assert.assertEquals(sequence, retrieved.getSequence());
+
+        retrieved = stopTimeService.getWithStopAndTripAndRoute(retrieved.getId());
+        Assert.assertNotNull(retrieved);
+        Assert.assertNotNull(retrieved.getStop());
+        Assert.assertNotNull(retrieved.getTrip());
+        Assert.assertNotNull(retrieved.getTrip().getRoute());
         Assert.assertEquals(sequence, retrieved.getSequence());
 
         //delete

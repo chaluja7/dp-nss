@@ -10,4 +10,8 @@ import cz.cvut.dp.nss.services.common.EntityService;
  */
 public interface StopTimeService extends EntityService<StopTime, Long> {
 
+    StopTime getWithStop(Long id);
+
+    StopTime getWithStopAndTripAndRoute(Long id);
+
 }

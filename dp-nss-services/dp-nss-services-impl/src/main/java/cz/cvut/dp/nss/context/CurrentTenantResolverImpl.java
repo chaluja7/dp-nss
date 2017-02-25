@@ -16,12 +16,7 @@ public class CurrentTenantResolverImpl implements CurrentTenantIdentifierResolve
 
     @Override
     public String resolveCurrentTenantIdentifier() {
-        String identifier = SchemaThreadLocal.get();
-        if(identifier == null) {
-            identifier = SchemaThreadLocal.SCHEMA_DEFAULT;
-        }
-
-        return identifier;
+        return SchemaThreadLocal.getOrDefault();
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.List;
  * @author jakubchalupa
  * @since 06.12.14
  */
-public class SearchResultWrapper {
+public class SearchResult {
 
     private long travelTime;
 

@@ -1,7 +1,7 @@
 package cz.cvut.dp.nss.graph.services.search;
 
 import cz.cvut.dp.nss.graph.services.AbstractServiceIT;
-import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResultWrapper;
+import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResult;
 import cz.cvut.dp.nss.services.common.DateTimeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -37,7 +37,7 @@ public class SearchServiceIT extends AbstractServiceIT {
         final int maxHoursAfterDeparture = 3;
         final int maxTransfers = 2;
 
-        List<SearchResultWrapper> pathByDepartureDate = searchService.findPathByDepartureDate(from, to, departureDateTime, maxHoursAfterDeparture, maxTransfers);
+        List<SearchResult> pathByDepartureDate = searchService.findPathByDepartureDate(from, to, departureDateTime, maxHoursAfterDeparture, maxTransfers);
         Assert.assertNotNull(pathByDepartureDate);
     }
 

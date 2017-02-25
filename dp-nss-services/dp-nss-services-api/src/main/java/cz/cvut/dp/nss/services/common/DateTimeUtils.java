@@ -35,6 +35,11 @@ public final class DateTimeUtils {
     /**
      * je thread-safe viz https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
      */
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+
+    /**
+     * je thread-safe viz https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+     */
     public static final DateTimeFormatter GTFS_DATE_PATTERN_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(GTFS_DATE_PATTERN);
 
     /**
