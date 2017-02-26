@@ -55,7 +55,7 @@
     </bean>
 
     <!-- GRAPH CONTEXT -->
-    <import resource="spring-graph-context.xml"/>
+    <import resource="classpath:spring-graph-context.xml"/>
 
 
     <!-- SPRING JDBC -->

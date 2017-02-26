@@ -35,6 +35,7 @@
     <modules>
         <module>dp-nss-services</module>
         <module>dp-nss-api</module>
+        <module>dp-nss-gui</module>
     </modules>
 
     <dependencies>
@@ -72,6 +73,18 @@
             <dependency>
                 <groupId>cz.cvut.dp.nss</groupId>
                 <artifactId>dp-nss-services-graph</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cz.cvut.dp.nss</groupId>
+                <artifactId>dp-nss-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cz.cvut.dp.nss</groupId>
+                <artifactId>dp-nss-gui</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

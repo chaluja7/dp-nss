@@ -15,3 +15,7 @@
 log/
 target/
 out/
+
+# Node
+node_modules/
+node/

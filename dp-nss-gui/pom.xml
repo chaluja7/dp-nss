@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cz.cvut.dp.nss</groupId>
+        <artifactId>dp-nss</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <artifactId>dp-nss-gui</artifactId>
+    <packaging>jar</packaging>
+
+    <name>DP-NSS-GUI</name>
+
+    <properties>
+        <main.basedir>${project.basedir}/..</main.basedir>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- build angular 2 app with maven -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.3</version>
+
+                <configuration>
+                    <nodeVersion>v6.10.0</nodeVersion>o
+                    <npmVersion>3.10.10</npmVersion>
+                    <workingDirectory>src/main/client</workingDirectory>
+                </configuration>
+
+                <executions>
+                    <!-- download and install node and npm to node/ and node_modules/ -->
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
+
+                    <!-- download all nmp dependencies for project -->
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                    </execution>
+
+                    <!-- build angular 2 app -->
+                    <execution>
+                        <id>npm run build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+
+                        <configuration>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <!-- move angular 2 app to static resource (add it to classpath) -->
+        <resources>
+            <resource>
+                <directory>target/client</directory>
+                <targetPath>static</targetPath>
+            </resource>
+        </resources>
+    </build>
+
+</project>

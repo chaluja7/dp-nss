@@ -70,6 +70,12 @@
             <artifactId>dp-nss-services-graph</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>cz.cvut.dp.nss</groupId>
+            <artifactId>dp-nss-gui</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- spring -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -122,6 +128,20 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+
+        <!-- TEST -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

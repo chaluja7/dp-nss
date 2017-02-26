@@ -19,6 +19,21 @@
         <url-pattern>/api/v1/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ClientServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:/client-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ClientServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:/spring-context.xml</param-value>

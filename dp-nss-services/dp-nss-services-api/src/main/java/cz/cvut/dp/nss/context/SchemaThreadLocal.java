@@ -59,7 +59,7 @@ public class SchemaThreadLocal {
 
     public static String getOrDefault() {
         String s = schemaThreadLocal.get();
-        return s != null ? s : SCHEMA_PID;
+        return s != null ? s : SCHEMA_DEFAULT;
     }
 
 }
