@@ -7,4 +7,8 @@
      <!--resource vytvoren v dp-nss-gui pom.xml-->
      <mvc:resources mapping="/**" location="classpath:/static/" />
 
+
+     <!-- pozadavek na root prehodime na index, kde se toho uz zhosti angular -->
+     <mvc:view-controller path="/" view-name="index.html"/>
+
 </beans>
