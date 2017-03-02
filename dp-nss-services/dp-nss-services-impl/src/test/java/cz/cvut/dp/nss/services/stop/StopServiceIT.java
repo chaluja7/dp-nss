@@ -76,6 +76,12 @@ public class StopServiceIT extends AbstractServiceIT {
         Assert.assertNotNull(stopIds);
     }
 
+    @Test
+    public void testFindStopNamesByStartPattern() {
+        Set<String> set = stopService.findStopNamesByStartPattern("flo");
+        Assert.assertNotNull(set);
+    }
+
     public static Stop getStop(final String id, String name, Double lat, Double lon) {
         Stop stop = new Stop();
         stop.setId(id);

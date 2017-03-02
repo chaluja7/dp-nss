@@ -36,4 +36,17 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
         return query.list();
     }
 
+    /**
+     * @param startPattern retezec, kterym zacina nazev stanice
+     * @return vsechny stanice, ktere zacinaji na pattern (case insensitive)
+     */
+    public List<String> findStopNamesByStartPattern(String startPattern) {
+        final String queryString = "select distinct s.name from Stop s where lower(s.name) like lower(:startPattern) order by s.name";
+
+        Query<String> query = sessionFactory.getCurrentSession().createQuery(queryString, String.class);
+        query.setParameter("startPattern", startPattern + "%");
+
+        return query.list();
+    }
+
 }

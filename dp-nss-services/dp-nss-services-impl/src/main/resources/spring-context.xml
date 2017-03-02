@@ -39,7 +39,7 @@
                 <entry key="hibernate.dialect" value="${hibernate.dialect}"/>
                 <entry key="hibernate.show_sql" value="${hibernate.showSql}"/>
                 <entry key="hibernate.format_sql" value="${hibernate.formatSql}"/>
-                <!--<entry key="hibernate.hbm2ddl.auto" value="${hibernate.auto}"/>-->
+                <entry key="hibernate.hbm2ddl.auto" value="${hibernate.auto}"/>
                 <entry key="hibernate.current_session_context_class" value="org.springframework.orm.hibernate5.SpringSessionContext"/>
 
                 <entry key="hibernate.multiTenancy" value="SCHEMA"/>

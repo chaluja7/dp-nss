@@ -2,6 +2,7 @@ package cz.cvut.dp.nss.batch.graph.trip;
 
 import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNode;
 import cz.cvut.dp.nss.graph.services.trip.TripNode;
+import cz.cvut.dp.nss.services.stop.StopServiceImpl;
 import cz.cvut.dp.nss.services.stopTime.StopTimeWrapper;
 import cz.cvut.dp.nss.services.trip.TripWrapper;
 import org.springframework.batch.item.ItemProcessor;
@@ -32,7 +33,7 @@ public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripN
             StopTimeNode stopTimeNode = new StopTimeNode();
             stopTimeNode.setStopTimeId(stopTime.getId());
             stopTimeNode.setStopId(stopTime.getStopId());
-            stopTimeNode.setStopName(getFixedStopName(stopTime.getStopName()));
+            stopTimeNode.setStopName(StopServiceImpl.getFixedStopName(stopTime.getStopName()));
             stopTimeNode.setSequence(stopTime.getSequence());
             stopTimeNode.setTripId(trip.getId());
             stopTimeNode.setTripNode(tripNode);
@@ -76,20 +77,6 @@ public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripN
         tripNode.setStopTimeNodes(stopTimeNodes);
 
         return tripNode;
-    }
-
-    /**
-     * @param stopName jmeno stanice
-     * @return jmeno stanice upraveno pro neo4j (napr. z "Mustek - A" udela jen "Mustek") - kvuli moznosti prestupu
-     */
-    public static String getFixedStopName(String stopName) {
-        if(stopName == null) return null;
-
-        if(stopName.endsWith(" - A") || stopName.endsWith(" - B") || stopName.endsWith(" - C")) {
-            stopName = stopName.substring(0, stopName.length() - 4);
-        }
-
-        return stopName;
     }
 
     /**

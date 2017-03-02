@@ -1,5 +1,6 @@
-package cz.cvut.dp.nss.controller;
+package cz.cvut.dp.nss.controller.search;
 
+import cz.cvut.dp.nss.controller.AbstractController;
 import cz.cvut.dp.nss.graph.services.search.SearchService;
 import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResult;
 import cz.cvut.dp.nss.services.common.DateTimeUtils;

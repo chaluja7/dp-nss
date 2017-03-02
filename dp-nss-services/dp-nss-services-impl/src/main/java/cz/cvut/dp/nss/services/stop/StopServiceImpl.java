@@ -9,9 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * Implementation of StopService.
@@ -42,6 +40,24 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
         return new BatchProcessingStopsIterator();
     }
 
+    @Override
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
+    public Set<String> findStopNamesByStartPattern(String startPattern) {
+        if(startPattern == null || startPattern.length() < 3) return new HashSet<>();
+
+        //vytahnu stanice z db
+        List<String> stops = dao.findStopNamesByStartPattern(startPattern);
+
+        //vytvorim si set pro navraceni vysledku (zachova razeni z dao vrstvy)
+        Set<String> set = new LinkedHashSet<>();
+        for(String stop : stops) {
+            //a do setu vkladam fixle nazvy stanic (a samozrejme unikatne)
+            set.add(getFixedStopName(stop));
+        }
+
+        return set;
+    }
+
     private class BatchProcessingStopsIterator extends BatchProcessingIterator<Stop> {
 
         BatchProcessingStopsIterator() {
@@ -68,6 +84,23 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
             setNextChunk(stopService.getAllInRange(getStart(), getLimit()));
         }
 
+    }
+
+    /**
+     * @param stopName jmeno stanice
+     * @return jmeno stanice upraveno pro neo4j (napr. z "Mustek - A" udela jen "Mustek") - kvuli moznosti prestupu
+     */
+    public static String getFixedStopName(String stopName) {
+        if(stopName == null) return null;
+
+        if(stopName.endsWith(" - A") || stopName.endsWith(" - B") || stopName.endsWith(" - C")) {
+            stopName = stopName.substring(0, stopName.length() - 4);
+        }
+
+        //TODO - jmeno stanice muze koncit take vyrazem v zavorce (např. 'Želivského (ul. Votická)')
+        //TODO - v tom případě je nutné tu závorku smazat a nechat jen 'Želivského'
+
+        return stopName;
     }
 
 }

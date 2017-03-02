@@ -31,7 +31,7 @@ public class SchemaThreadLocal {
      */
     private static final ThreadLocal<String> schemaThreadLocal = new ThreadLocal<>();
 
-    public static final Set<String> availableSchemas;
+    public static final Set<String> AVAILABLE_SCHEMAS;
 
     public static final String SCHEMA_DEFAULT = "public";
 
@@ -42,7 +42,7 @@ public class SchemaThreadLocal {
         set.add(SCHEMA_DEFAULT);
         set.add(SCHEMA_PID);
 
-        availableSchemas = Collections.unmodifiableSet(set);
+        AVAILABLE_SCHEMAS = Collections.unmodifiableSet(set);
     }
 
     public static void set(String schema) {

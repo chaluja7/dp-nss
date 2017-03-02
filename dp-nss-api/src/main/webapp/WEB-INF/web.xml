@@ -64,4 +64,18 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!-- Je dulezite, aby byl tento filtr jako posledni (jinak by se nemuseli vykonat ostatni filtry) -->
+    <filter>
+        <filter-name>schemaHandlerFilter</filter-name>
+        <filter-class>cz.cvut.dp.nss.filter.SchemaHandlerFilter</filter-class>
+        <init-param>
+            <param-name>apiPath</param-name>
+            <param-value>/api/v1/</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>schemaHandlerFilter</filter-name>
+        <url-pattern>/api/v1/*</url-pattern>
+    </filter-mapping>
+
 </web-app>

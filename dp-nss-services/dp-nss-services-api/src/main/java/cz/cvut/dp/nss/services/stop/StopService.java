@@ -4,6 +4,7 @@ import cz.cvut.dp.nss.services.common.EntityService;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Common interface for all StopService implementations.
@@ -24,5 +25,11 @@ public interface StopService extends EntityService<Stop, String> {
      * @return iterator nad vsemi stanicemi
      */
     Iterator<Stop> iteratorOverAllStops();
+
+    /**
+     * @param startPattern retezec, kterym zacina nazev stanice
+     * @return vsechny stanice, ktere zacinaji na pattern (case insensitive)
+     */
+    Set<String> findStopNamesByStartPattern(String startPattern);
 
 }
