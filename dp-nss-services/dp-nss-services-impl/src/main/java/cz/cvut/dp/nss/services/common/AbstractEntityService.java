@@ -28,7 +28,7 @@ public abstract class AbstractEntityService<ENT extends AbstractEntity<ID>, ID e
     @Override
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public ENT get(ID id) {
-        return dao.find(id);
+        return id != null ? dao.find(id) : null;
     }
 
     @Override

@@ -1,10 +1,12 @@
 package cz.cvut.dp.nss.controller.timeTable;
 
 import cz.cvut.dp.nss.controller.AbstractController;
+import cz.cvut.dp.nss.exception.ResourceNotFoundException;
 import cz.cvut.dp.nss.services.timeTable.TimeTable;
 import cz.cvut.dp.nss.services.timeTable.TimeTableService;
 import cz.cvut.dp.nss.wrapper.out.timeTable.TimeTableWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +33,16 @@ public class TimeTableController extends AbstractController {
         }
 
         return timeTableWrappers;
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public TimeTableWrapper getTimeTable(@PathVariable("id") String id) {
+        TimeTable timeTable = timeTableService.get(id);
+        if(timeTable == null) {
+            throw new ResourceNotFoundException();
+        }
+
+        return getTimeTableWrapper(timeTable);
     }
 
     private TimeTableWrapper getTimeTableWrapper(TimeTable timeTable) {

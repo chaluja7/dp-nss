@@ -1,0 +1,10 @@
+<div *ngIf="timeTable">
+  <h2>Detail jízdního řádu {{timeTable.id}}!</h2>
+  <div>
+    <label>id: </label>{{timeTable.id}}
+  </div>
+  <div>
+    <label>name: </label>
+    <input [(ngModel)]="timeTable.name" placeholder="name"/>
+  </div>
+</div>
