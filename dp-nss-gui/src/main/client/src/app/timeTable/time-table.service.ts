@@ -9,4 +9,8 @@ export class TimeTableService {
     return Promise.resolve(TIME_TABLES);
   }
 
+  getTimeTable(id: string): Promise<TimeTable> {
+    return this.getTimeTables().then(timeTables => timeTables.find(timeTable => timeTable.id === id));
+  }
+
 }

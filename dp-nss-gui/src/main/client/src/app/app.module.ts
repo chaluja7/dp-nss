@@ -4,20 +4,23 @@ import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {HomeComponent} from "./home/home.component";
-import {SearchFormComponent} from "./home/search-form.component";
+import {TimeTablesComponent} from "./timeTable/time-tables.component";
 import {TimeTableComponent} from "./timeTable/time-table.component";
 import {TimeTableService} from "./timeTable/time-table.service";
+import {AppRoutingModule} from "./app-routing.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    TimeTablesComponent,
     TimeTableComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    AppRoutingModule
   ],
   providers: [
       TimeTableService

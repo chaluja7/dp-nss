@@ -1,0 +1,10 @@
+<h2>Seznam jízdních řádů:</h2>
+<ul class="timeTables">
+    <li *ngFor="let timeTable of timeTables"
+        [class.selected]="timeTable === selectedTimeTable"
+        (click)="goToDetail(timeTable)">
+        <span class="badge">{{timeTable.id}}</span> {{timeTable.name}}
+    </li>
+</ul>
+
+<!--<time-table-component [timeTable]="selectedTimeTable"></time-table-component>-->
