@@ -8,13 +8,16 @@ import {TimeTablesComponent} from "./timeTable/time-tables.component";
 import {TimeTableComponent} from "./timeTable/time-table.component";
 import {TimeTableService} from "./timeTable/time-table.service";
 import {AppRoutingModule} from "./app-routing.module";
+import {StopService} from "./stop/stop.service";
+import {StopSearchComponent} from "./stop/stop-search.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     TimeTablesComponent,
-    TimeTableComponent
+    TimeTableComponent,
+    StopSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +26,8 @@ import {AppRoutingModule} from "./app-routing.module";
     AppRoutingModule
   ],
   providers: [
-      TimeTableService
+      TimeTableService,
+      StopService
   ],
   bootstrap: [AppComponent]
 })

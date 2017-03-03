@@ -1,0 +1,9 @@
+<div id="search-component">
+    <h4>Stop search</h4>
+    <input #stopFrom id="search-box" (keyup)="search(stopFrom.value)" />
+    <div>
+        <div *ngFor="let stop of stops | async" class="search-result" >
+            {{stop}}
+        </div>
+    </div>
+</div>
