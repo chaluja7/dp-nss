@@ -4,6 +4,7 @@ import {TimeTableService} from "./time-table.service";
 import {Router} from "@angular/router";
 
 @Component({
+  moduleId: module.id,
   selector: 'time-tables-component',
   templateUrl: './time-tables.component.html',
   styleUrls: ['./time-tables.component.css']
