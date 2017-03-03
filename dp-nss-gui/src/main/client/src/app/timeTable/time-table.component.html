@@ -7,4 +7,9 @@
     <label>name: </label>
     <input [(ngModel)]="timeTable.name" placeholder="name"/>
   </div>
+  <div>
+    <label>valid: </label>
+    <input type="checkbox" [(ngModel)]="timeTable.valid"/>
+  </div>
+  <button (click)="save()">Uložit</button>
 </div>

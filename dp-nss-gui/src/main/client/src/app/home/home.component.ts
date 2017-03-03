@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   constructor(private timeTableService: TimeTableService) { }
 
   ngOnInit(): void {
-    this.timeTableService.getTimeTables().then(timeTables => this.timeTables = timeTables.slice(1, 3));
+    this.timeTableService.getTimeTables().then(timeTables => this.timeTables = timeTables.slice(0, 2));
   }
 
 }

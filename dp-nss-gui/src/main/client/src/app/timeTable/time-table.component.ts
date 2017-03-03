@@ -26,4 +26,13 @@ export class TimeTableComponent implements OnInit {
         .subscribe(timeTable => this.timeTable = timeTable);
   }
 
+  save(): void {
+    this.timeTableService.update(this.timeTable)
+        .then(() => this.goBack());
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
 }

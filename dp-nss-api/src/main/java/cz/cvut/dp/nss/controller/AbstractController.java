@@ -1,10 +1,16 @@
 package cz.cvut.dp.nss.controller;
 
-import org.springframework.http.HttpHeaders;
+import cz.cvut.dp.nss.exception.BadRequestException;
+import cz.cvut.dp.nss.exception.ResourceNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.persistence.PersistenceException;
+import javax.validation.ConstraintViolationException;
 
 /**
  * @author jakubchalupa
@@ -13,10 +19,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 public abstract class AbstractController {
 
-    protected ResponseEntity<?> getResponseCreated(Object body, String location) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(HttpHeaders.LOCATION, location);
-        return new ResponseEntity<>(body, httpHeaders, HttpStatus.CREATED);
+    protected <T> ResponseEntity<T> getResponseCreated(T body) {
+        return new ResponseEntity<>(body, HttpStatus.CREATED);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ExceptionResponseWrapper> handleNotFoundException() {
+        return new ResponseEntity<>(new ExceptionResponseWrapper("resource not found"), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({BadRequestException.class, DataIntegrityViolationException.class, PersistenceException.class, ConstraintViolationException.class})
+    public ResponseEntity<ExceptionResponseWrapper> handleBadRequestException(Exception e) {
+        return new ResponseEntity<>(new ExceptionResponseWrapper(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponseWrapper> handleException(Exception ex) {
+        return new ResponseEntity<>(new ExceptionResponseWrapper(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * odpoved pro exception
+     */
+    private class ExceptionResponseWrapper {
+
+        private final String message;
+
+        private ExceptionResponseWrapper(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
     }
 
 }

@@ -6,7 +6,7 @@
     margin: 0 0 2em 0;
     list-style-type: none;
     padding: 0;
-    width: 20em;
+    width: 25em;
 }
 .timeTables li {
     cursor: pointer;
@@ -44,4 +44,12 @@
     height: 1.8em;
     margin-right: .8em;
     border-radius: 4px 0 0 4px;
+}
+
+button.delete {
+    float:right;
+    margin-top: 2px;
+    margin-right: .8em;
+    background-color: gray !important;
+    color:white;
 }
