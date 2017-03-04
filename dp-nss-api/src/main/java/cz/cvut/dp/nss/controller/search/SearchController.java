@@ -74,7 +74,7 @@ public class SearchController extends AbstractController {
             SearchStopTimeWrapper searchStopTimeWrapper = getSearchStopTimeWrapper(stopTime);
             searchStopTimeWrappers.add(searchStopTimeWrapper);
         }
-        wrapper.setSearchStopTimeWrappers(searchStopTimeWrappers);
+        wrapper.setStopTimes(searchStopTimeWrappers);
 
         return wrapper;
     }

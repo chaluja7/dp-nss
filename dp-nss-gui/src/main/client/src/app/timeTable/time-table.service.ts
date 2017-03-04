@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {TimeTable} from "./time-table";
 import {Http, Headers} from "@angular/http";
 import "rxjs/add/operator/toPromise";
+import {ErrorService} from "../common/error.service";
 
 @Injectable()
 export class TimeTableService {
@@ -10,13 +11,13 @@ export class TimeTableService {
 
   private headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private errorService: ErrorService) { }
 
   getTimeTables(): Promise<TimeTable[]> {
       return this.http.get(this.timeTableUrl)
           .toPromise()
           .then(response => response.json() as TimeTable[])
-          .catch(this.handleError);
+          .catch(this.errorService.handleError);
   }
 
   getTimeTable(id: string): Promise<TimeTable> {
@@ -24,7 +25,7 @@ export class TimeTableService {
     return this.http.get(url)
         .toPromise()
         .then(response => response.json() as TimeTable)
-        .catch(this.handleError);
+        .catch(this.errorService.handleError);
   }
 
   update(timeTable: TimeTable): Promise<TimeTable> {
@@ -33,7 +34,7 @@ export class TimeTableService {
         .put(url, JSON.stringify(timeTable), {headers: this.headers})
         .toPromise()
         .then(() => timeTable)
-        .catch(this.handleError);
+        .catch(this.errorService.handleError);
   }
 
   create(timeTable: TimeTable): Promise<TimeTable> {
@@ -41,7 +42,7 @@ export class TimeTableService {
         .post(this.timeTableUrl, JSON.stringify(timeTable), {headers: this.headers})
         .toPromise()
         .then(response => response.json() as TimeTable)
-        .catch(this.handleError);
+        .catch(this.errorService.handleError);
   }
 
   delete(id: string): Promise<void> {
@@ -49,12 +50,7 @@ export class TimeTableService {
     return this.http.delete(url, {headers: this.headers})
         .toPromise()
         .then(() => null)
-        .catch(this.handleError);
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred: ', error.status + ' - ' + error.json().message); // for demo purposes only
-    return Promise.reject(error.json().message || error);
+        .catch(this.errorService.handleError);
   }
 
 }

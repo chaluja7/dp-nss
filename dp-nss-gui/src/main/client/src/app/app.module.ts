@@ -9,7 +9,12 @@ import {TimeTableComponent} from "./timeTable/time-table.component";
 import {TimeTableService} from "./timeTable/time-table.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {StopService} from "./stop/stop.service";
+import {DateService} from "./common/date.service";
+import {SearchService} from "./search/search.service";
+import {ErrorService} from "./common/error.service";
 import {StopSearchComponent} from "./stop/stop-search.component";
+import {SearchComponent} from "./search/search.component";
+import {NKDatetimeModule} from "ng2-datetime/ng2-datetime";
 
 @NgModule({
   declarations: [
@@ -17,17 +22,22 @@ import {StopSearchComponent} from "./stop/stop-search.component";
     HomeComponent,
     TimeTablesComponent,
     TimeTableComponent,
-    StopSearchComponent
+    StopSearchComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NKDatetimeModule
   ],
   providers: [
+      DateService,
+      ErrorService,
       TimeTableService,
-      StopService
+      StopService,
+      SearchService
   ],
   bootstrap: [AppComponent]
 })
