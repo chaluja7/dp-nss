@@ -20,7 +20,7 @@ export class StopSearchComponent implements OnInit {
     this.stops = this.searchTerms
         .debounceTime(300)
         .distinctUntilChanged()
-        .switchMap((term:string) => term.length > 2 ? this.stopService.search(term) : Observable.of<string[]>([]))
+        .switchMap((term:string) => term.length > 2 ? this.stopService.search(term, 'pid') : Observable.of<string[]>([]))
         .catch(error => {
           console.log(error);
           return Observable.of<string[]>([]);

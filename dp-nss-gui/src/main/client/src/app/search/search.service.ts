@@ -10,11 +10,11 @@ export class SearchService {
 
     constructor(private http: Http, private errorService: ErrorService) { }
 
-    search(timeTableId: string, stopFrom: string, stopTo: string, departure: Date, maxTransfers: number): Promise<SearchResultModel[]> {
+    search(timeTableId: string, stopFrom: string, stopTo: string, departureDate: Date, departureTime: Date, maxTransfers: number): Promise<SearchResultModel[]> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('stopFromName', stopFrom);
         params.set('stopToName', stopTo);
-        params.set('departure', DateService.getFormattedDate(departure));
+        params.set('departure', DateService.getFormattedDate(departureDate, departureTime));
         params.set('maxTransfers', maxTransfers + '');
 
         return this.http

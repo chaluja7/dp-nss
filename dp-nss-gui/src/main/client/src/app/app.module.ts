@@ -15,6 +15,7 @@ import {ErrorService} from "./common/error.service";
 import {StopSearchComponent} from "./stop/stop-search.component";
 import {SearchComponent} from "./search/search.component";
 import {NKDatetimeModule} from "ng2-datetime/ng2-datetime";
+import {Ng2CompleterModule} from "ng2-completer";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {NKDatetimeModule} from "ng2-datetime/ng2-datetime";
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    NKDatetimeModule
+    NKDatetimeModule,
+    Ng2CompleterModule
   ],
   providers: [
       DateService,

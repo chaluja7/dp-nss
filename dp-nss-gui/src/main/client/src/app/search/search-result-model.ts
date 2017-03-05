@@ -1,4 +1,6 @@
 export class SearchResultModel {
+  departureDate: string;
+  arrivalDate: string;
   travelTime: number;
   stopTimes: StopTime[];
 }

@@ -23,9 +23,22 @@ body, input[text], button {
 }
 
 /* FORMS */
-.ng-valid[required], .ng-valid.required  {
+input.ng-valid[required], select.ng-valid[required], input.ng-valid.required, select.ng-valid.required, .ng-valid[required] > div > input, .ng-valid.required > div > input {
     border-left: 5px solid #42A948;
 }
-.ng-invalid:not(form)  {
+
+input.ng-invalid:not(form), select.ng-invalid:not(form), .ng-invalid > div > input, .ng-invalid > div > div > input {
     border-left: 5px solid #a94442;
+}
+
+.ng-invalid > div > div > input {
+    border-left: 5px solid #a94442 !important;
+}
+
+.ng-valid > div > div > input {
+    border-left: 5px solid #42A948;
+}
+
+.vertical-middle {
+    vertical-align: middle !important;
 }

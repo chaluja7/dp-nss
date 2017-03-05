@@ -4,4 +4,5 @@ export class SearchModel {
   public stopTo: string;
   public maxNumOfTransfers: number;
   public date: Date;
+  public time: Date;
 }
