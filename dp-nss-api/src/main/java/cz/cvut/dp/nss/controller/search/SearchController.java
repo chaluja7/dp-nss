@@ -15,8 +15,6 @@ import cz.cvut.dp.nss.wrapper.out.search.SearchStopTimeWrapper;
 import cz.cvut.dp.nss.wrapper.out.stop.StopWrapper;
 import cz.cvut.dp.nss.wrapper.out.trip.TripWithRouteWrapper;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,9 +44,7 @@ public class SearchController extends AbstractController {
                                                @RequestParam("departure") String departure,
                                                @RequestParam("maxTransfers") int maxTransfers) {
 
-        DateTimeFormatter formatter = DateTimeFormat.forPattern(DateTimeUtils.DATE_TIME_PATTERN);
-        DateTime dateTime = formatter.parseDateTime(departure);
-
+        DateTime dateTime = DateTimeUtils.JODA_DATE_TIME_FORMATTER.parseDateTime(departure);
         searchService.initCalendarDates();
 
         List<SearchResult> searchResults = searchService.findPathByDepartureDate(stopFromName, stopToName,
@@ -56,16 +52,21 @@ public class SearchController extends AbstractController {
 
         List<SearchResultWrapper> searchResultWrappers = new ArrayList<>();
         for(SearchResult searchResult : searchResults) {
-            searchResultWrappers.add(getSearchResultWrapper(searchResult));
+            searchResultWrappers.add(getSearchResultWrapper(searchResult, dateTime));
         }
 
         return searchResultWrappers;
     }
 
-    private SearchResultWrapper getSearchResultWrapper(SearchResult searchResult) {
+    private SearchResultWrapper getSearchResultWrapper(SearchResult searchResult, DateTime departureDateTime) {
         if(searchResult == null) return new SearchResultWrapper();
 
+        final DateTime thisDeparture = searchResult.isOverMidnightDeparture() ? departureDateTime.plusDays(1) : departureDateTime;
+        final DateTime thisArrival = searchResult.isOverMidnightArrival() ? departureDateTime.plusDays(1) : departureDateTime;
+
         SearchResultWrapper wrapper = new SearchResultWrapper();
+        wrapper.setDepartureDate(thisDeparture.toString(DateTimeUtils.JODA_DATE_FORMATTER));
+        wrapper.setArrivalDate(thisArrival.toString(DateTimeUtils.JODA_DATE_FORMATTER));
         wrapper.setTravelTime(searchResult.getTravelTime());
         List<SearchStopTimeWrapper> searchStopTimeWrappers = new ArrayList<>();
         for(Long stopTimeId : searchResult.getStopTimes()) {

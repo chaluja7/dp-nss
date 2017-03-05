@@ -1,5 +1,7 @@
 package cz.cvut.dp.nss.services.common;
 
+import org.joda.time.format.DateTimeFormat;
+
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -31,6 +33,16 @@ public final class DateTimeUtils {
      * 5 minut penalizace za prestup
      */
     public static final int TRANSFER_PENALTY_MILLIS = 300000;
+
+    /**
+     * je thread-safe
+     */
+    public static final org.joda.time.format.DateTimeFormatter JODA_DATE_FORMATTER = DateTimeFormat.forPattern(DateTimeUtils.DATE_PATTERN);
+
+    /**
+     * je thread-safe
+     */
+    public static final org.joda.time.format.DateTimeFormatter JODA_DATE_TIME_FORMATTER = DateTimeFormat.forPattern(DateTimeUtils.DATE_TIME_PATTERN);
 
     /**
      * je thread-safe viz https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html

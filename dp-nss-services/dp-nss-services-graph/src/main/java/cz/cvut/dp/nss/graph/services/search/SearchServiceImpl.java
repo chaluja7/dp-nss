@@ -50,6 +50,7 @@ public class SearchServiceImpl implements SearchService {
         wrapper.setArrival((long) map.get("arrival"));
         wrapper.setTravelTime((long) map.get("travelTime"));
         wrapper.setNumberOfTransfers(((Long) map.get("numberOfTransfers")).intValue());
+        wrapper.setOverMidnightDeparture((boolean) map.get("overMidnightDeparture"));
         wrapper.setOverMidnightArrival((boolean) map.get("overMidnightArrival"));
         wrapper.setStopTimes(Arrays.asList((Long[]) map.get("stops")));
 
