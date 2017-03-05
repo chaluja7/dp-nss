@@ -16,7 +16,8 @@ export class DateService {
   public timepickerOpts = {
     showMeridian: false,
     placeholder: 'Čas',
-    language: 'cs'
+    language: 'cs',
+    defaultTime: 'current'
   };
 
   public static getFormattedDate(date: Date, time: Date) : string {
