@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
 
 /**
  * @author jakubchalupa
@@ -78,19 +75,18 @@ public class TimeTableController extends AbstractController {
         timeTableService.delete(timeTable.getId());
     }
 
-    private TimeTableWrapper getTimeTableWrapper(TimeTable timeTable) {
+    public static TimeTableWrapper getTimeTableWrapper(TimeTable timeTable) {
         if(timeTable == null) return null;
 
         TimeTableWrapper wrapper = new TimeTableWrapper();
         wrapper.setEntityId(timeTable.getId());
         wrapper.setName(timeTable.getName());
         wrapper.setValid(timeTable.isValid());
-        wrapper.add(linkTo(methodOn(TimeTableController.class).getTimeTable(timeTable.getId())).withSelfRel());
 
         return wrapper;
     }
 
-    private TimeTable getTimeTable(TimeTableWrapper wrapper) {
+    public static TimeTable getTimeTable(TimeTableWrapper wrapper) {
         if(wrapper == null) return null;
 
         TimeTable timeTable = new TimeTable();

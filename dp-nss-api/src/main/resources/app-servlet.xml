@@ -25,11 +25,15 @@
         </property>
     </bean>
 
-    <!-- Enables AOP cool stuff (method interceptors) -->
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
-        <!--protoze controllery nemaji interface-->
-        <property name="proxyTargetClass" value="true"/>
-    </bean>
+    <!--&lt;!&ndash; Enables AOP cool stuff (method interceptors) &ndash;&gt;-->
+    <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">-->
+        <!--&lt;!&ndash;protoze controllery nemaji interface&ndash;&gt;-->
+        <!--<property name="proxyTargetClass" value="true"/>-->
+    <!--</bean>-->
+
+    <mvc:interceptors>
+        <bean class="cz.cvut.dp.nss.controller.interceptor.SecurityInterceptor" />
+    </mvc:interceptors>
 
 
 </beans>

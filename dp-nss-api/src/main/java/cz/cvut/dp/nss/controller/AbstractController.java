@@ -2,6 +2,7 @@ package cz.cvut.dp.nss.controller;
 
 import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.exception.ResourceNotFoundException;
+import cz.cvut.dp.nss.exception.UnauthorizedException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +27,11 @@ public abstract class AbstractController {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ExceptionResponseWrapper> handleNotFoundException() {
         return new ResponseEntity<>(new ExceptionResponseWrapper("resource not found"), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ExceptionResponseWrapper> handleUnauthorizedException() {
+        return new ResponseEntity<>(new ExceptionResponseWrapper("unauthorized"), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({BadRequestException.class, DataIntegrityViolationException.class, PersistenceException.class, ConstraintViolationException.class})

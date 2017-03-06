@@ -1,11 +1,13 @@
 package cz.cvut.dp.nss.services.person;
 
 import cz.cvut.dp.nss.services.common.AbstractGeneratedIdEntity;
+import cz.cvut.dp.nss.services.role.Role;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * System user.
@@ -17,7 +19,8 @@ import javax.persistence.Table;
  * @since 24.11.14 - 12.12.16
  */
 @Entity
-@Table(name = "persons", schema = "global")
+@Table(name = "persons", schema = "global",
+    indexes = {@Index(name = "username_index", columnList = "username"), @Index(name = "token_index", columnList = "token")})
 public class Person extends AbstractGeneratedIdEntity {
 
     @Column(unique = true)
@@ -26,6 +29,17 @@ public class Person extends AbstractGeneratedIdEntity {
 
     @Column
     private String password;
+
+    @Column(unique = true)
+    @Size(max = 255)
+    private String token;
+
+    //TODO pripadne dodelat token validity
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "global.person_role", joinColumns = @JoinColumn(name = "person_id", nullable = false, updatable = false),
+        inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false, updatable = false))
+    private Set<Role> roles;
 
     public String getUsername() {
         return username;
@@ -41,6 +55,29 @@ public class Person extends AbstractGeneratedIdEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Set<Role> getRoles() {
+        if(roles == null) {
+            roles = new HashSet<>();
+        }
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public boolean hasRole(Role.Type roleNeeded) {
+        return getRoles().contains(new Role(roleNeeded));
     }
 
 }
