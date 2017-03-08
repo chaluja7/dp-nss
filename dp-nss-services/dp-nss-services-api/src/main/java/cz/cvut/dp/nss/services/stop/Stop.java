@@ -58,7 +58,7 @@ public class Stop extends AbstractAssignedIdEntity {
     /**
      * nadrazena stanice (pokud je tato v nejakem komplexu)
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_stop_id")
     private Stop parentStop;
 

@@ -3,9 +3,12 @@
     <div class="col-md-12">
       <nav>
         <a [routerLink]="['/home']" routerLinkActive="active">Vyhledávač</a>
-        <a *ngIf="isAdminLoggedIn()" [routerLink]="['/timeTable']" routerLinkActive="active">Seznam jízdních řádů</a>
-        <a *ngIf="!isLoggedIn()" [routerLink]="['/login']" routerLinkActive="active">Administrace</a>
-        <a *ngIf="isLoggedIn()" [routerLink]="['/login']">Odhlásit</a>
+
+        <div class="pull-right">
+          <a *ngIf="isAdminLoggedIn()" [routerLink]="['/timeTable']" routerLinkActive="active">Jízdní řády</a>
+          <a *ngIf="!isLoggedIn()" [routerLink]="['/login']" routerLinkActive="active">Administrace</a>
+          <a *ngIf="isLoggedIn()" [routerLink]="['/login']">Odhlásit</a>
+        </div>
       </nav>
 
       <router-outlet></router-outlet>

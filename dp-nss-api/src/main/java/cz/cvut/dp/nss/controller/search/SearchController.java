@@ -1,18 +1,17 @@
 package cz.cvut.dp.nss.controller.search;
 
 import cz.cvut.dp.nss.controller.AbstractController;
+import cz.cvut.dp.nss.controller.admin.stop.AdminStopController;
 import cz.cvut.dp.nss.graph.services.search.SearchService;
 import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResult;
 import cz.cvut.dp.nss.services.common.DateTimeUtils;
 import cz.cvut.dp.nss.services.route.Route;
-import cz.cvut.dp.nss.services.stop.Stop;
 import cz.cvut.dp.nss.services.stopTime.StopTime;
 import cz.cvut.dp.nss.services.stopTime.StopTimeService;
 import cz.cvut.dp.nss.services.trip.Trip;
 import cz.cvut.dp.nss.wrapper.out.route.RouteWrapper;
 import cz.cvut.dp.nss.wrapper.out.search.SearchResultWrapper;
 import cz.cvut.dp.nss.wrapper.out.search.SearchStopTimeWrapper;
-import cz.cvut.dp.nss.wrapper.out.stop.StopWrapper;
 import cz.cvut.dp.nss.wrapper.out.trip.TripWithRouteWrapper;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,20 +89,8 @@ public class SearchController extends AbstractController {
 
         wrapper.setArrival(arrival);
         wrapper.setDeparture(departure);
-        wrapper.setStop(getStopWrapper(stopTime.getStop()));
+        wrapper.setStop(AdminStopController.getStopWrapper(stopTime.getStop()));
         wrapper.setTrip(getTripWithRouteWrapper(stopTime.getTrip()));
-
-        return wrapper;
-    }
-
-    private StopWrapper getStopWrapper(Stop stop) {
-        if(stop == null) return null;
-
-        StopWrapper wrapper = new StopWrapper();
-        wrapper.setName(stop.getName());
-        wrapper.setLat(stop.getLat());
-        wrapper.setLon(stop.getLon());
-        wrapper.setWheelChair(stop.getStopWheelchairBoardingType() != null ? stop.getStopWheelchairBoardingType().name() : null);
 
         return wrapper;
     }

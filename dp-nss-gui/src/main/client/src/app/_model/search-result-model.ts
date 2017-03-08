@@ -13,10 +13,12 @@ export class StopTime {
 }
 
 export class Stop {
+  id: string;
   name: string;
   lat: number;
   lon: number;
-  wheelChair: string;
+  wheelChairCode: string;
+  parentStopId: string;
 }
 
 export class Trip {
