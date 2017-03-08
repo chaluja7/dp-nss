@@ -22,3 +22,7 @@ INSERT INTO global.person_role(person_id, role_id) VALUES (1, 'USER');
 TRUNCATE global.time_tables CASCADE;
 INSERT INTO global.time_tables(id, name, valid) VALUES ('pid', 'Pražská integrovaná doprava (PID)', true);
 INSERT INTO global.time_tables(id, name, valid) VALUES ('annapolis', 'Annapolis', true);
+
+--user time tables
+TRUNCATE global.person_time_table CASCADE;
+INSERT INTO global.person_time_table(person_id, time_table_id) VALUES (1, 'pid');

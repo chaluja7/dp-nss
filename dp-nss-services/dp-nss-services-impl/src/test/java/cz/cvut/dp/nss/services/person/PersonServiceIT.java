@@ -3,6 +3,7 @@ package cz.cvut.dp.nss.services.person;
 import cz.cvut.dp.nss.exception.BadCredentialsException;
 import cz.cvut.dp.nss.services.AbstractServiceIT;
 import cz.cvut.dp.nss.services.role.Role;
+import cz.cvut.dp.nss.services.timeTable.TimeTable;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -68,15 +69,21 @@ public class PersonServiceIT extends AbstractServiceIT {
         Assert.assertEquals(username, retrieved.getUsername());
 
 
-        //roles
+        //roles and timetables
         Assert.assertTrue(retrieved.getRoles().isEmpty());
         retrieved.getRoles().add(new Role(Role.Type.ADMIN));
+
+        Assert.assertTrue(retrieved.getTimeTables().isEmpty());
+        //spoleha na existenci zaznamu v DB
+        retrieved.getTimeTables().add(new TimeTable("pid"));
         personService.update(retrieved);
 
         retrieved = personService.get(retrieved.getId());
         Assert.assertNotNull(retrieved.getRoles());
         Assert.assertTrue(retrieved.hasRole(Role.Type.ADMIN));
 
+        Assert.assertNotNull(retrieved.getTimeTables());
+        Assert.assertTrue(retrieved.ownTimeTable("pid"));
 
         //delete
         personService.delete(retrieved.getId());

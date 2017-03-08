@@ -2,6 +2,7 @@ package cz.cvut.dp.nss.services.person;
 
 import cz.cvut.dp.nss.services.common.AbstractGeneratedIdEntity;
 import cz.cvut.dp.nss.services.role.Role;
+import cz.cvut.dp.nss.services.timeTable.TimeTable;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -41,6 +42,11 @@ public class Person extends AbstractGeneratedIdEntity {
         inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false, updatable = false))
     private Set<Role> roles;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "global.person_time_table", joinColumns = @JoinColumn(name = "person_id", nullable = false, updatable = false),
+        inverseJoinColumns = @JoinColumn(name = "time_table_id", nullable = false, updatable = false))
+    private Set<TimeTable> timeTables;
+
     public String getUsername() {
         return username;
     }
@@ -76,8 +82,23 @@ public class Person extends AbstractGeneratedIdEntity {
         this.roles = roles;
     }
 
+    public Set<TimeTable> getTimeTables() {
+        if(timeTables == null) {
+            timeTables = new HashSet<>();
+        }
+        return timeTables;
+    }
+
+    public void setTimeTables(Set<TimeTable> timeTables) {
+        this.timeTables = timeTables;
+    }
+
     public boolean hasRole(Role.Type roleNeeded) {
         return getRoles().contains(new Role(roleNeeded));
+    }
+
+    public boolean ownTimeTable(String timeTableId) {
+        return getTimeTables().contains(new TimeTable(timeTableId));
     }
 
 }

@@ -1,5 +1,6 @@
 package cz.cvut.dp.nss.controller.interceptor;
 
+import cz.cvut.dp.nss.context.SchemaThreadLocal;
 import cz.cvut.dp.nss.exception.UnauthorizedException;
 import cz.cvut.dp.nss.services.person.Person;
 import cz.cvut.dp.nss.services.person.PersonService;
@@ -55,9 +56,27 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
             Person person = personService.getByToken(securityHeader);
             if(person != null) {
+                //admin ma pravo automaticky na vsechno
+                if(person.hasRole(Role.Type.ADMIN)) {
+                    return true;
+                }
+
+                //najdeme, jestli uzivatel nema pozadovanou roli
                 for(Role.Type roleNeeded : rolesNeeded) {
                     if(person.hasRole(roleNeeded)) {
-                        return true;
+                        //a pokud ano, tak jeste overime pravo na zadany jizdni rad, ktery je ulozeny v ThreadLocal (diky filtru pred api)
+                        final String currentSchema = SchemaThreadLocal.get();
+                        if(currentSchema == null) {
+                            //pokud zde neni schema tak je spatny dotaz, tedy je treba uzivatele zariznout
+                            throw new UnauthorizedException();
+                        }
+
+                        if(person.ownTimeTable(currentSchema)) {
+                            //uzivatel ma pravo na dany jizdni rad :)
+                            return true;
+                        } else {
+                            throw new UnauthorizedException();
+                        }
                     }
                 }
             }

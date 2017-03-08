@@ -1,11 +1,12 @@
 package cz.cvut.dp.nss.services.timeTable;
 
 import cz.cvut.dp.nss.services.common.AbstractAssignedIdEntity;
+import cz.cvut.dp.nss.services.person.Person;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Dostupne jizdny rady.
@@ -27,6 +28,17 @@ public class TimeTable extends AbstractAssignedIdEntity {
     @Column
     private boolean valid;
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "timeTables")
+    private Set<Person> persons;
+
+    public TimeTable() {
+        //empty
+    }
+
+    public TimeTable(String id) {
+        setId(id);
+    }
+
     public String getName() {
         return name;
     }
@@ -41,5 +53,16 @@ public class TimeTable extends AbstractAssignedIdEntity {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public Set<Person> getPersons() {
+        if(persons == null) {
+            persons = new HashSet<>();
+        }
+        return persons;
+    }
+
+    public void setPersons(Set<Person> persons) {
+        this.persons = persons;
     }
 }

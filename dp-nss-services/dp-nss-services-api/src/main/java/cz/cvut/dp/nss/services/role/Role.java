@@ -4,6 +4,7 @@ import cz.cvut.dp.nss.services.person.Person;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -41,6 +42,9 @@ public class Role implements Serializable {
     }
 
     public Set<Person> getPersons() {
+        if(persons == null) {
+            persons = new HashSet<>();
+        }
         return persons;
     }
 
