@@ -1,5 +1,6 @@
 import {Component} from "@angular/core";
 import {UserService} from "./_service/user.service";
+import {HttpClient} from "./_service/http-client";
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,7 @@ import {UserService} from "./_service/user.service";
 })
 export class AppComponent {
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, public http: HttpClient) {}
 
   isLoggedIn(): boolean {
     return this.userService.isLoggedIn();

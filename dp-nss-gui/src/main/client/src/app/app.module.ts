@@ -22,6 +22,7 @@ import {AuthGuard} from "./_guard/auth.guard";
 import {AuthAdminGuard} from "./_guard/auth-admin.guard";
 import {HttpClient} from "./_service/http-client";
 import {UserService} from "./_service/user.service";
+import {MdProgressBarModule} from "@angular2-material/progress-bar";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {UserService} from "./_service/user.service";
     HttpModule,
     AppRoutingModule,
     NKDatetimeModule,
-    Ng2CompleterModule
+    Ng2CompleterModule,
+    MdProgressBarModule
   ],
   providers: [
       UserService,

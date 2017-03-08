@@ -5,13 +5,14 @@ import {DateService} from "./date.service";
 import {SearchResultModel} from "../_model/search-result-model";
 import {ErrorService} from "./error.service";
 import {HttpClient} from "./http-client";
+import {Observable} from "rxjs";
 
 @Injectable()
 export class SearchService {
 
     constructor(private http: HttpClient, private errorService: ErrorService) { }
 
-    search(timeTableId: string, stopFrom: string, stopTo: string, departureDate: Date, departureTime: Date, maxTransfers: number): Promise<SearchResultModel[]> {
+    search(timeTableId: string, stopFrom: string, stopTo: string, departureDate: Date, departureTime: Date, maxTransfers: number): Observable<SearchResultModel[]> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('stopFromName', stopFrom);
         params.set('stopToName', stopTo);
@@ -20,9 +21,8 @@ export class SearchService {
 
         return this.http
             .get(AppSettings.API_ENDPOINT + AppSettings.getSchemaUrlParam(timeTableId) + "/search", params)
-            .toPromise()
-            .then(response => response.json() as SearchResultModel[])
-            .catch(this.errorService.handleError);
+            .map((response => response.json() as SearchResultModel[]))
+            .catch(this.errorService.handleServerError);
     }
 
 

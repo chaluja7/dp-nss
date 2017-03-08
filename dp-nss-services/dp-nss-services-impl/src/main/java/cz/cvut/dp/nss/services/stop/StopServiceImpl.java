@@ -25,7 +25,6 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
         super(dao);
     }
 
-    //TODO - opravdu by to neslo resit jinak? - problem je jak volat metody z iteratoru a otevrit u toho transakci
     @Resource(name = "stopServiceImpl")
     private StopService stopService;
 
