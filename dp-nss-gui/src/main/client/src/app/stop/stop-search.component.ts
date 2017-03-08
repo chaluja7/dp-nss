@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {Observable, Subject} from "rxjs";
-import {StopService} from "./stop.service";
+import {StopService} from "../_service/stop.service";
 
 @Component({
   moduleId: module.id,

@@ -1,17 +1,15 @@
 import {Injectable} from "@angular/core";
-import {TimeTable} from "./time-table";
-import {Http, Headers} from "@angular/http";
+import {TimeTable} from "../_model/time-table";
 import "rxjs/add/operator/toPromise";
-import {ErrorService} from "../common/error.service";
+import {ErrorService} from "./error.service";
+import {HttpClient} from "./http-client";
 
 @Injectable()
 export class TimeTableService {
 
   private timeTableUrl = '/api/v1/timeTable';
 
-  private headers = new Headers({'Content-Type': 'application/json'});
-
-  constructor(private http: Http, private errorService: ErrorService) { }
+  constructor(private http: HttpClient, private errorService: ErrorService) { }
 
   getTimeTables(): Promise<TimeTable[]> {
       return this.http.get(this.timeTableUrl)
@@ -31,7 +29,7 @@ export class TimeTableService {
   update(timeTable: TimeTable): Promise<TimeTable> {
     const url = `${this.timeTableUrl}/${timeTable.id}`;
     return this.http
-        .put(url, JSON.stringify(timeTable), {headers: this.headers})
+        .put(url, JSON.stringify(timeTable))
         .toPromise()
         .then(() => timeTable)
         .catch(this.errorService.handleError);
@@ -39,7 +37,7 @@ export class TimeTableService {
 
   create(timeTable: TimeTable): Promise<TimeTable> {
     return this.http
-        .post(this.timeTableUrl, JSON.stringify(timeTable), {headers: this.headers})
+        .post(this.timeTableUrl, JSON.stringify(timeTable))
         .toPromise()
         .then(response => response.json() as TimeTable)
         .catch(this.errorService.handleError);
@@ -47,7 +45,7 @@ export class TimeTableService {
 
   delete(id: string): Promise<void> {
     const url = `${this.timeTableUrl}/${id}`;
-    return this.http.delete(url, {headers: this.headers})
+    return this.http.delete(url)
         .toPromise()
         .then(() => null)
         .catch(this.errorService.handleError);

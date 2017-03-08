@@ -1,14 +1,15 @@
 import {Injectable} from "@angular/core";
-import {Http, URLSearchParams} from "@angular/http";
-import {AppSettings} from "../common/app.settings";
-import {DateService} from "../common/date.service";
-import {SearchResultModel} from "./search-result-model";
-import {ErrorService} from "../common/error.service";
+import {URLSearchParams} from "@angular/http";
+import {AppSettings} from "../_common/app.settings";
+import {DateService} from "./date.service";
+import {SearchResultModel} from "../_model/search-result-model";
+import {ErrorService} from "./error.service";
+import {HttpClient} from "./http-client";
 
 @Injectable()
 export class SearchService {
 
-    constructor(private http: Http, private errorService: ErrorService) { }
+    constructor(private http: HttpClient, private errorService: ErrorService) { }
 
     search(timeTableId: string, stopFrom: string, stopTo: string, departureDate: Date, departureTime: Date, maxTransfers: number): Promise<SearchResultModel[]> {
         let params: URLSearchParams = new URLSearchParams();
@@ -18,7 +19,7 @@ export class SearchService {
         params.set('maxTransfers', maxTransfers + '');
 
         return this.http
-            .get(AppSettings.API_ENDPOINT + AppSettings.getSchemaUrlParam(timeTableId) + "/search", {search: params})
+            .get(AppSettings.API_ENDPOINT + AppSettings.getSchemaUrlParam(timeTableId) + "/search", params)
             .toPromise()
             .then(response => response.json() as SearchResultModel[])
             .catch(this.errorService.handleError);

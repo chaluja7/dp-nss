@@ -1,12 +1,12 @@
 import {Injectable} from "@angular/core";
-import {Http} from "@angular/http";
 import {Observable} from "rxjs";
-import {AppSettings} from "../common/app.settings";
+import {AppSettings} from "../_common/app.settings";
+import {HttpClient} from "./http-client";
 
 @Injectable()
 export class StopService {
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   search(term: string, timeTableId: string): Observable<string[]> {
     return this.http

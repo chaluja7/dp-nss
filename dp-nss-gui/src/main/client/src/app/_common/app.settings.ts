@@ -4,6 +4,8 @@ export class AppSettings {
 
     public static SCHEMA_URL_PREFIX = 'x-';
 
+    public static AUTH_HEADER = 'X-Auth';
+
     public static getSchemaUrlParam(schema: string) {
         return AppSettings.SCHEMA_URL_PREFIX + schema;
     }

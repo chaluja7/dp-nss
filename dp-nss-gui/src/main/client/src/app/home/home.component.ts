@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
-import {TimeTable} from "../timeTable/time-table";
-import {TimeTableService} from "../timeTable/time-table.service";
+import {TimeTable} from "../_model/time-table";
+import {TimeTableService} from "../_service/time-table.service";
 
 @Component({
   moduleId: module.id,

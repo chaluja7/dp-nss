@@ -22,7 +22,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
     @Autowired
     protected PersonService personService;
 
-    private static final String SECURITY_HEADER = "X-Auth";
+    public static final String SECURITY_HEADER = "X-Auth";
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
@@ -67,8 +67,8 @@ public class SecurityInterceptor implements HandlerInterceptor {
                         //a pokud ano, tak jeste overime pravo na zadany jizdni rad, ktery je ulozeny v ThreadLocal (diky filtru pred api)
                         final String currentSchema = SchemaThreadLocal.get();
                         if(currentSchema == null) {
-                            //pokud zde neni schema tak je spatny dotaz, tedy je treba uzivatele zariznout
-                            throw new UnauthorizedException();
+                            //dotazy bez schematu, napr logout :)
+                            return true;
                         }
 
                         if(person.ownTimeTable(currentSchema)) {

@@ -6,21 +6,28 @@ import {AppComponent} from "./app.component";
 import {HomeComponent} from "./home/home.component";
 import {TimeTablesComponent} from "./timeTable/time-tables.component";
 import {TimeTableComponent} from "./timeTable/time-table.component";
-import {TimeTableService} from "./timeTable/time-table.service";
+import {TimeTableService} from "./_service/time-table.service";
 import {AppRoutingModule} from "./app-routing.module";
-import {StopService} from "./stop/stop.service";
-import {DateService} from "./common/date.service";
-import {SearchService} from "./search/search.service";
-import {ErrorService} from "./common/error.service";
+import {StopService} from "./_service/stop.service";
+import {DateService} from "./_service/date.service";
+import {SearchService} from "./_service/search.service";
+import {ErrorService} from "./_service/error.service";
 import {StopSearchComponent} from "./stop/stop-search.component";
 import {SearchComponent} from "./search/search.component";
 import {NKDatetimeModule} from "ng2-datetime/ng2-datetime";
 import {Ng2CompleterModule} from "ng2-completer";
+import {LoginComponent} from "./login/login.component";
+import {AuthenticationService} from "./_service/authentication.service";
+import {AuthGuard} from "./_guard/auth.guard";
+import {AuthAdminGuard} from "./_guard/auth-admin.guard";
+import {HttpClient} from "./_service/http-client";
+import {UserService} from "./_service/user.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    LoginComponent,
     TimeTablesComponent,
     TimeTableComponent,
     StopSearchComponent,
@@ -35,6 +42,11 @@ import {Ng2CompleterModule} from "ng2-completer";
     Ng2CompleterModule
   ],
   providers: [
+      UserService,
+      HttpClient,
+      AuthenticationService,
+      AuthGuard,
+      AuthAdminGuard,
       DateService,
       ErrorService,
       TimeTableService,

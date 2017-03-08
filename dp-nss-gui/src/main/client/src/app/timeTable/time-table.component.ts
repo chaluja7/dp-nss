@@ -2,8 +2,8 @@ import "rxjs/add/operator/switchMap";
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Location} from "@angular/common";
-import {TimeTable} from "./time-table";
-import {TimeTableService} from "./time-table.service";
+import {TimeTable} from "../_model/time-table";
+import {TimeTableService} from "../_service/time-table.service";
 @Component({
   moduleId: module.id,
   selector: 'time-table-component',

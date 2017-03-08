@@ -1,6 +1,14 @@
-<nav>
-  <a routerLink="/home" routerLinkActive="active">Home</a>
-  <a routerLink="/timeTable" routerLinkActive="active">Seznam jízdních řádů</a>
-</nav>
+<div class="">
+  <div class="container">
+    <div class="col-md-12">
+      <nav>
+        <a [routerLink]="['/home']" routerLinkActive="active">Vyhledávač</a>
+        <a *ngIf="isAdminLoggedIn()" [routerLink]="['/timeTable']" routerLinkActive="active">Seznam jízdních řádů</a>
+        <a *ngIf="!isLoggedIn()" [routerLink]="['/login']" routerLinkActive="active">Administrace</a>
+        <a *ngIf="isLoggedIn()" [routerLink]="['/login']">Odhlásit</a>
+      </nav>
 
-<router-outlet></router-outlet>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

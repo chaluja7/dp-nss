@@ -1,13 +1,13 @@
 import {Component, OnInit} from "@angular/core";
-import {TimeTable} from "../timeTable/time-table";
-import {TimeTableService} from "../timeTable/time-table.service";
-import {SearchModel} from "./search-model";
-import {DateService} from "../common/date.service";
-import {SearchService} from "./search.service";
-import {SearchResultModel} from "./search-result-model";
+import {TimeTable} from "../_model/time-table";
+import {TimeTableService} from "../_service/time-table.service";
+import {SearchModel} from "../_model/search-model";
+import {DateService} from "../_service/date.service";
+import {SearchService} from "../_service/search.service";
+import {SearchResultModel} from "../_model/search-result-model";
 import {CompleterService, RemoteData} from "ng2-completer";
-import {StopService} from "../stop/stop.service";
-import {AppSettings} from "../common/app.settings";
+import {StopService} from "../_service/stop.service";
+import {AppSettings} from "../_common/app.settings";
 
 @Component({
   moduleId: module.id,
