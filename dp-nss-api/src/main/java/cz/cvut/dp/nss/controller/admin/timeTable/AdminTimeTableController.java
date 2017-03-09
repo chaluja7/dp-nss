@@ -1,9 +1,13 @@
 package cz.cvut.dp.nss.controller.admin.timeTable;
 
 import cz.cvut.dp.nss.controller.admin.AdminAbstractController;
+import cz.cvut.dp.nss.controller.interceptor.SecurityInterceptor;
 import cz.cvut.dp.nss.controller.timeTable.TimeTableController;
 import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.exception.ResourceNotFoundException;
+import cz.cvut.dp.nss.exception.UnauthorizedException;
+import cz.cvut.dp.nss.services.person.Person;
+import cz.cvut.dp.nss.services.person.PersonService;
 import cz.cvut.dp.nss.services.timeTable.TimeTable;
 import cz.cvut.dp.nss.services.timeTable.TimeTableService;
 import cz.cvut.dp.nss.wrapper.out.timeTable.TimeTableWrapper;
@@ -24,11 +28,14 @@ public class AdminTimeTableController extends AdminAbstractController {
     @Autowired
     private TimeTableService timeTableService;
 
+    @Autowired
+    private PersonService personService;
+
     @RequestMapping(method = RequestMethod.GET)
-    public List<TimeTableWrapper> getTimeTables() {
+    public List<TimeTableWrapper> getTimeTables(@RequestHeader(SecurityInterceptor.SECURITY_HEADER) String userToken) {
+        //admin vidi vsechno (i nevalidni), obycejny uzivatel jen ty, ktere ma prirazene (i nevalidni)
         List<TimeTableWrapper> timeTableWrappers = new ArrayList<>();
-        //zde vybiram i nevalidni
-        for(TimeTable timeTable : timeTableService.getAll(false)) {
+        for(TimeTable timeTable : timeTableService.getAllForPerson(personService.getByToken(userToken))) {
             timeTableWrappers.add(TimeTableController.getTimeTableWrapper(timeTable));
         }
 
@@ -36,7 +43,10 @@ public class AdminTimeTableController extends AdminAbstractController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public TimeTableWrapper getTimeTable(@PathVariable("id") String id) {
+    public TimeTableWrapper getTimeTable(@PathVariable("id") String id, @RequestHeader(SecurityInterceptor.SECURITY_HEADER) String userToken) throws UnauthorizedException {
+        //zaslouzilo by si vlastni anotaci a kontrolovat v CheckAccess
+        if(!personOwnsTimeTable(personService.getByToken(userToken), id)) throw new UnauthorizedException();
+
         TimeTable timeTable = timeTableService.get(id);
         if(timeTable == null) {
             throw new ResourceNotFoundException();
@@ -46,7 +56,10 @@ public class AdminTimeTableController extends AdminAbstractController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public TimeTableWrapper updateTimeTable(@PathVariable("id") String id, @RequestBody TimeTableWrapper wrapper) throws ResourceNotFoundException, BadRequestException {
+    public TimeTableWrapper updateTimeTable(@PathVariable("id") String id, @RequestBody TimeTableWrapper wrapper,
+                                            @RequestHeader(SecurityInterceptor.SECURITY_HEADER) String userToken) throws ResourceNotFoundException, BadRequestException, UnauthorizedException {
+        //zaslouzilo by si vlastni anotaci a kontrolovat v CheckAccess
+        if(!personOwnsTimeTable(personService.getByToken(userToken), id)) throw new UnauthorizedException();
         if(timeTableService.get(id) == null) throw new ResourceNotFoundException();
 
         TimeTable timeTable = TimeTableController.getTimeTable(wrapper);
@@ -54,6 +67,10 @@ public class AdminTimeTableController extends AdminAbstractController {
         timeTableService.update(timeTable);
 
         return TimeTableController.getTimeTableWrapper(timeTable);
+    }
+
+    private static boolean personOwnsTimeTable(Person person, String timeTableId) {
+        return person != null && person.ownTimeTable(timeTableId);
     }
 
 }

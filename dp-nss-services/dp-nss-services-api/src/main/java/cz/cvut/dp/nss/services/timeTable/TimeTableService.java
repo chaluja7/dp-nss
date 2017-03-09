@@ -1,6 +1,7 @@
 package cz.cvut.dp.nss.services.timeTable;
 
 import cz.cvut.dp.nss.services.common.EntityService;
+import cz.cvut.dp.nss.services.person.Person;
 
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface TimeTableService extends EntityService<TimeTable, String> {
      * @return all timetables
      */
     List<TimeTable> getAll(boolean validOnly);
+
+    List<TimeTable> getAllForPerson(Person person);
 
 }

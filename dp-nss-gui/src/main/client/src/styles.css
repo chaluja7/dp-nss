@@ -18,3 +18,16 @@ input.ng-invalid:not(form), select.ng-invalid:not(form), .ng-invalid > div > inp
 .vertical-middle {
     vertical-align: middle !important;
 }
+
+.selected {
+    background-color: #CFD8DC !important;
+    font-weight: bold;
+    color: #000;
+}
+
+.edit-icon {
+    font-size: 30px;
+    line-height: 37px;
+    padding-left: 4px;
+    padding-top: 3px;
+}

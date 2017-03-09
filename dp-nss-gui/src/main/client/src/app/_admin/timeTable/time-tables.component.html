@@ -1,13 +1,20 @@
-<h2>Seznam jízdních řádů:</h2>
-<ul class="timeTables">
-    <li *ngFor="let timeTable of timeTables"
-        [class.selected]="timeTable === selectedTimeTable"
-        (click)="goToDetail(timeTable)">
-        <span class="badge">{{timeTable.id}}</span>
-        {{timeTable.name}}
-        <!--<button class="delete" (click)="delete(timeTable); $event.stopPropagation()">x</button>-->
-    </li>
-</ul>
+<div class="row">
+    <div class="col-md-10"><h2>Dostupné jízdní řády</h2></div>
+    <div class="col-md-2">
+        <div *ngIf="selectedTimeTable" (click)="goToDetail(selectedTimeTable)" class="pull-right btn btn-warning" title="Editace zvoleného jízdního řádu">
+            <i class="fa fa-pencil-square-o edit-icon"></i>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div *ngFor="let timeTable of timeTables" class="btn btn-primary time-table-dash" [class.selected]="timeTable === selectedTimeTable"
+             (click)="onSelect(timeTable)">
+            {{timeTable.name}}
+        </div>
+    </div>
+</div>
 
 <!--<h4>Vložit</h4>-->
 <!--<div>-->

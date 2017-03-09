@@ -1,15 +1,21 @@
-<div *ngIf="timeTable">
-  <h2>Detail jízdního řádu {{timeTable.id}}!</h2>
-  <div>
-    <label>id: </label>{{timeTable.id}}
-  </div>
-  <div>
-    <label>name: </label>
-    <input [(ngModel)]="timeTable.name" placeholder="name"/>
-  </div>
-  <div>
-    <label>valid: </label>
-    <input type="checkbox" [(ngModel)]="timeTable.valid"/>
-  </div>
-  <button (click)="save()">Uložit</button>
+<div class="col-md-6 col-md-offset-3" *ngIf="timeTable">
+  <h2>Detail jízdního řádu</h2>
+  <form (ngSubmit)="onSubmit()" #f="ngForm">
+    <div class="form-group">
+      <label for="id">ID:</label>
+      <input type="text" class="form-control" name="id" id="id" value="{{timeTable.id}}" disabled />
+    </div>
+    <div class="form-group">
+      <label for="name">Název:</label>
+      <input type="text" class="form-control" name="name" id="name" [(ngModel)]="timeTable.name" required />
+    </div>
+    <div class="form-group">
+      <label for="valid">Aktivní:</label>
+      <input type="checkbox" class="form-control" name="valid" id="valid" [(ngModel)]="timeTable.valid" />
+    </div>
+    <div class="form-group">
+      <button [disabled]="!f.form.valid || loading" class="btn btn-success" type="submit">Uložit</button>
+    </div>
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  </form>
 </div>

@@ -12,10 +12,9 @@ export class ErrorService {
   public handleServerError(error: Response): Observable<any> {
     console.error('An error occurred: ', error.status + ' - ' + error.json().message);
     if(error.status === 401) {
-      console.log("bbb");
+      this.location.replaceState('/');
       //pokud je unauthorized tak globalne hazeme na prihlasovaci stranku a mazeme ulozene aut. hlavicky z localStorage
       this.router.navigate(['/login']);
-      this.location.replaceState('/');
       return Observable.empty();
     }
 

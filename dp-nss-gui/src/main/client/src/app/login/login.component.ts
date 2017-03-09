@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authenticationService.login(this.model.username, this.model.password)
         .subscribe(result => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/timeTable']);
         },
         err  => {
             this.loginFailed();

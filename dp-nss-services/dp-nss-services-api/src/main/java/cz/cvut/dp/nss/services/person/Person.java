@@ -98,7 +98,7 @@ public class Person extends AbstractGeneratedIdEntity {
     }
 
     public boolean ownTimeTable(String timeTableId) {
-        return getTimeTables().contains(new TimeTable(timeTableId));
+        return hasRole(Role.Type.ADMIN) || getTimeTables().contains(new TimeTable(timeTableId));
     }
 
 }
