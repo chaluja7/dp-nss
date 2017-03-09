@@ -57,6 +57,19 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
         return set;
     }
 
+    @Override
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
+    public List<Stop> getByFilter(Integer offset, Integer limit, String orderColumn, boolean asc) {
+        if(limit != null && limit <= 0) return new ArrayList<>();
+        return dao.getByFilter(getOffsetOrDefault(offset), getLimitOrDefault(limit), orderColumn != null ? orderColumn : "", asc);
+    }
+
+    @Override
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
+    public long getCountByFilter() {
+        return dao.getCountByFilter();
+    }
+
     private class BatchProcessingStopsIterator extends BatchProcessingIterator<Stop> {
 
         BatchProcessingStopsIterator() {

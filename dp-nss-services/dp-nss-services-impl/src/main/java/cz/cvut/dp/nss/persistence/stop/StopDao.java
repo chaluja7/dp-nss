@@ -49,4 +49,58 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
         return query.list();
     }
 
+    /**
+     * @param offset index prvniho vraceneho zaznamu
+     * @param limit max pocet vracenych zaznamu
+     * @return vsechny stanice dle rozsahu
+     */
+    public List<Stop> getByFilter(final int offset, final int limit, final String orderColumn, final boolean asc) {
+        StringBuilder builder = new StringBuilder("select s from Stop s order by ");
+        switch(orderColumn) {
+            case "id":
+                builder.append("s.id");
+                break;
+            case "name":
+                builder.append("s.name");
+                break;
+            case "lat":
+                builder.append("s.lat");
+                break;
+            case "lon":
+                builder.append("s.lon");
+                break;
+            case "wheelChair":
+                builder.append("s.stopWheelchairBoardingType");
+                break;
+            case "parentStopId":
+                builder.append("s.parentStop.id");
+                break;
+            default:
+                builder.append("s.id");
+                break;
+        }
+
+        if(!asc) {
+            builder.append(" desc");
+        }
+
+        //aby to bylo deterministicke
+        builder.append(", s.id");
+
+        Query<Stop> query = sessionFactory.getCurrentSession().createQuery(builder.toString(), Stop.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+
+        return query.list();
+    }
+
+    /**
+     * @return celkovy pocet zaznamu dle filtru
+     */
+    public long getCountByFilter() {
+        final String queryString = "select count(distinct s) from Stop s";
+        Query<Long> query = sessionFactory.getCurrentSession().createQuery(queryString, Long.class);
+        return query.uniqueResult();
+    }
+
 }

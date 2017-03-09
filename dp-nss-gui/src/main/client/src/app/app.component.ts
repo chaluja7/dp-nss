@@ -19,4 +19,8 @@ export class AppComponent {
     return this.userService.isAdminLoggedIn();
   }
 
+  isTimeTableSelected(): boolean {
+    return this.userService.getSelectedTimeTable() !== null;
+  }
+
 }

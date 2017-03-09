@@ -2,15 +2,15 @@
     <div class="col-md-10"><h2>Dostupné jízdní řády</h2></div>
     <div class="col-md-2">
         <div *ngIf="selectedTimeTable" (click)="goToDetail(selectedTimeTable)" class="pull-right btn btn-warning" title="Editace zvoleného jízdního řádu">
-            <i class="fa fa-pencil-square-o edit-icon"></i>
+            <i class="fa fa-pencil edit-icon"></i>
         </div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-12">
-        <div *ngFor="let timeTable of timeTables" class="btn btn-primary time-table-dash" [class.selected]="timeTable === selectedTimeTable"
-             (click)="onSelect(timeTable)">
+        <div *ngFor="let timeTable of timeTables" class="btn time-table-dash {{timeTable.valid ? 'btn-primary' : 'btn-warning'}}"
+             [class.selected]="timeTable === selectedTimeTable" (click)="onSelect(timeTable)">
             {{timeTable.name}}
         </div>
     </div>

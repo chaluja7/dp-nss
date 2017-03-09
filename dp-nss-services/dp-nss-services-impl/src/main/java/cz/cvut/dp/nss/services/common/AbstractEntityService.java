@@ -18,6 +18,12 @@ public abstract class AbstractEntityService<ENT extends AbstractEntity<ID>, ID e
      */
     protected DAO dao;
 
+    protected static final int OFFSET_DEFAULT = 0;
+
+    protected static final int LIMIT_DEFAULT = 20;
+
+    protected static final int LIMIT_MAX = 100;
+
     /**
      * @param dao konkretni dao implementace z potomka
      */
@@ -53,6 +59,14 @@ public abstract class AbstractEntityService<ENT extends AbstractEntity<ID>, ID e
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public List<ENT> getAll() {
         return dao.getAll();
+    }
+
+    protected int getOffsetOrDefault(Integer offset) {
+        return offset != null ? offset : OFFSET_DEFAULT;
+    }
+
+    protected int getLimitOrDefault(Integer limit) {
+        return limit == null ? LIMIT_DEFAULT : limit > LIMIT_MAX ? LIMIT_MAX : limit;
     }
 
 }

@@ -21,8 +21,10 @@ export class HttpClient {
     }
   }
 
-  get(url: string, params?: URLSearchParams): Observable<Response> {
-    let headers = new Headers();
+  get(url: string, params?: URLSearchParams, headers?: Headers): Observable<Response> {
+    if(!headers) {
+      headers = new Headers();
+    }
     this.createAuthorizationHeader(headers);
 
     this.numberOfPendingRequests++;

@@ -9,25 +9,25 @@ import {AppSettings} from "../../_common/app.settings";
 @Injectable()
 export class AdminTimeTableService {
 
-  private timeTableUrl = 'admin/timeTable';
+  private static TIME_TABLE_URL = 'admin/timeTable';
 
   constructor(private http: HttpClient, private errorService: ErrorService) { }
 
   getTimeTables(): Observable<TimeTable[]> {
-      return this.http.get(AppSettings.API_ENDPOINT + this.timeTableUrl)
+      return this.http.get(AppSettings.API_ENDPOINT + AdminTimeTableService.TIME_TABLE_URL)
           .map((response => response.json() as TimeTable[]))
           .catch(err => this.errorService.handleServerError(err));
   }
 
   getTimeTable(id: string): Observable<TimeTable> {
-    const url = AppSettings.API_ENDPOINT + `${this.timeTableUrl}/${id}`;
+    const url = AppSettings.API_ENDPOINT + `${AdminTimeTableService.TIME_TABLE_URL}/${id}`;
     return this.http.get(url)
         .map((response => response.json() as TimeTable))
         .catch(err => this.errorService.handleServerError(err));
   }
 
   update(timeTable: TimeTable): Observable<TimeTable> {
-    const url = AppSettings.API_ENDPOINT + `${this.timeTableUrl}/${timeTable.id}`;
+    const url = AppSettings.API_ENDPOINT + `${AdminTimeTableService.TIME_TABLE_URL}/${timeTable.id}`;
     return this.http.put(url, JSON.stringify(timeTable))
         .map((response => response.json() as TimeTable))
         .catch(err => this.errorService.handleServerError(err));
@@ -35,14 +35,14 @@ export class AdminTimeTableService {
 
   // create(timeTable: TimeTable): Promise<TimeTable> {
   //   return this.http
-  //       .post(this.timeTableUrl, JSON.stringify(timeTable))
+  //       .post(this.TIME_TABLE_URL, JSON.stringify(timeTable))
   //       .toPromise()
   //       .then(response => response.json() as TimeTable)
   //       .catch(this.errorService.handleError);
   // }
   //
   // delete(id: string): Promise<void> {
-  //   const url = `${this.timeTableUrl}/${id}`;
+  //   const url = `${this.TIME_TABLE_URL}/${id}`;
   //   return this.http.delete(url)
   //       .toPromise()
   //       .then(() => null)

@@ -32,4 +32,18 @@ public interface StopService extends EntityService<Stop, String> {
      */
     Set<String> findStopNamesByStartPattern(String startPattern);
 
+    /**
+     * @param offset index prvniho vraceneho zaznamu
+     * @param limit max pocet vracenych zaznamu
+     * @param orderColumn radici sloupec
+     * @param asc true pokud radim asc, false jinak (desc)
+     * @return vsechny stanice dle filtru
+     */
+    List<Stop> getByFilter(final Integer offset, final Integer limit, final String orderColumn, final boolean asc);
+
+    /**
+     * @return celkovy pocet zaznamu dle filtru (pro ucely strankovani)
+     */
+    long getCountByFilter();
+
 }

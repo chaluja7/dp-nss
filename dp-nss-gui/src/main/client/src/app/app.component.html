@@ -11,7 +11,8 @@
         <a [routerLink]="['/home']" routerLinkActive="active">Vyhledávač</a>
 
         <div class="pull-right">
-          <a *ngIf="isAdminLoggedIn()" [routerLink]="['/timeTable']" routerLinkActive="active">Jízdní řády</a>
+          <a *ngIf="isLoggedIn()" [routerLink]="['/timeTable']" routerLinkActive="active">Jízdní řády</a>
+          <a *ngIf="isLoggedIn() && isTimeTableSelected()" [routerLink]="['/stop']" routerLinkActive="active">Stanice</a>
           <a *ngIf="!isLoggedIn()" [routerLink]="['/login']" routerLinkActive="active">Administrace</a>
           <a *ngIf="isLoggedIn()" [routerLink]="['/login']">Odhlásit</a>
         </div>

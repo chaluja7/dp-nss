@@ -40,6 +40,7 @@ export class TimeTablesComponent implements OnInit {
           //pokud neni nyni zadny aktivni, tak udelam aktvni ten prvni
           if(!this.selectedTimeTable && timeTables.length > 0) {
             this.selectedTimeTable = timeTables[0];
+            this.userService.storeSelectedTimeTable(this.selectedTimeTable.id);
           }
         }, err  => {});
   }

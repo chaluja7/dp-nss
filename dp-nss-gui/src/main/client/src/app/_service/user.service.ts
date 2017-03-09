@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {LoggedUser} from "../_model/logged-user";
+import {AppSettings} from "../_common/app.settings";
 
 @Injectable()
 export class UserService {
@@ -45,6 +46,15 @@ export class UserService {
 
   storeSelectedTimeTable(timeTable: string): void {
       localStorage.setItem(UserService.SELECTED_TIME_TABLE_IDENT, timeTable);
+  }
+
+  getApiPrefix(): string {
+      let currTimeTable = this.getSelectedTimeTable();
+      if(currTimeTable) {
+          return AppSettings.API_ENDPOINT + AppSettings.getSchemaUrlParam(currTimeTable) + "/";
+      }
+
+      return AppSettings.API_ENDPOINT;
   }
 
 }

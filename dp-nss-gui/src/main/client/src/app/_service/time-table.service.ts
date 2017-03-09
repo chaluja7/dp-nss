@@ -9,12 +9,12 @@ import {AppSettings} from "../_common/app.settings";
 @Injectable()
 export class TimeTableService {
 
-  private timeTableUrl = 'timeTable';
+  private static TIME_TABLE_URL = 'timeTable';
 
   constructor(private http: HttpClient, private errorService: ErrorService) { }
 
   getTimeTables(): Observable<TimeTable[]> {
-      return this.http.get(AppSettings.API_ENDPOINT + this.timeTableUrl)
+      return this.http.get(AppSettings.API_ENDPOINT + TimeTableService.TIME_TABLE_URL)
           .map((response => response.json() as TimeTable[]))
           .catch(err => this.errorService.handleServerError(err));
   }

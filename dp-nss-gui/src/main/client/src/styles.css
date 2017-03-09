@@ -31,3 +31,23 @@ input.ng-invalid:not(form), select.ng-invalid:not(form), .ng-invalid > div > inp
     padding-left: 4px;
     padding-top: 3px;
 }
+
+ul.pagination li a {
+    cursor: pointer;
+}
+
+.sorting-head i {
+    cursor: pointer;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.table tbody tr td {
+    vertical-align: middle;
+}

@@ -24,6 +24,11 @@ import {AuthAdminGuard} from "./_guard/auth-admin.guard";
 import {HttpClient} from "./_service/http-client";
 import {UserService} from "./_service/user.service";
 import {MdProgressBarModule} from "@angular2-material/progress-bar";
+import {StopsComponent} from "./_admin/stop/stops.component";
+import {AuthWithTimeTableGuard} from "./_guard/auth-with-time-table.guard";
+import {AdminStopService} from "./_service/_admin/admin-stop.service";
+import {WheelChairPipe} from "./_pipe/wheel-chair.pipe";
+import {PagerService} from "./_service/_admin/pager.service";
 
 @NgModule({
   declarations: [
@@ -33,7 +38,9 @@ import {MdProgressBarModule} from "@angular2-material/progress-bar";
     TimeTablesComponent,
     TimeTableComponent,
     StopSearchComponent,
-    SearchComponent
+    SearchComponent,
+    StopsComponent,
+    WheelChairPipe
   ],
   imports: [
     BrowserModule,
@@ -46,16 +53,19 @@ import {MdProgressBarModule} from "@angular2-material/progress-bar";
   ],
   providers: [
       UserService,
+      PagerService,
       HttpClient,
       AuthenticationService,
       AuthGuard,
       AuthAdminGuard,
+      AuthWithTimeTableGuard,
       DateService,
       ErrorService,
       TimeTableService,
       StopService,
       SearchService,
-      AdminTimeTableService
+      AdminTimeTableService,
+      AdminStopService
   ],
   bootstrap: [AppComponent]
 })

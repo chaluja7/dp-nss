@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.controller.admin.stop;
 
 import cz.cvut.dp.nss.controller.admin.AdminAbstractController;
+import cz.cvut.dp.nss.controller.admin.wrapper.OrderWrapper;
+import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.exception.ResourceNotFoundException;
 import cz.cvut.dp.nss.services.common.EnumUtils;
 import cz.cvut.dp.nss.services.stop.Stop;
@@ -8,6 +10,8 @@ import cz.cvut.dp.nss.services.stop.StopService;
 import cz.cvut.dp.nss.services.stop.StopWheelchairBoardingType;
 import cz.cvut.dp.nss.wrapper.out.stop.StopWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,14 +30,20 @@ public class AdminStopController extends AdminAbstractController {
     private StopService stopService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<StopWrapper> getStops() {
-        List<Stop> stops = stopService.getAllInRange(0, 100);
+    public ResponseEntity<List<StopWrapper>> getStops(@RequestHeader(value = X_LIMIT_HEADER, required = false) Integer xLimit,
+                                      @RequestHeader(value = X_OFFSET_HEADER, required = false) Integer xOffset,
+                                      @RequestHeader(value = X_ORDER_HEADER, required = false) String xOrder) throws BadRequestException {
+
+        final OrderWrapper order = getOrderFromHeader(xOrder);
+        List<Stop> stops = stopService.getByFilter(xOffset, xLimit, order.getOrderColumn(), order.isAsc());
         List<StopWrapper> wrappers = new ArrayList<>();
         for(Stop stop : stops) {
             wrappers.add(getStopWrapper(stop));
         }
 
-        return wrappers;
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(X_COUNT_HEADER, stopService.getCountByFilter() + "");
+        return new ResponseEntity<>(wrappers, httpHeaders, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

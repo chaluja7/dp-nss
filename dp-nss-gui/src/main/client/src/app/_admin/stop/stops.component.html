@@ -1,0 +1,91 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2>Seznam stanic</h2>
+    </div>
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead class="sorting-head">
+        <tr>
+            <th>ID
+                <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'id' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'id' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', false)"></i>
+                </span>
+            </th>
+            <th>Název
+                <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'name' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('name', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'name' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('name', false)"></i>
+                </span>
+            </th>
+            <th>Šířka
+                <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'lat' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('lat', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'lat' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('lat', false)"></i>
+                </span>
+            </th>
+            <th>Délka
+                <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'lon' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('lon', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'lon' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('lon', false)"></i>
+                </span>
+            </th>
+            <th>Bezbariérová
+                <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'wheelChair' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('wheelChair', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'wheelChair' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('wheelChair', false)"></i>
+                </span>
+            </th>
+            <th>Patří ke stanici
+                <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'parentStopId' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('parentStopId', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'parentStopId' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('parentStopId', false)"></i>
+                </span>
+            </th>
+            <th class="align-center">Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let stop of stops">
+            <td>{{stop.id}}</td>
+            <td>{{stop.name}}</td>
+            <td>{{stop.lat}}</td>
+            <td>{{stop.lon}}</td>
+            <td>{{stop.wheelChairCode | wheelChair}}</td>
+            <td>{{stop.parentStopId}}</td>
+            <td class="align-center"><button class="btn btn-warning" (click)="goToDetail(stop)"><i class="fa fa-pencil"></i></button></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- pager -->
+<div class="col-md-12" style="text-align: center">
+    <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+        <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(1)">První</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(pager.currentPage - 1)">Předchozí</a>
+        </li>
+        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+            <a (click)="setPage(page)">{{page}}</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.currentPage + 1)">Další</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.totalPages)">Poslední</a>
+        </li>
+    </ul>
+</div>
+
+
+<!--<div class="row">-->
+    <!--<div class="col-md-12">-->
+        <!--<div *ngFor="let timeTable of timeTables" class="btn time-table-dash {{timeTable.valid ? 'btn-primary' : 'btn-warning'}}"-->
+             <!--[class.selected]="timeTable === selectedTimeTable" (click)="onSelect(timeTable)">-->
+            <!--{{timeTable.name}}-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

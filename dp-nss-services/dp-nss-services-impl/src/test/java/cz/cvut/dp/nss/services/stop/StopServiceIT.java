@@ -63,6 +63,18 @@ public class StopServiceIT extends AbstractServiceIT {
     }
 
     @Test
+    public void testGetByFilter() {
+        List<Stop> byFilter = stopService.getByFilter(0, 15, "parentStopId", true);
+        Assert.assertNotNull(byFilter);
+    }
+
+    @Test
+    public void testGetCountByFilter() {
+        long countByFilter = stopService.getCountByFilter();
+        Assert.assertTrue(countByFilter >= 0);
+    }
+
+    @Test
     public void testIteratorOverAllStops() {
         Iterator<Stop> stopIterator = stopService.iteratorOverAllStops();
         Set<String> stopIds = new HashSet<>();
