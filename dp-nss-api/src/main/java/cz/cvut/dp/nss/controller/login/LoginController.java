@@ -1,7 +1,6 @@
 package cz.cvut.dp.nss.controller.login;
 
 import cz.cvut.dp.nss.controller.AbstractController;
-import cz.cvut.dp.nss.controller.interceptor.CheckAccess;
 import cz.cvut.dp.nss.controller.interceptor.SecurityInterceptor;
 import cz.cvut.dp.nss.exception.BadCredentialsException;
 import cz.cvut.dp.nss.exception.UnauthorizedException;
@@ -38,10 +37,9 @@ public class LoginController extends AbstractController {
         return getPersonWrapper(person);
     }
 
-    @CheckAccess
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public void logoutUser(@RequestHeader(SecurityInterceptor.SECURITY_HEADER) String userToken) {
-        //v interceptoru se zjisti, jestli je uzivatel s tim tokenem vubec prihlaseny, pokud ne, sem se program nedostane
+        //je mozne zavolat i s nevalidnim tokenem, v tom pripade se vrati 200, aby to bylo idempotentni
         personService.destroyToken(userToken);
     }
 

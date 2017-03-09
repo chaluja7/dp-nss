@@ -23,7 +23,7 @@ export class AuthenticationService {
           let loggedUser = response.json();
           this.userService.storeUser(loggedUser);
         })
-        .catch(this.errorService.handleServerError);
+        .catch(err => this.errorService.handleServerError(err));
   }
 
   logout(): void {
@@ -34,7 +34,7 @@ export class AuthenticationService {
             .then(neco => {
                 this.userService.removeUser();
             })
-            .catch(this.errorService.handleError);
+            .catch(err => this.userService.removeUser());
     }
 
   }

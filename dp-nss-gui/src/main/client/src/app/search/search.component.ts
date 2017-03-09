@@ -47,15 +47,15 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.timeTableService.getTimeTables().then(
-        timeTables => {
-          this.timeTables = timeTables;
-          // this.searchModel.timeTableId = timeTables.length > 0 ? timeTables[0].id : null;
-          //TODO to nahore plati!
-          this.searchModel.timeTableId = 'pid';
-          this.stopSearchTerm = SearchComponent.getStopSearchTerm(this.searchModel.timeTableId);
-        }
-    );
+    this.timeTableService.getTimeTables()
+        .subscribe(timeTables => {
+              this.timeTables = timeTables;
+              // this.searchModel.timeTableId = timeTables.length > 0 ? timeTables[0].id : null;
+              //TODO to nahore plati!
+              this.searchModel.timeTableId = 'pid';
+              this.stopSearchTerm = SearchComponent.getStopSearchTerm(this.searchModel.timeTableId);
+            },
+            err  => {});
 
     this.searchModel.maxNumOfTransfers = 2;
     this.searchModel.date = new Date();
@@ -82,6 +82,7 @@ export class SearchComponent implements OnInit {
                 this.searchResults = searchResults;
             },
             err  => {
+              console.log('ęe');
               this.submitted = false;
             });
   }

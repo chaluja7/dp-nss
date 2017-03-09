@@ -1,14 +1,13 @@
 package cz.cvut.dp.nss.controller.timeTable;
 
 import cz.cvut.dp.nss.controller.AbstractController;
-import cz.cvut.dp.nss.exception.BadRequestException;
-import cz.cvut.dp.nss.exception.ResourceNotFoundException;
 import cz.cvut.dp.nss.services.timeTable.TimeTable;
 import cz.cvut.dp.nss.services.timeTable.TimeTableService;
 import cz.cvut.dp.nss.wrapper.out.timeTable.TimeTableWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,53 +25,14 @@ public class TimeTableController extends AbstractController {
     protected TimeTableService timeTableService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<TimeTableWrapper> getTimeTables(@RequestParam(value = "validOnly", required = false) Boolean validOnly) {
+    public List<TimeTableWrapper> getTimeTables() {
         List<TimeTableWrapper> timeTableWrappers = new ArrayList<>();
-        for(TimeTable timeTable : timeTableService.getAll(validOnly != null ? validOnly : false)) {
+        //zde vybiram jen validni
+        for(TimeTable timeTable : timeTableService.getAll(true)) {
             timeTableWrappers.add(getTimeTableWrapper(timeTable));
         }
 
         return timeTableWrappers;
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public TimeTableWrapper getTimeTable(@PathVariable("id") String id) {
-        TimeTable timeTable = timeTableService.get(id);
-        if(timeTable == null) {
-            throw new ResourceNotFoundException();
-        }
-
-        return getTimeTableWrapper(timeTable);
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<TimeTableWrapper> createTimeTable(@RequestBody TimeTableWrapper wrapper) {
-        TimeTable timeTable = getTimeTable(wrapper);
-        timeTableService.create(timeTable);
-
-        return getResponseCreated(getTimeTableWrapper(timeTableService.get(timeTable.getId())));
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public TimeTableWrapper updateTimeTable(@PathVariable("id") String id, @RequestBody TimeTableWrapper wrapper) throws ResourceNotFoundException, BadRequestException {
-        if(timeTableService.get(id) == null) throw new ResourceNotFoundException();
-
-        TimeTable timeTable = getTimeTable(wrapper);
-        timeTable.setId(id);
-        timeTableService.update(timeTable);
-
-        return getTimeTableWrapper(timeTable);
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteTimeTable(@PathVariable("id") String id) {
-        TimeTable timeTable = timeTableService.get(id);
-        if(timeTable == null) {
-            //ok, jiz neni v DB
-            return;
-        }
-
-        timeTableService.delete(timeTable.getId());
     }
 
     public static TimeTableWrapper getTimeTableWrapper(TimeTable timeTable) {

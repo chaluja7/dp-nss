@@ -4,9 +4,10 @@ import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {HomeComponent} from "./home/home.component";
-import {TimeTablesComponent} from "./timeTable/time-tables.component";
-import {TimeTableComponent} from "./timeTable/time-table.component";
+import {TimeTablesComponent} from "./_admin/timeTable/time-tables.component";
+import {TimeTableComponent} from "./_admin/timeTable/time-table.component";
 import {TimeTableService} from "./_service/time-table.service";
+import {AdminTimeTableService} from "./_service/_admin/admin-time-table.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {StopService} from "./_service/stop.service";
 import {DateService} from "./_service/date.service";
@@ -53,7 +54,8 @@ import {MdProgressBarModule} from "@angular2-material/progress-bar";
       ErrorService,
       TimeTableService,
       StopService,
-      SearchService
+      SearchService,
+      AdminTimeTableService
   ],
   bootstrap: [AppComponent]
 })

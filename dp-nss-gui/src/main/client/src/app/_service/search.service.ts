@@ -22,7 +22,7 @@ export class SearchService {
         return this.http
             .get(AppSettings.API_ENDPOINT + AppSettings.getSchemaUrlParam(timeTableId) + "/search", params)
             .map((response => response.json() as SearchResultModel[]))
-            .catch(this.errorService.handleServerError);
+            .catch(err => this.errorService.handleServerError(err));
     }
 
 
