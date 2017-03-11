@@ -8,6 +8,7 @@ import {AuthGuard} from "./_guard/auth.guard";
 import {StopsComponent} from "./_admin/stop/stops.component";
 import {AuthWithTimeTableGuard} from "./_guard/auth-with-time-table.guard";
 import {StopComponent} from "./_admin/stop/stop.component";
+import {StopNewComponent} from "./_admin/stop/stop-new.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'timeTable', component: TimeTablesComponent, canActivate: [AuthGuard] },
   { path: 'timeTable/:id', component: TimeTableComponent, canActivate: [AuthGuard] },
   { path: 'stop', component: StopsComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'stop/create', component: StopNewComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'stop/:id', component: StopComponent, canActivate: [AuthWithTimeTableGuard] },
 ];
 

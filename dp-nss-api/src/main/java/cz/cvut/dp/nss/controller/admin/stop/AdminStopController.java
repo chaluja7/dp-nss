@@ -91,10 +91,13 @@ public class AdminStopController extends AdminAbstractController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public StopWrapper updateStop(@PathVariable("id") String id, @RequestBody StopWrapper wrapper) throws ResourceNotFoundException, BadRequestException {
-        if(stopService.get(id) == null) throw new ResourceNotFoundException();
+        Stop existingStop = stopService.get(id);
+        if(existingStop == null) throw new ResourceNotFoundException();
 
         Stop stop = getStop(wrapper);
         stop.setId(id);
+        //jmeno neni mozne updatovat, protoze je na tom zavisla struktura grafu neo4j
+        stop.setName(existingStop.getName());
         stopService.update(stop);
 
         return getStopWrapper(stop);

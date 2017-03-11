@@ -49,7 +49,7 @@ export class AdminStopService {
   }
 
   create(stop: Stop): Observable<Stop> {
-    const url = this.userService.getApiPrefix() + `${AdminStopService.STOP_URL}/${stop.id}`;
+    const url = this.userService.getApiPrefix() + AdminStopService.STOP_URL;
     return this.http.post(url, JSON.stringify(stop))
         .map((response => response.json() as Stop))
         .catch(err => this.errorService.handleServerError(err));

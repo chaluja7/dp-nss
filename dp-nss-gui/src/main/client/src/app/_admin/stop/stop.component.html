@@ -1,8 +1,10 @@
 <div class="col-md-6 col-md-offset-3" *ngIf="stop">
   <div class="row padding-top-20">
-    <div class="col-md-9"><h2 class="margin-top-0">Detail stanice</h2></div>
-    <div class="col-md-3">
-      <button [disabled]="!stop?.canBeDeleted || loading" class="btn btn-danger pull-right" (click)="confirm('Opravdu chcete smazat tuto položku?') ? doDelete() : 0">
+    <div class="col-md-10"><h2 class="margin-top-0">{{newRecord ? 'Vložení stanice' : 'Detail stanice'}}</h2></div>
+    <div class="col-md-2">
+      <button *ngIf="!newRecord" [disabled]="!stop?.canBeDeleted || loading" class="btn btn-danger pull-right"
+              (click)="confirm('Opravdu chcete smazat tuto položku?') ? doDelete() : 0"
+              title="{{!stop?.canBeDeleted ? 'Stanici není možné smazat, protože jsou na ni navázané jiné stanice, nebo existují zastavení na této stanici.' : ''}}">
         <i class="fa fa-trash" aria-hidden="true"></i> Smazat
       </button>
     </div>
@@ -10,11 +12,11 @@
   <form (ngSubmit)="onSubmit()" #f="ngForm">
     <div class="form-group">
       <label for="id">ID:</label>
-      <input type="text" class="form-control" name="id" id="id" value="{{stop.id}}" disabled />
+      <input type="text" class="form-control" name="id" id="id" [(ngModel)]="stop.id" [disabled]="!newRecord" [required]="newRecord" />
     </div>
     <div class="form-group">
       <label for="name">Název:</label>
-      <input type="text" class="form-control" name="name" id="name" [(ngModel)]="stop.name" required />
+      <input type="text" class="form-control" name="name" id="name" [(ngModel)]="stop.name" [disabled]="!newRecord" [required]="newRecord" />
     </div>
     <div class="form-group">
       <label for="lat">Šířka:</label>
