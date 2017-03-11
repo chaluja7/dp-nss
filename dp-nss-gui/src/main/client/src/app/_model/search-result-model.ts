@@ -19,6 +19,7 @@ export class Stop {
   lon: number;
   wheelChairCode: number;
   parentStopId: string;
+  canBeDeleted: boolean;
 }
 
 export class Trip {

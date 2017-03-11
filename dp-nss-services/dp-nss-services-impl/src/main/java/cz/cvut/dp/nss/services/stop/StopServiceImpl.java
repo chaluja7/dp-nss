@@ -77,6 +77,17 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
         return dao.getCountByFilter(filter);
     }
 
+    @Override
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean canBeDeleted(String id) {
+        Stop stop = get(id);
+        if(stop != null) {
+            return !(stop.getChildStops().size() > 0 || stop.getStopTimes().size() > 0);
+        }
+
+        return false;
+    }
+
     private class BatchProcessingStopsIterator extends BatchProcessingIterator<Stop> {
 
         BatchProcessingStopsIterator() {

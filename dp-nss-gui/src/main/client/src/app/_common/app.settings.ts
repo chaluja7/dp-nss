@@ -17,7 +17,9 @@ export class AppSettings {
 
     public static DEFAULT_PAGE_LIMIT = 20;
 
-    public static SAVE_SUCCESS = 'Záznam byl úspěšně uložen';
+    public static SAVE_SUCCESS = 'Záznam byl úspěšně uložen.';
+
+    public static DELETE_SUCCESS = 'Záznam byl úspěšně smazán.';
 
     public static SAVE_ERROR = 'Chyba při zpracování.';
 

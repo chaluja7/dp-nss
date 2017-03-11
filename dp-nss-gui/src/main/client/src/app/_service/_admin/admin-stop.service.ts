@@ -48,4 +48,18 @@ export class AdminStopService {
         .catch(err => this.errorService.handleServerError(err));
   }
 
+  create(stop: Stop): Observable<Stop> {
+    const url = this.userService.getApiPrefix() + `${AdminStopService.STOP_URL}/${stop.id}`;
+    return this.http.post(url, JSON.stringify(stop))
+        .map((response => response.json() as Stop))
+        .catch(err => this.errorService.handleServerError(err));
+  }
+
+  delete(id: string): Observable<void> {
+    const url = this.userService.getApiPrefix() + `${AdminStopService.STOP_URL}/${id}`;
+    return this.http.delete(url)
+        .map(() => null)
+        .catch(err => this.errorService.handleServerError(err));
+  }
+
 }

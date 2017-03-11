@@ -100,6 +100,12 @@ public class StopServiceIT extends AbstractServiceIT {
         Assert.assertNotNull(list);
     }
 
+    @Test
+    public void testCanBeDeleted() {
+        boolean canBeDeleted = stopService.canBeDeleted("U1072N29");
+        Assert.assertTrue(true);
+    }
+
     public static Stop getStop(final String id, String name, Double lat, Double lon) {
         Stop stop = new Stop();
         stop.setId(id);

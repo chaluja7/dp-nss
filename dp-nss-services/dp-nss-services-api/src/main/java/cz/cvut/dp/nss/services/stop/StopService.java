@@ -52,4 +52,10 @@ public interface StopService extends EntityService<Stop, String> {
      */
     long getCountByFilter(final StopFilter filter);
 
+    /**
+     * @param id id stanice
+     * @return true, pokud muze byt stanice smazana (nema zadne stopTimes ani podrizene stanice)
+     */
+    boolean canBeDeleted(String id);
+
 }

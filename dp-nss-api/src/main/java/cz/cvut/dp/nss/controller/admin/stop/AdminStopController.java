@@ -76,15 +76,15 @@ public class AdminStopController extends AdminAbstractController {
         Stop stop = stopService.get(id);
         if(stop == null) throw new ResourceNotFoundException();
 
-        return getStopWrapper(stop);
+        StopWrapper stopWrapper = getStopWrapper(stop);
+        if(stopService.canBeDeleted(stop.getId())) stopWrapper.setCanBeDeleted(true);
+        return stopWrapper;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<StopWrapper> createStop(@RequestBody StopWrapper wrapper) throws BadRequestException {
         Stop stop = getStop(wrapper);
         stopService.create(stop);
-
-        //TODO validacni chyby pri ukladani?
 
         return getResponseCreated(getStopWrapper(stopService.get(stop.getId())));
     }
@@ -101,11 +101,15 @@ public class AdminStopController extends AdminAbstractController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteStop(@PathVariable("id") String id) {
+    public void deleteStop(@PathVariable("id") String id) throws BadRequestException {
         Stop stop = stopService.get(id);
         if(stop == null) {
             //ok, jiz neni v DB
             return;
+        }
+
+        if(!stopService.canBeDeleted(stop.getId())) {
+            throw new BadRequestException("stop can not be deleted");
         }
 
         stopService.delete(stop.getId());

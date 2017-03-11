@@ -1,5 +1,12 @@
 <div class="col-md-6 col-md-offset-3" *ngIf="stop">
-  <h2>Detail stanice</h2>
+  <div class="row padding-top-20">
+    <div class="col-md-9"><h2 class="margin-top-0">Detail stanice</h2></div>
+    <div class="col-md-3">
+      <button [disabled]="!stop?.canBeDeleted || loading" class="btn btn-danger pull-right" (click)="confirm('Opravdu chcete smazat tuto položku?') ? doDelete() : 0">
+        <i class="fa fa-trash" aria-hidden="true"></i> Smazat
+      </button>
+    </div>
+  </div>
   <form (ngSubmit)="onSubmit()" #f="ngForm">
     <div class="form-group">
       <label for="id">ID:</label>

@@ -65,4 +65,21 @@ export class StopComponent implements OnInit {
     this.location.back();
   }
 
+  doDelete(): void {
+      this.adminStopService.delete(this.stop.id)
+          .subscribe(() => {
+                  this.userService.setMsg(AppSettings.DELETE_SUCCESS);
+                  this.goBack()
+              },
+            err => {
+                this.error = AppSettings.SAVE_ERROR;
+                this.loading = false;
+            });
+
+  }
+
+  confirm(msg: string): boolean {
+    return confirm(msg);
+  }
+
 }
