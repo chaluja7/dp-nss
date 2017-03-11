@@ -33,6 +33,12 @@ public interface StopService extends EntityService<Stop, String> {
     Set<String> findStopNamesByStartPattern(String startPattern);
 
     /**
+     * @param searchQuery retezec, ktery se vyskytuje v ID nebo nazvu stanice
+     * @return vsechny stanice, kde id nebo nazev odpovida searchQuery
+     */
+    List<Stop> findStopsBySearchQuery(String searchQuery);
+
+    /**
      * @param offset index prvniho vraceneho zaznamu
      * @param limit max pocet vracenych zaznamu
      * @param orderColumn radici sloupec

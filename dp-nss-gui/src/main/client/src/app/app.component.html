@@ -18,6 +18,8 @@
         </div>
       </nav>
 
+      <div *ngIf="userService.msg" class="alert alert-success">{{userService.msg}}</div>
+
       <router-outlet></router-outlet>
     </div>
   </div>

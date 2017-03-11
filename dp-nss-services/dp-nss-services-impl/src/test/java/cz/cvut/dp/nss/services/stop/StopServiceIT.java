@@ -94,6 +94,12 @@ public class StopServiceIT extends AbstractServiceIT {
         Assert.assertNotNull(set);
     }
 
+    @Test
+    public void testFindStopsBySearchQuery() {
+        List<Stop> list = stopService.findStopsBySearchQuery("U10");
+        Assert.assertNotNull(list);
+    }
+
     public static Stop getStop(final String id, String name, Double lat, Double lon) {
         Stop stop = new Stop();
         stop.setId(id);

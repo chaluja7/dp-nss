@@ -9,6 +9,8 @@ export class UserService {
 
   public static SELECTED_TIME_TABLE_IDENT = 'selectedTimeTable';
 
+  msg: string;
+
   isLoggedIn(): boolean {
       return localStorage.getItem(UserService.LOGGED_USER_IDENT) != null;
   }
@@ -55,6 +57,15 @@ export class UserService {
       }
 
       return AppSettings.API_ENDPOINT;
+  }
+
+  setMsg(msg: string) {
+      this.msg = msg;
+
+      //zobrazujeme jen na 3s
+      setTimeout(() => {
+          this.msg = null;
+      }, 2500);
   }
 
 }

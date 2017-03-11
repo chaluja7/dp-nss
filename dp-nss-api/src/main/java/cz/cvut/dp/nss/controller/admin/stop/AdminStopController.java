@@ -10,6 +10,7 @@ import cz.cvut.dp.nss.services.stop.StopFilter;
 import cz.cvut.dp.nss.services.stop.StopService;
 import cz.cvut.dp.nss.services.stop.StopWheelchairBoardingType;
 import cz.cvut.dp.nss.wrapper.out.stop.StopWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,8 @@ public class AdminStopController extends AdminAbstractController {
     private static final String FILTER_WHEEL_CHAIR = "wheelChairCode";
     private static final String FILTER_PARENT_STOP_ID = "parentStopId";
 
+    private static final String FILTER_SEARCH_QUERY = "searchQuery";
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<StopWrapper>> getStops(@RequestHeader(value = X_LIMIT_HEADER, required = false) Integer xLimit,
                                       @RequestHeader(value = X_OFFSET_HEADER, required = false) Integer xOffset,
@@ -45,18 +48,26 @@ public class AdminStopController extends AdminAbstractController {
                                       @RequestParam(value = FILTER_LAT, required = false) Double lat,
                                       @RequestParam(value = FILTER_LON, required = false) Double lon,
                                       @RequestParam(value = FILTER_WHEEL_CHAIR, required = false) Integer wheelChairCode,
-                                      @RequestParam(value = FILTER_PARENT_STOP_ID, required = false) String parentStopId) throws BadRequestException {
+                                      @RequestParam(value = FILTER_PARENT_STOP_ID, required = false) String parentStopId,
+                                      @RequestParam(value = FILTER_SEARCH_QUERY, required = false) String searchQuery) throws BadRequestException {
 
-        final OrderWrapper order = getOrderFromHeader(xOrder);
-        final StopFilter filter = getFilterFromParams(id, name, lat, lon, wheelChairCode, parentStopId);
-        List<Stop> stops = stopService.getByFilter(filter, xOffset, xLimit, order.getOrderColumn(), order.isAsc());
+        List<Stop> stops;
         List<StopWrapper> wrappers = new ArrayList<>();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        if(!StringUtils.isBlank(searchQuery)) {
+            //searchQuery vsechno prebiji a nic jineho se neaplikuje
+            stops = stopService.findStopsBySearchQuery(searchQuery);
+        } else {
+            final OrderWrapper order = getOrderFromHeader(xOrder);
+            final StopFilter filter = getFilterFromParams(id, name, lat, lon, wheelChairCode, parentStopId);
+            stops = stopService.getByFilter(filter, xOffset, xLimit, order.getOrderColumn(), order.isAsc());
+            httpHeaders.add(X_COUNT_HEADER, stopService.getCountByFilter(filter) + "");
+        }
+
         for(Stop stop : stops) {
             wrappers.add(getStopWrapper(stop));
         }
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(X_COUNT_HEADER, stopService.getCountByFilter(filter) + "");
         return new ResponseEntity<>(wrappers, httpHeaders, HttpStatus.OK);
     }
 

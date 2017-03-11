@@ -53,6 +53,19 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
     }
 
     /**
+     * @param searchQuery retezec, ktery se vyskytuje v ID nebo nazvu stanice
+     * @return vsechny stanice, kde id nebo nazev odpovida searchQuery
+     */
+    public List<Stop> findStopsBySearchQuery(String searchQuery) {
+        final String queryString = "select distinct s from Stop s where lower(s.name) like lower(:searchQuery) or lower(s.id) like lower(:searchQuery) order by s.id";
+
+        Query<Stop> query = sessionFactory.getCurrentSession().createQuery(queryString, Stop.class);
+        query.setParameter("searchQuery", searchQuery + "%");
+
+        return query.list();
+    }
+
+    /**
      * @param offset index prvniho vraceneho zaznamu
      * @param limit max pocet vracenych zaznamu
      * @return vsechny stanice dle rozsahu

@@ -10,7 +10,7 @@ import {Stop} from "../../_model/search-result-model";
 @Injectable()
 export class AdminStopService {
 
-  private static STOP_URL = 'admin/stop';
+  static STOP_URL = 'admin/stop';
 
   constructor(private http: HttpClient, private errorService: ErrorService, private userService: UserService) { }
 

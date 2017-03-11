@@ -4,6 +4,8 @@ import {ActivatedRoute, Params} from "@angular/router";
 import {Location} from "@angular/common";
 import {TimeTable} from "../../_model/time-table";
 import {AdminTimeTableService} from "../../_service/_admin/admin-time-table.service";
+import {AppSettings} from "../../_common/app.settings";
+import {UserService} from "../../_service/user.service";
 @Component({
   moduleId: module.id,
   selector: 'time-table-component',
@@ -15,7 +17,8 @@ export class TimeTableComponent implements OnInit {
   loading = false;
   error = '';
 
-  constructor(private adminTimeTableService: AdminTimeTableService, private route: ActivatedRoute, private location: Location) {}
+  constructor(private adminTimeTableService: AdminTimeTableService, private route: ActivatedRoute, private location: Location,
+              private userService: UserService) {}
 
   ngOnInit(): void {
     this.route.params
@@ -26,9 +29,12 @@ export class TimeTableComponent implements OnInit {
   onSubmit(): void {
     this.loading = true;
     this.adminTimeTableService.update(this.timeTable)
-        .subscribe(timeTable => {this.goBack()},
+        .subscribe(timeTable => {
+          this.goBack();
+          this.userService.setMsg(AppSettings.SAVE_SUCCESS);
+        },
             err  => {
-              this.error = 'Chyba při zpracování';
+              this.error = AppSettings.SAVE_ERROR;
               this.loading = false;
             });
   }

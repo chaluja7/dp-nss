@@ -5,6 +5,10 @@ import {Location} from "@angular/common";
 import {Stop} from "../../_model/search-result-model";
 import {AdminStopService} from "../../_service/_admin/admin-stop.service";
 import {AppSettings} from "../../_common/app.settings";
+import {UserService} from "../../_service/user.service";
+import {RemoteData, CompleterService} from "ng2-completer";
+import {Headers} from "@angular/http";
+import {HttpClient} from "../../_service/http-client";
 @Component({
   moduleId: module.id,
   selector: 'stop-component',
@@ -16,8 +20,19 @@ export class StopComponent implements OnInit {
   loading = false;
   error = '';
   wheelChairOptions = AppSettings.getPossibleWheelChairOptions();
+  remoteStops: RemoteData;
+  stopSearchQuery: string;
 
-  constructor(private adminStopService: AdminStopService, private route: ActivatedRoute, private location: Location) {}
+  constructor(private adminStopService: AdminStopService, private route: ActivatedRoute, private location: Location,
+              private userService: UserService, private completerService: CompleterService, private http: HttpClient) {
+
+      this.remoteStops = completerService.remote(null, 'id,name', 'id,name');
+      this.remoteStops.urlFormater(term => {return this.userService.getApiPrefix() + `${AdminStopService.STOP_URL}?searchQuery=${term}`;});
+      let headers = new Headers();
+      http.createAuthorizationHeader(headers);
+      this.remoteStops.headers(headers);
+      this.remoteStops.dataField('');
+  }
 
   ngOnInit(): void {
     this.route.params
@@ -27,10 +42,21 @@ export class StopComponent implements OnInit {
 
   onSubmit(): void {
     this.loading = true;
+    if(!this.stop.parentStopId) {
+        //kvuli tomu, abych tam neposlal undefined
+        this.stop.parentStopId = null;
+    } else if(this.stop.parentStopId.indexOf(' ') >= 0) {
+        //z autocompletu tam vlezlo i jmeno, ale ja chci jen ID
+        this.stop.parentStopId = this.stop.parentStopId.split(' ')[0];
+    }
+
     this.adminStopService.update(this.stop)
-        .subscribe(timeTable => {this.goBack()},
+        .subscribe(timeTable => {
+            this.userService.setMsg(AppSettings.SAVE_SUCCESS);
+            this.goBack()
+        },
             err  => {
-              this.error = 'Chyba při zpracování';
+              this.error = AppSettings.SAVE_ERROR;
               this.loading = false;
             });
   }

@@ -59,6 +59,13 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
 
     @Override
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
+    public List<Stop> findStopsBySearchQuery(String searchQuery) {
+        if(searchQuery == null || searchQuery.length() < 3) return new ArrayList<>();
+        return dao.findStopsBySearchQuery(searchQuery);
+    }
+
+    @Override
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Stop> getByFilter(final StopFilter filter, Integer offset, Integer limit, String orderColumn, boolean asc) {
         if(limit != null && limit <= 0) return new ArrayList<>();
         return dao.getByFilter(filter, getOffsetOrDefault(offset), getLimitOrDefault(limit), orderColumn != null ? orderColumn : "", asc);
