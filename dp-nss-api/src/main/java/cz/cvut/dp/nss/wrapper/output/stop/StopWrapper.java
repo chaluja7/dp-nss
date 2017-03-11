@@ -1,4 +1,4 @@
-package cz.cvut.dp.nss.wrapper.out.stop;
+package cz.cvut.dp.nss.wrapper.output.stop;
 
 /**
  * @author jakubchalupa

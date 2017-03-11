@@ -1,4 +1,4 @@
-package cz.cvut.dp.nss.wrapper.in;
+package cz.cvut.dp.nss.wrapper.input;
 
 /**
  * @author jakubchalupa

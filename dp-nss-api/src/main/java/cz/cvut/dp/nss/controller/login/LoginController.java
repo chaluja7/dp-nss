@@ -7,8 +7,8 @@ import cz.cvut.dp.nss.exception.UnauthorizedException;
 import cz.cvut.dp.nss.services.person.Person;
 import cz.cvut.dp.nss.services.person.PersonService;
 import cz.cvut.dp.nss.services.role.Role;
-import cz.cvut.dp.nss.wrapper.in.LoginWrapper;
-import cz.cvut.dp.nss.wrapper.out.person.PersonWrapper;
+import cz.cvut.dp.nss.wrapper.input.LoginWrapper;
+import cz.cvut.dp.nss.wrapper.output.person.PersonWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

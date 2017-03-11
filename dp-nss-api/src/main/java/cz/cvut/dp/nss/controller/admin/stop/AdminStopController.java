@@ -9,7 +9,7 @@ import cz.cvut.dp.nss.services.stop.Stop;
 import cz.cvut.dp.nss.services.stop.StopFilter;
 import cz.cvut.dp.nss.services.stop.StopService;
 import cz.cvut.dp.nss.services.stop.StopWheelchairBoardingType;
-import cz.cvut.dp.nss.wrapper.out.stop.StopWrapper;
+import cz.cvut.dp.nss.wrapper.output.stop.StopWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

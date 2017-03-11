@@ -10,7 +10,7 @@ import cz.cvut.dp.nss.services.person.Person;
 import cz.cvut.dp.nss.services.person.PersonService;
 import cz.cvut.dp.nss.services.timeTable.TimeTable;
 import cz.cvut.dp.nss.services.timeTable.TimeTableService;
-import cz.cvut.dp.nss.wrapper.out.timeTable.TimeTableWrapper;
+import cz.cvut.dp.nss.wrapper.output.timeTable.TimeTableWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
