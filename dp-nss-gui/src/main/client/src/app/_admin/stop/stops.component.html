@@ -48,12 +48,17 @@
     </thead>
     <tbody>
         <tr>
-            <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..."/></td>
-            <td><input type="text" class="form-control" name="name" id="name" [(ngModel)]="filter.name" placeholder="název..."/></td>
-            <td><input type="number" class="form-control" name="lat" id="lat" [(ngModel)]="filter.lat" placeholder="šířka..."/></td>
-            <td><input type="number" class="form-control" name="lon" id="lon" [(ngModel)]="filter.lon" placeholder="délka..."/></td>
-            <td></td>
-            <td><input type="text" class="form-control" name="parentStopId" id="parentStopId" [(ngModel)]="filter.parentStopId" placeholder="id nadřazené stanice..."/></td>
+            <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..." (keyup.enter)="doFilter()"/></td>
+            <td><input type="text" class="form-control" name="name" id="name" [(ngModel)]="filter.name" placeholder="název..." (keyup.enter)="doFilter()"/></td>
+            <td><input type="number" class="form-control" name="lat" id="lat" [(ngModel)]="filter.lat" placeholder="šířka..."(keyup.enter)="doFilter()"/></td>
+            <td><input type="number" class="form-control" name="lon" id="lon" [(ngModel)]="filter.lon" placeholder="délka..." (keyup.enter)="doFilter()"/></td>
+            <td>
+                <select class="form-control" id="wheelChairCode" name="wheelChairCode" [(ngModel)]="filter.wheelChairCode" (keyup.enter)="doFilter()">
+                    <option *ngFor="let option of wheelChairOptions" [value]="option.code">{{option.title}}</option>
+                </select>
+            </td>
+            <td><input type="text" class="form-control" name="parentStopId" id="parentStopId" [(ngModel)]="filter.parentStopId"
+                       placeholder="id nadřazené stanice..." (keyup.enter)="doFilter()"/></td>
             <td><button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i></button></td>
         </tr>
         <tr *ngFor="let stop of stops">

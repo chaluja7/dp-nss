@@ -25,11 +25,26 @@ export class AdminStopService {
     if(filter.name) params.set('name', filter.name);
     if(!isNaN(filter.lat) && filter.lat !== null) params.set('lat', filter.lat + '');
     if(!isNaN(filter.lon) && filter.lat !== null) params.set('lon', filter.lon + '');
+    if(!isNaN(filter.wheelChairCode) && filter.wheelChairCode !== null) params.set('wheelChairCode', filter.wheelChairCode + '');
     if(filter.parentStopId) params.set('parentStopId', filter.parentStopId);
 
     return this.http
         .get(this.userService.getApiPrefix() + AdminStopService.STOP_URL, params, headers)
         .map((response => response))
+        .catch(err => this.errorService.handleServerError(err));
+  }
+
+  getStop(id: string): Observable<Stop> {
+    const url = this.userService.getApiPrefix() + `${AdminStopService.STOP_URL}/${id}`;
+    return this.http.get(url)
+        .map((response => response.json() as Stop))
+        .catch(err => this.errorService.handleServerError(err));
+  }
+
+  update(stop: Stop): Observable<Stop> {
+    const url = this.userService.getApiPrefix() + `${AdminStopService.STOP_URL}/${stop.id}`;
+    return this.http.put(url, JSON.stringify(stop))
+        .map((response => response.json() as Stop))
         .catch(err => this.errorService.handleServerError(err));
   }
 

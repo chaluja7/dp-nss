@@ -1,0 +1,36 @@
+<div class="col-md-6 col-md-offset-3" *ngIf="stop">
+  <h2>Detail stanice</h2>
+  <form (ngSubmit)="onSubmit()" #f="ngForm">
+    <div class="form-group">
+      <label for="id">ID:</label>
+      <input type="text" class="form-control" name="id" id="id" value="{{stop.id}}" disabled />
+    </div>
+    <div class="form-group">
+      <label for="name">Název:</label>
+      <input type="text" class="form-control" name="name" id="name" [(ngModel)]="stop.name" required />
+    </div>
+    <div class="form-group">
+      <label for="lat">Šířka:</label>
+      <input type="number" step="any" min="-90" max="90" class="form-control" name="lat" id="lat" [(ngModel)]="stop.lat" required />
+    </div>
+    <div class="form-group">
+      <label for="lon">Délka:</label>
+      <input type="number" step="any" min="-180" max="180" class="form-control" name="lon" id="lon" [(ngModel)]="stop.lon" required />
+    </div>
+    <div class="form-group">
+      <label for="wheelChairCode">Bezbariérová:</label>
+      <select class="form-control" id="wheelChairCode" name="wheelChairCode" [(ngModel)]="stop.wheelChairCode">
+        <option *ngFor="let option of wheelChairOptions" [value]="option.code">{{option.title}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="parentStopId">ID nadřazené stanice:</label>
+      <input type="text" class="form-control" name="parentStopId" id="parentStopId" [(ngModel)]="stop.parentStopId" />
+    </div>
+    <div class="form-group">
+      <button [disabled]="!f.form.valid || loading" class="btn btn-success pull-right" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Uložit</button>
+      <div class="clearfix"></div>
+    </div>
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  </form>
+</div>

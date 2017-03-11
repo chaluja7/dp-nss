@@ -30,6 +30,7 @@ import {AdminStopService} from "./_service/_admin/admin-stop.service";
 import {WheelChairPipe} from "./_pipe/wheel-chair.pipe";
 import {PagerService} from "./_service/_admin/pager.service";
 import {CsNumberPipe} from "./_pipe/cs-number.pipe";
+import {StopComponent} from "./_admin/stop/stop.component";
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import {CsNumberPipe} from "./_pipe/cs-number.pipe";
     StopSearchComponent,
     SearchComponent,
     StopsComponent,
+    StopComponent,
     WheelChairPipe,
     CsNumberPipe
   ],

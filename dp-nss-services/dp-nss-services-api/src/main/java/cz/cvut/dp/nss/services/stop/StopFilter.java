@@ -14,7 +14,7 @@ public class StopFilter extends AbstractEntityFilter<String> {
 
     private Double lon;
 
-    private Boolean wheelChairPossible;
+    private Integer wheelChairCode;
 
     private String parentStopId;
 
@@ -42,12 +42,12 @@ public class StopFilter extends AbstractEntityFilter<String> {
         this.lon = lon;
     }
 
-    public Boolean getWheelChairPossible() {
-        return wheelChairPossible;
+    public Integer getWheelChairCode() {
+        return wheelChairCode;
     }
 
-    public void setWheelChairPossible(Boolean wheelChairPossible) {
-        this.wheelChairPossible = wheelChairPossible;
+    public void setWheelChairCode(Integer wheelChairCode) {
+        this.wheelChairCode = wheelChairCode;
     }
 
     public String getParentStopId() {

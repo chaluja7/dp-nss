@@ -27,6 +27,8 @@ export class StopsComponent implements OnInit {
 
   loading: boolean;
 
+  wheelChairOptions = AppSettings.getPossibleWheelChairOptions();
+
   constructor(private router: Router, private adminStopService: AdminStopService, private pagerService: PagerService) {}
 
   ngOnInit(): void {

@@ -17,7 +17,7 @@ export class Stop {
   name: string;
   lat: number;
   lon: number;
-  wheelChairCode: string;
+  wheelChairCode: number;
   parentStopId: string;
 }
 

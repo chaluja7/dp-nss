@@ -1,8 +1,10 @@
 package cz.cvut.dp.nss.persistence.stop;
 
 import cz.cvut.dp.nss.persistence.generic.AbstractGenericJpaDao;
+import cz.cvut.dp.nss.services.common.EnumUtils;
 import cz.cvut.dp.nss.services.stop.Stop;
 import cz.cvut.dp.nss.services.stop.StopFilter;
+import cz.cvut.dp.nss.services.stop.StopWheelchairBoardingType;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
@@ -132,6 +134,9 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
             if(filter.getLon() != null) {
                 builder.append(" and s.lon = :lon");
             }
+            if(filter.getWheelChairCode() != null) {
+                builder.append(" and s.stopWheelchairBoardingType = :wheelChair");
+            }
             if(filter.getParentStopId() != null) {
                 builder.append(" and s.parentStop.id = :parentStopId");
             }
@@ -156,6 +161,9 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
             }
             if(filter.getLon() != null) {
                 query.setParameter("lon", filter.getLon());
+            }
+            if(filter.getWheelChairCode() != null) {
+                query.setParameter("wheelChair", EnumUtils.fromCode(filter.getWheelChairCode(), StopWheelchairBoardingType.class));
             }
             if(filter.getParentStopId() != null) {
                 query.setParameter("parentStopId", filter.getParentStopId());

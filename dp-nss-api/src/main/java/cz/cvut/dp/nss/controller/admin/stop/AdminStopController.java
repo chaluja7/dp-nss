@@ -33,7 +33,7 @@ public class AdminStopController extends AdminAbstractController {
     private static final String FILTER_NAME = "name";
     private static final String FILTER_LAT = "lat";
     private static final String FILTER_LON = "lon";
-    private static final String FILTER_WHEEL_CHAIR = "wheelChairPossible";
+    private static final String FILTER_WHEEL_CHAIR = "wheelChairCode";
     private static final String FILTER_PARENT_STOP_ID = "parentStopId";
 
     @RequestMapping(method = RequestMethod.GET)
@@ -44,10 +44,11 @@ public class AdminStopController extends AdminAbstractController {
                                       @RequestParam(value = FILTER_NAME, required = false) String name,
                                       @RequestParam(value = FILTER_LAT, required = false) Double lat,
                                       @RequestParam(value = FILTER_LON, required = false) Double lon,
+                                      @RequestParam(value = FILTER_WHEEL_CHAIR, required = false) Integer wheelChairCode,
                                       @RequestParam(value = FILTER_PARENT_STOP_ID, required = false) String parentStopId) throws BadRequestException {
 
         final OrderWrapper order = getOrderFromHeader(xOrder);
-        final StopFilter filter = getFilterFromParams(id, name, lat, lon, parentStopId);
+        final StopFilter filter = getFilterFromParams(id, name, lat, lon, wheelChairCode, parentStopId);
         List<Stop> stops = stopService.getByFilter(filter, xOffset, xLimit, order.getOrderColumn(), order.isAsc());
         List<StopWrapper> wrappers = new ArrayList<>();
         for(Stop stop : stops) {
@@ -68,7 +69,7 @@ public class AdminStopController extends AdminAbstractController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<StopWrapper> createStop(@RequestBody StopWrapper wrapper) {
+    public ResponseEntity<StopWrapper> createStop(@RequestBody StopWrapper wrapper) throws BadRequestException {
         Stop stop = getStop(wrapper);
         stopService.create(stop);
 
@@ -78,7 +79,7 @@ public class AdminStopController extends AdminAbstractController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public StopWrapper updateStop(@PathVariable("id") String id, @RequestBody StopWrapper wrapper) throws ResourceNotFoundException {
+    public StopWrapper updateStop(@PathVariable("id") String id, @RequestBody StopWrapper wrapper) throws ResourceNotFoundException, BadRequestException {
         if(stopService.get(id) == null) throw new ResourceNotFoundException();
 
         Stop stop = getStop(wrapper);
@@ -117,7 +118,7 @@ public class AdminStopController extends AdminAbstractController {
         return wrapper;
     }
 
-    private Stop getStop(StopWrapper wrapper) {
+    private Stop getStop(StopWrapper wrapper) throws BadRequestException {
         if(wrapper == null) return null;
 
         Stop stop = new Stop();
@@ -129,18 +130,23 @@ public class AdminStopController extends AdminAbstractController {
             stop.setStopWheelchairBoardingType(EnumUtils.fromCode(wrapper.getWheelChairCode(), StopWheelchairBoardingType.class));
         }
         if(wrapper.getParentStopId() != null) {
-            stop.setParentStop(stopService.get(wrapper.getParentStopId()));
+            Stop parentStop = stopService.get(wrapper.getParentStopId());
+            if(parentStop == null) {
+                throw new BadRequestException("unknown parent stop");
+            }
+            stop.setParentStop(parentStop);
         }
 
         return stop;
     }
 
-    private static StopFilter getFilterFromParams(String id, String name, Double lat, Double lon, String parentStopId) throws BadRequestException {
+    private static StopFilter getFilterFromParams(String id, String name, Double lat, Double lon, Integer wheelChairCode, String parentStopId) throws BadRequestException {
         StopFilter stopFilter = new StopFilter();
         stopFilter.setId(id);
         stopFilter.setName(name);
         stopFilter.setLat(lat);
         stopFilter.setLon(lon);
+        stopFilter.setWheelChairCode(wheelChairCode);
         stopFilter.setParentStopId(parentStopId);
 
         return stopFilter;

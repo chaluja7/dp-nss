@@ -1,3 +1,4 @@
+import {WheelChair} from "../_model/wheel-chair-model";
 export class AppSettings {
 
     public static API_ENDPOINT = '/api/v1/';
@@ -25,7 +26,7 @@ export class AppSettings {
 
         switch(code) {
             case 0:
-                return '-';
+                return '?';
             case 1:
                 return 'Ano';
             case 2:
@@ -33,6 +34,16 @@ export class AppSettings {
             default:
                 return '?';
         }
+    }
+
+    public static getPossibleWheelChairOptions(): WheelChair[] {
+        let list: WheelChair[] = [];
+        list.push(new WheelChair(null, null));
+        list.push(new WheelChair(0, '?'));
+        list.push(new WheelChair(1, 'Ano'));
+        list.push(new WheelChair(2, 'Ne'));
+
+        return list;
     }
 
 }

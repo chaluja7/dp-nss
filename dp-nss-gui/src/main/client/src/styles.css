@@ -3,11 +3,11 @@ input.ng-valid[required], select.ng-valid[required], input.ng-valid.required, se
     border-left: 5px solid #42A948;
 }
 
-input.ng-invalid:not(form), select.ng-invalid:not(form), .ng-invalid > div > input, .ng-invalid > div > div > input {
+input.ng-invalid:not(form), select.ng-invalid:not(form), .ng-invalid > div:not(.form-group) > input, .ng-invalid > div:not(.form-group) > div > input {
     border-left: 5px solid #a94442;
 }
 
-.ng-invalid > div > div > input {
+.ng-invalid > div:not(.form-group) > div > input {
     border-left: 5px solid #a94442 !important;
 }
 
@@ -54,3 +54,7 @@ ul.pagination li a {
 
 .margin-top-0 {margin-top: 0;}
 .padding-top-20 {padding-top: 20px;}
+
+.clearfix {
+    clear: both;
+}
