@@ -4,6 +4,10 @@ import cz.cvut.dp.nss.controller.AbstractController;
 import cz.cvut.dp.nss.controller.admin.wrapper.OrderWrapper;
 import cz.cvut.dp.nss.controller.interceptor.CheckAccess;
 import cz.cvut.dp.nss.exception.BadRequestException;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author jakubchalupa
@@ -19,6 +23,8 @@ public abstract class AdminAbstractController extends AbstractController {
     protected static final String X_ORDER_HEADER = "X-Order";
 
     protected static final String X_COUNT_HEADER = "X-Total-Count";
+
+    protected static final String FILTER_ID = "id";
 
     /**
      * Z X-Order hlavicky vytahne pozadovany sloupec a smer razeni. Ocekavana forma napr. 'id:desc'
@@ -45,6 +51,37 @@ public abstract class AdminAbstractController extends AbstractController {
         }
 
         return new OrderWrapper(orderColumn, asc);
+    }
+
+    protected static Map<String, String> getFiltersFromHeader(String xFilterHeader) throws BadRequestException {
+        Map<String, String> filtersMap = new HashMap<>();
+
+        if(!StringUtils.isBlank(xFilterHeader)) {
+            //rozsekam po strednicich na jednotlive filtry
+            String[] split;
+            if(xFilterHeader.contains(";")) {
+                split = xFilterHeader.split(";");
+            } else {
+                split = new String[1];
+                split[0] = xFilterHeader;
+            }
+
+            //a kazdy filtr by nyni mel byt ve tvaru field=value
+            for(String filter : split) {
+                if(filter.contains("=")) {
+                    String[] filterSplit = filter.split("=");
+                    if(filterSplit.length == 2) {
+                        filtersMap.put(filterSplit[0], filterSplit[1]);
+                    } else {
+                        throw new BadRequestException("invalid X-Filter header");
+                    }
+                } else {
+                    throw new BadRequestException("invalid X-Filter header");
+                }
+            }
+        }
+
+        return filtersMap;
     }
 
 }

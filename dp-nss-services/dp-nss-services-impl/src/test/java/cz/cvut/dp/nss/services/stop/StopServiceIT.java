@@ -64,13 +64,13 @@ public class StopServiceIT extends AbstractServiceIT {
 
     @Test
     public void testGetByFilter() {
-        List<Stop> byFilter = stopService.getByFilter(0, 15, "parentStopId", true);
+        List<Stop> byFilter = stopService.getByFilter(getFilter(),0, 15, "parentStopId", true);
         Assert.assertNotNull(byFilter);
     }
 
     @Test
     public void testGetCountByFilter() {
-        long countByFilter = stopService.getCountByFilter();
+        long countByFilter = stopService.getCountByFilter(getFilter());
         Assert.assertTrue(countByFilter >= 0);
     }
 
@@ -102,6 +102,13 @@ public class StopServiceIT extends AbstractServiceIT {
         stop.setLon(lon);
 
         return stop;
+    }
+
+    public static StopFilter getFilter() {
+        StopFilter filter = new StopFilter();
+        filter.setName("eli");
+
+        return filter;
     }
 
 }

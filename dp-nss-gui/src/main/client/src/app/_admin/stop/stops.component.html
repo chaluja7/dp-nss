@@ -1,6 +1,6 @@
-<div class="row">
-    <div class="col-md-12">
-        <h2>Seznam stanic</h2>
+<div class="row padding-top-20">
+    <div class="col-md-10">
+        <h2 class="margin-top-0">Seznam stanic</h2>
     </div>
 </div>
 
@@ -31,7 +31,7 @@
                     <i class="fa fa-sort-amount-desc{{orderColumn === 'lon' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('lon', false)"></i>
                 </span>
             </th>
-            <th>Bezbariérová
+            <th>Bezbar.
                 <span class="sort-icon pull-right">
                     <i class="fa fa-sort-amount-asc{{orderColumn === 'wheelChair' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('wheelChair', true)"></i>
                     <i class="fa fa-sort-amount-desc{{orderColumn === 'wheelChair' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('wheelChair', false)"></i>
@@ -47,11 +47,20 @@
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..."/></td>
+            <td><input type="text" class="form-control" name="name" id="name" [(ngModel)]="filter.name" placeholder="název..."/></td>
+            <td><input type="number" class="form-control" name="lat" id="lat" [(ngModel)]="filter.lat" placeholder="šířka..."/></td>
+            <td><input type="number" class="form-control" name="lon" id="lon" [(ngModel)]="filter.lon" placeholder="délka..."/></td>
+            <td></td>
+            <td><input type="text" class="form-control" name="parentStopId" id="parentStopId" [(ngModel)]="filter.parentStopId" placeholder="id nadřazené stanice..."/></td>
+            <td><button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i></button></td>
+        </tr>
         <tr *ngFor="let stop of stops">
             <td>{{stop.id}}</td>
             <td>{{stop.name}}</td>
-            <td>{{stop.lat}}</td>
-            <td>{{stop.lon}}</td>
+            <td>{{stop.lat | csNumber: '1.6-6'}}</td>
+            <td>{{stop.lon | csNumber: '1.6-6'}}</td>
             <td>{{stop.wheelChairCode | wheelChair}}</td>
             <td>{{stop.parentStopId}}</td>
             <td class="align-center"><button class="btn btn-warning" (click)="goToDetail(stop)"><i class="fa fa-pencil"></i></button></td>
@@ -60,7 +69,7 @@
 </table>
 
 <!-- pager -->
-<div class="col-md-12" style="text-align: center">
+<div class="col-md-12" class="align-center">
     <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
         <li [ngClass]="{disabled:pager.currentPage === 1}">
             <a (click)="setPage(1)">První</a>
@@ -78,14 +87,7 @@
             <a (click)="setPage(pager.totalPages)">Poslední</a>
         </li>
     </ul>
+    <div class="alert alert-info">
+        Celkem záznamů: <strong>{{pager.totalItems | csNumber}}</strong>
+    </div>
 </div>
-
-
-<!--<div class="row">-->
-    <!--<div class="col-md-12">-->
-        <!--<div *ngFor="let timeTable of timeTables" class="btn time-table-dash {{timeTable.valid ? 'btn-primary' : 'btn-warning'}}"-->
-             <!--[class.selected]="timeTable === selectedTimeTable" (click)="onSelect(timeTable)">-->
-            <!--{{timeTable.name}}-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->

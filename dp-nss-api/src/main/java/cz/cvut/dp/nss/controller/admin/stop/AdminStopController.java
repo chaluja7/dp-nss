@@ -6,6 +6,7 @@ import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.exception.ResourceNotFoundException;
 import cz.cvut.dp.nss.services.common.EnumUtils;
 import cz.cvut.dp.nss.services.stop.Stop;
+import cz.cvut.dp.nss.services.stop.StopFilter;
 import cz.cvut.dp.nss.services.stop.StopService;
 import cz.cvut.dp.nss.services.stop.StopWheelchairBoardingType;
 import cz.cvut.dp.nss.wrapper.out.stop.StopWrapper;
@@ -29,20 +30,32 @@ public class AdminStopController extends AdminAbstractController {
     @Autowired
     private StopService stopService;
 
+    private static final String FILTER_NAME = "name";
+    private static final String FILTER_LAT = "lat";
+    private static final String FILTER_LON = "lon";
+    private static final String FILTER_WHEEL_CHAIR = "wheelChairPossible";
+    private static final String FILTER_PARENT_STOP_ID = "parentStopId";
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<StopWrapper>> getStops(@RequestHeader(value = X_LIMIT_HEADER, required = false) Integer xLimit,
                                       @RequestHeader(value = X_OFFSET_HEADER, required = false) Integer xOffset,
-                                      @RequestHeader(value = X_ORDER_HEADER, required = false) String xOrder) throws BadRequestException {
+                                      @RequestHeader(value = X_ORDER_HEADER, required = false) String xOrder,
+                                      @RequestParam(value = FILTER_ID, required = false) String id,
+                                      @RequestParam(value = FILTER_NAME, required = false) String name,
+                                      @RequestParam(value = FILTER_LAT, required = false) Double lat,
+                                      @RequestParam(value = FILTER_LON, required = false) Double lon,
+                                      @RequestParam(value = FILTER_PARENT_STOP_ID, required = false) String parentStopId) throws BadRequestException {
 
         final OrderWrapper order = getOrderFromHeader(xOrder);
-        List<Stop> stops = stopService.getByFilter(xOffset, xLimit, order.getOrderColumn(), order.isAsc());
+        final StopFilter filter = getFilterFromParams(id, name, lat, lon, parentStopId);
+        List<Stop> stops = stopService.getByFilter(filter, xOffset, xLimit, order.getOrderColumn(), order.isAsc());
         List<StopWrapper> wrappers = new ArrayList<>();
         for(Stop stop : stops) {
             wrappers.add(getStopWrapper(stop));
         }
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(X_COUNT_HEADER, stopService.getCountByFilter() + "");
+        httpHeaders.add(X_COUNT_HEADER, stopService.getCountByFilter(filter) + "");
         return new ResponseEntity<>(wrappers, httpHeaders, HttpStatus.OK);
     }
 
@@ -122,4 +135,14 @@ public class AdminStopController extends AdminAbstractController {
         return stop;
     }
 
+    private static StopFilter getFilterFromParams(String id, String name, Double lat, Double lon, String parentStopId) throws BadRequestException {
+        StopFilter stopFilter = new StopFilter();
+        stopFilter.setId(id);
+        stopFilter.setName(name);
+        stopFilter.setLat(lat);
+        stopFilter.setLon(lon);
+        stopFilter.setParentStopId(parentStopId);
+
+        return stopFilter;
+    }
 }

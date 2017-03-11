@@ -39,11 +39,11 @@ public interface StopService extends EntityService<Stop, String> {
      * @param asc true pokud radim asc, false jinak (desc)
      * @return vsechny stanice dle filtru
      */
-    List<Stop> getByFilter(final Integer offset, final Integer limit, final String orderColumn, final boolean asc);
+    List<Stop> getByFilter(final StopFilter filter, Integer offset, Integer limit, String orderColumn, boolean asc);
 
     /**
      * @return celkovy pocet zaznamu dle filtru (pro ucely strankovani)
      */
-    long getCountByFilter();
+    long getCountByFilter(final StopFilter filter);
 
 }

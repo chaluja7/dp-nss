@@ -29,6 +29,7 @@ import {AuthWithTimeTableGuard} from "./_guard/auth-with-time-table.guard";
 import {AdminStopService} from "./_service/_admin/admin-stop.service";
 import {WheelChairPipe} from "./_pipe/wheel-chair.pipe";
 import {PagerService} from "./_service/_admin/pager.service";
+import {CsNumberPipe} from "./_pipe/cs-number.pipe";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {PagerService} from "./_service/_admin/pager.service";
     StopSearchComponent,
     SearchComponent,
     StopsComponent,
-    WheelChairPipe
+    WheelChairPipe,
+    CsNumberPipe
   ],
   imports: [
     BrowserModule,
