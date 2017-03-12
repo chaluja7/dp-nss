@@ -33,6 +33,7 @@ export class AuthenticationService {
             .toPromise()
             .then(neco => {
                 this.userService.removeUser();
+                this.userService.setMsg(AppSettings.LOGOUT_SUCCESS);
             })
             .catch(err => this.userService.removeUser());
     }

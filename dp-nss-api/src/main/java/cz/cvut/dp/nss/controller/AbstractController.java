@@ -1,6 +1,7 @@
 package cz.cvut.dp.nss.controller;
 
 import cz.cvut.dp.nss.exception.BadRequestException;
+import cz.cvut.dp.nss.exception.ForbiddenException;
 import cz.cvut.dp.nss.exception.ResourceNotFoundException;
 import cz.cvut.dp.nss.exception.UnauthorizedException;
 import org.apache.log4j.Logger;
@@ -37,6 +38,12 @@ public abstract class AbstractController {
     public ResponseEntity<ExceptionResponseWrapper> handleUnauthorizedException(Exception e) {
         LOGGER.error("", e);
         return new ResponseEntity<>(new ExceptionResponseWrapper("unauthorized"), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ExceptionResponseWrapper> handleForbiddenException(Exception e) {
+        LOGGER.error("", e);
+        return new ResponseEntity<>(new ExceptionResponseWrapper("forbidden"), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({BadRequestException.class, DataIntegrityViolationException.class, PersistenceException.class, ConstraintViolationException.class})

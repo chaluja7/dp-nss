@@ -3,7 +3,7 @@ package cz.cvut.dp.nss.controller.login;
 import cz.cvut.dp.nss.controller.AbstractController;
 import cz.cvut.dp.nss.controller.interceptor.SecurityInterceptor;
 import cz.cvut.dp.nss.exception.BadCredentialsException;
-import cz.cvut.dp.nss.exception.UnauthorizedException;
+import cz.cvut.dp.nss.exception.ForbiddenException;
 import cz.cvut.dp.nss.services.person.Person;
 import cz.cvut.dp.nss.services.person.PersonService;
 import cz.cvut.dp.nss.services.role.Role;
@@ -26,12 +26,12 @@ public class LoginController extends AbstractController {
     private PersonService personService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public PersonWrapper loginUser(@RequestBody LoginWrapper loginWrapper) throws UnauthorizedException {
+    public PersonWrapper loginUser(@RequestBody LoginWrapper loginWrapper) throws ForbiddenException {
         final Person person;
         try {
             person = personService.generateTokenAndGet(loginWrapper.getUsername(), loginWrapper.getPassword());
         } catch (BadCredentialsException e) {
-            throw new UnauthorizedException();
+            throw new ForbiddenException();
         }
 
         return getPersonWrapper(person);

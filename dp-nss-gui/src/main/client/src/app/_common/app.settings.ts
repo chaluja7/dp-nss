@@ -23,6 +23,8 @@ export class AppSettings {
 
     public static SAVE_ERROR = 'Chyba při zpracování.';
 
+    public static LOGOUT_SUCCESS = 'Odhlášení proběhlo úspěšně.';
+
     public static getSchemaUrlParam(schema: string) {
         return AppSettings.SCHEMA_URL_PREFIX + schema;
     }

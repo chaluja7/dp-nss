@@ -30,7 +30,7 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
      * @return vsechny stanice dle rozsahu
      */
     public List<Stop> getAllInRange(final int start, final int limit) {
-        final String queryString = "select distinct s from Stop s order by s.id asc";
+        final String queryString = "select distinct s from Stop s order by lower(s.id) asc";
 
         Query<Stop> query = sessionFactory.getCurrentSession().createQuery(queryString, Stop.class);
         query.setFirstResult(start);
@@ -44,10 +44,11 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
      * @return vsechny stanice, ktere zacinaji na pattern (case insensitive)
      */
     public List<String> findStopNamesByStartPattern(String startPattern) {
-        final String queryString = "select distinct s.name from Stop s where lower(s.name) like lower(:startPattern) order by s.name";
+        final String queryString = "select distinct s.name from Stop s where lower(s.name) like lower(:startPattern) order by lower(s.name)";
 
         Query<String> query = sessionFactory.getCurrentSession().createQuery(queryString, String.class);
         query.setParameter("startPattern", startPattern + "%");
+        query.setMaxResults(10);
 
         return query.list();
     }
@@ -57,10 +58,11 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
      * @return vsechny stanice, kde id nebo nazev odpovida searchQuery
      */
     public List<Stop> findStopsBySearchQuery(String searchQuery) {
-        final String queryString = "select distinct s from Stop s where lower(s.name) like lower(:searchQuery) or lower(s.id) like lower(:searchQuery) order by s.id";
+        final String queryString = "select distinct s from Stop s where lower(s.name) like lower(:searchQuery) or lower(s.id) like lower(:searchQuery) order by lower(s.id)";
 
         Query<Stop> query = sessionFactory.getCurrentSession().createQuery(queryString, Stop.class);
         query.setParameter("searchQuery", searchQuery + "%");
+        query.setMaxResults(10);
 
         return query.list();
     }
@@ -77,10 +79,10 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
         builder.append(" order by ");
         switch(orderColumn) {
             case "id":
-                builder.append("s.id");
+                builder.append("lower(s.id)");
                 break;
             case "name":
-                builder.append("s.name");
+                builder.append("lower(s.name)");
                 break;
             case "lat":
                 builder.append("s.lat");
@@ -92,10 +94,10 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
                 builder.append("s.stopWheelchairBoardingType");
                 break;
             case "parentStopId":
-                builder.append("s.parentStop.id");
+                builder.append("lower(s.parentStop.id)");
                 break;
             default:
-                builder.append("s.id");
+                builder.append("lower(s.id)");
                 break;
         }
 
