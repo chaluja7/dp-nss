@@ -1,15 +1,14 @@
 package cz.cvut.dp.nss.controller.search;
 
 import cz.cvut.dp.nss.controller.AbstractController;
+import cz.cvut.dp.nss.controller.admin.route.AdminRouteController;
 import cz.cvut.dp.nss.controller.admin.stop.AdminStopController;
 import cz.cvut.dp.nss.graph.services.search.SearchService;
 import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResult;
 import cz.cvut.dp.nss.services.common.DateTimeUtils;
-import cz.cvut.dp.nss.services.route.Route;
 import cz.cvut.dp.nss.services.stopTime.StopTime;
 import cz.cvut.dp.nss.services.stopTime.StopTimeService;
 import cz.cvut.dp.nss.services.trip.Trip;
-import cz.cvut.dp.nss.wrapper.output.route.RouteWrapper;
 import cz.cvut.dp.nss.wrapper.output.search.SearchResultWrapper;
 import cz.cvut.dp.nss.wrapper.output.search.SearchStopTimeWrapper;
 import cz.cvut.dp.nss.wrapper.output.trip.TripWithRouteWrapper;
@@ -101,19 +100,7 @@ public class SearchController extends AbstractController {
         TripWithRouteWrapper wrapper = new TripWithRouteWrapper();
         wrapper.setHeadSign(trip.getHeadSign());
         wrapper.setWheelChair(trip.getTripWheelchairAccessibleType() != null ? trip.getTripWheelchairAccessibleType().name() : null);
-        wrapper.setRoute(getRouteWrapper(trip.getRoute()));
-
-        return wrapper;
-    }
-
-    private RouteWrapper getRouteWrapper(Route route) {
-        if(route == null) return null;
-
-        RouteWrapper wrapper = new RouteWrapper();
-        wrapper.setShortName(route.getShortName());
-        wrapper.setLongName(route.getLongName());
-        wrapper.setRouteType(route.getRouteType() != null ? route.getRouteType().name() : null);
-        wrapper.setColor(route.getColor());
+        wrapper.setRoute(AdminRouteController.getRouteWrapper(trip.getRoute(), false));
 
         return wrapper;
     }

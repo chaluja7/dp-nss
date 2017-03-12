@@ -13,10 +13,9 @@ import java.util.List;
 public interface AgencyService extends EntityService<Agency, String> {
 
     /**
-     * @param searchQuery retezec, ktery se vyskytuje v ID nebo nazvu dopravce
-     * @return vsechny dopravce, kde id nebo nazev odpovida searchQuery
+     * @return vsechny dopravce, serazene dle jmena
      */
-    List<Agency> findAgenciesBySearchQuery(String searchQuery);
+    List<Agency> getAllOrdered();
 
     /**
      * @param filter filter

@@ -67,7 +67,7 @@ public class AgencyServiceIT extends AbstractServiceIT {
 
     @Test
     public void testFindAgenciesBySearchQuery() {
-        List<Agency> list = agencyService.findAgenciesBySearchQuery("dopravni");
+        List<Agency> list = agencyService.getAllOrdered();
         Assert.assertNotNull(list);
     }
 

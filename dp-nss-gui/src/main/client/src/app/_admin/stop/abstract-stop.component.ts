@@ -20,7 +20,7 @@ export abstract class AbstractStopComponent {
   wheelChairOptions = AppSettings.getPossibleWheelChairOptions();
   remoteStops: RemoteData;
   stopSearchQuery: string;
-  abstract newRecord;
+  abstract newRecord: boolean;
 
   constructor(protected adminStopService: AdminStopService, protected route: ActivatedRoute, protected location: Location,
               protected userService: UserService, protected completerService: CompleterService, protected http: HttpClient) {

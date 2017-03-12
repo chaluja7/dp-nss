@@ -124,12 +124,8 @@ public class AdminStopController extends AdminAbstractController {
         wrapper.setName(stop.getName());
         wrapper.setLat(stop.getLat());
         wrapper.setLon(stop.getLon());
-        if(stop.getStopWheelchairBoardingType() != null) {
-            wrapper.setWheelChairCode(stop.getStopWheelchairBoardingType().getCode());
-        }
-        if(stop.getParentStop() != null) {
-            wrapper.setParentStopId(stop.getParentStop().getId());
-        }
+        wrapper.setWheelChairCode(stop.getStopWheelchairBoardingType() != null ? stop.getStopWheelchairBoardingType().getCode() : null);
+        wrapper.setParentStopId(stop.getParentStop() != null ? stop.getParentStop().getId() : null);
 
         return wrapper;
     }

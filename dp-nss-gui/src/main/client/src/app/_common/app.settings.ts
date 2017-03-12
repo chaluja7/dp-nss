@@ -1,4 +1,4 @@
-import {WheelChair} from "../_model/wheel-chair-model";
+import {EnumModel} from "../_model/enum-model";
 export class AppSettings {
 
     public static API_ENDPOINT = '/api/v1/';
@@ -44,12 +44,50 @@ export class AppSettings {
         }
     }
 
-    public static getPossibleWheelChairOptions(): WheelChair[] {
-        let list: WheelChair[] = [];
-        list.push(new WheelChair(null, null));
-        list.push(new WheelChair(0, '?'));
-        list.push(new WheelChair(1, 'Ano'));
-        list.push(new WheelChair(2, 'Ne'));
+    public static getPossibleWheelChairOptions(): EnumModel[] {
+        let list: EnumModel[] = [];
+        list.push(new EnumModel(0, '?'));
+        list.push(new EnumModel(1, 'Ano'));
+        list.push(new EnumModel(2, 'Ne'));
+
+        return list;
+    }
+
+    public static getRouteTypeText(code: number): string {
+        if(code === null) return null;
+
+        switch(code) {
+            case 0:
+                return 'TRAM';
+            case 1:
+                return 'METRO';
+            case 2:
+                return 'TRAIN';
+            case 3:
+                return 'BUS';
+            case 4:
+                return 'BOAT';
+            case 5:
+                return 'CABLE CAR';
+            case 6:
+                return 'GONDOLA';
+            case 7:
+                return 'FUNICULAR';
+            default:
+                return '?';
+        }
+    }
+
+    public static getPossibleRouteTypesOptions(): EnumModel[] {
+        let list: EnumModel[] = [];
+        list.push(new EnumModel(0, 'TRAM'));
+        list.push(new EnumModel(1, 'METRO'));
+        list.push(new EnumModel(2, 'TRAIN'));
+        list.push(new EnumModel(3, 'BUS'));
+        list.push(new EnumModel(4, 'BOAT'));
+        list.push(new EnumModel(5, 'CABLE CAR'));
+        list.push(new EnumModel(6, 'GONDOLA'));
+        list.push(new EnumModel(7, 'FUNICULAR'));
 
         return list;
     }

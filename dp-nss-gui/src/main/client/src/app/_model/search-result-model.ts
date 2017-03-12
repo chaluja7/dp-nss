@@ -29,8 +29,12 @@ export class Trip {
 }
 
 export class Route {
+  id: string;
   shortName: string;
   longName: string;
-  routeType: string;
+  typeCode: number;
   color: string;
+  agencyId: string;
+  agencyName: string;
+  canBeDeleted: boolean;
 }

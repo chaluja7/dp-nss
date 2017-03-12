@@ -32,6 +32,16 @@ export class AdminAgencyService {
         .catch(err => this.errorService.handleServerError(err));
   }
 
+  getAgenciesForSelectBox(): Observable<Agency[]> {
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('allOptions', 'true');
+
+    return this.http
+        .get(this.userService.getApiPrefix() + AdminAgencyService.AGENCY_URL, params)
+        .map((response => response.json() as Agency[]))
+        .catch(err => this.errorService.handleServerError(err));
+  }
+
   getAgency(id: string): Observable<Agency> {
     const url = this.userService.getApiPrefix() + `${AdminAgencyService.AGENCY_URL}/${id}`;
     return this.http.get(url)

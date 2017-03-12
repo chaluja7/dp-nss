@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * @author jakubchalupa
  * @since 05.01.17
@@ -69,6 +71,36 @@ public class RouteServiceIT extends AbstractServiceIT {
         agencyService.delete(agency.getId());
     }
 
+    @Test
+    public void testGetWithAgency() {
+        Route route = routeService.getWithAgency("L125D1");
+        Assert.assertNotNull(route);
+    }
+
+    @Test
+    public void testGetByFilter() {
+        List<Route> byFilter = routeService.getByFilter(getFilter(),0, 15, "agencyId", true);
+        Assert.assertNotNull(byFilter);
+    }
+
+    @Test
+    public void testGetCountByFilter() {
+        long countByFilter = routeService.getCountByFilter(getFilter());
+        Assert.assertTrue(countByFilter >= 0);
+    }
+
+    @Test
+    public void testFindRoutesBySearchQuery() {
+        List<Route> list = routeService.findRoutesBySearchQuery("Smích");
+        Assert.assertNotNull(list);
+    }
+
+    @Test
+    public void testCanBeDeleted() {
+        boolean canBeDeleted = routeService.canBeDeleted("L125D1");
+        Assert.assertTrue(true);
+    }
+
     public static Route getRoute(final String id, Agency agency, String shortName, String longName, String color, RouteType routeType) {
         Route route = new Route();
         route.setId(id);
@@ -79,6 +111,13 @@ public class RouteServiceIT extends AbstractServiceIT {
         route.setRouteType(routeType);
 
         return route;
+    }
+
+    public static RouteFilter getFilter() {
+        RouteFilter filter = new RouteFilter();
+        filter.setShortName("125");
+
+        return filter;
     }
 
 }

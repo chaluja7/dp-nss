@@ -1,12 +1,12 @@
-package cz.cvut.dp.nss.wrapper.output.route;
+package cz.cvut.dp.nss.services.route;
 
-import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
+import cz.cvut.dp.nss.services.common.AbstractEntityFilter;
 
 /**
  * @author jakubchalupa
- * @since 25.02.17
+ * @since 12.03.17
  */
-public class RouteWrapper extends AbstractWrapper<String> {
+public class RouteFilter extends AbstractEntityFilter<String> {
 
     private String shortName;
 
@@ -17,8 +17,6 @@ public class RouteWrapper extends AbstractWrapper<String> {
     private String color;
 
     private String agencyId;
-
-    private String agencyName;
 
     public String getShortName() {
         return shortName;
@@ -58,13 +56,5 @@ public class RouteWrapper extends AbstractWrapper<String> {
 
     public void setAgencyId(String agencyId) {
         this.agencyId = agencyId;
-    }
-
-    public String getAgencyName() {
-        return agencyName;
-    }
-
-    public void setAgencyName(String agencyName) {
-        this.agencyName = agencyName;
     }
 }

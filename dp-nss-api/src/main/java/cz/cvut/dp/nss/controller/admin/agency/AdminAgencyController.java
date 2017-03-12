@@ -8,7 +8,6 @@ import cz.cvut.dp.nss.services.agency.Agency;
 import cz.cvut.dp.nss.services.agency.AgencyFilter;
 import cz.cvut.dp.nss.services.agency.AgencyService;
 import cz.cvut.dp.nss.wrapper.output.agency.AgencyWrapper;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,6 +31,7 @@ public class AdminAgencyController extends AdminAbstractController {
     private static final String FILTER_NAME = "name";
     private static final String FILTER_URL = "url";
     private static final String FILTER_PHONE = "phone";
+    private static final String FILTER_ALL_OPTIONS = "allOptions";
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<AgencyWrapper>> getAgencies(@RequestHeader(value = X_LIMIT_HEADER, required = false) Integer xLimit,
@@ -41,14 +41,14 @@ public class AdminAgencyController extends AdminAbstractController {
                                       @RequestParam(value = FILTER_NAME, required = false) String name,
                                       @RequestParam(value = FILTER_URL, required = false) String url,
                                       @RequestParam(value = FILTER_PHONE, required = false) String phone,
-                                      @RequestParam(value = FILTER_SEARCH_QUERY, required = false) String searchQuery) throws BadRequestException {
+                                      @RequestParam(value = FILTER_ALL_OPTIONS, required = false) Boolean allOptions) throws BadRequestException {
 
         List<Agency> agencies;
         List<AgencyWrapper> wrappers = new ArrayList<>();
         HttpHeaders httpHeaders = new HttpHeaders();
-        if(!StringUtils.isBlank(searchQuery)) {
-            //searchQuery vsechno prebiji a nic jineho se neaplikuje
-            agencies = agencyService.findAgenciesBySearchQuery(searchQuery);
+        if(Boolean.TRUE.equals(allOptions)) {
+            //allOptions vsechno prebiji a nic jineho se neaplikuje, hledaji se vsechny stanice
+            agencies = agencyService.getAllOrdered();
         } else {
             final OrderWrapper order = getOrderFromHeader(xOrder);
             final AgencyFilter filter = getFilterFromParams(id, name, url, phone);

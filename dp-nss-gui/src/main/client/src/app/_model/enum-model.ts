@@ -1,4 +1,4 @@
-export class WheelChair {
+export class EnumModel {
     code: number;
     title: string;
 

@@ -23,16 +23,12 @@ public class AgencyDao extends AbstractGenericJpaDao<Agency, String> {
     }
 
     /**
-     * @param searchQuery retezec, ktery se vyskytuje v ID nebo nazev dopravce
-     * @return vsechny doprace, kde id nebo nazev odpovida searchQuery
+     * @return vsechny doprace, serazene dle jmena
      */
-    public List<Agency> findAgenciesBySearchQuery(String searchQuery) {
-        final String queryString = "select a from Agency a where lower(a.name) like lower(:searchQuery) or lower(a.id) like lower(:searchQuery) order by lower(a.id)";
+    public List<Agency> getAllOrdered() {
+        final String queryString = "select a from Agency a order by lower(a.name)";
 
         Query<Agency> query = sessionFactory.getCurrentSession().createQuery(queryString, Agency.class);
-        query.setParameter("searchQuery", searchQuery + "%");
-        query.setMaxResults(10);
-
         return query.list();
     }
 

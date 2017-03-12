@@ -12,6 +12,9 @@ import {StopNewComponent} from "./_admin/stop/stop-new.component";
 import {AgenciesComponent} from "./_admin/agency/agencies.component";
 import {AgencyNewComponent} from "./_admin/agency/agency-new.component";
 import {AgencyComponent} from "./_admin/agency/agency.component";
+import {RoutesComponent} from "./_admin/route/routes.component";
+import {RouteNewComponent} from "./_admin/route/route-new.component";
+import {RouteComponent} from "./_admin/route/route.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -25,6 +28,9 @@ const routes: Routes = [
   { path: 'agency', component: AgenciesComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'agency/create', component: AgencyNewComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'agency/:id', component: AgencyComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'route', component: RoutesComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'route/create', component: RouteNewComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'route/:id', component: RouteComponent, canActivate: [AuthWithTimeTableGuard] },
 ];
 
 @NgModule({

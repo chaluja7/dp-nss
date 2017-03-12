@@ -26,9 +26,8 @@ public class AgencyServiceImpl extends AbstractEntityService<Agency, String, Age
 
     @Override
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<Agency> findAgenciesBySearchQuery(String searchQuery) {
-        if(searchQuery == null || searchQuery.length() < 3) return new ArrayList<>();
-        return dao.findAgenciesBySearchQuery(searchQuery);
+    public List<Agency> getAllOrdered() {
+        return dao.getAllOrdered();
     }
 
     @Override
@@ -48,6 +47,6 @@ public class AgencyServiceImpl extends AbstractEntityService<Agency, String, Age
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean canBeDeleted(String id) {
         Agency agency = get(id);
-        return agency != null && agency.getRoutes().size() == 0;
+        return agency != null && agency.getRoutes().isEmpty();
     }
 }

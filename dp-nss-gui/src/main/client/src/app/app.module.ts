@@ -37,6 +37,11 @@ import {AdminAgencyService} from "./_service/_admin/admin-agency.service";
 import {PagerComponent} from "./_admin/pager/pager.component";
 import {AgencyComponent} from "./_admin/agency/agency.component";
 import {AgencyNewComponent} from "./_admin/agency/agency-new.component";
+import {RoutesComponent} from "./_admin/route/routes.component";
+import {AdminRouteService} from "./_service/_admin/admin-route.service";
+import {RouteTypePipe} from "./_pipe/route-type.pipe";
+import {RouteComponent} from "./_admin/route/route.component";
+import {RouteNewComponent} from "./_admin/route/route-new.component";
 
 @NgModule({
   declarations: [
@@ -55,7 +60,11 @@ import {AgencyNewComponent} from "./_admin/agency/agency-new.component";
     AgenciesComponent,
     PagerComponent,
     AgencyComponent,
-    AgencyNewComponent
+    AgencyNewComponent,
+    RoutesComponent,
+    RouteComponent,
+    RouteNewComponent,
+    RouteTypePipe
   ],
   imports: [
     BrowserModule,
@@ -81,7 +90,8 @@ import {AgencyNewComponent} from "./_admin/agency/agency-new.component";
       SearchService,
       AdminTimeTableService,
       AdminStopService,
-      AdminAgencyService
+      AdminAgencyService,
+      AdminRouteService
   ],
   bootstrap: [AppComponent]
 })

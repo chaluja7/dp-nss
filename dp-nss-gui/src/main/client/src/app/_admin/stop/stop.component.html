@@ -29,6 +29,7 @@
     <div class="form-group">
       <label for="wheelChairCode">Bezbariérová:</label>
       <select class="form-control" id="wheelChairCode" name="wheelChairCode" [(ngModel)]="stop.wheelChairCode">
+        <option [value]=""></option>
         <option *ngFor="let option of wheelChairOptions" [value]="option.code">{{option.title}}</option>
       </select>
     </div>
