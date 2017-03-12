@@ -26,6 +26,8 @@ public abstract class AdminAbstractController extends AbstractController {
 
     protected static final String FILTER_ID = "id";
 
+    protected static final String FILTER_SEARCH_QUERY = "searchQuery";
+
     /**
      * Z X-Order hlavicky vytahne pozadovany sloupec a smer razeni. Ocekavana forma napr. 'id:desc'
      * @param xOrderHeader radici hlavicka

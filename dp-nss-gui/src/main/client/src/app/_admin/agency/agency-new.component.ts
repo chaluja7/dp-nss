@@ -1,27 +1,26 @@
 import "rxjs/add/operator/switchMap";
 import {Component, OnInit} from "@angular/core";
-import {Stop} from "../../_model/search-result-model";
 import {AppSettings} from "../../_common/app.settings";
-import {AbstractStopComponent} from "./abstract-stop.component";
+import {AbstractAgencyComponent} from "./abstract-agency.component";
+import {Agency} from "../../_model/agency";
 @Component({
   moduleId: module.id,
-  selector: 'stop-new-component',
-  templateUrl: './stop.component.html'
+  selector: 'agency-new-component',
+  templateUrl: './agency.component.html'
 })
-export class StopNewComponent extends AbstractStopComponent implements OnInit {
+export class AgencyNewComponent extends AbstractAgencyComponent implements OnInit {
 
   newRecord = true;
 
   ngOnInit(): void {
-      this.stop = new Stop();
+      this.agency = new Agency();
   }
 
   onSubmit(): void {
     this.loading = true;
-    this.handleParentStop();
 
-    this.adminStopService.create(this.stop)
-        .subscribe(stop => {
+    this.adminAgencyService.create(this.agency)
+        .subscribe(agency => {
             this.userService.setMsg(AppSettings.SAVE_SUCCESS);
             this.goBack()
         },

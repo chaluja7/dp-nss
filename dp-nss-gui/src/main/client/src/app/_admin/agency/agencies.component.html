@@ -1,0 +1,58 @@
+<div class="row padding-top-20">
+    <div class="col-md-10">
+        <h2 class="margin-top-0">Seznam dopravců</h2>
+    </div>
+    <div class="col-md-2">
+        <a [routerLink]="['/agency/create']" class="btn btn-success pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i> Vložit</a>
+    </div>
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead class="sorting-head">
+    <tr>
+        <th>ID
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'id' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'id' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', false)"></i>
+                </span>
+        </th>
+        <th>Název
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'name' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('name', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'name' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('name', false)"></i>
+                </span>
+        </th>
+        <th>URL
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'url' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('url', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'url' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('url', false)"></i>
+                </span>
+        </th>
+        <th>Telefon
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'phone' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('phone', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'phone' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('phone', false)"></i>
+                </span>
+        </th>
+        <th class="align-center">Akce</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..." (keyup.enter)="doFilter()"/></td>
+        <td><input type="text" class="form-control" name="name" id="name" [(ngModel)]="filter.name" placeholder="název..." (keyup.enter)="doFilter()"/></td>
+        <td><input type="text" class="form-control" name="url" id="url" [(ngModel)]="filter.url" placeholder="url..."(keyup.enter)="doFilter()"/></td>
+        <td><input type="text" class="form-control" name="phone" id="phone" [(ngModel)]="filter.phone" placeholder="telefon..." (keyup.enter)="doFilter()"/></td>
+        <td class="align-center"><button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i></button></td>
+    </tr>
+    <tr *ngFor="let agency of agencies">
+        <td>{{agency.id}}</td>
+        <td>{{agency.name}}</td>
+        <td>{{agency.url}}</td>
+        <td>{{agency.phone}}</td>
+        <td class="align-center"><button class="btn btn-warning" (click)="goToDetail(agency)"><i class="fa fa-pencil"></i></button></td>
+    </tr>
+    </tbody>
+</table>
+
+<pager-component [component]="this" [pager]="pager"></pager-component>

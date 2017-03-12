@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public abstract class AbstractEntityFilter<ID extends Serializable> {
 
-    private ID id;
+    protected ID id;
 
     public ID getId() {
         return id;

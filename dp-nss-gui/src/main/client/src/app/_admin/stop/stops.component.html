@@ -62,7 +62,7 @@
             </td>
             <td><input type="text" class="form-control" name="parentStopId" id="parentStopId" [(ngModel)]="filter.parentStopId"
                        placeholder="id nadřazené stanice..." (keyup.enter)="doFilter()"/></td>
-            <td><button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i></button></td>
+            <td class="align-center"><button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i></button></td>
         </tr>
         <tr *ngFor="let stop of stops">
             <td>{{stop.id}}</td>
@@ -76,26 +76,4 @@
     </tbody>
 </table>
 
-<!-- pager -->
-<div class="col-md-12" class="align-center">
-    <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-        <li [ngClass]="{disabled:pager.currentPage === 1}">
-            <a (click)="setPage(1)">První</a>
-        </li>
-        <li [ngClass]="{disabled:pager.currentPage === 1}">
-            <a (click)="setPage(pager.currentPage - 1)">Předchozí</a>
-        </li>
-        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-            <a (click)="setPage(page)">{{page}}</a>
-        </li>
-        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-            <a (click)="setPage(pager.currentPage + 1)">Další</a>
-        </li>
-        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-            <a (click)="setPage(pager.totalPages)">Poslední</a>
-        </li>
-    </ul>
-    <div class="alert alert-info">
-        Celkem záznamů: <strong>{{pager.totalItems | csNumber}}</strong>
-    </div>
-</div>
+<pager-component [component]="this" [pager]="pager"></pager-component>

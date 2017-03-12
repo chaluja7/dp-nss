@@ -2,28 +2,27 @@ import "rxjs/add/operator/switchMap";
 import {Component, OnInit} from "@angular/core";
 import {Params} from "@angular/router";
 import {AppSettings} from "../../_common/app.settings";
-import {AbstractStopComponent} from "./abstract-stop.component";
+import {AbstractAgencyComponent} from "./abstract-agency.component";
 @Component({
   moduleId: module.id,
-  selector: 'stop-component',
-  templateUrl: './stop.component.html'
+  selector: 'agency-component',
+  templateUrl: './agency.component.html'
 })
-export class StopComponent extends AbstractStopComponent implements OnInit {
+export class AgencyComponent extends AbstractAgencyComponent implements OnInit {
 
   newRecord = false;
 
   ngOnInit(): void {
     this.route.params
-        .switchMap((params: Params) => this.adminStopService.getStop(params['id']))
-        .subscribe(stop => {this.stop = stop}, err  => {});
+        .switchMap((params: Params) => this.adminAgencyService.getAgency(params['id']))
+        .subscribe(agency => {this.agency = agency}, err  => {});
   }
 
   onSubmit(): void {
     this.loading = true;
-    this.handleParentStop();
 
-    this.adminStopService.update(this.stop)
-        .subscribe(stop => {
+    this.adminAgencyService.update(this.agency)
+        .subscribe(agency => {
             this.userService.setMsg(AppSettings.SAVE_SUCCESS);
             this.goBack()
         },
@@ -34,7 +33,7 @@ export class StopComponent extends AbstractStopComponent implements OnInit {
   }
 
   doDelete(): void {
-      this.adminStopService.delete(this.stop.id)
+      this.adminAgencyService.delete(this.agency.id)
           .subscribe(() => {
                   this.userService.setMsg(AppSettings.DELETE_SUCCESS);
                   this.goBack()

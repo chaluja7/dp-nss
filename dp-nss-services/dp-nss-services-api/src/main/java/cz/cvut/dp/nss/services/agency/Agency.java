@@ -4,6 +4,7 @@ import cz.cvut.dp.nss.services.common.AbstractAssignedIdEntity;
 import cz.cvut.dp.nss.services.route.Route;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ public class Agency extends AbstractAssignedIdEntity {
     /**
      * jmeno, schvalne neni unique dle specifikace
      */
-    @Column
+    @Column(nullable = false)
+    @NotNull
     @Size(min = 1, max = 255)
     private String name;
 

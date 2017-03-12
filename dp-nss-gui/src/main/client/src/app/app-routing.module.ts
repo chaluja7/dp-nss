@@ -9,6 +9,9 @@ import {StopsComponent} from "./_admin/stop/stops.component";
 import {AuthWithTimeTableGuard} from "./_guard/auth-with-time-table.guard";
 import {StopComponent} from "./_admin/stop/stop.component";
 import {StopNewComponent} from "./_admin/stop/stop-new.component";
+import {AgenciesComponent} from "./_admin/agency/agencies.component";
+import {AgencyNewComponent} from "./_admin/agency/agency-new.component";
+import {AgencyComponent} from "./_admin/agency/agency.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -19,6 +22,9 @@ const routes: Routes = [
   { path: 'stop', component: StopsComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'stop/create', component: StopNewComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'stop/:id', component: StopComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'agency', component: AgenciesComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'agency/create', component: AgencyNewComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'agency/:id', component: AgencyComponent, canActivate: [AuthWithTimeTableGuard] },
 ];
 
 @NgModule({

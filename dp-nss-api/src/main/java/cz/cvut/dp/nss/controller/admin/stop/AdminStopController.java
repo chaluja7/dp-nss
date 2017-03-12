@@ -37,8 +37,6 @@ public class AdminStopController extends AdminAbstractController {
     private static final String FILTER_WHEEL_CHAIR = "wheelChairCode";
     private static final String FILTER_PARENT_STOP_ID = "parentStopId";
 
-    private static final String FILTER_SEARCH_QUERY = "searchQuery";
-
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<StopWrapper>> getStops(@RequestHeader(value = X_LIMIT_HEADER, required = false) Integer xLimit,
                                       @RequestHeader(value = X_OFFSET_HEADER, required = false) Integer xOffset,
@@ -158,7 +156,7 @@ public class AdminStopController extends AdminAbstractController {
         return stop;
     }
 
-    private static StopFilter getFilterFromParams(String id, String name, Double lat, Double lon, Integer wheelChairCode, String parentStopId) throws BadRequestException {
+    private static StopFilter getFilterFromParams(String id, String name, Double lat, Double lon, Integer wheelChairCode, String parentStopId) {
         StopFilter stopFilter = new StopFilter();
         stopFilter.setId(id);
         stopFilter.setName(name);

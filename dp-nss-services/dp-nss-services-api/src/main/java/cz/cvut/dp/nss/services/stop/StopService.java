@@ -39,6 +39,7 @@ public interface StopService extends EntityService<Stop, String> {
     List<Stop> findStopsBySearchQuery(String searchQuery);
 
     /**
+     * @param filter filter
      * @param offset index prvniho vraceneho zaznamu
      * @param limit max pocet vracenych zaznamu
      * @param orderColumn radici sloupec

@@ -32,6 +32,11 @@ import {PagerService} from "./_service/_admin/pager.service";
 import {CsNumberPipe} from "./_pipe/cs-number.pipe";
 import {StopComponent} from "./_admin/stop/stop.component";
 import {StopNewComponent} from "./_admin/stop/stop-new.component";
+import {AgenciesComponent} from "./_admin/agency/agencies.component";
+import {AdminAgencyService} from "./_service/_admin/admin-agency.service";
+import {PagerComponent} from "./_admin/pager/pager.component";
+import {AgencyComponent} from "./_admin/agency/agency.component";
+import {AgencyNewComponent} from "./_admin/agency/agency-new.component";
 
 @NgModule({
   declarations: [
@@ -46,7 +51,11 @@ import {StopNewComponent} from "./_admin/stop/stop-new.component";
     StopComponent,
     StopNewComponent,
     WheelChairPipe,
-    CsNumberPipe
+    CsNumberPipe,
+    AgenciesComponent,
+    PagerComponent,
+    AgencyComponent,
+    AgencyNewComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +80,8 @@ import {StopNewComponent} from "./_admin/stop/stop-new.component";
       StopService,
       SearchService,
       AdminTimeTableService,
-      AdminStopService
+      AdminStopService,
+      AdminAgencyService
   ],
   bootstrap: [AppComponent]
 })

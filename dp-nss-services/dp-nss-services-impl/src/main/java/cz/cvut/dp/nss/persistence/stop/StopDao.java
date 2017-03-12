@@ -30,7 +30,7 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
      * @return vsechny stanice dle rozsahu
      */
     public List<Stop> getAllInRange(final int start, final int limit) {
-        final String queryString = "select distinct s from Stop s order by lower(s.id) asc";
+        final String queryString = "select s from Stop s order by lower(s.id) asc";
 
         Query<Stop> query = sessionFactory.getCurrentSession().createQuery(queryString, Stop.class);
         query.setFirstResult(start);
@@ -44,7 +44,7 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
      * @return vsechny stanice, ktere zacinaji na pattern (case insensitive)
      */
     public List<String> findStopNamesByStartPattern(String startPattern) {
-        final String queryString = "select distinct s.name from Stop s where lower(s.name) like lower(:startPattern) order by lower(s.name)";
+        final String queryString = "select distinct s.name from Stop s where lower(s.name) like lower(:startPattern) order by s.name";
 
         Query<String> query = sessionFactory.getCurrentSession().createQuery(queryString, String.class);
         query.setParameter("startPattern", startPattern + "%");
@@ -58,7 +58,7 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
      * @return vsechny stanice, kde id nebo nazev odpovida searchQuery
      */
     public List<Stop> findStopsBySearchQuery(String searchQuery) {
-        final String queryString = "select distinct s from Stop s where lower(s.name) like lower(:searchQuery) or lower(s.id) like lower(:searchQuery) order by lower(s.id)";
+        final String queryString = "select s from Stop s where lower(s.name) like lower(:searchQuery) or lower(s.id) like lower(:searchQuery) order by lower(s.id)";
 
         Query<Stop> query = sessionFactory.getCurrentSession().createQuery(queryString, Stop.class);
         query.setParameter("searchQuery", searchQuery + "%");
@@ -138,7 +138,7 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
     private static void addFilterParamsToSql(StringBuilder builder, StopFilter filter) {
         if(filter != null) {
             if(filter.getId() != null) {
-                builder.append(" and s.id = :id");
+                builder.append(" and lower(s.id) like lower(:id)");
             }
             if(filter.getName() != null) {
                 builder.append(" and lower(s.name) like lower(:name)");
@@ -166,7 +166,7 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
     private static void addFilterParamsToQuery(Query query, StopFilter filter) {
         if(filter != null) {
             if(filter.getId() != null) {
-                query.setParameter("id", filter.getId());
+                query.setParameter("id", filter.getId() + "%");
             }
             if(filter.getName() != null) {
                 query.setParameter("name", "%" + filter.getName() + "%");

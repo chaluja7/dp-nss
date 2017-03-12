@@ -15,7 +15,7 @@ export class AppSettings {
 
     public static TOTAL_COUNT_HEADER = 'X-Total-Count';
 
-    public static DEFAULT_PAGE_LIMIT = 20;
+    public static DEFAULT_PAGE_LIMIT = 3;
 
     public static SAVE_SUCCESS = 'Záznam byl úspěšně uložen.';
 

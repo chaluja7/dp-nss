@@ -1,12 +1,12 @@
 package cz.cvut.dp.nss.wrapper.output.stop;
 
+import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
+
 /**
  * @author jakubchalupa
  * @since 24.02.17
  */
-public class StopWrapper {
-
-    private String id;
+public class StopWrapper extends AbstractWrapper<String> {
 
     private String name;
 
@@ -17,16 +17,6 @@ public class StopWrapper {
     private Integer wheelChairCode;
 
     private String parentStopId;
-
-    private boolean canBeDeleted;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -68,11 +58,4 @@ public class StopWrapper {
         this.parentStopId = parentStopId;
     }
 
-    public boolean isCanBeDeleted() {
-        return canBeDeleted;
-    }
-
-    public void setCanBeDeleted(boolean canBeDeleted) {
-        this.canBeDeleted = canBeDeleted;
-    }
 }

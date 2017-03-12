@@ -10,9 +10,7 @@ import {RemoteData, CompleterService} from "ng2-completer";
 import {Headers} from "@angular/http";
 import {HttpClient} from "../../_service/http-client";
 @Component({
-  moduleId: module.id,
-  selector: 'stop-component',
-  templateUrl: './stop.component.html'
+  moduleId: module.id
 })
 export abstract class AbstractStopComponent {
 

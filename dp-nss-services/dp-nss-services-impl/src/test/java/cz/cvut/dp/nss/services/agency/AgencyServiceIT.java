@@ -5,6 +5,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * @author jakubchalupa
  * @since 05.01.17
@@ -51,6 +53,30 @@ public class AgencyServiceIT extends AbstractServiceIT {
         Assert.assertNull(agencyService.get(retrieved.getId()));
     }
 
+    @Test
+    public void testGetByFilter() {
+        List<Agency> byFilter = agencyService.getByFilter(getFilter(),0, 15, "parentStopId", true);
+        Assert.assertNotNull(byFilter);
+    }
+
+    @Test
+    public void testGetCountByFilter() {
+        long countByFilter = agencyService.getCountByFilter(getFilter());
+        Assert.assertTrue(countByFilter >= 0);
+    }
+
+    @Test
+    public void testFindAgenciesBySearchQuery() {
+        List<Agency> list = agencyService.findAgenciesBySearchQuery("dopravni");
+        Assert.assertNotNull(list);
+    }
+
+    @Test
+    public void testCanBeDeleted() {
+        boolean canBeDeleted = agencyService.canBeDeleted("1");
+        Assert.assertTrue(true);
+    }
+
     public static Agency getAgency(final String id, String name, String phone, String url) {
         Agency agency = new Agency();
         agency.setId(id);
@@ -59,6 +85,13 @@ public class AgencyServiceIT extends AbstractServiceIT {
         agency.setUrl(url);
 
         return agency;
+    }
+
+    public static AgencyFilter getFilter() {
+        AgencyFilter filter = new AgencyFilter();
+        filter.setName("podnik");
+
+        return filter;
     }
 
 }
