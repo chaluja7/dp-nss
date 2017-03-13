@@ -42,6 +42,9 @@ import {AdminRouteService} from "./_service/_admin/admin-route.service";
 import {RouteTypePipe} from "./_pipe/route-type.pipe";
 import {RouteComponent} from "./_admin/route/route.component";
 import {RouteNewComponent} from "./_admin/route/route-new.component";
+import {AdminCalendarService} from "./_service/_admin/admin-calendar.service";
+import {CalendarsComponent} from "./_admin/calendar/calendars.component";
+import {CalendarDatesPipe} from "./_pipe/calendar-dates.pipe";
 
 @NgModule({
   declarations: [
@@ -64,7 +67,9 @@ import {RouteNewComponent} from "./_admin/route/route-new.component";
     RoutesComponent,
     RouteComponent,
     RouteNewComponent,
-    RouteTypePipe
+    RouteTypePipe,
+    CalendarsComponent,
+    CalendarDatesPipe,
   ],
   imports: [
     BrowserModule,
@@ -91,7 +96,8 @@ import {RouteNewComponent} from "./_admin/route/route-new.component";
       AdminTimeTableService,
       AdminStopService,
       AdminAgencyService,
-      AdminRouteService
+      AdminRouteService,
+      AdminCalendarService
   ],
   bootstrap: [AppComponent]
 })

@@ -11,7 +11,7 @@ input.ng-invalid:not(form), select.ng-invalid:not(form), .ng-invalid > div:not(.
     border-left: 5px solid #a94442 !important;
 }
 
-.ng-valid > div > div > input {
+.ng-valid > div > div > input[required] {
     border-left: 5px solid #42A948;
 }
 
@@ -57,4 +57,8 @@ ul.pagination li a {
 
 .clearfix {
     clear: both;
+}
+
+.width-100 > div > div.date {
+    width: 100%;
 }

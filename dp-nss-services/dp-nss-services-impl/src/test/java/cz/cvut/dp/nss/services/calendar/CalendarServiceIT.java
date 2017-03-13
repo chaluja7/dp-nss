@@ -66,6 +66,30 @@ public class CalendarServiceIT extends AbstractServiceIT {
         Assert.assertNotNull(allForInsertToGraph);
     }
 
+    @Test
+    public void testGetByFilter() {
+        List<Calendar> byFilter = calendarService.getByFilter(getFilter(),0, 15, "startDate", true);
+        Assert.assertNotNull(byFilter);
+    }
+
+    @Test
+    public void testGetCountByFilter() {
+        long countByFilter = calendarService.getCountByFilter(getFilter());
+        Assert.assertTrue(countByFilter >= 0);
+    }
+
+    @Test
+    public void testGetAllOrdered() {
+        List<Calendar> list = calendarService.getAllOrdered();
+        Assert.assertNotNull(list);
+    }
+
+    @Test
+    public void testCanBeDeleted() {
+        boolean canBeDeleted = calendarService.canBeDeleted("1");
+        Assert.assertTrue(true);
+    }
+
     public static Calendar getCalendar(final String id, LocalDate startDate, LocalDate endDate, boolean monday, boolean sunday) {
         Calendar calendar = new Calendar();
         calendar.setId(id);
@@ -76,6 +100,13 @@ public class CalendarServiceIT extends AbstractServiceIT {
         calendar.setSunday(sunday);
 
         return calendar;
+    }
+
+    public static CalendarFilter getFilter() {
+        CalendarFilter filter = new CalendarFilter();
+        filter.setStartDate(LocalDate.now().withDayOfMonth(14).withMonth(1).withYear(2017));
+
+        return filter;
     }
 
 }

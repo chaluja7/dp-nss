@@ -20,8 +20,32 @@ export class DateService {
     defaultTime: 'current'
   };
 
+  public static getFormattedDateOnly(date: Date) : string {
+    return date ? date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear() : null;
+  }
+
   public static getFormattedDate(date: Date, time: Date) : string {
     return date && time ? date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear() + ' ' + time.getHours() + ':' + time.getMinutes() : null;
+  }
+
+  public static getDateObjectFromString(s: string): Date {
+    if(!s) return null;
+    let date = new Date();
+    date.setFullYear(+DateService.getDayOfMonth(s), +DateService.getMonthOfYear(s), +DateService.getYear(s));
+    console.log(date);
+    return date;
+  }
+
+  public static getDayOfMonth(s: string) {
+    return s.split('.')[0];
+  }
+
+  public static getMonthOfYear(s: string) {
+    return s.split('.')[1];
+  }
+
+  public static getYear(s: string) {
+    return s.split('.')[2];
   }
 
   public getFormattedTimePeriod(numOfSeconds: number) : string {

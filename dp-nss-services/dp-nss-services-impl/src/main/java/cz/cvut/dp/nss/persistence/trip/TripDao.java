@@ -32,4 +32,17 @@ public class TripDao extends AbstractGenericJpaDao<Trip, String> {
         return query.list();
     }
 
+    /**
+     * @param calendarId id calendar
+     * @return pocet tripu navazanych na calendar dle id
+     */
+    public long getCountByCalendarId(String calendarId) {
+        StringBuilder builder = new StringBuilder("select count(distinct t) from Trip t where t.calendar.id = :calendarId");
+
+        Query<Long> query = sessionFactory.getCurrentSession().createQuery(builder.toString(), Long.class);
+        query.setParameter("calendarId", calendarId);
+
+        return query.uniqueResult();
+    }
+
 }

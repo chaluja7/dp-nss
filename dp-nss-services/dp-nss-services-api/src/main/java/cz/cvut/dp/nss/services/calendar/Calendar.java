@@ -84,7 +84,7 @@ public class Calendar extends AbstractAssignedIdEntity {
     /**
      * kolekce vyjimkovych datumu (kdy jede/nejede navic v intervalu startDate - endDate)
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "calendar")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "calendar")
     private List<CalendarDate> calendarDates;
 
     /**

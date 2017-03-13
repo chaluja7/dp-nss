@@ -16,6 +16,8 @@ public final class DateTimeUtils {
 
     public static final String DATE_PATTERN = "dd.MM.yyyy";
 
+    public static final String SIMPLE_DATE_PATTERN = "d.M.yyyy";
+
     public static final String GTFS_DATE_PATTERN = "yyyyMMdd";
 
     public static final String TIME_PATTERN = "HH:mm";
@@ -37,17 +39,22 @@ public final class DateTimeUtils {
     /**
      * je thread-safe
      */
-    public static final org.joda.time.format.DateTimeFormatter JODA_DATE_FORMATTER = DateTimeFormat.forPattern(DateTimeUtils.DATE_PATTERN);
+    public static final org.joda.time.format.DateTimeFormatter JODA_DATE_FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN);
 
     /**
      * je thread-safe
      */
-    public static final org.joda.time.format.DateTimeFormatter JODA_DATE_TIME_FORMATTER = DateTimeFormat.forPattern(DateTimeUtils.DATE_TIME_PATTERN);
+    public static final org.joda.time.format.DateTimeFormatter JODA_DATE_TIME_FORMATTER = DateTimeFormat.forPattern(DATE_TIME_PATTERN);
 
     /**
      * je thread-safe viz https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
      */
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+
+    /**
+     * je thread-safe viz https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+     */
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(SIMPLE_DATE_PATTERN);
 
     /**
      * je thread-safe viz https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html

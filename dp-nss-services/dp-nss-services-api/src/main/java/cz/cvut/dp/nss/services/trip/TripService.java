@@ -17,4 +17,10 @@ public interface TripService extends EntityService<Trip, String> {
      */
     List<TripWrapper> getAllForInsertToGraph();
 
+    /**
+     * @param calendarId id calendar
+     * @return pocet tripu navazanych na calendar dle id
+     */
+    long getCountByCalendarId(String calendarId);
+
 }

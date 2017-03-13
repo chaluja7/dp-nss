@@ -33,4 +33,10 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
         return jdbcTripDao.getAllForInsertToGraph();
     }
 
+    @Override
+    @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
+    public long getCountByCalendarId(String calendarId) {
+        return calendarId != null ? dao.getCountByCalendarId(calendarId) : 0;
+    }
+
 }

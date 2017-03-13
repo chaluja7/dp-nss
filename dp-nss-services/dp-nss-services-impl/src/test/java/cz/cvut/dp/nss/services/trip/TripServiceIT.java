@@ -89,6 +89,12 @@ public class TripServiceIT extends AbstractServiceIT {
         Assert.assertNotNull(allForInsertToGraph);
     }
 
+    @Test
+    public void testGetCountByCalendarId() {
+        long countByCalendarId = tripService.getCountByCalendarId("1");
+        Assert.assertTrue(countByCalendarId >= 0);
+    }
+
     public static Trip getTrip(final String id, Calendar calendar, Route route, String headSign) {
         Trip trip = new Trip();
         trip.setId(id);

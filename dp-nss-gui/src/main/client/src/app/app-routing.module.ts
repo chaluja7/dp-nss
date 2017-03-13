@@ -15,6 +15,7 @@ import {AgencyComponent} from "./_admin/agency/agency.component";
 import {RoutesComponent} from "./_admin/route/routes.component";
 import {RouteNewComponent} from "./_admin/route/route-new.component";
 import {RouteComponent} from "./_admin/route/route.component";
+import {CalendarsComponent} from "./_admin/calendar/calendars.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'route', component: RoutesComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'route/create', component: RouteNewComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'route/:id', component: RouteComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'calendar', component: CalendarsComponent, canActivate: [AuthWithTimeTableGuard] },
 ];
 
 @NgModule({
