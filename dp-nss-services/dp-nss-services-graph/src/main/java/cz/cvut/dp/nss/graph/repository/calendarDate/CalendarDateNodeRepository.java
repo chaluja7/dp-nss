@@ -18,4 +18,11 @@ public interface CalendarDateNodeRepository extends GraphRepository<CalendarDate
     @Query("match (n:CalendarDateNode {calendarDateId: {0}}) return n")
     CalendarDateNode findByCalendarDateId(Long calendarDateId);
 
+    /**
+     * smaze vsechny calendarDates navazana na calendarId
+     * @param calendarId calendarId
+     */
+    @Query("match (n:CalendarNode {calendarId: {0}})<-[IN_CALENDAR]-(m) detach delete m")
+    void deleteByCalendarId(String calendarId);
+
 }

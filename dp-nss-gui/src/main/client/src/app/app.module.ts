@@ -45,6 +45,9 @@ import {RouteNewComponent} from "./_admin/route/route-new.component";
 import {AdminCalendarService} from "./_service/_admin/admin-calendar.service";
 import {CalendarsComponent} from "./_admin/calendar/calendars.component";
 import {CalendarDatesPipe} from "./_pipe/calendar-dates.pipe";
+import {CalendarComponent} from "./_admin/calendar/calendar.component";
+import {CalendarNewComponent} from "./_admin/calendar/calendar-new.component";
+import {CalendarExceptionTypePipe} from "./_pipe/calendar-exception-type.pipe";
 
 @NgModule({
   declarations: [
@@ -70,6 +73,9 @@ import {CalendarDatesPipe} from "./_pipe/calendar-dates.pipe";
     RouteTypePipe,
     CalendarsComponent,
     CalendarDatesPipe,
+    CalendarComponent,
+    CalendarNewComponent,
+    CalendarExceptionTypePipe
   ],
   imports: [
     BrowserModule,

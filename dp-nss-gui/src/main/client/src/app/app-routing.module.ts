@@ -16,6 +16,8 @@ import {RoutesComponent} from "./_admin/route/routes.component";
 import {RouteNewComponent} from "./_admin/route/route-new.component";
 import {RouteComponent} from "./_admin/route/route.component";
 import {CalendarsComponent} from "./_admin/calendar/calendars.component";
+import {CalendarComponent} from "./_admin/calendar/calendar.component";
+import {CalendarNewComponent} from "./_admin/calendar/calendar-new.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -33,6 +35,8 @@ const routes: Routes = [
   { path: 'route/create', component: RouteNewComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'route/:id', component: RouteComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'calendar', component: CalendarsComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'calendar/create', component: CalendarNewComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'calendar/:id', component: CalendarComponent, canActivate: [AuthWithTimeTableGuard] },
 ];
 
 @NgModule({

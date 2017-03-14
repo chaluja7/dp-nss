@@ -15,4 +15,10 @@ public interface CalendarDateNodeService extends NodeService<CalendarDateNode> {
      */
     CalendarDateNode findByCalendarDateId(Long calendarDateId);
 
+    /**
+     * smaze vsechny calendarDates navazana na calendarId
+     * @param calendarId calendarId
+     */
+    void deleteByCalendarId(String calendarId);
+
 }

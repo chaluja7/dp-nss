@@ -28,4 +28,10 @@ public interface NodeService<NODE extends AbstractNode> {
      */
     void deleteAll();
 
+    /**
+     * smaze node
+     * @param node node ke smazani
+     */
+    void delete(NODE node);
+
 }

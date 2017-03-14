@@ -92,4 +92,25 @@ export class AppSettings {
         return list;
     }
 
+    public static getExceptionTypeText(code: number): string {
+        if(code === null) return null;
+
+        switch(code) {
+            case 1:
+                return 'Jede';
+            case 2:
+                return 'Nejede';
+            default:
+                return '?';
+        }
+    }
+
+    public static getPossibleExceptionTypeOptions(): EnumModel[] {
+        let list: EnumModel[] = [];
+        list.push(new EnumModel(1, 'Jede'));
+        list.push(new EnumModel(2, 'Nejede'));
+
+        return list;
+    }
+
 }

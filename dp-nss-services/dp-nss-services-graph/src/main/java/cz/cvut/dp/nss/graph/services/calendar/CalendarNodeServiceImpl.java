@@ -4,6 +4,7 @@ import cz.cvut.dp.nss.graph.repository.calendar.CalendarNodeRepository;
 import cz.cvut.dp.nss.graph.services.common.AbstractNodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author jakubchalupa
@@ -18,6 +19,7 @@ public class CalendarNodeServiceImpl extends AbstractNodeService<CalendarNode, C
     }
 
     @Override
+    @Transactional("neo4jTransactionManager")
     public CalendarNode findByCalendarId(String calendarId) {
         if(calendarId == null) return null;
         return repo.findByCalendarId(calendarId);

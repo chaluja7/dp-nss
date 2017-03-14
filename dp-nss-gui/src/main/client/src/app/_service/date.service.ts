@@ -31,8 +31,14 @@ export class DateService {
   public static getDateObjectFromString(s: string): Date {
     if(!s) return null;
     let date = new Date();
-    date.setFullYear(+DateService.getDayOfMonth(s), +DateService.getMonthOfYear(s), +DateService.getYear(s));
-    console.log(date);
+
+    date.setDate(+DateService.getDayOfMonth(s));
+    date.setMonth(+DateService.getMonthOfYear(s) - 1);
+    date.setFullYear(+DateService.getYear(s));
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
     return date;
   }
 

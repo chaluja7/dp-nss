@@ -40,4 +40,10 @@ public abstract class AbstractNodeService<NODE extends AbstractNode, REPO extend
     public void deleteAll() {
         repo.deleteAll();
     }
+
+    @Override
+    @Transactional("neo4jTransactionManager")
+    public void delete(NODE node) {
+        repo.delete(node);
+    }
 }
