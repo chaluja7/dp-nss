@@ -5,6 +5,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * @author jakubchalupa
  * @since 05.01.17
@@ -49,6 +51,30 @@ public class ShapeServiceIT extends AbstractServiceIT {
         Assert.assertNull(shapeService.get(retrieved.getId()));
     }
 
+    @Test
+    public void testGetByShapeId() {
+        List<Shape> byShapeId = shapeService.getByShapeId("1");
+        Assert.assertNotNull(byShapeId);
+    }
+
+    @Test
+    public void testFindShapesByLikeId() {
+        List<String> shapeIdsByLikeId = shapeService.findShapeIdsByLikeId("1");
+        Assert.assertNotNull(shapeIdsByLikeId);
+    }
+
+    @Test
+    public void testGetByFilter() {
+        List<String> shapeIdsByFilter = shapeService.getShapeIdsByFilter(getFilter(), 0, 15, "id", true);
+        Assert.assertNotNull(shapeIdsByFilter);
+    }
+
+    @Test
+    public void testGetCountByFilter() {
+        long countByFilter = shapeService.getCountByFilter(getFilter());
+        Assert.assertTrue(true);
+    }
+
     public static Shape getShape(final ShapeId id, Double lat, Double lon) {
         Shape shape = new Shape();
         shape.setId(id);
@@ -56,6 +82,13 @@ public class ShapeServiceIT extends AbstractServiceIT {
         shape.setLon(lon);
 
         return shape;
+    }
+
+    private ShapeFilter getFilter() {
+        ShapeFilter filter = new ShapeFilter();
+//        filter.setId("1");
+
+        return filter;
     }
 
 }

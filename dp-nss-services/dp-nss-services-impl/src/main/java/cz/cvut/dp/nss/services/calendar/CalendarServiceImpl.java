@@ -134,7 +134,8 @@ public class CalendarServiceImpl extends AbstractEntityService<Calendar, String,
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Calendar> getByFilter(final CalendarFilter filter, Integer offset, Integer limit, String orderColumn, boolean asc) {
         if(limit != null && limit <= 0) return new ArrayList<>();
-        return dao.getByFilter(filter, getOffsetOrDefault(offset), getLimitOrDefault(limit), orderColumn != null ? orderColumn : "", asc);    }
+        return dao.getByFilter(filter, getOffsetOrDefault(offset), getLimitOrDefault(limit), orderColumn != null ? orderColumn : "", asc);
+    }
 
     @Override
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
