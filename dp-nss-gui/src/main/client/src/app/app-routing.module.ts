@@ -18,6 +18,9 @@ import {RouteComponent} from "./_admin/route/route.component";
 import {CalendarsComponent} from "./_admin/calendar/calendars.component";
 import {CalendarComponent} from "./_admin/calendar/calendar.component";
 import {CalendarNewComponent} from "./_admin/calendar/calendar-new.component";
+import {ShapesComponent} from "./_admin/shape/shapes.component";
+import {ShapeComponent} from "./_admin/shape/shape.component";
+import {ShapeNewComponent} from "./_admin/shape/shape-new.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -37,6 +40,9 @@ const routes: Routes = [
   { path: 'calendar', component: CalendarsComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'calendar/create', component: CalendarNewComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'calendar/:id', component: CalendarComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'shape', component: ShapesComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'shape/create', component: ShapeNewComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'shape/:id', component: ShapeComponent, canActivate: [AuthWithTimeTableGuard] }
 ];
 
 @NgModule({

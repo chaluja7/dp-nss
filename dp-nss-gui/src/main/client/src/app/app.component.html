@@ -16,6 +16,7 @@
           <a *ngIf="isLoggedIn() && isTimeTableSelected()" [routerLink]="['/route']" routerLinkActive="active">Spoje</a>
           <a *ngIf="isLoggedIn() && isTimeTableSelected()" [routerLink]="['/stop']" routerLinkActive="active">Stanice</a>
           <a *ngIf="isLoggedIn() && isTimeTableSelected()" [routerLink]="['/calendar']" routerLinkActive="active">Intervaly</a>
+          <a *ngIf="isLoggedIn() && isTimeTableSelected()" [routerLink]="['/shape']" routerLinkActive="active">Průjezdní body</a>
           <a *ngIf="!isLoggedIn()" [routerLink]="['/login']" routerLinkActive="active">Administrace</a>
           <a *ngIf="isLoggedIn()" [routerLink]="['/login']">Odhlásit</a>
         </div>

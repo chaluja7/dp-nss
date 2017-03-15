@@ -48,6 +48,10 @@ import {CalendarDatesPipe} from "./_pipe/calendar-dates.pipe";
 import {CalendarComponent} from "./_admin/calendar/calendar.component";
 import {CalendarNewComponent} from "./_admin/calendar/calendar-new.component";
 import {CalendarExceptionTypePipe} from "./_pipe/calendar-exception-type.pipe";
+import {AdminShapeService} from "./_service/_admin/admin-shape.service";
+import {ShapesComponent} from "./_admin/shape/shapes.component";
+import {ShapeComponent} from "./_admin/shape/shape.component";
+import {ShapeNewComponent} from "./_admin/shape/shape-new.component";
 
 @NgModule({
   declarations: [
@@ -75,7 +79,10 @@ import {CalendarExceptionTypePipe} from "./_pipe/calendar-exception-type.pipe";
     CalendarDatesPipe,
     CalendarComponent,
     CalendarNewComponent,
-    CalendarExceptionTypePipe
+    CalendarExceptionTypePipe,
+    ShapesComponent,
+    ShapeComponent,
+    ShapeNewComponent
   ],
   imports: [
     BrowserModule,
@@ -103,7 +110,8 @@ import {CalendarExceptionTypePipe} from "./_pipe/calendar-exception-type.pipe";
       AdminStopService,
       AdminAgencyService,
       AdminRouteService,
-      AdminCalendarService
+      AdminCalendarService,
+      AdminShapeService
   ],
   bootstrap: [AppComponent]
 })
