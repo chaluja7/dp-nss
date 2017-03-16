@@ -7,7 +7,7 @@ export class SearchResultModel {
 
 export class StopTime {
   stop: Stop;
-  trip: Trip;
+  trip: TripForSearch;
   arrival: string;
   departure: string;
 }
@@ -22,9 +22,9 @@ export class Stop {
   canBeDeleted: boolean;
 }
 
-export class Trip {
+export class TripForSearch {
   headSign: string;
-  wheelChair: string;
+  wheelChairCode: number;
   route: Route;
 }
 

@@ -93,7 +93,7 @@ public class RouteDao extends AbstractGenericJpaDao<Route, String> {
      * @return celkovy pocet zaznamu dle filtru
      */
     public long getCountByFilter(final RouteFilter filter) {
-        StringBuilder builder = new StringBuilder("select count(distinct r) from Route r where 1 = 1");
+        StringBuilder builder = new StringBuilder("select count(r) from Route r where 1 = 1");
         addFilterParamsToSql(builder, filter);
 
         Query<Long> query = sessionFactory.getCurrentSession().createQuery(builder.toString(), Long.class);

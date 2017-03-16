@@ -80,7 +80,7 @@ public class AgencyDao extends AbstractGenericJpaDao<Agency, String> {
      * @return celkovy pocet zaznamu dle filtru
      */
     public long getCountByFilter(final AgencyFilter filter) {
-        StringBuilder builder = new StringBuilder("select count(distinct a) from Agency a where 1 = 1");
+        StringBuilder builder = new StringBuilder("select count(a) from Agency a where 1 = 1");
         addFilterParamsToSql(builder, filter);
 
         Query<Long> query = sessionFactory.getCurrentSession().createQuery(builder.toString(), Long.class);

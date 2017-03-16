@@ -88,7 +88,7 @@ public class CalendarDao extends AbstractGenericJpaDao<Calendar, String> {
      * @return celkovy pocet zaznamu dle filtru
      */
     public long getCountByFilter(final CalendarFilter filter) {
-        StringBuilder builder = new StringBuilder("select count(distinct c) from Calendar c where 1 = 1");
+        StringBuilder builder = new StringBuilder("select count(c) from Calendar c where 1 = 1");
         addFilterParamsToSql(builder, filter);
 
         Query<Long> query = sessionFactory.getCurrentSession().createQuery(builder.toString(), Long.class);

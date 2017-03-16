@@ -52,6 +52,8 @@ import {AdminShapeService} from "./_service/_admin/admin-shape.service";
 import {ShapesComponent} from "./_admin/shape/shapes.component";
 import {ShapeComponent} from "./_admin/shape/shape.component";
 import {ShapeNewComponent} from "./_admin/shape/shape-new.component";
+import {TripsComponent} from "./_admin/trip/trips.component";
+import {AdminTripService} from "./_service/_admin/admin-trip.service";
 
 @NgModule({
   declarations: [
@@ -82,7 +84,8 @@ import {ShapeNewComponent} from "./_admin/shape/shape-new.component";
     CalendarExceptionTypePipe,
     ShapesComponent,
     ShapeComponent,
-    ShapeNewComponent
+    ShapeNewComponent,
+    TripsComponent
   ],
   imports: [
     BrowserModule,
@@ -111,7 +114,8 @@ import {ShapeNewComponent} from "./_admin/shape/shape-new.component";
       AdminAgencyService,
       AdminRouteService,
       AdminCalendarService,
-      AdminShapeService
+      AdminShapeService,
+      AdminTripService
   ],
   bootstrap: [AppComponent]
 })

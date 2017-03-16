@@ -99,7 +99,7 @@ public class SearchController extends AbstractController {
 
         TripWithRouteWrapper wrapper = new TripWithRouteWrapper();
         wrapper.setHeadSign(trip.getHeadSign());
-        wrapper.setWheelChair(trip.getTripWheelchairAccessibleType() != null ? trip.getTripWheelchairAccessibleType().name() : null);
+        wrapper.setWheelChairCode(trip.getTripWheelchairAccessibleType() != null ? trip.getTripWheelchairAccessibleType().getCode() : null);
         wrapper.setRoute(AdminRouteController.getRouteWrapper(trip.getRoute(), false));
 
         return wrapper;

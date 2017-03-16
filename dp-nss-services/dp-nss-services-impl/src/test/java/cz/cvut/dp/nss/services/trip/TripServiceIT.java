@@ -95,6 +95,24 @@ public class TripServiceIT extends AbstractServiceIT {
         Assert.assertTrue(countByCalendarId >= 0);
     }
 
+    @Test
+    public void testGetByFilter() {
+        List<Trip> trips = tripService.getByFilter(getFilter(), 0, 15, "calendarId", true);
+        Assert.assertNotNull(trips);
+    }
+
+    @Test
+    public void testGetCountByFilter() {
+        long countByFilter = tripService.getCountByFilter(getFilter());
+        Assert.assertTrue(true);
+    }
+
+    @Test
+    public void testGetLazyInitialized() {
+        Trip trip = tripService.getLazyInitialized("1");
+        Assert.assertNotNull(trip);
+    }
+
     public static Trip getTrip(final String id, Calendar calendar, Route route, String headSign) {
         Trip trip = new Trip();
         trip.setId(id);
@@ -103,6 +121,13 @@ public class TripServiceIT extends AbstractServiceIT {
         trip.setHeadSign(headSign);
 
         return trip;
+    }
+
+    public static TripFilter getFilter() {
+        TripFilter filter = new TripFilter();
+        filter.setRouteShortName("124");
+
+        return filter;
     }
 
 }

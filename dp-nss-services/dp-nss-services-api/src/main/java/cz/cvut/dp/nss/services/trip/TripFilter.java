@@ -1,15 +1,12 @@
-package cz.cvut.dp.nss.wrapper.output.trip;
+package cz.cvut.dp.nss.services.trip;
 
-import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
-import cz.cvut.dp.nss.wrapper.output.stopTime.StopTimeWrapper;
-
-import java.util.List;
+import cz.cvut.dp.nss.services.common.AbstractEntityFilter;
 
 /**
  * @author jakubchalupa
- * @since 24.02.17
+ * @since 16.03.17
  */
-public class TripWrapper extends AbstractWrapper<String> {
+public class TripFilter extends AbstractEntityFilter<String> {
 
     private String headSign;
 
@@ -19,11 +16,7 @@ public class TripWrapper extends AbstractWrapper<String> {
 
     private String calendarId;
 
-    private String routeId;
-
     private String routeShortName;
-
-    private List<StopTimeWrapper> stopTimes;
 
     public String getHeadSign() {
         return headSign;
@@ -57,27 +50,11 @@ public class TripWrapper extends AbstractWrapper<String> {
         this.calendarId = calendarId;
     }
 
-    public String getRouteId() {
-        return routeId;
-    }
-
-    public void setRouteId(String routeId) {
-        this.routeId = routeId;
-    }
-
     public String getRouteShortName() {
         return routeShortName;
     }
 
     public void setRouteShortName(String routeShortName) {
         this.routeShortName = routeShortName;
-    }
-
-    public List<StopTimeWrapper> getStopTimes() {
-        return stopTimes;
-    }
-
-    public void setStopTimes(List<StopTimeWrapper> stopTimes) {
-        this.stopTimes = stopTimes;
     }
 }

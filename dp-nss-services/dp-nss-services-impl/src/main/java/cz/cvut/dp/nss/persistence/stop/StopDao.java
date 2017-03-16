@@ -121,7 +121,7 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
      * @return celkovy pocet zaznamu dle filtru
      */
     public long getCountByFilter(final StopFilter filter) {
-        StringBuilder builder = new StringBuilder("select count(distinct s) from Stop s where 1 = 1");
+        StringBuilder builder = new StringBuilder("select count(s) from Stop s where 1 = 1");
         addFilterParamsToSql(builder, filter);
 
         Query<Long> query = sessionFactory.getCurrentSession().createQuery(builder.toString(), Long.class);

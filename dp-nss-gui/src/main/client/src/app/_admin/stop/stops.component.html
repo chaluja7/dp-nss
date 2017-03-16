@@ -57,6 +57,7 @@
             <td><input type="number" class="form-control" name="lon" id="lon" [(ngModel)]="filter.lon" placeholder="délka..." (keyup.enter)="doFilter()"/></td>
             <td>
                 <select class="form-control" id="wheelChairCode" name="wheelChairCode" [(ngModel)]="filter.wheelChairCode" (keyup.enter)="doFilter()">
+                    <option [value]=""></option>
                     <option *ngFor="let option of wheelChairOptions" [value]="option.code">{{option.title}}</option>
                 </select>
             </td>

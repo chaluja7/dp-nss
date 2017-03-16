@@ -8,4 +8,13 @@ import cz.cvut.dp.nss.services.common.AbstractEntityFilter;
  */
 public class ShapeFilter extends AbstractEntityFilter<String> {
 
+    private String exactId;
+
+    public String getExactId() {
+        return exactId;
+    }
+
+    public void setExactId(String exactId) {
+        this.exactId = exactId;
+    }
 }

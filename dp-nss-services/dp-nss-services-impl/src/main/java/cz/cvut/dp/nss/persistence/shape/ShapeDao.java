@@ -124,6 +124,9 @@ public class ShapeDao extends AbstractGenericJpaDao<Shape, ShapeId> {
             if(filter.getId() != null) {
                 builder.append(" and lower(s.id.shapeId) like lower(:id)");
             }
+            if(filter.getExactId() != null) {
+                builder.append(" and s.id.shapeId = :exactId");
+            }
         }
     }
 
@@ -137,6 +140,9 @@ public class ShapeDao extends AbstractGenericJpaDao<Shape, ShapeId> {
             if(filter.getId() != null) {
                 builder.append(" and lower(s.shapeId) like lower(:id)");
             }
+            if(filter.getExactId() != null) {
+                builder.append(" and s.shapeId = :exactId");
+            }
         }
     }
 
@@ -149,6 +155,9 @@ public class ShapeDao extends AbstractGenericJpaDao<Shape, ShapeId> {
         if(filter != null) {
             if(filter.getId() != null) {
                 query.setParameter("id", filter.getId() + "%");
+            }
+            if(filter.getExactId() != null) {
+                query.setParameter("exactId", filter.getExactId());
             }
         }
     }

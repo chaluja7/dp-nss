@@ -23,4 +23,25 @@ public interface TripService extends EntityService<Trip, String> {
      */
     long getCountByCalendarId(String calendarId);
 
+    /**
+     * @param filter filter
+     * @param offset index prvniho vraceneho zaznamu
+     * @param limit max pocet vracenych zaznamu
+     * @param orderColumn radici sloupec
+     * @param asc true pokud radim asc, false jinak (desc)
+     * @return vsechny tripy dle filtru s fetchnutymi routami a calendars
+     */
+    List<Trip> getByFilter(TripFilter filter, Integer offset, Integer limit, String orderColumn, boolean asc);
+
+    /**
+     * @return celkovy pocet zaznamu dle filtru (pro ucely strankovani)
+     */
+    long getCountByFilter(TripFilter filter);
+
+    /**
+     * @param id trip id
+     * @return trip s fetchnutou routou, calendar a vsemi stopTimes, ktere navic maji fetchnute stops
+     */
+    Trip getLazyInitialized(String id);
+
 }

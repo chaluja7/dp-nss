@@ -46,7 +46,7 @@ public class Trip extends AbstractAssignedIdEntity {
     /**
      * zastavky jizdy v konkretnich casech na konkretnich stanicich
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "trip")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "trip")
     @OrderBy("sequence ASC")
     private List<StopTime> stopTimes;
 
