@@ -2,6 +2,7 @@ package cz.cvut.dp.nss.services.common;
 
 import org.joda.time.format.DateTimeFormat;
 
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -72,5 +73,14 @@ public final class DateTimeUtils {
      * je thread-safe viz https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
      */
     public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(SIMPLE_TIME_PATTERN);
+
+
+    /**
+     * @param localTime java localTime
+     * @return pocet sekund v ramci localTime
+     */
+    public static int getSecondsOfDay(LocalTime localTime) {
+        return localTime.getSecond() + (localTime.getMinute() * 60) + (localTime.getHour() * 60 * 60);
+    }
 
 }

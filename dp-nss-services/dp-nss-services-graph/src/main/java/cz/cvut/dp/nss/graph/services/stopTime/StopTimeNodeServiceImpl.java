@@ -5,6 +5,7 @@ import cz.cvut.dp.nss.graph.services.common.AbstractNodeService;
 import org.neo4j.ogm.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -80,6 +81,18 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
             //nyni ukladam o jednu vice, protoze jeste ukladam propojeni posledni->prvni
             stopTimeNodeService.save(stopNodeToSave, rest + 1);
         }
+
+    }
+
+    @Override
+    @Transactional("neo4jTransactionManager")
+    public void addNewStopTimeToStop(StopTimeNode stopTimeNode) {
+        //TODO jakubchalupa
+        //nejdriv najdu node, ktery bezprostredne bude predchazet tomu nove vkladanemu
+
+        //nalezenemu nodu nastavim jako next nove vkladany
+
+        //a nove vkladanemu nastavit jako next byvaly next nalezeneho nodu
 
     }
 }

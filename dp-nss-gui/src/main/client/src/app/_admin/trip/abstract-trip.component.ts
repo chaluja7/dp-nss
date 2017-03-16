@@ -79,13 +79,25 @@ export abstract class AbstractTripComponent {
       this.stopTimesError = '';
 
       if(this.trip.stopTimes && this.trip.stopTimes.length > 0) {
+          let set: Set<number> = new Set<number>();
+
           for(let i = 0; i < this.trip.stopTimes.length; i++) {
             let st = this.trip.stopTimes[i];
-            if(st.arrivalObject && st.departureObject && st.arrivalObject > st.departureObject) {
-                this.stopTimesError = 'Čas příjezdu do stanice musí být menší nebo roven času odjezdu ze stanice.';
-                this.loading = false;
-                return false;
+            //TODO nefunguje spravne
+            // if(st.arrivalObject && st.departureObject && st.arrivalObject > st.departureObject) {
+            //     this.stopTimesError = 'Čas příjezdu do stanice musí být menší nebo roven času odjezdu ze stanice.';
+            //     this.loading = false;
+            //     return false;
+            // }
+
+            if(set.has(st.sequence)) {
+              this.stopTimesError = 'Pořadí musí být unikátní napříč seznamem.';
+              this.loading = false;
+              return false;
             }
+
+            set.add(st.sequence);
+
           }
       }
 

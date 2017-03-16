@@ -30,4 +30,11 @@ public interface StopTimeNodeService extends NodeService<StopTimeNode> {
      */
     void connectStopTimeNodesOnStopWithWaitingRelationship(String stopName);
 
+    /**
+     * prida novy stopTimeNode do jiz existujici struktury stopTimes v ramci jedne stanice (propojeni dle casu)
+     * tedy najde spravne misto, kam node vlozit a prepropoji uzli tak, aby novy node zapadl do grafu
+     * @param stopTimeNode novy stopTimeNode
+     */
+    void addNewStopTimeToStop(StopTimeNode stopTimeNode);
+
 }

@@ -209,8 +209,23 @@ public class AdminTripController extends AdminAbstractController {
         }
 
         if(wrapper.getStopTimes() != null) {
+            int i = 0;
             for(StopTimeWrapper stopTimeWrapper : wrapper.getStopTimes()) {
+                if(i == 0) {
+                    if(StringUtils.isEmpty(stopTimeWrapper.getDeparture())) {
+                        throw new BadRequestException("alespon prvni zastaveni musi mit vyplneny cas odjezdu");
+                    }
+                    if(wrapper.getStopTimes().size() == 1 && StringUtils.isEmpty(stopTimeWrapper.getArrival())) {
+                        throw new BadRequestException("alespon druhe zastaveni musi mit vyplneny cas prijezdu");
+                    }
+                }
+                if(i == 1) {
+                    if(StringUtils.isEmpty(stopTimeWrapper.getArrival()) && StringUtils.isEmpty(wrapper.getStopTimes().get(0).getArrival())) {
+                        throw new BadRequestException("alespon druhe zastaveni musi mit vyplneny cas prijezdu");
+                    }
+                }
                trip.addStopTime(getStopTime(stopTimeWrapper));
+               i++;
             }
         }
 

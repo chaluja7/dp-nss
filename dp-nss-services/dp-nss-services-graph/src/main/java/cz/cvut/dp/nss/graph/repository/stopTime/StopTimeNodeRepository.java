@@ -32,4 +32,6 @@ public interface StopTimeNodeRepository extends GraphRepository<StopTimeNode> {
     @Query("match (n:StopTimeNode {stopName: {0}}) return n order by case when n.departureInSeconds is not null then n.departureInSeconds else n.arrivalInSeconds end")
     List<StopTimeNode> findByStopNameOrderByActionTime(String stopName);
 
+    //TODO FIND PLACE TO INSERT NODE
+
 }

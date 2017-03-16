@@ -78,21 +78,13 @@
                   <input type="text" class="form-control" name="stopId{{i}}" id="stopId{{i}}"
                          [(ngModel)]="stopTime.stopId" placeholder="id stanice..." required />
                 </td>
-                <td *ngIf="i === 0">
+                <td>
                   <datetime id="arrival{{i}}" [(ngModel)]="stopTime.arrivalObject" [timepicker]="dateService.timepickerArrivalOpts"
                             [datepicker]="false" name="arrival{{i}}"></datetime>
                 </td>
-                <td *ngIf="i > 0">
-                  <datetime id="arrival{{i}}" [(ngModel)]="stopTime.arrivalObject" [timepicker]="dateService.timepickerArrivalOpts"
-                            [datepicker]="false" name="arrival{{i}}" required></datetime>
-                </td>
-                <td *ngIf="i === trip.stopTimes.length - 1">
+                <td>
                   <datetime id="departure{{i}}" [(ngModel)]="stopTime.departureObject" [timepicker]="dateService.timepickerDepartureOpts"
                             [datepicker]="false" name="departure{{i}}"></datetime>
-                </td>
-                <td *ngIf="i < trip.stopTimes.length - 1">
-                  <datetime id="departure{{i}}" [(ngModel)]="stopTime.departureObject" [timepicker]="dateService.timepickerDepartureOpts"
-                            [datepicker]="false" name="departure{{i}}" required></datetime>
                 </td>
                 <td class="align-center">
                   <button type="button" class="btn btn-danger margin-top-bottom-2" (click)="confirm('Opravdu chcete smazat tuto položku?') ? deleteStopTime(i) : false">

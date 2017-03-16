@@ -1,10 +1,9 @@
 package cz.cvut.dp.nss.graph;
 
 import cz.cvut.dp.nss.context.SchemaThreadLocal;
+import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.session.Session;
-import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
@@ -25,7 +24,7 @@ import java.util.Map;
  * Session se pak bere v requestu dle nastaveni v SchemaThreadLocal stejne jako je tomu v CurrentTenantResolverImpl.java
  * Tam funguje implementace hibernate multi tenancy
  */
-@Configuration
+@org.springframework.context.annotation.Configuration
 @EnableNeo4jRepositories(basePackages = "cz.cvut.dp.nss.graph.repository")
 @EnableTransactionManagement
 public class Neo4jConfig extends Neo4jConfiguration {
@@ -34,18 +33,22 @@ public class Neo4jConfig extends Neo4jConfiguration {
 
     private static final String ENTITY_PACKAGES = "cz.cvut.dp.nss.graph.services";
 
-    private static final Map<String, org.neo4j.ogm.config.Configuration> CONFIGURATION_MAP;
+    private static final Map<String, Configuration> CONFIGURATION_MAP;
 
     static {
-        org.neo4j.ogm.config.Configuration configDefault = new org.neo4j.ogm.config.Configuration();
-        configDefault.driverConfiguration()
+        Configuration configPid = new Configuration();
+        configPid.driverConfiguration()
             .setDriverClassName(BOLT_DRIVER_CLASS)
             .setURI("bolt://neo4j:neo@localhost:7687");
 
-        Map<String, org.neo4j.ogm.config.Configuration> map = new HashMap<>();
-        map.put(SchemaThreadLocal.SCHEMA_DEFAULT, configDefault);
-        //TODO ukazuje na jednu databazi - opravit po pridani nove
-        map.put(SchemaThreadLocal.SCHEMA_PID, configDefault);
+        Configuration configAnnapolis = new Configuration();
+        configAnnapolis.driverConfiguration()
+            .setDriverClassName(BOLT_DRIVER_CLASS)
+            .setURI("bolt://neo4j:neo@localhost:7688");
+
+        Map<String, Configuration> map = new HashMap<>();
+        map.put(SchemaThreadLocal.SCHEMA_ANNAPOLIS, configAnnapolis);
+        map.put(SchemaThreadLocal.SCHEMA_PID, configPid);
         //mapa nemusi byt synchronized - je definovana jako static final a nikdy se do ni uz nebude zapisovat
         CONFIGURATION_MAP = Collections.unmodifiableMap(map);
     }
@@ -54,24 +57,23 @@ public class Neo4jConfig extends Neo4jConfiguration {
     public Map<String, SessionFactory> getSessionFactoryMaps() {
         Map<String, SessionFactory> map = new HashMap<>();
 
-        for(Map.Entry<String, org.neo4j.ogm.config.Configuration> entry : CONFIGURATION_MAP.entrySet()) {
-            map.put(entry.getKey(), new SessionFactory(entry.getValue(), ENTITY_PACKAGES));
+        for(Map.Entry<String, Configuration> entry : CONFIGURATION_MAP.entrySet()) {
+            map.put(entry.getKey(), new SessionFactory(entry.getKey(), entry.getValue(), ENTITY_PACKAGES));
         }
 
         return Collections.unmodifiableMap(map);
     }
 
     @Bean
-    public SessionFactory getSessionFactory() {
-        //bude pouzito jen pro metadata, proto si mohu dovolit si zde vybrat jednu
-        //tato metoda totiz musi byt prepsana :)
-        return getSessionFactoryMaps().get(SchemaThreadLocal.SCHEMA_DEFAULT);
+    public org.neo4j.ogm.session.SessionFactory getSessionFactory() {
+        //bude pouzito jen pro metadata, proto si mohu dovolit si zde vybrat jednu, tato metoda totiz musi byt prepsana :)
+        return new org.neo4j.ogm.session.SessionFactory(CONFIGURATION_MAP.get(SchemaThreadLocal.SCHEMA_PID), ENTITY_PACKAGES);
     }
 
     @Bean
     @Scope(scopeName = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public Session getSession() throws Exception {
-        String identifier = SchemaThreadLocal.getOrDefault();
+        String identifier = SchemaThreadLocal.get();
 
         SessionFactory sessionFactory = getSessionFactoryMaps().get(identifier);
         Assert.notNull(sessionFactory, "You must provide a SessionFactory instance in your Spring configuration classes");

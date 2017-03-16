@@ -2,13 +2,13 @@ package cz.cvut.dp.nss.batch.graph.trip;
 
 import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNode;
 import cz.cvut.dp.nss.graph.services.trip.TripNode;
+import cz.cvut.dp.nss.services.common.DateTimeUtils;
 import cz.cvut.dp.nss.services.stop.StopServiceImpl;
 import cz.cvut.dp.nss.services.stopTime.StopTimeWrapper;
 import cz.cvut.dp.nss.services.trip.TripWrapper;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripN
 
             //uzel nemusi mit departure/arrival, v tom pripade jej vezmu z predchoziho uzlu
             if(stopTime.getDeparture() != null) {
-                stopTimeNode.setDepartureInSeconds(getSecondsOfDay(stopTime.getDeparture()));
+                stopTimeNode.setDepartureInSeconds(DateTimeUtils.getSecondsOfDay(stopTime.getDeparture()));
             } else {
                 //null to ale nemuze byt, pokud neni zadny predchozi uzel!
                 assert(prevStopTimeNode != null);
@@ -53,7 +53,7 @@ public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripN
             }
 
             if(stopTime.getArrival() != null) {
-                stopTimeNode.setArrivalInSeconds(getSecondsOfDay(stopTime.getArrival()));
+                stopTimeNode.setArrivalInSeconds(DateTimeUtils.getSecondsOfDay(stopTime.getArrival()));
             } else {
                 //null to ale nemuze byt, pokud neni zadny predchozi uzel!
                 assert(prevStopTimeNode != null);
@@ -77,14 +77,6 @@ public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripN
         tripNode.setStopTimeNodes(stopTimeNodes);
 
         return tripNode;
-    }
-
-    /**
-     * @param localTime java localTime
-     * @return pocet sekund v ramci localTime
-     */
-    private static int getSecondsOfDay(LocalTime localTime) {
-        return localTime.getSecond() + (localTime.getMinute() * 60) + (localTime.getHour() * 60 * 60);
     }
 
 }
