@@ -61,7 +61,7 @@
     <div class="row padding-top-20 margin-bottom-10">
       <div class="col-md-10"><h3 class="margin-top-0">Data výjimek</h3></div>
       <div class="col-md-2">
-        <button class="btn btn-success pull-right" (click)="addNewCalendarDateItem()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Přidat</button>
+        <button type="button" class="btn btn-success pull-right" (click)="addNewCalendarDateItem()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Přidat</button>
       </div>
     </div>
     <div class="row">
@@ -86,7 +86,7 @@
                 </select>
               </td>
               <td class="align-center">
-                <button class="btn btn-danger" (click)="confirm('Opravdu chcete smazat tuto položku?') ? deleteCalendarDateItem(i) : false">
+                <button type="button" class="btn btn-danger" (click)="confirm('Opravdu chcete smazat tuto položku?') ? deleteCalendarDateItem(i) : false">
                   <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
               </td>

@@ -26,6 +26,8 @@ public final class DateTimeUtils {
 
     public static final String GTFS_TIME_PATTERN = "H:mm:ss";
 
+    public static final String SIMPLE_TIME_PATTERN = "H:m:s";
+
     /**
      * pocet milisekund za 24 hodin
      */
@@ -65,5 +67,10 @@ public final class DateTimeUtils {
      * je thread-safe viz https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
      */
     public static final DateTimeFormatter GTFS_TIME_PATTERN_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(GTFS_TIME_PATTERN);
+
+    /**
+     * je thread-safe viz https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+     */
+    public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(SIMPLE_TIME_PATTERN);
 
 }

@@ -37,7 +37,7 @@ public class RouteServiceImpl extends AbstractEntityService<Route, String, Route
     @Override
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Route> findRoutesBySearchQuery(String searchQuery) {
-        if(searchQuery == null || searchQuery.length() < 3) return new ArrayList<>();
+        if(searchQuery == null || searchQuery.length() < 1) return new ArrayList<>();
         List<Route> routes = dao.findRoutesBySearchQuery(searchQuery);
         for(Route route : routes) {
            if(route.getAgency() != null) route.getAgency().getId();

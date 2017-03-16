@@ -2,10 +2,10 @@ export class SearchResultModel {
   departureDate: string;
   arrivalDate: string;
   travelTime: number;
-  stopTimes: StopTime[];
+  stopTimes: StopTimeForSearch[];
 }
 
-export class StopTime {
+export class StopTimeForSearch {
   stop: Stop;
   trip: TripForSearch;
   arrival: string;

@@ -30,7 +30,7 @@ public class RouteDao extends AbstractGenericJpaDao<Route, String> {
      */
     public List<Route> findRoutesBySearchQuery(String searchQuery) {
         String queryString = "select r from Route r where lower(r.shortName) like lower(:searchQuery) ";
-        queryString += "or lower(r.id) like lower(:searchQuery) or lower(r.longName) like lower(:searchQuery) order by lower(r.id)";
+        queryString += "or lower(r.id) like lower(:searchQuery) order by lower(r.id)";
 
         Query<Route> query = sessionFactory.getCurrentSession().createQuery(queryString, Route.class);
         query.setParameter("searchQuery", searchQuery + "%");

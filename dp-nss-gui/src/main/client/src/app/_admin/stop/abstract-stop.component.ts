@@ -17,6 +17,7 @@ export abstract class AbstractStopComponent {
   stop: Stop;
   loading = false;
   error = '';
+  stopTimesError = '';
   wheelChairOptions = AppSettings.getPossibleWheelChairOptions();
   remoteStops: RemoteData;
   stopSearchQuery: string;
@@ -26,7 +27,7 @@ export abstract class AbstractStopComponent {
               protected userService: UserService, protected completerService: CompleterService, protected http: HttpClient) {
 
       this.remoteStops = completerService.remote(null, 'id,name', 'id,name');
-      this.remoteStops.urlFormater(term => {return this.userService.getApiPrefix() + `${AdminStopService.STOP_URL}?searchQuery=${term}`;});
+      this.remoteStops.urlFormater(term => {return encodeURI(this.userService.getApiPrefix() + `${AdminStopService.STOP_URL}?searchQuery=${term}`)});
       let headers = new Headers();
       http.createAuthorizationHeader(headers);
       this.remoteStops.headers(headers);

@@ -33,4 +33,10 @@ public class StopTimeServiceImpl extends AbstractEntityService<StopTime, Long, S
         return id != null ? dao.getWithStopAndTripAndRoute(id) : null;
     }
 
+    @Override
+    @Transactional(value = "transactionManager")
+    public void deleteByTripId(String tripId) {
+        if(tripId != null) dao.deleteByTripId(tripId);
+    }
+
 }

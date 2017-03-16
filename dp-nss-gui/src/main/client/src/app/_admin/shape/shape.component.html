@@ -2,7 +2,7 @@
   <div class="row padding-top-20">
     <div class="col-md-10"><h2 class="margin-top-0">{{newRecord ? 'Vložení průjezdních bodů' : 'Detail průjezdních bodů'}}</h2></div>
     <div class="col-md-2">
-      <button *ngIf="!newRecord" [disabled]="!shape?.canBeDeleted || loading" class="btn btn-danger pull-right"
+      <button type="button" *ngIf="!newRecord" [disabled]="!shape?.canBeDeleted || loading" class="btn btn-danger pull-right"
               (click)="confirm('Opravdu chcete smazat tuto položku?') ? doDelete() : 0"
               title="{{!shape?.canBeDeleted ? 'Průjezdní body není možné smazat.' : ''}}">
         <i class="fa fa-trash" aria-hidden="true"></i> Smazat
@@ -48,10 +48,10 @@
                        [(ngModel)]="shapeObject.lon" placeholder="Délka..." required />
               </td>
               <td class="align-center">
-                <button type="button" class="btn btn-danger margin-bottom-5" (click)="confirm('Opravdu chcete smazat tuto položku?') ? deleteShape(i) : false">
+                <button type="button" class="btn btn-danger margin-top-bottom-2" (click)="confirm('Opravdu chcete smazat tuto položku?') ? deleteShape(i) : false">
                   <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="btn btn-success" (click)="addNewShape(i + 1)">
+                <button type="button" class="btn btn-success margin-top-bottom-2" (click)="addNewShape(i + 1)">
                   <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 </button>
               </td>

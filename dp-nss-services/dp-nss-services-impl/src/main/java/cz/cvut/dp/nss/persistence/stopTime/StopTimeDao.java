@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
  * @since 05.01.17
  */
 @Component
+@SuppressWarnings("JpaQlInspection")
 public class StopTimeDao extends AbstractGenericJpaDao<StopTime, Long> {
 
     public StopTimeDao() {
         super(StopTime.class);
     }
 
-    @SuppressWarnings("JpaQlInspection")
     public StopTime getWithStop(Long id) {
         final String queryString = "select st from StopTime st inner join fetch st.stop where st.id = :id";
 
@@ -27,7 +27,6 @@ public class StopTimeDao extends AbstractGenericJpaDao<StopTime, Long> {
         return query.uniqueResult();
     }
 
-    @SuppressWarnings("JpaQlInspection")
     public StopTime getWithStopAndTripAndRoute(Long id) {
         final String queryString = "select st from StopTime st inner join fetch st.stop s inner join fetch st.trip t " +
             " inner join fetch t.route r where st.id = :id";
@@ -35,6 +34,19 @@ public class StopTimeDao extends AbstractGenericJpaDao<StopTime, Long> {
         Query<StopTime> query = sessionFactory.getCurrentSession().createQuery(queryString, StopTime.class);
         query.setParameter("id", id);
         return query.uniqueResult();
+    }
+
+    /**
+     * smaze vsechny stopTimes k danemu tripId
+     * @param tripId tripId
+     */
+    public void deleteByTripId(String tripId) {
+        final String queryString = "delete from StopTime where trip.id = :tripId";
+
+        Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+        query.setParameter("tripId", tripId);
+
+        query.executeUpdate();
     }
 
 }

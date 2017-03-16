@@ -14,4 +14,10 @@ public interface StopTimeService extends EntityService<StopTime, Long> {
 
     StopTime getWithStopAndTripAndRoute(Long id);
 
+    /**
+     * smaze vsechny stopTimes k danemu tripId
+     * @param tripId tripId
+     */
+    void deleteByTripId(String tripId);
+
 }

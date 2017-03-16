@@ -1,0 +1,124 @@
+<form (ngSubmit)="onSubmit()" #f="ngForm" *ngIf="trip">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="row padding-top-20">
+          <div class="col-md-10"><h2 class="margin-top-0">{{newRecord ? 'Vložení jízdy' : 'Detail jízdy'}}</h2></div>
+          <div class="col-md-2">
+            <button type="button" *ngIf="!newRecord" [disabled]="!trip?.canBeDeleted || loading" class="btn btn-danger pull-right"
+                    (click)="confirm('Opravdu chcete smazat tuto položku?') ? doDelete() : 0"
+                    title="{{!trip?.canBeDeleted ? 'Jízdu není možné smazat.' : ''}}">
+              <i class="fa fa-trash" aria-hidden="true"></i> Smazat
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="id">ID:</label>
+          <input type="text" class="form-control" name="id" id="id" [(ngModel)]="trip.id" [disabled]="!newRecord" [required]="newRecord" />
+        </div>
+        <div class="form-group">
+          <label for="headSign">Návěstidlo:</label>
+          <input type="text" class="form-control" name="headSign" id="headSign" [(ngModel)]="trip.headSign" />
+        </div>
+        <div class="form-group">
+          <label for="wheelChairCode">Bezbariérová:</label>
+          <select class="form-control" id="wheelChairCode" name="wheelChairCode" [(ngModel)]="trip.wheelChairCode">
+            <option [value]=""></option>
+            <option *ngFor="let option of wheelChairOptions" [value]="option.code">{{option.title}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="routeId">ID spoje:</label>
+          <ng2-completer [(ngModel)]="trip.routeId" [datasource]="remoteRoutes" [minSearchLength]="1" id="routeId" name="routeId"
+                         [textSearching]="'Hledám...'" [textNoResults]="'Spoj nenalezen'" [placeholder]="'ID nebo název...'" [inputClass]="'form-control'" required>
+          </ng2-completer>
+        </div>
+        <div class="form-group">
+          <label for="calendarId">Interval:</label>
+          <select class="form-control" id="calendarId" name="calendarId" [(ngModel)]="trip.calendarId" required>
+            <option [value]=""></option>
+            <option *ngFor="let option of calendarsForSelectBox" [value]="option.id">{{option.id}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="shapeId">ID průjezdního bodu:</label>
+          <ng2-completer [(ngModel)]="trip.shapeId" [datasource]="remoteShapes" [minSearchLength]="1" id="shapeId" name="shapeId"
+                         [textSearching]="'Hledám...'" [textNoResults]="'Průjezdní bod nenalezen'" [placeholder]="'ID...'" [inputClass]="'form-control'">
+          </ng2-completer>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row padding-top-20 margin-bottom-10">
+          <div class="col-md-10"><h3 class="margin-top-0">Zastavení jízdy</h3></div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-success pull-right" (click)="addNewStopTime(0)"><i class="fa fa-plus-circle" aria-hidden="true"></i> Přidat</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <table *ngIf="trip.stopTimes && trip.stopTimes.length > 0" class="table table-striped table-bordered">
+              <thead>
+              <tr>
+                <th>Pořadí</th>
+                <th>Stanice</th>
+                <th>Příjezd</th>
+                <th>Odjezd</th>
+                <th class="align-center">Akce</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let stopTime of trip.stopTimes; let i = index">
+                <td>
+                  <input type="number" class="form-control" name="sequence{{i}}" id="sequence{{i}}"
+                         [(ngModel)]="stopTime.sequence" placeholder="pořadí..." required />
+                </td>
+                <td>
+                  <input type="text" class="form-control" name="stopId{{i}}" id="stopId{{i}}"
+                         [(ngModel)]="stopTime.stopId" placeholder="id stanice..." required />
+                </td>
+                <td *ngIf="i === 0">
+                  <datetime id="arrival{{i}}" [(ngModel)]="stopTime.arrivalObject" [timepicker]="dateService.timepickerArrivalOpts"
+                            [datepicker]="false" name="arrival{{i}}"></datetime>
+                </td>
+                <td *ngIf="i > 0">
+                  <datetime id="arrival{{i}}" [(ngModel)]="stopTime.arrivalObject" [timepicker]="dateService.timepickerArrivalOpts"
+                            [datepicker]="false" name="arrival{{i}}" required></datetime>
+                </td>
+                <td *ngIf="i === trip.stopTimes.length - 1">
+                  <datetime id="departure{{i}}" [(ngModel)]="stopTime.departureObject" [timepicker]="dateService.timepickerDepartureOpts"
+                            [datepicker]="false" name="departure{{i}}"></datetime>
+                </td>
+                <td *ngIf="i < trip.stopTimes.length - 1">
+                  <datetime id="departure{{i}}" [(ngModel)]="stopTime.departureObject" [timepicker]="dateService.timepickerDepartureOpts"
+                            [datepicker]="false" name="departure{{i}}" required></datetime>
+                </td>
+                <td class="align-center">
+                  <button type="button" class="btn btn-danger margin-top-bottom-2" (click)="confirm('Opravdu chcete smazat tuto položku?') ? deleteStopTime(i) : false">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="btn btn-success margin-top-bottom-2" (click)="addNewStopTime(i + 1)">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <div *ngIf="stopTimesError" class="alert alert-danger">{{stopTimesError}}</div>
+            <div *ngIf="!trip.stopTimes || trip.stopTimes.length == 0" class="alert alert-info">
+              Žádná zastavení nejsou pro tuto jízdu zatím definována.
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" id="x" name="x"/>
+        <div class="form-group">
+          <button [disabled]="!f.form.valid || loading" class="btn btn-success pull-right" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Uložit</button>
+          <div class="clearfix"></div>
+        </div>
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+      </div>
+    </div>
+  </div>
+</form>

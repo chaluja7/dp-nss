@@ -20,8 +20,26 @@ export class DateService {
     defaultTime: 'current'
   };
 
+  public timepickerArrivalOpts = {
+    showMeridian: false,
+    placeholder: 'Příjezd',
+    language: 'cs',
+    showSeconds: true
+  };
+
+  public timepickerDepartureOpts = {
+    showMeridian: false,
+    placeholder: 'Odjezd',
+    language: 'cs',
+    showSeconds: true
+  };
+
   public static getFormattedDateOnly(date: Date) : string {
     return date ? date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear() : null;
+  }
+
+  public static getFormattedTimeOnly(date: Date) : string {
+    return date ? date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() : null;
   }
 
   public static getFormattedDate(date: Date, time: Date) : string {
@@ -42,16 +60,47 @@ export class DateService {
     return date;
   }
 
-  public static getDayOfMonth(s: string) {
+  public static getDayOfMonth(s: string): string {
     return s.split('.')[0];
   }
 
-  public static getMonthOfYear(s: string) {
+  public static getMonthOfYear(s: string): string {
     return s.split('.')[1];
   }
 
-  public static getYear(s: string) {
+  public static getYear(s: string): string {
     return s.split('.')[2];
+  }
+
+  public static getTimeObjectFromString(s: string): Date {
+    if(!s) return null;
+    let date = new Date();
+
+    date.setDate(0);
+    date.setMonth(0);
+    date.setFullYear(0);
+    date.setHours(+DateService.getHours(s));
+    date.setMinutes(+DateService.getMinutes(s));
+    date.setSeconds(+DateService.getSeconds(s));
+    date.setMilliseconds(0);
+    return date;
+  }
+
+  public static getHours(s: string): string {
+    return s.split(':')[0];
+  }
+
+  public static getMinutes(s: string): string {
+    return s.split(':')[1];
+  }
+
+  public static getSeconds(s: string): string {
+    let split: string[] = s.split(':');
+    if(split.length > 2) {
+      return s.split(':')[2];
+    }
+
+    return '00';
   }
 
   public getFormattedTimePeriod(numOfSeconds: number) : string {

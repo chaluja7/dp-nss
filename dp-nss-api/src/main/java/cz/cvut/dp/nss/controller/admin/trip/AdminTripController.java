@@ -103,7 +103,7 @@ public class AdminTripController extends AdminAbstractController {
         Trip trip = getTrip(wrapper);
         tripService.create(trip);
 
-        return getResponseCreated(getTripWrapper(tripService.get(trip.getId()), true));
+        return getResponseCreated(getTripWrapper(tripService.getLazyInitialized(trip.getId()), true));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -135,7 +135,10 @@ public class AdminTripController extends AdminAbstractController {
         TripWrapper wrapper = new TripWrapper();
         wrapper.setId(trip.getId());
         wrapper.setHeadSign(trip.getHeadSign());
-        if(trip.getRoute() != null) wrapper.setRouteShortName(trip.getRoute().getShortName());
+        if(trip.getRoute() != null) {
+            wrapper.setRouteId(trip.getRoute().getId());
+            wrapper.setRouteShortName(trip.getRoute().getShortName());
+        }
         if(trip.getTripWheelchairAccessibleType() != null) wrapper.setWheelChairCode(trip.getTripWheelchairAccessibleType().getCode());
         wrapper.setShapeId(trip.getShapeId());
         if(trip.getCalendar() != null) wrapper.setCalendarId(trip.getCalendar().getId());
@@ -182,7 +185,7 @@ public class AdminTripController extends AdminAbstractController {
         if(wrapper.getCalendarId() != null) {
             Calendar calendar = calendarService.get(wrapper.getCalendarId());
             if(calendar == null) {
-                throw new BadRequestException("unknown calendar");
+                throw new BadRequestException("unknown calendar - " + wrapper.getCalendarId());
             }
             trip.setCalendar(calendar);
         }
@@ -190,7 +193,7 @@ public class AdminTripController extends AdminAbstractController {
         if(wrapper.getRouteId() != null) {
             Route route = routeService.get(wrapper.getRouteId());
             if(route == null) {
-                throw new BadRequestException("unknown route");
+                throw new BadRequestException("unknown route - " + wrapper.getRouteId());
             }
             trip.setRoute(route);
         }
@@ -200,7 +203,7 @@ public class AdminTripController extends AdminAbstractController {
             shapeFilter.setExactId(wrapper.getShapeId());
             long countByFilter = shapeService.getCountByFilter(shapeFilter);
             if(countByFilter <= 0) {
-                throw new BadRequestException("unknown shape");
+                throw new BadRequestException("unknown shape - " + wrapper.getShapeId());
             }
             trip.setShapeId(wrapper.getShapeId());
         }
@@ -222,16 +225,16 @@ public class AdminTripController extends AdminAbstractController {
         stopTime.setSequence(wrapper.getSequence());
 
         if(!StringUtils.isBlank(wrapper.getArrival())) {
-            stopTime.setArrival(LocalTime.parse(wrapper.getArrival(), DateTimeUtils.GTFS_TIME_PATTERN_DATE_TIME_FORMATTER));
+            stopTime.setArrival(LocalTime.parse(wrapper.getArrival(), DateTimeUtils.TIME_FORMATTER));
         }
         if(!StringUtils.isBlank(wrapper.getDeparture())) {
-            stopTime.setDeparture(LocalTime.parse(wrapper.getDeparture(), DateTimeUtils.GTFS_TIME_PATTERN_DATE_TIME_FORMATTER));
+            stopTime.setDeparture(LocalTime.parse(wrapper.getDeparture(), DateTimeUtils.TIME_FORMATTER));
         }
 
         if(wrapper.getStopId() != null) {
             Stop stop = stopService.get(wrapper.getStopId());
             if(stop == null) {
-                throw new BadRequestException("unknown stop");
+                throw new BadRequestException("unknown stop - " + wrapper.getStopId());
             }
             stopTime.setStop(stop);
         }

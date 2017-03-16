@@ -37,12 +37,12 @@ export class SearchComponent implements OnInit {
               private searchService: SearchService, private completerService: CompleterService, private stopService: StopService) {
 
     this.remoteStopsFrom = completerService.remote(null, null, "");
-    this.remoteStopsFrom.urlFormater(term => {return this.stopSearchTerm + `${term}`;});
+    this.remoteStopsFrom.urlFormater(term => {return encodeURI(this.stopSearchTerm + `${term}`)});
     this.remoteStopsFrom.dataField("");
 
     //opravdu to musi byt zduplikovane, jinak mi nebudou obe pole fungovat spravne
     this.remoteStopsTo = completerService.remote(null, null, "");
-    this.remoteStopsTo.urlFormater(term => {return this.stopSearchTerm + `${term}`;});
+    this.remoteStopsTo.urlFormater(term => {return encodeURI(this.stopSearchTerm + `${term}`)});
     this.remoteStopsTo.dataField("");
   }
 

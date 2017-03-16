@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.services.trip;
 import cz.cvut.dp.nss.persistence.trip.JdbcTripDao;
 import cz.cvut.dp.nss.persistence.trip.TripDao;
 import cz.cvut.dp.nss.services.common.AbstractEntityService;
+import cz.cvut.dp.nss.services.stopTime.StopTime;
+import cz.cvut.dp.nss.services.stopTime.StopTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,26 +23,41 @@ import java.util.List;
 public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao> implements TripService {
 
     @Autowired
-    public TripServiceImpl(TripDao dao) {
-        super(dao);
-    }
-
-    @Autowired
     private JdbcTripDao jdbcTripDao;
 
-    @Override
-    @Transactional(value = "transactionManager")
-    public void update(Trip entity) {
-        //TODO update stopTimes a take v neo4j!
+    private StopTimeService stopTimeService;
 
-        dao.update(entity);
+    @Autowired
+    public TripServiceImpl(TripDao dao, StopTimeService stopTimeService) {
+        super(dao);
+        this.stopTimeService = stopTimeService;
     }
 
     @Override
     @Transactional(value = "transactionManager")
-    public void create(Trip entity) {
+    public void update(Trip trip) {
+        //nejdriv smazu vsechny stopTimes k tomuto zaznamu z db
+        stopTimeService.deleteByTripId(trip.getId());
+
+        //ulozim vsechny stopTimes znovu
+        if(trip.getStopTimes() != null) {
+            for(StopTime stopTime : trip.getStopTimes()) {
+                stopTime.setId(null);
+                stopTimeService.create(stopTime);
+            }
+        }
+
+        //pak provedu update trip zaznamu
+        dao.update(trip);
+
+        //TODO update stopTimes a take v neo4j!
+    }
+
+    @Override
+    @Transactional(value = "transactionManager")
+    public void create(Trip trip) {
         //TODO create v neo4j
-        dao.create(entity);
+        dao.create(trip);
     }
 
     @Override

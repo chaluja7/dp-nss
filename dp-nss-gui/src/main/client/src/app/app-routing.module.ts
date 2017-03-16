@@ -22,6 +22,8 @@ import {ShapesComponent} from "./_admin/shape/shapes.component";
 import {ShapeComponent} from "./_admin/shape/shape.component";
 import {ShapeNewComponent} from "./_admin/shape/shape-new.component";
 import {TripsComponent} from "./_admin/trip/trips.component";
+import {TripComponent} from "./_admin/trip/trip.component";
+import {TripNewComponent} from "./_admin/trip/trip-new.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -44,7 +46,9 @@ const routes: Routes = [
   { path: 'shape', component: ShapesComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'shape/create', component: ShapeNewComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'shape/:id', component: ShapeComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'trip', component: TripsComponent, canActivate: [AuthWithTimeTableGuard] }
+  { path: 'trip', component: TripsComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'trip/create', component: TripNewComponent, canActivate: [AuthWithTimeTableGuard] },
+  { path: 'trip/:id', component: TripComponent, canActivate: [AuthWithTimeTableGuard] }
 ];
 
 @NgModule({

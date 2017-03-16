@@ -1,3 +1,4 @@
+import {StopTime} from "./stopTime";
 export class Trip {
     id: string;
     headSign: string;
@@ -7,4 +8,6 @@ export class Trip {
     routeId: string;
     routeShortName: string;
     canBeDeleted: boolean;
+
+    stopTimes: StopTime[];
 }
