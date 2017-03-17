@@ -8,6 +8,7 @@ import cz.cvut.dp.nss.services.stopTime.StopTimeWrapper;
 import cz.cvut.dp.nss.services.trip.TripWrapper;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripN
         List<StopTimeNode> stopTimeNodes = new ArrayList<>();
         StopTimeNode firstStopTimeNode = null;
         StopTimeNode prevStopTimeNode = null;
+        int i = 0;
         //pocitame s tim, ze stopTimes jsou serazene dle sequence VZESTUPNE!
         for(StopTimeWrapper stopTime : trip.getStopTimeWrappers()) {
             StopTimeNode stopTimeNode = new StopTimeNode();
@@ -46,17 +48,17 @@ public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripN
             //uzel nemusi mit departure/arrival, v tom pripade jej vezmu z predchoziho uzlu
             if(stopTime.getDeparture() != null) {
                 stopTimeNode.setDepartureInSeconds(DateTimeUtils.getSecondsOfDay(stopTime.getDeparture()));
-            } else {
+            } else if(i != trip.getStopTimeWrappers().size() - 1) {
                 //null to ale nemuze byt, pokud neni zadny predchozi uzel!
-                assert(prevStopTimeNode != null);
+                Assert.notNull(prevStopTimeNode, "neni vyplneny zadny cas odjezdu");
                 stopTimeNode.setDepartureInSeconds(prevStopTimeNode.getDepartureInSeconds());
             }
 
             if(stopTime.getArrival() != null) {
                 stopTimeNode.setArrivalInSeconds(DateTimeUtils.getSecondsOfDay(stopTime.getArrival()));
-            } else {
+            } else if(i != 0) {
                 //null to ale nemuze byt, pokud neni zadny predchozi uzel!
-                assert(prevStopTimeNode != null);
+                Assert.notNull(prevStopTimeNode, "neni vyplneny zadny cas prijezdu");
                 stopTimeNode.setArrivalInSeconds(prevStopTimeNode.getArrivalInSeconds());
             }
 
@@ -73,6 +75,7 @@ public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripN
                 firstStopTimeNode = stopTimeNode;
             }
             prevStopTimeNode = stopTimeNode;
+            i++;
         }
         tripNode.setStopTimeNodes(stopTimeNodes);
 

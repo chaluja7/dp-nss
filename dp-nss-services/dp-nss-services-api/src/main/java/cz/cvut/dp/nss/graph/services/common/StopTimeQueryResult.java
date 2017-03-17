@@ -1,5 +1,6 @@
-package cz.cvut.dp.nss.graph.services.stopTime;
+package cz.cvut.dp.nss.graph.services.common;
 
+import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNode;
 import cz.cvut.dp.nss.graph.services.trip.TripNode;
 import org.springframework.data.neo4j.annotation.QueryResult;
 
@@ -26,6 +27,8 @@ public class StopTimeQueryResult {
     private StopTimeNode nextStop;
 
     private StopTimeNode nextAwaitingStop;
+
+    private StopTimeNode prevAwaitingStop;
 
     public StopTimeNode getStopTimeNode() {
         return stopTimeNode;
@@ -57,6 +60,14 @@ public class StopTimeQueryResult {
 
     public void setNextAwaitingStop(StopTimeNode nextAwaitingStop) {
         this.nextAwaitingStop = nextAwaitingStop;
+    }
+
+    public StopTimeNode getPrevAwaitingStop() {
+        return prevAwaitingStop;
+    }
+
+    public void setPrevAwaitingStop(StopTimeNode prevAwaitingStop) {
+        this.prevAwaitingStop = prevAwaitingStop;
     }
 
     /**

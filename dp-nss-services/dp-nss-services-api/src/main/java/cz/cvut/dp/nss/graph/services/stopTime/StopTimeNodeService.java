@@ -12,6 +12,7 @@ public interface StopTimeNodeService extends NodeService<StopTimeNode> {
 
     /**
      * najde stopTime dle stopTimeId
+     *
      * @param stopTimeId stopId
      * @return stopTime dle stopTimeId
      */
@@ -19,6 +20,7 @@ public interface StopTimeNodeService extends NodeService<StopTimeNode> {
 
     /**
      * vrati serazene stopy nalezici jedne stanici (dle jmena). Vyuziva se pro propojovani stopu na stanici hranami prestupnimi
+     *
      * @param stopName nazev stanice
      * @return serazene stopTimes na stanici dle casu
      */
@@ -26,6 +28,7 @@ public interface StopTimeNodeService extends NodeService<StopTimeNode> {
 
     /**
      * propoji stopTimes prestupnymi hranami (tedy v ramci jedne stanice)
+     *
      * @param stopName nazev stanice, kde chceme propojovat (tedy vyzadujeme unikatni nazvy opravdu totoznych stanic v ramci datasetu)
      */
     void connectStopTimeNodesOnStopWithWaitingRelationship(String stopName);
@@ -33,8 +36,13 @@ public interface StopTimeNodeService extends NodeService<StopTimeNode> {
     /**
      * prida novy stopTimeNode do jiz existujici struktury stopTimes v ramci jedne stanice (propojeni dle casu)
      * tedy najde spravne misto, kam node vlozit a prepropoji uzli tak, aby novy node zapadl do grafu
+     *
      * @param stopTimeNode novy stopTimeNode
      */
     void addNewStopTimeToStop(StopTimeNode stopTimeNode);
+
+    StopTimeNode findFirstByStopNameAndTimeBefore(String stopName, Integer time);
+
+    void deleteStopTimesByTripId(String tripId);
 
 }

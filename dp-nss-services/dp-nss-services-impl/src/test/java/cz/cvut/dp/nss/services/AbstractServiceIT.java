@@ -29,8 +29,7 @@ public abstract class AbstractServiceIT {
 
     @Before
     public void before() {
-        //toto je zbytecne, protoze public by se pouzil defaultne, ale je to zde pro ukazku, jak funkcionalitu vyuzit.
-        SchemaThreadLocal.set(SchemaThreadLocal.SCHEMA_PID);
+        SchemaThreadLocal.set(SchemaThreadLocal.SCHEMA_ANNAPOLIS);
     }
 
     @After

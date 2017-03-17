@@ -18,4 +18,11 @@ public interface TripNodeRepository extends GraphRepository<TripNode> {
     @Query("match (n:TripNode {tripId: {0}}) return n")
     TripNode findByTripId(String tripId);
 
+    /**
+     * smaze tripNode s danym tripId
+     * @param tripId tripId
+     */
+    @Query("match (n:TripNode {tripId: {0}}) detach delete n")
+    void deleteTripNode(String tripId);
+
 }

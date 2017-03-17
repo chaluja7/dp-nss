@@ -15,4 +15,10 @@ public interface TripNodeService extends NodeService<TripNode> {
      */
     TripNode findByTripId(String tripId);
 
+    /**
+     * smaze tripNode s danym tripId vcetne hran IN_TRIP
+     * @param tripId tripId
+     */
+    void deleteTripNode(String tripId);
+
 }

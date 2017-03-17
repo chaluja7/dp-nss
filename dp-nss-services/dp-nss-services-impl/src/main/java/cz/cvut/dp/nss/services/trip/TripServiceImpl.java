@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,29 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
     @Override
     @Transactional(value = "transactionManager")
     public void update(Trip trip) {
+        //smazu vsechny stopTimes v neo4j. S tim je spojene to, ze se musi spravne propojit zbyvajici stopTimes na stanicich
+        stopTimeNodeService.deleteStopTimesByTripId(trip.getId());
+
+        //a nahraju je znovu
+        TripNode tripNode = getTripNodeFromTrip(trip);
+
+        //pozor, musim mu priradit ID z neo4j
+        TripNode existingTripNode = tripNodeService.findByTripId(trip.getId());
+        if(existingTripNode != null) {
+            tripNode.setId(existingTripNode.getId());
+        }
+
+        //jenze pozor, jeste je nutne stopTimes spravne zakomponovat do struktury grafu v ramci stanice
+        //tedy najit spravne misto, kam kazdy stopTime prijde a tam ho napojit
+        if(tripNode.getStopTimeNodes() != null) {
+            for(StopTimeNode stopTimeNode : tripNode.getStopTimeNodes()) {
+                stopTimeNodeService.addNewStopTimeToStop(stopTimeNode);
+            }
+        }
+
+        //a nakonec updatnu samotny tripNode
+        tripNodeService.save(tripNode, 0);
+
         //nejdriv smazu vsechny stopTimes k tomuto zaznamu z db
         stopTimeService.deleteByTripId(trip.getId());
 
@@ -61,14 +85,11 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
 
         //pak provedu update trip zaznamu
         dao.update(trip);
-        //TODO update v neo4j!
     }
 
     @Override
     @Transactional(value = "transactionManager")
     public void create(Trip trip) {
-        dao.create(trip);
-
         //soucasne musim data ulozit do neo4j!
         //vytvorim si objekt pro neo4j
         TripNode tripNode = getTripNodeFromTrip(trip);
@@ -77,19 +98,24 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
 
         //jenze pozor, jeste je nutne stopTimes spravne zakomponovat do struktury grafu v ramci stanice
         //tedy najit spravne misto, kam kazdy stopTime prijde a tam ho napojit
-
         if(tripNode.getStopTimeNodes() != null) {
             for(StopTimeNode stopTimeNode : tripNode.getStopTimeNodes()) {
                 stopTimeNodeService.addNewStopTimeToStop(stopTimeNode);
             }
         }
 
+        dao.create(trip);
     }
 
     @Override
     @Transactional(value = "transactionManager")
     public void delete(String s) {
-        //TODO delete v neo4j
+        //smazu vsechny stopTimes v neo4j. S tim je spojene to, ze se musi spravne propojit zbyvajici stopTimes na stanicich
+        stopTimeNodeService.deleteStopTimesByTripId(s);
+
+        //a nakonec smazu tripNode v neo4j
+        tripNodeService.deleteTripNode(s);
+
         dao.delete(s);
     }
 
@@ -139,6 +165,7 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
         List<StopTimeNode> stopTimeNodes = new ArrayList<>();
         StopTimeNode firstStopTimeNode = null;
         StopTimeNode prevStopTimeNode = null;
+        int i = 0;
         //pocitame s tim, ze stopTimes jsou serazene dle sequence VZESTUPNE!
         for(StopTime stopTime : trip.getStopTimes()) {
             StopTimeNode stopTimeNode = new StopTimeNode();
@@ -159,17 +186,17 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
             //uzel nemusi mit departure/arrival, v tom pripade jej vezmu z predchoziho uzlu
             if(stopTime.getDeparture() != null) {
                 stopTimeNode.setDepartureInSeconds(DateTimeUtils.getSecondsOfDay(stopTime.getDeparture()));
-            } else {
+            } else if(i != trip.getStopTimes().size() - 1) {
                 //null to ale nemuze byt, pokud neni zadny predchozi uzel!
-                assert(prevStopTimeNode != null) : "neni vyplneny zadny cas odjezdu";
+                Assert.notNull(prevStopTimeNode, "neni vyplneny zadny cas odjezdu");
                 stopTimeNode.setDepartureInSeconds(prevStopTimeNode.getDepartureInSeconds());
             }
 
             if(stopTime.getArrival() != null) {
                 stopTimeNode.setArrivalInSeconds(DateTimeUtils.getSecondsOfDay(stopTime.getArrival()));
-            } else {
+            } else if(i != 0) {
                 //null to ale nemuze byt, pokud neni zadny predchozi uzel!
-                assert(prevStopTimeNode != null) : "neni vyplneny zadny cas prijezdu";
+                Assert.notNull(prevStopTimeNode, "neni vyplneny zadny cas prijezdu");
                 stopTimeNode.setArrivalInSeconds(prevStopTimeNode.getArrivalInSeconds());
             }
 
@@ -186,6 +213,7 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
                 firstStopTimeNode = stopTimeNode;
             }
             prevStopTimeNode = stopTimeNode;
+            i++;
         }
 
         tripNode.setStopTimeNodes(stopTimeNodes);

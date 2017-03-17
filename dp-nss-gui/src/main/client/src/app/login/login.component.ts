@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   }
 
   private loginFailed() {
-      this.error = 'Username or password is incorrect';
+      this.error = 'Neplatné uživatelské jméno nebo heslo.';
       this.loading = false;
   }
 }

@@ -2,10 +2,12 @@ package cz.cvut.dp.nss.graph.services.stopTime;
 
 import cz.cvut.dp.nss.graph.repository.stopTime.StopTimeNodeRepository;
 import cz.cvut.dp.nss.graph.services.common.AbstractNodeService;
+import cz.cvut.dp.nss.graph.services.common.StopTimeQueryResult;
 import org.neo4j.ogm.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -87,12 +89,58 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
     @Override
     @Transactional("neo4jTransactionManager")
     public void addNewStopTimeToStop(StopTimeNode stopTimeNode) {
-        //TODO jakubchalupa
-        //nejdriv najdu node, ktery bezprostredne bude predchazet tomu nove vkladanemu
+        //zjistim rozhodujici cas uzlu
+        Integer time = stopTimeNode.getDepartureInSeconds() != null ? stopTimeNode.getDepartureInSeconds() : stopTimeNode.getArrivalInSeconds();
+        Assert.notNull(time, "vkladany uzel musi mit minimalne jeden z casu arrival/departure");
 
-        //nalezenemu nodu nastavim jako next nove vkladany
+        //najdu node, ktery bezprostredne bude predchazet tomu nove vkladanemu
+        StopTimeNode stopTimeToBreak = findFirstByStopNameAndTimeBefore(stopTimeNode.getStopName(), time);
+        if(stopTimeToBreak != null) {
+            //nove vkladanemu nastavit jako next byvaly next nalezeneho nodu
+            stopTimeNode.setNextAwaitingStop(stopTimeToBreak.getNextAwaitingStop());
 
-        //a nove vkladanemu nastavit jako next byvaly next nalezeneho nodu
+            //a nalezenemu nodu nastavim jako next nove vkladany
+            //ale nejdriv smazu puvodni nextAwaitingStop
+            repo.deleteNextAwaitingStopRelation(stopTimeToBreak.getId());
 
+            stopTimeToBreak.setNextAwaitingStop(stopTimeNode);
+            //a ulozim prvni v rade s hloubkou 2 aby se ulozily vsechny zmeny
+            save(stopTimeToBreak, 2);
+        } else {
+            //v db jeste zadny stoptime k dane stanici nebyl, vkladam to tedy jako prvni :)
+            //nastavim nextAwaiting stop na ten stejny, aby to tvorilo nutny kruh
+            stopTimeNode.setNextAwaitingStop(stopTimeNode);
+            save(stopTimeNode, 1);
+        }
     }
+
+    @Override
+    @Transactional("neo4jTransactionManager")
+    public StopTimeNode findFirstByStopNameAndTimeBefore(String stopName, Integer time) {
+        StopTimeQueryResult firstByStopNameAndTimeBefore = repo.findFirstByStopNameAndTimeBefore(stopName, time);
+        if(firstByStopNameAndTimeBefore == null) {
+            //pokud jsem zadny uzel nenasel tak je mozne, ze zadny uzel s mensim casem neni
+            //v tom pripade se pokusim najit uzel na dane stanici, ktery je v ramci dne uplne posledni
+            firstByStopNameAndTimeBefore = repo.findLastByStopName(stopName);
+        }
+
+        return firstByStopNameAndTimeBefore != null ? firstByStopNameAndTimeBefore.createStopTimeNode() : null;
+    }
+
+    @Override
+    @Transactional("neo4jTransactionManager")
+    public void deleteStopTimesByTripId(String tripId) {
+        //nejdriv najdu vsechny stopTimes s danym tripId. Pro kazdou vezmu prevawaitingstop a nextawaitingstop
+        //a ty navzajem propojim (obejdu tak mazany node)
+        List<StopTimeQueryResult> stopTimesToDeleteByTripId = repo.findStopTimesToDeleteByTripId(tripId);
+        for(StopTimeQueryResult stopTimeQueryResult : stopTimesToDeleteByTripId) {
+            StopTimeNode stopTimeNode = stopTimeQueryResult.getPrevAwaitingStop();
+            stopTimeNode.setNextAwaitingStop(stopTimeQueryResult.getNextAwaitingStop());
+            save(stopTimeNode, 1);
+        }
+
+        //a vsechny nody s danym tripId pak smazu
+        repo.deleteStopTimesByTripId(tripId);
+    }
+
 }

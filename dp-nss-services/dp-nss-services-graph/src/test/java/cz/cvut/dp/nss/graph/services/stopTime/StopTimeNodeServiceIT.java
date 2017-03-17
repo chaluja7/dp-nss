@@ -5,7 +5,6 @@ import cz.cvut.dp.nss.graph.services.trip.TripNode;
 import cz.cvut.dp.nss.graph.services.trip.TripNodeService;
 import cz.cvut.dp.nss.graph.services.trip.TripNodeServiceIT;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,10 +20,24 @@ public class StopTimeNodeServiceIT extends AbstractServiceIT {
     @Autowired
     private TripNodeService tripNodeService;
 
-    @Before
-    public void before() {
-        tripNodeService.deleteAll();
-        stopTimeNodeService.deleteAll();
+//    @Before
+//    public void before() {
+//        //tripNodeService.deleteAll();
+//        //stopTimeNodeService.deleteAll();
+//    }
+
+    @Test
+    public void test() {
+        StopTimeNode result = stopTimeNodeService.findFirstByStopNameAndTimeBefore("Rowe Blvd. at Taylor Ave.aaaa", 1000);
+
+        int i = 0;
+    }
+
+    @Test
+    public void testNeco() {
+        stopTimeNodeService.deleteStopTimesByTripId("Z33");
+        tripNodeService.deleteTripNode("Z33");
+        int i = 0;
     }
 
     @Test

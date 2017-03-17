@@ -4,6 +4,7 @@ import cz.cvut.dp.nss.graph.repository.trip.TripNodeRepository;
 import cz.cvut.dp.nss.graph.services.common.AbstractNodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author jakubchalupa
@@ -20,5 +21,11 @@ public class TripNodeServiceImpl extends AbstractNodeService<TripNode, TripNodeR
     @Override
     public TripNode findByTripId(String tripId) {
         return repo.findByTripId(tripId);
+    }
+
+    @Override
+    @Transactional("neo4jTransactionManager")
+    public void deleteTripNode(String tripId) {
+        repo.deleteTripNode(tripId);
     }
 }
