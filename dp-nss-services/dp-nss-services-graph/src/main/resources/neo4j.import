@@ -3,5 +3,6 @@ CREATE CONSTRAINT ON (n:CalendarDateNode) ASSERT n.calendarDateId IS UNIQUE;
 CREATE CONSTRAINT ON (n:TripNode) ASSERT n.tripId IS UNIQUE;
 CREATE CONSTRAINT ON (n:StopTimeNode) ASSERT n.stopTimeId IS UNIQUE;
 CREATE INDEX ON :StopTimeNode(stopName);
+CREATE INDEX ON :StopTimeNode(tripId)
 CREATE INDEX ON :StopTimeNode(departureInSeconds);
 CREATE INDEX ON :StopTimeNode(arrivalInSeconds);

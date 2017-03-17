@@ -12,6 +12,7 @@
             <param-value>classpath:/app-servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+        <async-supported>true</async-supported>
     </servlet>
 
     <servlet-mapping>
@@ -58,6 +59,7 @@
             <param-name>forceEncoding</param-name>
             <param-value>true</param-value>
         </init-param>
+        <async-supported>true</async-supported>
     </filter>
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
@@ -72,6 +74,7 @@
             <param-name>apiPath</param-name>
             <param-value>/api/v1/</param-value>
         </init-param>
+        <async-supported>true</async-supported>
     </filter>
     <filter-mapping>
         <filter-name>schemaHandlerFilter</filter-name>
