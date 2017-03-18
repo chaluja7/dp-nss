@@ -5,6 +5,7 @@ import cz.cvut.dp.nss.exception.ForbiddenException;
 import cz.cvut.dp.nss.exception.ResourceNotFoundException;
 import cz.cvut.dp.nss.exception.UnauthorizedException;
 import org.apache.log4j.Logger;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
+import java.util.List;
 
 /**
  * @author jakubchalupa
@@ -73,6 +75,13 @@ public abstract class AbstractController {
             return message;
         }
 
+    }
+
+    protected void failOnJobFailure(JobExecution jobExecution) throws Throwable {
+        List<Throwable> allFailureExceptions = jobExecution.getAllFailureExceptions();
+        if(allFailureExceptions != null && !allFailureExceptions.isEmpty()) {
+            throw allFailureExceptions.get(0);
+        }
     }
 
 }

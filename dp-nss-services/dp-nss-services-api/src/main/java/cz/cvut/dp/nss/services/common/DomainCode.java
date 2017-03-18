@@ -10,4 +10,6 @@ public interface DomainCode {
 
     int getCode();
 
+    String name();
+
 }

@@ -8,6 +8,8 @@
 
     <context:component-scan base-package="cz.cvut.dp.nss.controller" />
 
+    <context:property-placeholder location="classpath:application.properties" />
+
     <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
 
     <!-- viz https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc -->

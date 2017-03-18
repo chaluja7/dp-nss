@@ -89,11 +89,65 @@
         <property name="jobRepository" ref="jobRepository" />
     </bean>
 
+
+    <!-- EXPORTS -->
+    <bean id="routeExportReader" class="org.springframework.batch.item.database.JdbcPagingItemReader" scope="step">
+        <property name="dataSource" ref="dataSource" />
+        <property name="queryProvider">
+            <bean class="org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean">
+                <property name="dataSource" ref="dataSource" />
+                <property name="selectClause" value="select id,agency_id,shortName,longName,routeType,color" />
+                <property name="fromClause" value="from #{jobParameters['schema']}.routes" />
+                <property name="sortKey" value="id" />
+            </bean>
+        </property>
+        <property name="pageSize" value="10" />
+        <property name="rowMapper">
+            <bean class="cz.cvut.dp.nss.batch.output.route.RouteBatchRowMapper" />
+        </property>
+    </bean>
+
+    <bean id="routeExportWriter" class="cz.cvut.dp.nss.batch.output.route.RouteBatchExportWriter" scope="step">
+        <!-- write to this csv file -->
+        <property name="resource" value="file:#{jobParameters['exportFileLocation']}/routes.txt" />
+        <property name="shouldDeleteIfExists" value="true" />
+
+        <property name="lineAggregator">
+            <bean class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+                <property name="delimiter" value="," />
+                <property name="fieldExtractor">
+                    <bean class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+                        <property name="names" value="id,agencyId,shortName,longName,routeType,color" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+
+    <batch:job id="gtfsExportRouteBatchJob">
+        <batch:step id="routeExportStep1">
+            <batch:tasklet>
+                <batch:chunk reader="routeExportReader" writer="routeExportWriter" commit-interval="10">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+
+
+
+
+
+
+
+
+
+    <!-- IMPORTS -->
     <!-- zpracovani zahlavi csv souboru -->
-    <bean id="batchHeaderLineDynamicCallbackHandler" class="cz.cvut.dp.nss.batch.BatchHeaderLineDynamicCallbackHandler" scope="step"/>
+    <bean id="batchHeaderLineDynamicCallbackHandler" class="cz.cvut.dp.nss.batch.input.BatchHeaderLineDynamicCallbackHandler" scope="step"/>
 
     <!-- namapovani sloupcu dle jejich jmen ze zahlavi a kompletni cteni csv souboru -->
-    <bean id="batchLineDynamicTokenizer" class="cz.cvut.dp.nss.batch.BatchLineDynamicTokenizer" scope="step">
+    <bean id="batchLineDynamicTokenizer" class="cz.cvut.dp.nss.batch.input.BatchLineDynamicTokenizer" scope="step">
         <property name="delimiter" value=","/>
     </bean>
 
@@ -229,7 +283,7 @@
         </batch:step>
     </batch:job>
 
-    <bean id="agencyBatchReader" class="cz.cvut.dp.nss.batch.agency.AgencyBatchReader" scope="step">
+    <bean id="agencyBatchReader" class="cz.cvut.dp.nss.batch.input.agency.AgencyBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
         <property name="resource" value="#{jobParameters['agencyLocation']}" />
@@ -253,7 +307,7 @@
         </property>
     </bean>
 
-    <bean id="routeBatchReader" class="cz.cvut.dp.nss.batch.route.RouteBatchReader" scope="step">
+    <bean id="routeBatchReader" class="cz.cvut.dp.nss.batch.input.route.RouteBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
         <property name="resource" value="#{jobParameters['routesLocation']}" />
@@ -277,7 +331,7 @@
         </property>
     </bean>
 
-    <bean id="calendarBatchReader" class="cz.cvut.dp.nss.batch.calendar.CalendarBatchReader" scope="step">
+    <bean id="calendarBatchReader" class="cz.cvut.dp.nss.batch.input.calendar.CalendarBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
         <property name="resource" value="#{jobParameters['calendarLocation']}" />
@@ -301,7 +355,7 @@
         </property>
     </bean>
 
-    <bean id="calendarDateBatchReader" class="cz.cvut.dp.nss.batch.calendarDate.CalendarDateBatchReader" scope="step">
+    <bean id="calendarDateBatchReader" class="cz.cvut.dp.nss.batch.input.calendarDate.CalendarDateBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
         <property name="resource" value="#{jobParameters['calendarDateLocation']}" />
@@ -325,7 +379,7 @@
         </property>
     </bean>
 
-    <bean id="shapeBatchReader" class="cz.cvut.dp.nss.batch.shape.ShapeBatchReader" scope="step">
+    <bean id="shapeBatchReader" class="cz.cvut.dp.nss.batch.input.shape.ShapeBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
         <property name="resource" value="#{jobParameters['shapesLocation']}" />
@@ -349,7 +403,7 @@
         </property>
     </bean>
 
-    <bean id="stopBatchReader" class="cz.cvut.dp.nss.batch.stop.StopBatchReader" scope="step">
+    <bean id="stopBatchReader" class="cz.cvut.dp.nss.batch.input.stop.StopBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
         <property name="resource" value="#{jobParameters['stopsLocation']}" />
@@ -373,7 +427,7 @@
         </property>
     </bean>
 
-    <bean id="tripBatchReader" class="cz.cvut.dp.nss.batch.trip.TripBatchReader" scope="step">
+    <bean id="tripBatchReader" class="cz.cvut.dp.nss.batch.input.trip.TripBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
         <property name="resource" value="#{jobParameters['tripsLocation']}" />
@@ -397,7 +451,7 @@
         </property>
     </bean>
 
-    <bean id="stopTimeBatchReader" class="cz.cvut.dp.nss.batch.stopTime.StopTimeBatchReader" scope="step">
+    <bean id="stopTimeBatchReader" class="cz.cvut.dp.nss.batch.input.stopTime.StopTimeBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
         <property name="resource" value="#{jobParameters['stopTimesLocation']}" />
