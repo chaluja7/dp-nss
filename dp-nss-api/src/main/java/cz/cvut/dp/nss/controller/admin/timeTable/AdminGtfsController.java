@@ -1,6 +1,7 @@
 package cz.cvut.dp.nss.controller.admin.timeTable;
 
-import cz.cvut.dp.nss.controller.AbstractController;
+import cz.cvut.dp.nss.context.SchemaThreadLocal;
+import cz.cvut.dp.nss.controller.admin.AdminAbstractController;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameter;
@@ -14,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -34,8 +34,7 @@ import java.util.zip.ZipOutputStream;
  */
 @Controller
 @RequestMapping(value = "/admin/gtfs")
-//TODO zatim je to bez pravoveho osetreni, melo by ale pak extendovat admiAbstractController nebo definovat CheckAccessfla
-public class AdminGtfsController extends AbstractController {
+public class AdminGtfsController extends AdminAbstractController {
 
     @Value("${gtfs.out.location}")
     private String gtfsOutLocation;
@@ -75,9 +74,12 @@ public class AdminGtfsController extends AbstractController {
     @Qualifier(value = "gtfsExportTripBatchJob")
     private Job gtfsExportTripBatchJob;
 
-    @RequestMapping(value = "/download/{id}")
-    public ResponseEntity<StreamingResponseBody> downloadTimeTableGTFS(@PathVariable("id") String timeTableId) throws Throwable {
-        final String folder = timeTableId + "-" + UUID.randomUUID().toString();
+    @RequestMapping(value = "/download")
+    public ResponseEntity<StreamingResponseBody> downloadTimeTableGTFS() throws Throwable {
+        final String schema = SchemaThreadLocal.get();
+        Assert.notNull(schema, "schema must be specified");
+
+        final String folder = schema + "-" + UUID.randomUUID().toString();
         File baseFile = new File(gtfsOutLocation);
         File file = new File(gtfsOutLocation + folder);
         if(!file.mkdirs()) {
@@ -87,7 +89,7 @@ public class AdminGtfsController extends AbstractController {
         //spustim job
         Map<String, JobParameter> parameters = new HashMap<>();
         parameters.put("exportFileLocation", new JobParameter(gtfsOutLocation + folder));
-        parameters.put("schema", new JobParameter(timeTableId));
+        parameters.put("schema", new JobParameter(schema));
 
         //TODO joby by mohly bezet asynchronne kazdy v novem vlakne, tak by to trvalo jen tak dlouho, jako nejpomalejsi z nich
         JobExecution execution = jobLauncher.run(gtfsExportAgencyBatchJob, new JobParameters(parameters));
@@ -139,7 +141,7 @@ public class AdminGtfsController extends AbstractController {
         //TODO taky by se hodilo po stazeni ty soubory mazat
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/zip");
-        httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + timeTableId + ".zip");
+        httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + schema + ".zip");
         return new ResponseEntity<>(streamingResponseBody, httpHeaders, HttpStatus.OK);
     }
 

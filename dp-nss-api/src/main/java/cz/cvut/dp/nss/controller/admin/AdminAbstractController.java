@@ -4,6 +4,7 @@ import cz.cvut.dp.nss.controller.AbstractController;
 import cz.cvut.dp.nss.controller.admin.wrapper.OrderWrapper;
 import cz.cvut.dp.nss.controller.interceptor.CheckAccess;
 import cz.cvut.dp.nss.exception.BadRequestException;
+import cz.cvut.dp.nss.services.person.Person;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -53,6 +54,10 @@ public abstract class AdminAbstractController extends AbstractController {
         }
 
         return new OrderWrapper(orderColumn, asc);
+    }
+
+    protected static boolean personOwnsTimeTable(Person person, String timeTableId) {
+        return person != null && person.ownTimeTable(timeTableId);
     }
 
     protected static Map<String, String> getFiltersFromHeader(String xFilterHeader) throws BadRequestException {

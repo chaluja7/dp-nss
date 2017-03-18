@@ -5,13 +5,15 @@ import {ErrorService} from "../error.service";
 import {HttpClient} from "../http-client";
 import {Observable} from "rxjs";
 import {AppSettings} from "../../_common/app.settings";
+import {Response} from "@angular/http";
+import {UserService} from "../user.service";
 
 @Injectable()
 export class AdminTimeTableService {
 
   private static TIME_TABLE_URL = 'admin/timeTable';
 
-  constructor(private http: HttpClient, private errorService: ErrorService) { }
+  constructor(private http: HttpClient, private errorService: ErrorService, private userService: UserService) { }
 
   getTimeTables(): Observable<TimeTable[]> {
       return this.http.get(AppSettings.API_ENDPOINT + AdminTimeTableService.TIME_TABLE_URL)
@@ -30,6 +32,12 @@ export class AdminTimeTableService {
     const url = AppSettings.API_ENDPOINT + `${AdminTimeTableService.TIME_TABLE_URL}/${timeTable.id}`;
     return this.http.put(url, JSON.stringify(timeTable))
         .map((response => response.json() as TimeTable))
+        .catch(err => this.errorService.handleServerError(err));
+  }
+
+  downloadFile(): Observable<Response> {
+    return this.http.get( this.userService.getApiPrefix() + 'admin/gtfs/download', null, null, true)
+        .map(response => response)
         .catch(err => this.errorService.handleServerError(err));
   }
 

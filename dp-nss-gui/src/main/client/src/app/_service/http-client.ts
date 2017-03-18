@@ -1,8 +1,9 @@
 import {Injectable} from "@angular/core";
-import {Http, Headers, URLSearchParams, Response} from "@angular/http";
+import {Http, Headers, URLSearchParams, Response, RequestOptions, ResponseContentType} from "@angular/http";
 import {AppSettings} from "../_common/app.settings";
 import {UserService} from "./user.service";
 import {Observable} from "rxjs";
+import * as FileSaver from "file-saver";
 
 @Injectable()
 export class HttpClient {
@@ -21,7 +22,7 @@ export class HttpClient {
     }
   }
 
-  get(url: string, params?: URLSearchParams, headers?: Headers): Observable<Response> {
+  get(url: string, params?: URLSearchParams, headers?: Headers, downloadFile?: boolean): Observable<Response> {
     if(!headers) {
       headers = new Headers();
     }
@@ -32,6 +33,9 @@ export class HttpClient {
       return this.http.get(url, {
         headers: headers, search: params
       }).finally(() => {this.numberOfPendingRequests--});
+    } else if(downloadFile) {
+      let options = new RequestOptions({headers: headers, responseType: ResponseContentType.Blob});
+      return this.http.get(url, options).finally(() => {this.numberOfPendingRequests--});
     } else {
       return this.http.get(url, {
         headers: headers
@@ -65,6 +69,11 @@ export class HttpClient {
 
     this.numberOfPendingRequests++;
     return this.http.delete(url, {headers: headers}).finally(() => {this.numberOfPendingRequests--});
+  }
+
+  extractZipContent(res: Response, fileName: string) {
+    let blob: Blob = res.blob();
+    FileSaver.saveAs(blob, fileName + '.zip');
   }
 
 }

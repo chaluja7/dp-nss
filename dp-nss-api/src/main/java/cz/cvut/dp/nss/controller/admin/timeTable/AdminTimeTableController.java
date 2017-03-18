@@ -6,7 +6,6 @@ import cz.cvut.dp.nss.controller.timeTable.TimeTableController;
 import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.exception.ResourceNotFoundException;
 import cz.cvut.dp.nss.exception.UnauthorizedException;
-import cz.cvut.dp.nss.services.person.Person;
 import cz.cvut.dp.nss.services.person.PersonService;
 import cz.cvut.dp.nss.services.timeTable.TimeTable;
 import cz.cvut.dp.nss.services.timeTable.TimeTableService;
@@ -67,10 +66,6 @@ public class AdminTimeTableController extends AdminAbstractController {
         timeTableService.update(timeTable);
 
         return TimeTableController.getTimeTableWrapper(timeTable);
-    }
-
-    private static boolean personOwnsTimeTable(Person person, String timeTableId) {
-        return person != null && person.ownTimeTable(timeTableId);
     }
 
 }

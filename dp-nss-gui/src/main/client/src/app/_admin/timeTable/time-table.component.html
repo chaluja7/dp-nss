@@ -19,4 +19,16 @@
     </div>
     <div *ngIf="error" class="alert alert-danger">{{error}}</div>
   </form>
+
+  <div class="row margin-top-20">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-default" (click)="downloadGtfs()">Stáhnout jízdní řád</button>
+    </div>
+  </div>
+  <div class="row margin-top-20">
+    <div class="col-md-12">
+      <div class="alert alert-info">Stažení jízdního řádu může trvat i několik minut. Během zpracování požadavku se prosím vyhněte interakci s aplikací.</div>
+    </div>
+  </div>
+
 </div>
