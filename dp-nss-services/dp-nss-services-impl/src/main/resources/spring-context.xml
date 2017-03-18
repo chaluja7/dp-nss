@@ -193,6 +193,107 @@
     </bean>
 
 
+    <bean id="calendarDateExportReader" class="org.springframework.batch.item.database.JdbcPagingItemReader" scope="step">
+        <property name="dataSource" ref="dataSource" />
+        <property name="queryProvider">
+            <bean class="org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean">
+                <property name="dataSource" ref="dataSource" />
+                <property name="selectClause" value="select id,calendar_id,date,exceptionType" />
+                <property name="fromClause" value="from #{jobParameters['schema']}.calendar_date" />
+                <property name="sortKey" value="id" />
+            </bean>
+        </property>
+        <property name="pageSize" value="100" />
+        <property name="rowMapper">
+            <bean class="cz.cvut.dp.nss.batch.output.calendarDate.CalendarDateBatchRowMapper" />
+        </property>
+    </bean>
+
+    <bean id="calendarDateExportWriter" class="cz.cvut.dp.nss.batch.output.calendarDate.CalendarDateBatchExportWriter" scope="step">
+        <!-- write to this csv file -->
+        <property name="resource" value="file:#{jobParameters['exportFileLocation']}/calendar_dates.txt" />
+        <property name="shouldDeleteIfExists" value="true" />
+
+        <property name="lineAggregator">
+            <bean class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+                <property name="delimiter" value="," />
+                <property name="fieldExtractor">
+                    <bean class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+                        <property name="names" value="calendarId,date,exceptionType" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+
+    <bean id="shapeExportReader" class="org.springframework.batch.item.database.JdbcPagingItemReader" scope="step">
+        <property name="dataSource" ref="dataSource" />
+        <property name="queryProvider">
+            <bean class="org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean">
+                <property name="dataSource" ref="dataSource" />
+                <property name="selectClause" value="select shapeId,lat,lon,sequence" />
+                <property name="fromClause" value="from #{jobParameters['schema']}.shapes" />
+                <property name="sortKey" value="shapeId" />
+            </bean>
+        </property>
+        <property name="pageSize" value="100" />
+        <property name="rowMapper">
+            <bean class="cz.cvut.dp.nss.batch.output.shape.ShapeBatchRowMapper" />
+        </property>
+    </bean>
+
+    <bean id="shapeExportWriter" class="cz.cvut.dp.nss.batch.output.shape.ShapeBatchExportWriter" scope="step">
+        <!-- write to this csv file -->
+        <property name="resource" value="file:#{jobParameters['exportFileLocation']}/shapes.txt" />
+        <property name="shouldDeleteIfExists" value="true" />
+
+        <property name="lineAggregator">
+            <bean class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+                <property name="delimiter" value="," />
+                <property name="fieldExtractor">
+                    <bean class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+                        <property name="names" value="shapeId,lat,lon,sequence" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+
+    <bean id="stopExportReader" class="org.springframework.batch.item.database.JdbcPagingItemReader" scope="step">
+        <property name="dataSource" ref="dataSource" />
+        <property name="queryProvider">
+            <bean class="org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean">
+                <property name="dataSource" ref="dataSource" />
+                <property name="selectClause" value="select id,name,lat,lon,parent_stop_id,wheelChair" />
+                <property name="fromClause" value="from #{jobParameters['schema']}.stops" />
+                <property name="sortKey" value="id" />
+            </bean>
+        </property>
+        <property name="pageSize" value="100" />
+        <property name="rowMapper">
+            <bean class="cz.cvut.dp.nss.batch.output.stop.StopBatchRowMapper" />
+        </property>
+    </bean>
+
+    <bean id="stopExportWriter" class="cz.cvut.dp.nss.batch.output.stop.StopBatchExportWriter" scope="step">
+        <!-- write to this csv file -->
+        <property name="resource" value="file:#{jobParameters['exportFileLocation']}/stops.txt" />
+        <property name="shouldDeleteIfExists" value="true" />
+
+        <property name="lineAggregator">
+            <bean class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+                <property name="delimiter" value="," />
+                <property name="fieldExtractor">
+                    <bean class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+                        <property name="names" value="id,name,lat,lon,parentId,wheelChairType" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
     <batch:job id="gtfsExportRouteBatchJob">
         <batch:step id="routeExportStep1">
             <batch:tasklet>
@@ -220,6 +321,32 @@
         </batch:step>
     </batch:job>
 
+    <batch:job id="gtfsExportCalendarDateBatchJob">
+        <batch:step id="calendarDateExportStep1">
+            <batch:tasklet>
+                <batch:chunk reader="calendarDateExportReader" writer="calendarDateExportWriter" commit-interval="100">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+
+    <batch:job id="gtfsExportShapeBatchJob">
+        <batch:step id="shapeExportStep1">
+            <batch:tasklet>
+                <batch:chunk reader="shapeExportReader" writer="shapeExportWriter" commit-interval="100">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+
+    <batch:job id="gtfsExportStopBatchJob">
+        <batch:step id="stopExportStep1">
+            <batch:tasklet>
+                <batch:chunk reader="stopExportReader" writer="stopExportWriter" commit-interval="100">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
 
 
 
