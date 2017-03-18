@@ -44,6 +44,14 @@ public class AdminGtfsController extends AbstractController {
     private JobLauncher jobLauncher;
 
     @Autowired
+    @Qualifier(value = "gtfsExportAgencyBatchJob")
+    private Job gtfsExportAgencyBatchJob;
+
+    @Autowired
+    @Qualifier(value = "gtfsExportCalendarBatchJob")
+    private Job gtfsExportCalendarBatchJob;
+
+    @Autowired
     @Qualifier(value = "gtfsExportRouteBatchJob")
     private Job gtfsExportRouteBatchJob;
 
@@ -61,7 +69,13 @@ public class AdminGtfsController extends AbstractController {
         parameters.put("exportFileLocation", new JobParameter(gtfsOutLocation + folder));
         parameters.put("schema", new JobParameter(timeTableId));
 
-        JobExecution execution = jobLauncher.run(gtfsExportRouteBatchJob, new JobParameters(parameters));
+        JobExecution execution = jobLauncher.run(gtfsExportAgencyBatchJob, new JobParameters(parameters));
+        failOnJobFailure(execution);
+
+        execution = jobLauncher.run(gtfsExportCalendarBatchJob, new JobParameters(parameters));
+        failOnJobFailure(execution);
+
+        execution = jobLauncher.run(gtfsExportRouteBatchJob, new JobParameters(parameters));
         failOnJobFailure(execution);
 
         StreamingResponseBody streamingResponseBody = out -> {
@@ -70,7 +84,7 @@ public class AdminGtfsController extends AbstractController {
             Assert.notNull(files, "no files were created to export");
             for(File exportFile : files) {
                 //prochazim vsechny vygenerovat csv soubory a pridam je do zipu, hned se to take streamuje :)
-                InputStream inputStream = new BufferedInputStream(file.toURI().toURL().openStream());
+                InputStream inputStream = new BufferedInputStream(exportFile.toURI().toURL().openStream());
                 zip.putNextEntry(new ZipEntry(baseFile.toURI().relativize(exportFile.toURI()).getPath()));
 
                 int length;

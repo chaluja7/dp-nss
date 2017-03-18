@@ -18,14 +18,14 @@ import java.util.Map;
  * @author jakubchalupa
  * @since 07.01.17
  */
-public class GtfsExportRouteBatchIT extends AbstractServiceIT {
+public class GtfsExportAgencyBatchIT extends AbstractServiceIT {
 
     @Autowired
     private JobLauncher jobLauncher;
 
     @Autowired
-    @Qualifier(value = "gtfsExportRouteBatchJob")
-    private Job gtfsExportRouteBatchJob;
+    @Qualifier(value = "gtfsExportAgencyBatchJob")
+    private Job gtfsExportAgencyBatchJob;
 
     @Test
     public void textExport() throws Throwable {
@@ -33,7 +33,7 @@ public class GtfsExportRouteBatchIT extends AbstractServiceIT {
         parameters.put("exportFileLocation", new JobParameter(GTFS_OUT_LOCATION));
         parameters.put("schema", new JobParameter(SchemaThreadLocal.get()));
 
-        JobExecution execution = jobLauncher.run(gtfsExportRouteBatchJob, new JobParameters(parameters));
+        JobExecution execution = jobLauncher.run(gtfsExportAgencyBatchJob, new JobParameters(parameters));
         failOnJobFailure(execution);
     }
 

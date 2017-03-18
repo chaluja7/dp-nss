@@ -26,6 +26,7 @@ public abstract class AbstractServiceIT {
 
     protected static final String GTFS_LOCATION = "file:/Users/jakubchalupa/Documents/FEL/MGR/DP/gtfs/test/annapolis-transit_20150811_1647/";
 //    protected static final String GTFS_LOCATION = "file:/Users/jakubchalupa/Documents/FEL/MGR/DP/gtfs/pid2017/jrdata/";
+    protected static final String GTFS_OUT_LOCATION = "/tmp/testExportGtfs";
 
     @Before
     public void before() {
