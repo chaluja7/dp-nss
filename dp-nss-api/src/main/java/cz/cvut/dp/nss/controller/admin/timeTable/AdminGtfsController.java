@@ -52,8 +52,28 @@ public class AdminGtfsController extends AbstractController {
     private Job gtfsExportCalendarBatchJob;
 
     @Autowired
+    @Qualifier(value = "gtfsExportCalendarDateBatchJob")
+    private Job gtfsExportCalendarDateBatchJob;
+
+    @Autowired
     @Qualifier(value = "gtfsExportRouteBatchJob")
     private Job gtfsExportRouteBatchJob;
+
+    @Autowired
+    @Qualifier(value = "gtfsExportShapeBatchJob")
+    private Job gtfsExportShapeBatchJob;
+
+    @Autowired
+    @Qualifier(value = "gtfsExportStopTimeBatchJob")
+    private Job gtfsExportStopTimeBatchJob;
+
+    @Autowired
+    @Qualifier(value = "gtfsExportStopBatchJob")
+    private Job gtfsExportStopBatchJob;
+
+    @Autowired
+    @Qualifier(value = "gtfsExportTripBatchJob")
+    private Job gtfsExportTripBatchJob;
 
     @RequestMapping(value = "/download/{id}")
     public ResponseEntity<StreamingResponseBody> downloadTimeTableGTFS(@PathVariable("id") String timeTableId) throws Throwable {
@@ -69,13 +89,29 @@ public class AdminGtfsController extends AbstractController {
         parameters.put("exportFileLocation", new JobParameter(gtfsOutLocation + folder));
         parameters.put("schema", new JobParameter(timeTableId));
 
+        //TODO joby by mohly bezet asynchronne kazdy v novem vlakne, tak by to trvalo jen tak dlouho, jako nejpomalejsi z nich
         JobExecution execution = jobLauncher.run(gtfsExportAgencyBatchJob, new JobParameters(parameters));
         failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportCalendarBatchJob, new JobParameters(parameters));
         failOnJobFailure(execution);
 
+        execution = jobLauncher.run(gtfsExportCalendarDateBatchJob, new JobParameters(parameters));
+        failOnJobFailure(execution);
+
         execution = jobLauncher.run(gtfsExportRouteBatchJob, new JobParameters(parameters));
+        failOnJobFailure(execution);
+
+        execution = jobLauncher.run(gtfsExportShapeBatchJob, new JobParameters(parameters));
+        failOnJobFailure(execution);
+
+        execution = jobLauncher.run(gtfsExportStopTimeBatchJob, new JobParameters(parameters));
+        failOnJobFailure(execution);
+
+        execution = jobLauncher.run(gtfsExportStopBatchJob, new JobParameters(parameters));
+        failOnJobFailure(execution);
+
+        execution = jobLauncher.run(gtfsExportTripBatchJob, new JobParameters(parameters));
         failOnJobFailure(execution);
 
         StreamingResponseBody streamingResponseBody = out -> {

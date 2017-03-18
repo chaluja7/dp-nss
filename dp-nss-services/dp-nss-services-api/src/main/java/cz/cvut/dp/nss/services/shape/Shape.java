@@ -2,10 +2,7 @@ package cz.cvut.dp.nss.services.shape;
 
 import cz.cvut.dp.nss.services.common.AbstractEntity;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -17,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * @since 07.01.17
  */
 @Entity
-@Table(name = "shapes")
+@Table(name = "shapes", indexes = {@Index(name = "shape_sequence_id_index", columnList = "shapeId,sequence")})
 public class Shape extends AbstractEntity<ShapeId> {
 
     @EmbeddedId
