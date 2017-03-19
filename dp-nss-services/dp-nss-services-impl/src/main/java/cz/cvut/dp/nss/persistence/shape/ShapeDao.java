@@ -162,5 +162,11 @@ public class ShapeDao extends AbstractGenericJpaDao<Shape, ShapeId> {
         }
     }
 
+    @Override
+    public void truncateAll() {
+        Query query = sessionFactory.getCurrentSession().createNativeQuery("truncate shapes cascade");
+        query.executeUpdate();
+    }
+
 
 }

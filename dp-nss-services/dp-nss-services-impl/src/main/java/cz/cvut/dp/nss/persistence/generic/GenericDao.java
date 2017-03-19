@@ -44,4 +44,9 @@ public interface GenericDao<ENT extends AbstractEntity<ID>, ID extends Serializa
      */
     List<ENT> getAll();
 
+    /**
+     * truncate whole table
+     */
+    void truncateAll();
+
 }

@@ -29,7 +29,7 @@ public class GtfsImportCalendarDateBatchIT extends AbstractServiceIT {
     @Test
     public void testImport() throws Throwable {
         Map<String, JobParameter> parameters = new HashMap<>();
-        parameters.put("calendarDateLocation", new JobParameter(GTFS_LOCATION + "calendar_dates.txt"));
+        parameters.put("importFolderLocation", new JobParameter(GTFS_IN_LOCATION));
 
         JobExecution execution = jobLauncher.run(gtfsImportCalendarDateBatchJob, new JobParameters(parameters));
         failOnJobFailure(execution);

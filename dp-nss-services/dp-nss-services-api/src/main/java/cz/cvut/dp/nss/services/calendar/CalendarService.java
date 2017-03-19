@@ -43,4 +43,10 @@ public interface CalendarService extends EntityService<Calendar, String> {
      */
     boolean canBeDeleted(String id);
 
+    void create(Calendar calendar, boolean neo4jSynchronize);
+
+    void update(Calendar calendar, boolean neo4jSynchronize);
+
+    void delete(String s, boolean neo4jSynchronize);
+
 }

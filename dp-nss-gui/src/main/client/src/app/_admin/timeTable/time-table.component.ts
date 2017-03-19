@@ -61,6 +61,8 @@ export class TimeTableComponent implements OnInit {
     }
 
     uploadGtfs() {
+        this.fileError = null;
+
         if(!this.file || !this.file.name.endsWith('.zip')) {
             this.fileError = 'Musíte zvolit .zip soubor s jízdními řády ve formátu GTFS.';
             return;
@@ -71,7 +73,7 @@ export class TimeTableComponent implements OnInit {
                     console.log(response);
                 },
                 err => {
-                    this.error = 'Chyba při nahrávání souboru.';
+                    this.fileError = 'Chyba při nahrávání souboru.';
                 });
     }
 

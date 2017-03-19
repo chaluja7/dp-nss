@@ -29,7 +29,7 @@ public class GtfsImportAgencyBatchIT extends AbstractServiceIT {
     @Test
     public void testImport() throws Throwable {
         Map<String, JobParameter> parameters = new HashMap<>();
-        parameters.put("agencyLocation", new JobParameter(GTFS_LOCATION + "agency.txt"));
+        parameters.put("importFolderLocation", new JobParameter(GTFS_IN_LOCATION ));
 
         JobExecution execution = jobLauncher.run(gtfsImportAgencyBatchJob, new JobParameters(parameters));
         failOnJobFailure(execution);

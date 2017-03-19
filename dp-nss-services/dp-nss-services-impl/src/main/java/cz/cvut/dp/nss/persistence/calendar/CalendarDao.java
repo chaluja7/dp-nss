@@ -135,4 +135,10 @@ public class CalendarDao extends AbstractGenericJpaDao<Calendar, String> {
         }
     }
 
+    @Override
+    public void truncateAll() {
+        Query query = sessionFactory.getCurrentSession().createNativeQuery("truncate calendar cascade");
+        query.executeUpdate();
+    }
+
 }

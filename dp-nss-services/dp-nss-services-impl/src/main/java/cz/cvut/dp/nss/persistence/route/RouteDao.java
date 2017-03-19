@@ -158,4 +158,10 @@ public class RouteDao extends AbstractGenericJpaDao<Route, String> {
         }
     }
 
+    @Override
+    public void truncateAll() {
+        Query query = sessionFactory.getCurrentSession().createNativeQuery("truncate routes cascade");
+        query.executeUpdate();
+    }
+
 }

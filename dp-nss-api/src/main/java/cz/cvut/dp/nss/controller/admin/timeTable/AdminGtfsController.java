@@ -2,6 +2,9 @@ package cz.cvut.dp.nss.controller.admin.timeTable;
 
 import cz.cvut.dp.nss.context.SchemaThreadLocal;
 import cz.cvut.dp.nss.controller.admin.AdminAbstractController;
+import cz.cvut.dp.nss.exception.BadRequestException;
+import cz.cvut.dp.nss.services.timeTable.TimeTableService;
+import cz.cvut.dp.nss.services.timeTable.TimeTableServiceImpl;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameter;
@@ -21,14 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.io.*;
+import java.util.*;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -41,6 +40,12 @@ public class AdminGtfsController extends AdminAbstractController {
 
     @Value("${gtfs.out.location}")
     private String gtfsOutLocation;
+
+    @Value("${gtfs.in.location}")
+    private String gtfsInLocation;
+
+    @Autowired
+    private TimeTableService timeTableService;
 
     @Autowired
     private JobLauncher jobLauncher;
@@ -96,28 +101,28 @@ public class AdminGtfsController extends AdminAbstractController {
 
         //TODO joby by mohly bezet asynchronne kazdy v novem vlakne, tak by to trvalo jen tak dlouho, jako nejpomalejsi z nich
         JobExecution execution = jobLauncher.run(gtfsExportAgencyBatchJob, new JobParameters(parameters));
-        failOnJobFailure(execution);
+        TimeTableServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportCalendarBatchJob, new JobParameters(parameters));
-        failOnJobFailure(execution);
+        TimeTableServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportCalendarDateBatchJob, new JobParameters(parameters));
-        failOnJobFailure(execution);
+        TimeTableServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportRouteBatchJob, new JobParameters(parameters));
-        failOnJobFailure(execution);
+        TimeTableServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportShapeBatchJob, new JobParameters(parameters));
-        failOnJobFailure(execution);
+        TimeTableServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportStopTimeBatchJob, new JobParameters(parameters));
-        failOnJobFailure(execution);
+        TimeTableServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportStopBatchJob, new JobParameters(parameters));
-        failOnJobFailure(execution);
+        TimeTableServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportTripBatchJob, new JobParameters(parameters));
-        failOnJobFailure(execution);
+        TimeTableServiceImpl.failOnJobFailure(execution);
 
         StreamingResponseBody streamingResponseBody = out -> {
             ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(out));
@@ -152,28 +157,58 @@ public class AdminGtfsController extends AdminAbstractController {
      * Upload multiple file using Spring Controller
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public String uploadMultipleFileHandler(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadMultipleFileHandler(@RequestParam("file") MultipartFile file) throws Throwable {
+        final String schema = SchemaThreadLocal.get();
+        Assert.notNull(schema, "schema must be specified");
 
-        String message = "aaa";
-//        try {
-//            byte[] bytes = file.getBytes();
-//
-//            // Creating the directory to store file
-//            String rootPath = System.getProperty("catalina.home");
-//            File dir = new File(rootPath + File.separator + "tmpFiles");
-//            if (!dir.exists()) {
-//                dir.mkdirs();
-//            }
-//
-//            // Create the file on server
-//            File serverFile = new File(dir.getAbsolutePath() + File.separator + name);
-//            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-//            stream.write(bytes);
-//            stream.close();
-//        } catch (Exception e) {
-//            return "You failed to upload " + name + " => " + e.getMessage();
-//        }
-        return message;
+        final String folder = schema + "-" + UUID.randomUUID().toString();
+        final Set<String> uploadedFiles = new HashSet<>();
+        byte[] buffer = new byte[2048];
+        ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(file.getInputStream()));
+        ZipEntry zipEntry = zipInputStream.getNextEntry();
+        while(zipEntry != null) {
+            String fileName = zipEntry.getName();
+
+            //zmenim nazev slozky, kam se to rozbali. Ocekavam, ze prisel zip archiv slozky, ve ktere jsou hned jizdni rady
+            String[] split = fileName.split("/");
+            if(split.length != 2) {
+                throw new BadRequestException("uploaded file must bez zip with exactly one folder with timetable info");
+            }
+            //pokud je to file, ktery nechci (neznam), tak skip
+            if(!TimeTableServiceImpl.TIME_TABLE_FILES.keySet().contains(split[1])) {
+                continue;
+            }
+
+            uploadedFiles.add(split[1]);
+            fileName = folder + "/" + split[1];
+
+            //vytvorim soubor
+            File newFile = new File(gtfsInLocation + fileName);
+
+            //a potrebne slozky, pokud uz neexistuji
+            new File(newFile.getParent()).mkdirs();
+
+            //a vlozim do souboru content
+            FileOutputStream fos = new FileOutputStream(newFile);
+            int len;
+            while((len = zipInputStream.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+            }
+            fos.close();
+
+            zipEntry = zipInputStream.getNextEntry();
+        }
+
+        //zkontroluji, zda jsem nahral vsechny povinne soubory
+        for(Map.Entry<String, Boolean> entry: TimeTableServiceImpl.TIME_TABLE_FILES.entrySet()) {
+            if(Boolean.TRUE.equals(entry.getValue()) && !uploadedFiles.contains(entry.getKey())) {
+                throw new BadRequestException("missing file " + entry.getKey());
+            }
+        }
+
+        //a zavolam import v novem vlakne
+        timeTableService.generateTimeTableToDatabases(schema, gtfsInLocation + folder);
+
+        return new ResponseEntity<>("uploaded", HttpStatus.OK);
     }
-
 }

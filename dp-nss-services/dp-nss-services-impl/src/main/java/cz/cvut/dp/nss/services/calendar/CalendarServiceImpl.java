@@ -50,72 +50,19 @@ public class CalendarServiceImpl extends AbstractEntityService<Calendar, String,
     @Override
     @Transactional(value = "transactionManager")
     public void update(Calendar calendar) {
-        //nejdriv smazu vsechny calendarDate k tomuto zaznamu z db
-        Calendar currentInDb = get(calendar.getId());
-        if(currentInDb.getCalendarDates() != null) {
-            for(CalendarDate calendarDate : currentInDb.getCalendarDates()) {
-               calendarDateService.delete(calendarDate.getId());
-            }
-        }
-
-        //pak provedu update calendar zaznamu
-        dao.update(calendar);
-
-        //a nakonec ulozim vsechny calendarDates znovu
-        if(calendar.getCalendarDates() != null) {
-            for(CalendarDate calendarDate : calendar.getCalendarDates()) {
-                calendarDate.setId(null);
-                calendarDateService.create(calendarDate);
-            }
-        }
-
-        //update take v neo4j!
-        //smazu vsechny calendarDateNodes k tomuto calendar z neo4j
-        calendarDateNodeService.deleteByCalendarId(calendar.getId());
-
-        //vytvorim si novy objekt calendarNode
-        CalendarNode calendarNode = getCalendarNodeFromCalendar(calendar);
-        //nasetuji mu id z neo4j, pokud uz tam existuje (aby se provedl update)
-        CalendarNode calendarNodeInNeo4j = calendarNodeService.findByCalendarId(calendar.getId());
-        if(calendarNodeInNeo4j != null) {
-            calendarNode.setId(calendarNodeInNeo4j.getId());
-        }
-
-        //a calendarNode ulozim i se vsemi calendarDates
-        calendarNodeService.save(calendarNode, -1);
+        update(calendar, true);
     }
 
     @Override
     @Transactional(value = "transactionManager")
     public void create(Calendar calendar) {
-        dao.create(calendar);
-
-        //soucasne musim data ulozit do neo4j!
-        //vytvorim si objekt pro neo4j
-        CalendarNode calendarNode = getCalendarNodeFromCalendar(calendar);
-        //a ulozim vsechno naraz
-        calendarNodeService.save(calendarNode, -1);
+        create(calendar, true);
     }
 
     @Override
     @Transactional(value = "transactionManager")
     public void delete(String s) {
-        Calendar calendar = dao.find(s);
-        if(calendar == null) return;
-
-        //soucasne to musim smazat z neo4j
-        //nejdriv calendar dates
-        calendarDateNodeService.deleteByCalendarId(calendar.getId());
-
-        //potom calendar
-        CalendarNode calendarNode = calendarNodeService.findByCalendarId(calendar.getId());
-        if(calendarNode != null) {
-            //mazu jen pokud v neo4j existuje
-            calendarNodeService.delete(calendarNode);
-        }
-
-        //a nakonec smazat z postgre
-        dao.delete(s);
+        delete(s, true);
     }
 
     @Override
@@ -147,6 +94,86 @@ public class CalendarServiceImpl extends AbstractEntityService<Calendar, String,
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean canBeDeleted(String id) {
         return tripService.getCountByCalendarId(id) == 0;
+    }
+
+    @Override
+    @Transactional(value = "transactionManager")
+    public void create(Calendar calendar, boolean neo4jSynchronize) {
+        dao.create(calendar);
+
+        if(neo4jSynchronize) {
+            //TODO aktualizovat mapu ve vyhledavaci neo4j pres cypher!
+            //soucasne musim data ulozit do neo4j!
+            //vytvorim si objekt pro neo4j
+            CalendarNode calendarNode = getCalendarNodeFromCalendar(calendar);
+            //a ulozim vsechno naraz
+            calendarNodeService.save(calendarNode, -1);
+        }
+    }
+
+    @Override
+    @Transactional(value = "transactionManager")
+    public void update(Calendar calendar, boolean neo4jSynchronize) {
+        //nejdriv smazu vsechny calendarDate k tomuto zaznamu z db
+        Calendar currentInDb = get(calendar.getId());
+        if(currentInDb.getCalendarDates() != null) {
+            for(CalendarDate calendarDate : currentInDb.getCalendarDates()) {
+                calendarDateService.delete(calendarDate.getId());
+            }
+        }
+
+        //pak provedu update calendar zaznamu
+        dao.update(calendar);
+
+        //a nakonec ulozim vsechny calendarDates znovu
+        if(calendar.getCalendarDates() != null) {
+            for(CalendarDate calendarDate : calendar.getCalendarDates()) {
+                calendarDate.setId(null);
+                calendarDateService.create(calendarDate);
+            }
+        }
+
+        if(neo4jSynchronize) {
+            //TODO aktualizovat mapu ve vyhledavaci neo4j pres cypher!
+            //update take v neo4j!
+            //smazu vsechny calendarDateNodes k tomuto calendar z neo4j
+            calendarDateNodeService.deleteByCalendarId(calendar.getId());
+
+            //vytvorim si novy objekt calendarNode
+            CalendarNode calendarNode = getCalendarNodeFromCalendar(calendar);
+            //nasetuji mu id z neo4j, pokud uz tam existuje (aby se provedl update)
+            CalendarNode calendarNodeInNeo4j = calendarNodeService.findByCalendarId(calendar.getId());
+            if (calendarNodeInNeo4j != null) {
+                calendarNode.setId(calendarNodeInNeo4j.getId());
+            }
+
+            //a calendarNode ulozim i se vsemi calendarDates
+            calendarNodeService.save(calendarNode, -1);
+        }
+    }
+
+    @Override
+    @Transactional(value = "transactionManager")
+    public void delete(String s, boolean neo4jSynchronize) {
+        Calendar calendar = dao.find(s);
+        if(calendar == null) return;
+
+        //soucasne to musim smazat z neo4j
+        if(neo4jSynchronize) {
+            //TODO aktualizovat mapu ve vyhledavaci neo4j pres cypher!
+            //nejdriv calendar dates
+            calendarDateNodeService.deleteByCalendarId(calendar.getId());
+
+            //potom calendar
+            CalendarNode calendarNode = calendarNodeService.findByCalendarId(calendar.getId());
+            if (calendarNode != null) {
+                //mazu jen pokud v neo4j existuje
+                calendarNodeService.delete(calendarNode);
+            }
+        }
+
+        //a nakonec smazat z postgre
+        dao.delete(s);
     }
 
     public static CalendarNode getCalendarNodeFromCalendar(Calendar calendar) {

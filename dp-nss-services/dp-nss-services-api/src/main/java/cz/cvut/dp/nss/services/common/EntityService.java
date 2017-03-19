@@ -42,4 +42,9 @@ public interface EntityService<ENT extends AbstractEntity<ID>, ID extends Serial
      */
     List<ENT> getAll();
 
+    /**
+     * empty whole table
+     */
+    void truncateAll();
+
 }

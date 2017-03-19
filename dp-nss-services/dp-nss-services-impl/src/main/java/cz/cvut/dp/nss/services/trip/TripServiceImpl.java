@@ -49,74 +49,19 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
     @Override
     @Transactional(value = "transactionManager")
     public void update(Trip trip) {
-        //smazu vsechny stopTimes v neo4j. S tim je spojene to, ze se musi spravne propojit zbyvajici stopTimes na stanicich
-        stopTimeNodeService.deleteStopTimesByTripId(trip.getId());
-
-        //a nahraju je znovu
-        TripNode tripNode = getTripNodeFromTrip(trip);
-
-        //pozor, musim mu priradit ID z neo4j
-        TripNode existingTripNode = tripNodeService.findByTripId(trip.getId());
-        if(existingTripNode != null) {
-            tripNode.setId(existingTripNode.getId());
-        }
-
-        //jenze pozor, jeste je nutne stopTimes spravne zakomponovat do struktury grafu v ramci stanice
-        //tedy najit spravne misto, kam kazdy stopTime prijde a tam ho napojit
-        if(tripNode.getStopTimeNodes() != null) {
-            for(StopTimeNode stopTimeNode : tripNode.getStopTimeNodes()) {
-                stopTimeNodeService.addNewStopTimeToStop(stopTimeNode);
-            }
-        }
-
-        //a nakonec updatnu samotny tripNode
-        tripNodeService.save(tripNode, 0);
-
-        //nejdriv smazu vsechny stopTimes k tomuto zaznamu z db
-        stopTimeService.deleteByTripId(trip.getId());
-
-        //ulozim vsechny stopTimes znovu
-        if(trip.getStopTimes() != null) {
-            for(StopTime stopTime : trip.getStopTimes()) {
-                stopTime.setId(null);
-                stopTimeService.create(stopTime);
-            }
-        }
-
-        //pak provedu update trip zaznamu
-        dao.update(trip);
+        update(trip, true);
     }
 
     @Override
     @Transactional(value = "transactionManager")
     public void create(Trip trip) {
-        //soucasne musim data ulozit do neo4j!
-        //vytvorim si objekt pro neo4j
-        TripNode tripNode = getTripNodeFromTrip(trip);
-        //a ulozim vsechno naraz
-        tripNodeService.save(tripNode, -1);
-
-        //jenze pozor, jeste je nutne stopTimes spravne zakomponovat do struktury grafu v ramci stanice
-        //tedy najit spravne misto, kam kazdy stopTime prijde a tam ho napojit
-        if(tripNode.getStopTimeNodes() != null) {
-            for(StopTimeNode stopTimeNode : tripNode.getStopTimeNodes()) {
-                stopTimeNodeService.addNewStopTimeToStop(stopTimeNode);
-            }
-        }
-
-        dao.create(trip);
+        create(trip, true);
     }
 
     @Override
     @Transactional(value = "transactionManager")
     public void delete(String s) {
-        //smazu vsechny stopTimes v neo4j. S tim je spojene to, ze se musi spravne propojit zbyvajici stopTimes na stanicich
-        stopTimeNodeService.deleteStopTimesByTripId(s);
-
-        //a nakonec smazu tripNode v neo4j
-        tripNodeService.deleteTripNode(s);
-
-        dao.delete(s);
+        delete(s, true);
     }
 
     @Override
@@ -155,6 +100,85 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public Trip getLazyInitialized(String id) {
         return id != null ? dao.getLazyInitialized(id) : null;
+    }
+
+    @Override
+    @Transactional(value = "transactionManager")
+    public void create(Trip trip, boolean neo4jSynchronize) {
+        if(neo4jSynchronize) {
+            //soucasne musim data ulozit do neo4j!
+            //vytvorim si objekt pro neo4j
+            TripNode tripNode = getTripNodeFromTrip(trip);
+            //a ulozim vsechno naraz
+            tripNodeService.save(tripNode, -1);
+
+            //jenze pozor, jeste je nutne stopTimes spravne zakomponovat do struktury grafu v ramci stanice
+            //tedy najit spravne misto, kam kazdy stopTime prijde a tam ho napojit
+            if (tripNode.getStopTimeNodes() != null) {
+                for (StopTimeNode stopTimeNode : tripNode.getStopTimeNodes()) {
+                    stopTimeNodeService.addNewStopTimeToStop(stopTimeNode);
+                }
+            }
+        }
+
+        dao.create(trip);
+    }
+
+    @Override
+    @Transactional(value = "transactionManager")
+    public void update(Trip trip, boolean neo4jSynchronize) {
+        if(neo4jSynchronize) {
+            //smazu vsechny stopTimes v neo4j. S tim je spojene to, ze se musi spravne propojit zbyvajici stopTimes na stanicich
+            stopTimeNodeService.deleteStopTimesByTripId(trip.getId());
+
+            //a nahraju je znovu
+            TripNode tripNode = getTripNodeFromTrip(trip);
+
+            //pozor, musim mu priradit ID z neo4j
+            TripNode existingTripNode = tripNodeService.findByTripId(trip.getId());
+            if (existingTripNode != null) {
+                tripNode.setId(existingTripNode.getId());
+            }
+
+            //jenze pozor, jeste je nutne stopTimes spravne zakomponovat do struktury grafu v ramci stanice
+            //tedy najit spravne misto, kam kazdy stopTime prijde a tam ho napojit
+            if (tripNode.getStopTimeNodes() != null) {
+                for (StopTimeNode stopTimeNode : tripNode.getStopTimeNodes()) {
+                    stopTimeNodeService.addNewStopTimeToStop(stopTimeNode);
+                }
+            }
+
+            //a nakonec updatnu samotny tripNode
+            tripNodeService.save(tripNode, 0);
+        }
+
+        //nejdriv smazu vsechny stopTimes k tomuto zaznamu z db
+        stopTimeService.deleteByTripId(trip.getId());
+
+        //ulozim vsechny stopTimes znovu
+        if(trip.getStopTimes() != null) {
+            for(StopTime stopTime : trip.getStopTimes()) {
+                stopTime.setId(null);
+                stopTimeService.create(stopTime);
+            }
+        }
+
+        //pak provedu update trip zaznamu
+        dao.update(trip);
+    }
+
+    @Override
+    @Transactional(value = "transactionManager")
+    public void delete(String s, boolean neo4jSynchronize) {
+        if(neo4jSynchronize) {
+            //smazu vsechny stopTimes v neo4j. S tim je spojene to, ze se musi spravne propojit zbyvajici stopTimes na stanicich
+            stopTimeNodeService.deleteStopTimesByTripId(s);
+
+            //a nakonec smazu tripNode v neo4j
+            tripNodeService.deleteTripNode(s);
+        }
+
+        dao.delete(s);
     }
 
     public static TripNode getTripNodeFromTrip(Trip trip) {

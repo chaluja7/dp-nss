@@ -133,4 +133,9 @@ public class AgencyDao extends AbstractGenericJpaDao<Agency, String> {
         }
     }
 
+    @Override
+    public void truncateAll() {
+        Query query = sessionFactory.getCurrentSession().createNativeQuery("truncate agencies cascade");
+        query.executeUpdate();
+    }
 }

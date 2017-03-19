@@ -29,7 +29,7 @@ public class GtfsImportRouteBatchIT extends AbstractServiceIT {
     @Test
     public void testImport() throws Throwable {
         Map<String, JobParameter> parameters = new HashMap<>();
-        parameters.put("routesLocation", new JobParameter(GTFS_LOCATION + "routes.txt"));
+        parameters.put("importFolderLocation", new JobParameter(GTFS_IN_LOCATION));
 
         JobExecution execution = jobLauncher.run(gtfsImportRouteBatchJob, new JobParameters(parameters));
         failOnJobFailure(execution);

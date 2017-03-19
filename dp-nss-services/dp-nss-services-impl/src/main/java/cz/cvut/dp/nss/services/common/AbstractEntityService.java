@@ -61,6 +61,12 @@ public abstract class AbstractEntityService<ENT extends AbstractEntity<ID>, ID e
         return dao.getAll();
     }
 
+    @Override
+    @Transactional(value = "transactionManager")
+    public void truncateAll() {
+        dao.truncateAll();
+    }
+
     protected int getOffsetOrDefault(Integer offset) {
         return offset != null ? offset : OFFSET_DEFAULT;
     }

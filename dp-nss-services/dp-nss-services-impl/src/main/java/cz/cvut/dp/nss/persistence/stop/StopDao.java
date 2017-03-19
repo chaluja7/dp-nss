@@ -186,4 +186,10 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
         }
     }
 
+    @Override
+    public void truncateAll() {
+        Query query = sessionFactory.getCurrentSession().createNativeQuery("truncate stops cascade");
+        query.executeUpdate();
+    }
+
 }

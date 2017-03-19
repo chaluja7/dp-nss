@@ -44,4 +44,10 @@ public interface TripService extends EntityService<Trip, String> {
      */
     Trip getLazyInitialized(String id);
 
+    void create(Trip trip, boolean neo4jSynchronize);
+
+    void update(Trip trip, boolean neo4jSynchronize);
+
+    void delete(String s, boolean neo4jSynchronize);
+
 }

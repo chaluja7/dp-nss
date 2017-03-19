@@ -185,4 +185,10 @@ public class TripDao extends AbstractGenericJpaDao<Trip, String> {
         }
     }
 
+    @Override
+    public void truncateAll() {
+        Query query = sessionFactory.getCurrentSession().createNativeQuery("truncate trips cascade");
+        query.executeUpdate();
+    }
+
 }

@@ -22,4 +22,6 @@ public interface TimeTableService extends EntityService<TimeTable, String> {
 
     List<TimeTable> getAllForPerson(Person person);
 
+    void generateTimeTableToDatabases(String schema, String folder) throws Throwable;
+
 }

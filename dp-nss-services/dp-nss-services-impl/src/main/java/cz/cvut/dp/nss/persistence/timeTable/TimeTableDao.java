@@ -51,4 +51,8 @@ public class TimeTableDao extends AbstractGenericJpaDao<TimeTable, String> {
         return query.list();
     }
 
+    @Override
+    public void truncateAll() {
+        throw new UnsupportedOperationException();
+    }
 }

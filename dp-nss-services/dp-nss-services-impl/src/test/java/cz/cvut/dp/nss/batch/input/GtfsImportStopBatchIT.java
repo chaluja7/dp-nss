@@ -33,7 +33,7 @@ public class GtfsImportStopBatchIT extends AbstractServiceIT {
     @Test
     public void testImport() throws Throwable {
         Map<String, JobParameter> parameters = new HashMap<>();
-        parameters.put("stopsLocation", new JobParameter(GTFS_LOCATION + "stops.txt"));
+        parameters.put("importFolderLocation", new JobParameter(GTFS_IN_LOCATION));
 
         JobExecution execution = jobLauncher.run(gtfsImportStopParentBatchJob, new JobParameters(parameters));
         failOnJobFailure(execution);

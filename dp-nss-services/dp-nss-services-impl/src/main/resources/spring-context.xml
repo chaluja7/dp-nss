@@ -2,12 +2,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:batch="http://www.springframework.org/schema/batch" xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd">
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
     <context:component-scan base-package="cz.cvut.dp.nss.services"/>
     <context:component-scan base-package="cz.cvut.dp.nss.persistence"/>
@@ -19,6 +19,9 @@
     <tx:annotation-driven transaction-manager="transactionManager" order="0"/>
 
     <context:property-placeholder location="classpath:dp-nssLocal.properties" />
+
+    <task:annotation-driven executor="executor" />
+    <task:executor id="executor" pool-size="20" queue-capacity="20"/>
 
     <!-- security -->
     <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
@@ -586,7 +589,7 @@
     <bean id="agencyBatchReader" class="cz.cvut.dp.nss.batch.input.agency.AgencyBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
-        <property name="resource" value="#{jobParameters['agencyLocation']}" />
+        <property name="resource" value="file:#{jobParameters['importFolderLocation']}/agency.txt" />
 
         <!-- preskoc zahlavi -->
         <property name="linesToSkip" value="1"/>
@@ -610,7 +613,7 @@
     <bean id="routeBatchReader" class="cz.cvut.dp.nss.batch.input.route.RouteBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
-        <property name="resource" value="#{jobParameters['routesLocation']}" />
+        <property name="resource" value="file:#{jobParameters['importFolderLocation']}/routes.txt" />
 
         <!-- preskoc zahlavi -->
         <property name="linesToSkip" value="1"/>
@@ -634,7 +637,7 @@
     <bean id="calendarBatchReader" class="cz.cvut.dp.nss.batch.input.calendar.CalendarBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
-        <property name="resource" value="#{jobParameters['calendarLocation']}" />
+        <property name="resource" value="file:#{jobParameters['importFolderLocation']}/calendar.txt" />
 
         <!-- preskoc zahlavi -->
         <property name="linesToSkip" value="1"/>
@@ -658,7 +661,7 @@
     <bean id="calendarDateBatchReader" class="cz.cvut.dp.nss.batch.input.calendarDate.CalendarDateBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
-        <property name="resource" value="#{jobParameters['calendarDateLocation']}" />
+        <property name="resource" value="file:#{jobParameters['importFolderLocation']}/calendar_dates.txt" />
 
         <!-- preskoc zahlavi -->
         <property name="linesToSkip" value="1"/>
@@ -682,7 +685,7 @@
     <bean id="shapeBatchReader" class="cz.cvut.dp.nss.batch.input.shape.ShapeBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
-        <property name="resource" value="#{jobParameters['shapesLocation']}" />
+        <property name="resource" value="file:#{jobParameters['importFolderLocation']}/shapes.txt" />
 
         <!-- preskoc zahlavi -->
         <property name="linesToSkip" value="1"/>
@@ -706,7 +709,7 @@
     <bean id="stopBatchReader" class="cz.cvut.dp.nss.batch.input.stop.StopBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
-        <property name="resource" value="#{jobParameters['stopsLocation']}" />
+        <property name="resource" value="file:#{jobParameters['importFolderLocation']}/stops.txt" />
 
         <!-- preskoc zahlavi -->
         <property name="linesToSkip" value="1"/>
@@ -730,7 +733,7 @@
     <bean id="tripBatchReader" class="cz.cvut.dp.nss.batch.input.trip.TripBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
-        <property name="resource" value="#{jobParameters['tripsLocation']}" />
+        <property name="resource" value="file:#{jobParameters['importFolderLocation']}/trips.txt" />
 
         <!-- preskoc zahlavi -->
         <property name="linesToSkip" value="1"/>
@@ -754,7 +757,7 @@
     <bean id="stopTimeBatchReader" class="cz.cvut.dp.nss.batch.input.stopTime.StopTimeBatchReader" scope="step">
 
         <!-- csv soubor k importu -->
-        <property name="resource" value="#{jobParameters['stopTimesLocation']}" />
+        <property name="resource" value="file:#{jobParameters['importFolderLocation']}/stop_times.txt" />
 
         <!-- preskoc zahlavi -->
         <property name="linesToSkip" value="1"/>

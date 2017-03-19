@@ -21,7 +21,7 @@ public class TripBatchWriter implements ItemWriter<Trip> {
     @Override
     public void write(List<? extends Trip> items) throws Exception {
         for(Trip trip : items) {
-            tripService.create(trip);
+            tripService.create(trip, false);
         }
     }
 

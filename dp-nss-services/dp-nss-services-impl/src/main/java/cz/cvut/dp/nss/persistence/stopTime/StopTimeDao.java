@@ -49,4 +49,10 @@ public class StopTimeDao extends AbstractGenericJpaDao<StopTime, Long> {
         query.executeUpdate();
     }
 
+    @Override
+    public void truncateAll() {
+        Query query = sessionFactory.getCurrentSession().createNativeQuery("truncate stop_times cascade");
+        query.executeUpdate();
+    }
+
 }

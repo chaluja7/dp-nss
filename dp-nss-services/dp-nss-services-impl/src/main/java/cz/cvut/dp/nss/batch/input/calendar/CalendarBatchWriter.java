@@ -21,7 +21,7 @@ public class CalendarBatchWriter implements ItemWriter<Calendar> {
     @Override
     public void write(List<? extends Calendar> items) throws Exception {
         for(Calendar calendar : items) {
-            calendarService.create(calendar);
+            calendarService.create(calendar, false);
         }
     }
 

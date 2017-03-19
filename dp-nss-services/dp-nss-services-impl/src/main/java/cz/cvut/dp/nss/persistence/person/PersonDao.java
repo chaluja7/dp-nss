@@ -33,4 +33,8 @@ public class PersonDao extends AbstractGenericJpaDao<Person, Long> {
         return query.uniqueResult();
     }
 
+    @Override
+    public void truncateAll() {
+        throw new UnsupportedOperationException();
+    }
 }
