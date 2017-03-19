@@ -9,6 +9,16 @@
 
     <context:component-scan base-package="cz.cvut.dp.nss.graph.services" />
 
+    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+        <property name="scopes">
+            <map>
+                <entry key="thread">
+                    <bean class="org.springframework.context.support.SimpleThreadScope"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
     <bean class="cz.cvut.dp.nss.graph.Neo4jConfig"/>
 
     <!-- NEO4J transaction -->

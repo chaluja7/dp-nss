@@ -25,4 +25,10 @@ public interface TripNodeRepository extends GraphRepository<TripNode> {
     @Query("match (n:TripNode {tripId: {0}}) detach delete n")
     void deleteTripNode(String tripId);
 
+    /**
+     * smaze cast vsech tripNode (nutne spoustet opakovane, dokud nevrati 0!)
+     */
+    @Query("match (n:TripNode) with n limit 2500 detach delete n return count(*)")
+    int chunkDeleteAll();
+
 }

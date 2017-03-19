@@ -1,6 +1,10 @@
 package cz.cvut.dp.nss.services.timeTable;
 
 import cz.cvut.dp.nss.context.SchemaThreadLocal;
+import cz.cvut.dp.nss.graph.services.calendar.CalendarNodeService;
+import cz.cvut.dp.nss.graph.services.calendarDate.CalendarDateNodeService;
+import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNodeService;
+import cz.cvut.dp.nss.graph.services.trip.TripNodeService;
 import cz.cvut.dp.nss.persistence.timeTable.TimeTableDao;
 import cz.cvut.dp.nss.services.agency.AgencyService;
 import cz.cvut.dp.nss.services.calendar.CalendarService;
@@ -81,6 +85,18 @@ public class TimeTableServiceImpl extends AbstractEntityService<TimeTable, Strin
     private TripService tripService;
 
     @Autowired
+    private CalendarDateNodeService calendarDateNodeService;
+
+    @Autowired
+    private CalendarNodeService calendarNodeService;
+
+    @Autowired
+    private TripNodeService tripNodeService;
+
+    @Autowired
+    private StopTimeNodeService stopTimeNodeService;
+
+    @Autowired
     private JobLauncher jobLauncher;
 
     @Autowired
@@ -120,6 +136,18 @@ public class TimeTableServiceImpl extends AbstractEntityService<TimeTable, Strin
     private Job gtfsImportStopTimeBatchJob;
 
     @Autowired
+    @Qualifier(value = "graphImportCalendarBatchJob")
+    private Job graphImportCalendarBatchJob;
+
+    @Autowired
+    @Qualifier(value = "graphImportTripBatchJob")
+    private Job graphImportTripBatchJob;
+
+    @Autowired
+    @Qualifier(value = "graphConnectStopBatchJob")
+    private Job graphConnectStopBatchJob;
+
+    @Autowired
     public TimeTableServiceImpl(TimeTableDao dao) {
         super(dao);
     }
@@ -146,29 +174,36 @@ public class TimeTableServiceImpl extends AbstractEntityService<TimeTable, Strin
         return dao.getAllByIds(timeTableIds);
     }
 
-    @Async("executor")
+    @Async
     @Override
     public void generateTimeTableToDatabases(String schema, String folder) throws Throwable {
         String s = SchemaThreadLocal.get();
+
         //protoze toto bez v jinem vlakne, nez caller tak musim nastavit schema rucne (jinak by bylo null)
         SchemaThreadLocal.set(schema);
         //TODO zamknout schema
 
-        //vyprazdnim vsechny zaznamy jizdniho radu
-        stopTimeService.truncateAll();
-        tripService.truncateAll();
-        shapeService.truncateAll();
-        stopService.truncateAll();
-        calendarDateService.truncateAll();
-        calendarService.truncateAll();
-        routeService.truncateAll();
-        agencyService.truncateAll();
-
-        //a ve spravnem poradi spustim joby
-        Map<String, JobParameter> parameters = new HashMap<>();
-        parameters.put("importFolderLocation", new JobParameter(folder));
-
         try {
+            //vyprazdnim vsechny zaznamy jizdniho radu
+            stopTimeService.truncateAll();
+            tripService.truncateAll();
+            shapeService.truncateAll();
+            stopService.truncateAll();
+            calendarDateService.truncateAll();
+            calendarService.truncateAll();
+            routeService.truncateAll();
+            agencyService.truncateAll();
+
+            //taky z neo4j
+            calendarDateNodeService.deleteAll();
+            calendarNodeService.deleteAll();
+            tripNodeService.deleteAll();
+            stopTimeNodeService.deleteAll();
+
+            //a ve spravnem poradi spustim joby
+            Map<String, JobParameter> parameters = new HashMap<>();
+            parameters.put("importFolderLocation", new JobParameter(folder));
+
             JobExecution execution = jobLauncher.run(gtfsImportAgencyBatchJob, new JobParameters(parameters));
             failOnJobFailure(execution);
 
@@ -195,12 +230,24 @@ public class TimeTableServiceImpl extends AbstractEntityService<TimeTable, Strin
 
             execution = jobLauncher.run(gtfsImportStopTimeBatchJob, new JobParameters(parameters));
             failOnJobFailure(execution);
+
+            //neo4j joby
+            execution = jobLauncher.run(graphImportCalendarBatchJob, new JobParameters(parameters));
+            failOnJobFailure(execution);
+
+            execution = jobLauncher.run(graphImportTripBatchJob, new JobParameters(parameters));
+            failOnJobFailure(execution);
+
+            execution = jobLauncher.run(graphConnectStopBatchJob, new JobParameters(parameters));
+            failOnJobFailure(execution);
+
         } catch(Throwable t) {
             LOGGER.error("", t);
             throw(t);
         }
 
         //TODO odemknout schema. pri chybe toto zaznamenat (ze to dobehlo s chybou aby se to pak zobrazilo uzivateli)
+        //TODO bylo by taky super smazat ty soubory, ktere uz jsou uplne k nicemu (v /tmp...)
         SchemaThreadLocal.unset();
     }
 

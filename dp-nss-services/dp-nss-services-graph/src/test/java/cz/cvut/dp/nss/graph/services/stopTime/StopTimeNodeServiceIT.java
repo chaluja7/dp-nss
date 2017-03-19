@@ -5,6 +5,7 @@ import cz.cvut.dp.nss.graph.services.trip.TripNode;
 import cz.cvut.dp.nss.graph.services.trip.TripNodeService;
 import cz.cvut.dp.nss.graph.services.trip.TripNodeServiceIT;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -131,6 +132,12 @@ public class StopTimeNodeServiceIT extends AbstractServiceIT {
         Assert.assertNotNull(retrieved.getTripNode());
         Assert.assertNotNull(retrieved.getNextStop());
         Assert.assertNotNull(retrieved.getNextAwaitingStop());
+    }
+
+    @Test
+    @Ignore
+    public void testDeleteAll() {
+        stopTimeNodeService.deleteAll();
     }
 
     public static StopTimeNode getStopTimeNode(Long stopTimeId, String stopId, String stopName, int arrivalInSeconds, int departureInSeconds, TripNode tripNode, StopTimeNode nextStop) {

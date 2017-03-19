@@ -22,6 +22,11 @@ public interface TimeTableService extends EntityService<TimeTable, String> {
 
     List<TimeTable> getAllForPerson(Person person);
 
+    /**
+     * @param schema aktualni schema db
+     * @param folder slozka, ve ktere jsou ulozene jizdni rady (.txt soubory)
+     * @throws Throwable throwable
+     */
     void generateTimeTableToDatabases(String schema, String folder) throws Throwable;
 
 }

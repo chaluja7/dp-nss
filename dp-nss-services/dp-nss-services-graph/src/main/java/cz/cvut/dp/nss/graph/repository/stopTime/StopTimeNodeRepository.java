@@ -79,4 +79,10 @@ public interface StopTimeNodeRepository extends GraphRepository<StopTimeNode> {
         "return n as stopTimeNode, m as nextAwaitingStop, o as prevAwaitingStop")
     List<StopTimeQueryResult> findStopTimesToDeleteByTripId(String tripId);
 
+    /**
+     * smaze cast vsech stopTimeNode (nutne spoustet opakovane, dokud nevrati 0!)
+     */
+    @Query("match (n:StopTimeNode) with n limit 10000 detach delete n return count(*)")
+    int chunkDeleteAll();
+
 }

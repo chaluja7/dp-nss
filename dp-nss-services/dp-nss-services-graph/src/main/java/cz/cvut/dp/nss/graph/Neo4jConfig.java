@@ -71,7 +71,7 @@ public class Neo4jConfig extends Neo4jConfiguration {
     }
 
     @Bean
-    @Scope(scopeName = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    @Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public Session getSession() throws Exception {
         String identifier = SchemaThreadLocal.get();
 

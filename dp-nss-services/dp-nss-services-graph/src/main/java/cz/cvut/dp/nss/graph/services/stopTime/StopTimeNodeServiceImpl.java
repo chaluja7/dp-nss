@@ -143,4 +143,14 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
         repo.deleteStopTimesByTripId(tripId);
     }
 
+    @Override
+    public void deleteAll() {
+        //schvalne neni transactional ale odmazava se to postupne (protoze potvrzeni transakce, kde se smaze vsechno vubec nemusi dobehnout)
+        int count;
+        do {
+            count = repo.chunkDeleteAll();
+            session.clear();
+        } while (count > 0);
+    }
+
 }

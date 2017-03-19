@@ -2,6 +2,7 @@ package cz.cvut.dp.nss.graph.services.trip;
 
 import cz.cvut.dp.nss.graph.services.AbstractServiceIT;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,6 +30,12 @@ public class TripNodeServiceIT extends AbstractServiceIT {
 
         tripNode = tripNodeService.findByTripId(tripId);
         Assert.assertNotNull(tripNode);
+    }
+
+    @Test
+    @Ignore
+    public void testDeleteAll() {
+        tripNodeService.deleteAll();
     }
 
     public static TripNode getTripNode(String tripId, String calendarId) {

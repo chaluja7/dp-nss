@@ -24,4 +24,11 @@ public class CalendarNodeServiceImpl extends AbstractNodeService<CalendarNode, C
         if(calendarId == null) return null;
         return repo.findByCalendarId(calendarId);
     }
+
+    @Override
+    @Transactional("neo4jTransactionManager")
+    public void deleteAll() {
+        repo.deleteAll();
+    }
+
 }
