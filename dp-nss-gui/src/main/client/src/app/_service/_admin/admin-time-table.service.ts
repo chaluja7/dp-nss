@@ -41,6 +41,15 @@ export class AdminTimeTableService {
         .catch(err => this.errorService.handleServerError(err));
   }
 
+  uploadFile(fileName: string, file: File): Observable<Response> {
+    let formData: FormData = new FormData();
+    formData.append(fileName, file, file.name);
+
+    return this.http.post(this.userService.getApiPrefix() + 'admin/gtfs/upload', formData, true)
+        .map(response => response)
+        .catch(err => this.errorService.handleServerError(err));
+  }
+
   // create(timeTable: TimeTable): Promise<TimeTable> {
   //   return this.http
   //       .post(this.TIME_TABLE_URL, JSON.stringify(timeTable))

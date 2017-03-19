@@ -20,9 +20,11 @@
     <div *ngIf="error" class="alert alert-danger">{{error}}</div>
   </form>
 
+  <hr/>
+  <h3>Stažení jízdního řádu</h3>
   <div class="row margin-top-20">
     <div class="col-md-12">
-      <button type="button" class="btn btn-default" (click)="downloadGtfs()">Stáhnout jízdní řád</button>
+      <button type="button" class="btn btn-default pull-right" (click)="downloadGtfs()">Stáhnout jízdní řád</button>
     </div>
   </div>
   <div class="row margin-top-20">
@@ -31,4 +33,23 @@
     </div>
   </div>
 
+  <hr/>
+  <h3>Nahrání jízdního řádu</h3>
+  <div class="row margin-top-20">
+    <div class="col-md-8">
+      <label class="btn btn-default btn-file">
+        Zvolit jízdní řád... <input type="file" (change)="fileChange($event)" placeholder="Jízdní řád" accept=".zip" style="display:none;">
+      </label>
+      <span class="margin-left-10">{{file?.name}}</span>
+    </div>
+    <div class="col-md-4">
+      <button type="button" class="btn btn-default pull-right" (click)="uploadGtfs()" [disabled]="!file">Nahrát jízdní řád</button>
+    </div>
+  </div>
+  <div *ngIf="fileError" class="alert alert-danger">{{fileError}}</div>
+  <div class="row margin-top-20">
+    <div class="col-md-12">
+      <div class="alert alert-info">Po potvrzení nahrání souboru jízdních řádů na server začne import dat o jízdních řádech. Během importu dat nebude možné tento jízdní řád nijak upravovat. Po dokončení importu se jízdní řád automaticky odemkne pro vyhledávání a úpravy.</div>
+    </div>
+  </div>
 </div>

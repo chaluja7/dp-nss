@@ -13,9 +13,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.BufferedInputStream;
@@ -32,7 +35,7 @@ import java.util.zip.ZipOutputStream;
  * @author jakubchalupa
  * @since 17.03.17
  */
-@Controller
+@RestController
 @RequestMapping(value = "/admin/gtfs")
 public class AdminGtfsController extends AdminAbstractController {
 
@@ -143,6 +146,34 @@ public class AdminGtfsController extends AdminAbstractController {
         httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/zip");
         httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + schema + ".zip");
         return new ResponseEntity<>(streamingResponseBody, httpHeaders, HttpStatus.OK);
+    }
+
+    /**
+     * Upload multiple file using Spring Controller
+     */
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public String uploadMultipleFileHandler(@RequestParam("file") MultipartFile file) {
+
+        String message = "aaa";
+//        try {
+//            byte[] bytes = file.getBytes();
+//
+//            // Creating the directory to store file
+//            String rootPath = System.getProperty("catalina.home");
+//            File dir = new File(rootPath + File.separator + "tmpFiles");
+//            if (!dir.exists()) {
+//                dir.mkdirs();
+//            }
+//
+//            // Create the file on server
+//            File serverFile = new File(dir.getAbsolutePath() + File.separator + name);
+//            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+//            stream.write(bytes);
+//            stream.close();
+//        } catch (Exception e) {
+//            return "You failed to upload " + name + " => " + e.getMessage();
+//        }
+        return message;
     }
 
 }

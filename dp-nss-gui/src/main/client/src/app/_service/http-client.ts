@@ -12,8 +12,10 @@ export class HttpClient {
 
   numberOfPendingRequests: number = 0;
 
-  createAuthorizationHeader(headers: Headers) {
-    headers.append('Content-Type', 'application/json');
+  createAuthorizationHeader(headers: Headers, emptyContentType?: boolean) {
+    if(!emptyContentType) {
+      headers.append('Content-Type', 'application/json');
+    }
 
     //pokud je uzivatel prihlaseny, tak pridame jeho auth hlavicku do vsech requestu
     let currentUser = this.userService.getLoggedUser();
@@ -43,9 +45,9 @@ export class HttpClient {
     }
   }
 
-  post(url: string, data): Observable<Response> {
+  post(url: string, data: any, emptyContentType?: boolean): Observable<Response> {
     let headers = new Headers();
-    this.createAuthorizationHeader(headers);
+    this.createAuthorizationHeader(headers, emptyContentType);
 
     this.numberOfPendingRequests++;
     return this.http.post(url, data, {

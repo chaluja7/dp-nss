@@ -37,5 +37,10 @@
         <bean class="cz.cvut.dp.nss.controller.interceptor.SecurityInterceptor" />
     </mvc:interceptors>
 
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- setting maximum upload size, cca 100MB -->
+        <property name="maxUploadSize" value="100000000" />
+    </bean>
+
 
 </beans>

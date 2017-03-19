@@ -17,6 +17,8 @@ export class TimeTableComponent implements OnInit {
     timeTable: TimeTable;
     loading = false;
     error = '';
+    fileError = '';
+    file: File;
 
     constructor(private adminTimeTableService: AdminTimeTableService, private route: ActivatedRoute, private location: Location,
                 private userService: UserService, private http: HttpClient) {
@@ -56,6 +58,30 @@ export class TimeTableComponent implements OnInit {
                 err => {
                     this.error = AppSettings.SAVE_ERROR;
                 });
+    }
+
+    uploadGtfs() {
+        if(!this.file || !this.file.name.endsWith('.zip')) {
+            this.fileError = 'Musíte zvolit .zip soubor s jízdními řády ve formátu GTFS.';
+            return;
+        }
+
+        this.adminTimeTableService.uploadFile('file', this.file)
+            .subscribe((response) => {
+                    console.log(response);
+                },
+                err => {
+                    this.error = 'Chyba při nahrávání souboru.';
+                });
+    }
+
+    fileChange(event) {
+        this.file = null;
+        this.fileError = null;
+        let fileList: FileList = event.target.files;
+        if(fileList.length > 0) {
+            this.file = fileList[0];
+        }
     }
 
 }
