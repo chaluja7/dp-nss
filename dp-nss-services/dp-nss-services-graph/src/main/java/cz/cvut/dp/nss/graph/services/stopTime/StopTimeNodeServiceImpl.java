@@ -146,6 +146,7 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
     @Override
     public void deleteAll() {
         //schvalne neni transactional ale odmazava se to postupne (protoze potvrzeni transakce, kde se smaze vsechno vubec nemusi dobehnout)
+        //dle https://neo4j.com/developer/kb/large-delete-transaction-best-practices-in-neo4j/
         int count;
         do {
             count = repo.chunkDeleteAll();

@@ -171,16 +171,23 @@ public class AdminGtfsController extends AdminAbstractController {
 
             //zmenim nazev slozky, kam se to rozbali. Ocekavam, ze prisel zip archiv slozky, ve ktere jsou hned jizdni rady
             String[] split = fileName.split("/");
-            if(split.length != 2) {
-                throw new BadRequestException("uploaded file must bez zip with exactly one folder with timetable info");
+            String tmpName;
+            if(split.length == 1) {
+                tmpName = split[0];
+            } else if(split.length == 2) {
+                tmpName = split[1];
+            } else {
+                throw new BadRequestException("bad .zip file");
             }
+
             //pokud je to file, ktery nechci (neznam), tak skip
-            if(!TimeTableServiceImpl.TIME_TABLE_FILES.keySet().contains(split[1])) {
+            if(!TimeTableServiceImpl.TIME_TABLE_FILES.keySet().contains(tmpName)) {
+                zipEntry = zipInputStream.getNextEntry();
                 continue;
             }
 
-            uploadedFiles.add(split[1]);
-            fileName = folder + "/" + split[1];
+            uploadedFiles.add(tmpName);
+            fileName = folder + "/" + tmpName;
 
             //vytvorim soubor
             File newFile = new File(gtfsInLocation + fileName);
