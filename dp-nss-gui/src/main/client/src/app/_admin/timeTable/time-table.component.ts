@@ -70,7 +70,8 @@ export class TimeTableComponent implements OnInit {
 
         this.adminTimeTableService.uploadFile('file', this.file)
             .subscribe((response) => {
-                    console.log(response);
+                    this.timeTable.synchronizing = true;
+                    this.userService.storeSelectedTimeTable(this.timeTable.id, false);
                 },
                 err => {
                     this.fileError = 'Chyba při nahrávání souboru.';

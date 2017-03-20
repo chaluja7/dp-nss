@@ -3,8 +3,8 @@ package cz.cvut.dp.nss.controller.admin.timeTable;
 import cz.cvut.dp.nss.context.SchemaThreadLocal;
 import cz.cvut.dp.nss.controller.admin.AdminAbstractController;
 import cz.cvut.dp.nss.exception.BadRequestException;
-import cz.cvut.dp.nss.services.timeTable.TimeTableService;
-import cz.cvut.dp.nss.services.timeTable.TimeTableServiceImpl;
+import cz.cvut.dp.nss.services.timeTable.TimeTableSynchronizingService;
+import cz.cvut.dp.nss.services.timeTable.TimeTableSynchronizingServiceImpl;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameter;
@@ -45,7 +45,7 @@ public class AdminGtfsController extends AdminAbstractController {
     private String gtfsInLocation;
 
     @Autowired
-    private TimeTableService timeTableService;
+    private TimeTableSynchronizingService timeTableSynchronizingService;
 
     @Autowired
     private JobLauncher jobLauncher;
@@ -101,28 +101,28 @@ public class AdminGtfsController extends AdminAbstractController {
 
         //TODO joby by mohly bezet asynchronne kazdy v novem vlakne, tak by to trvalo jen tak dlouho, jako nejpomalejsi z nich
         JobExecution execution = jobLauncher.run(gtfsExportAgencyBatchJob, new JobParameters(parameters));
-        TimeTableServiceImpl.failOnJobFailure(execution);
+        TimeTableSynchronizingServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportCalendarBatchJob, new JobParameters(parameters));
-        TimeTableServiceImpl.failOnJobFailure(execution);
+        TimeTableSynchronizingServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportCalendarDateBatchJob, new JobParameters(parameters));
-        TimeTableServiceImpl.failOnJobFailure(execution);
+        TimeTableSynchronizingServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportRouteBatchJob, new JobParameters(parameters));
-        TimeTableServiceImpl.failOnJobFailure(execution);
+        TimeTableSynchronizingServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportShapeBatchJob, new JobParameters(parameters));
-        TimeTableServiceImpl.failOnJobFailure(execution);
+        TimeTableSynchronizingServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportStopTimeBatchJob, new JobParameters(parameters));
-        TimeTableServiceImpl.failOnJobFailure(execution);
+        TimeTableSynchronizingServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportStopBatchJob, new JobParameters(parameters));
-        TimeTableServiceImpl.failOnJobFailure(execution);
+        TimeTableSynchronizingServiceImpl.failOnJobFailure(execution);
 
         execution = jobLauncher.run(gtfsExportTripBatchJob, new JobParameters(parameters));
-        TimeTableServiceImpl.failOnJobFailure(execution);
+        TimeTableSynchronizingServiceImpl.failOnJobFailure(execution);
 
         StreamingResponseBody streamingResponseBody = out -> {
             ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(out));
@@ -181,7 +181,7 @@ public class AdminGtfsController extends AdminAbstractController {
             }
 
             //pokud je to file, ktery nechci (neznam), tak skip
-            if(!TimeTableServiceImpl.TIME_TABLE_FILES.keySet().contains(tmpName)) {
+            if(!TimeTableSynchronizingServiceImpl.TIME_TABLE_FILES.keySet().contains(tmpName)) {
                 zipEntry = zipInputStream.getNextEntry();
                 continue;
             }
@@ -207,14 +207,14 @@ public class AdminGtfsController extends AdminAbstractController {
         }
 
         //zkontroluji, zda jsem nahral vsechny povinne soubory
-        for(Map.Entry<String, Boolean> entry: TimeTableServiceImpl.TIME_TABLE_FILES.entrySet()) {
+        for(Map.Entry<String, Boolean> entry: TimeTableSynchronizingServiceImpl.TIME_TABLE_FILES.entrySet()) {
             if(Boolean.TRUE.equals(entry.getValue()) && !uploadedFiles.contains(entry.getKey())) {
                 throw new BadRequestException("missing file " + entry.getKey());
             }
         }
 
         //a zavolam import v novem vlakne
-        timeTableService.generateTimeTableToDatabases(schema, gtfsInLocation + folder);
+        timeTableSynchronizingService.generateTimeTableToDatabases(schema, gtfsInLocation + folder);
 
         return new ResponseEntity<>("uploaded", HttpStatus.OK);
     }

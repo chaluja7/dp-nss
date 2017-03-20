@@ -1,26 +1,27 @@
 package cz.cvut.dp.nss.wrapper.output.timeTable;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * @author jakubchalupa
  * @since 02.03.17
  */
 public class TimeTableWrapper {
 
-    @JsonProperty("id")
-    private String entityId;
+    private String id;
 
     private String name;
 
     private boolean valid;
 
-    public String getEntityId() {
-        return entityId;
+    private boolean synchronizing;
+
+    private String synchronizationFailMessage;
+
+    public String getId() {
+        return id;
     }
 
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -37,5 +38,21 @@ public class TimeTableWrapper {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public boolean isSynchronizing() {
+        return synchronizing;
+    }
+
+    public void setSynchronizing(boolean synchronizing) {
+        this.synchronizing = synchronizing;
+    }
+
+    public String getSynchronizationFailMessage() {
+        return synchronizationFailMessage;
+    }
+
+    public void setSynchronizationFailMessage(String synchronizationFailMessage) {
+        this.synchronizationFailMessage = synchronizationFailMessage;
     }
 }

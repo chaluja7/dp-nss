@@ -1,5 +1,16 @@
-<div class="col-md-6 col-md-offset-3" *ngIf="timeTable">
+<div class="col-md-6 col-md-offset-3" *ngIf="timeTable?.synchronizing">
+  <h2>Detail jízdního řádu {{timetable?.id}}</h2>
+  <div class="alert alert-warning">Právě probíhá nahrávání dat jízdního řádu. Po dokončení se jízdní řád automaticky odemkne. Pro projevení odemčení je nutné přenačíst stránku.</div>
+</div>
+
+<div class="col-md-6 col-md-offset-3" *ngIf="timeTable && !timeTable.synchronizing">
   <h2>Detail jízdního řádu</h2>
+
+  <div *ngIf="timeTable?.synchronizationFailMessage" class="alert alert-danger">
+    Poslední import jízdního řádu nedoběhl v pořádku. Pro správnou funkčnost je nezbytné import zopakovat.<br/><br/>
+    <strong>Chyba:</strong> {{timeTable.synchronizationFailMessage}}
+  </div>
+
   <form (ngSubmit)="onSubmit()" #f="ngForm">
     <div class="form-group">
       <label for="id">ID:</label>

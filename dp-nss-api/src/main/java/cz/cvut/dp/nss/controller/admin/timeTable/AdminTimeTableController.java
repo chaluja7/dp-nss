@@ -59,13 +59,28 @@ public class AdminTimeTableController extends AdminAbstractController {
                                             @RequestHeader(SecurityInterceptor.SECURITY_HEADER) String userToken) throws ResourceNotFoundException, BadRequestException, UnauthorizedException {
         //zaslouzilo by si vlastni anotaci a kontrolovat v CheckAccess
         if(!personOwnsTimeTable(personService.getByToken(userToken), id)) throw new UnauthorizedException();
-        if(timeTableService.get(id) == null) throw new ResourceNotFoundException();
 
-        TimeTable timeTable = TimeTableController.getTimeTable(wrapper);
+        TimeTable currentTimeTable = timeTableService.get(id);
+        if(currentTimeTable == null) throw new ResourceNotFoundException();
+
+        TimeTable timeTable = getTimeTable(wrapper);
         timeTable.setId(id);
+        timeTable.setSynchronizing(currentTimeTable.isSynchronizing());
+        timeTable.setSynchronizingFailMessage(currentTimeTable.getSynchronizingFailMessage());
         timeTableService.update(timeTable);
 
         return TimeTableController.getTimeTableWrapper(timeTable);
+    }
+
+    public static TimeTable getTimeTable(TimeTableWrapper wrapper) {
+        if(wrapper == null) return null;
+
+        TimeTable timeTable = new TimeTable();
+        timeTable.setId(wrapper.getId());
+        timeTable.setName(wrapper.getName());
+        timeTable.setValid(wrapper.isValid());
+
+        return timeTable;
     }
 
 }

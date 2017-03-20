@@ -23,4 +23,8 @@ export class AppComponent {
     return this.userService.getSelectedTimeTable() !== null;
   }
 
+  isSelectedTimeTableActive(): boolean {
+    return this.userService.isSelectedTimeTableActive();
+  }
+
 }

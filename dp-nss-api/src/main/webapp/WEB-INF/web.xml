@@ -37,7 +37,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:/spring-context.xml</param-value>
+        <param-value>classpath:/spring-context.xml, classpath:/spring-api-context.xml</param-value>
     </context-param>
 
     <listener>
@@ -69,11 +69,7 @@
     <!-- Je dulezite, aby byl tento filtr jako posledni (jinak by se nemuseli vykonat ostatni filtry) -->
     <filter>
         <filter-name>schemaHandlerFilter</filter-name>
-        <filter-class>cz.cvut.dp.nss.filter.SchemaHandlerFilter</filter-class>
-        <init-param>
-            <param-name>apiPath</param-name>
-            <param-value>/api/v1/</param-value>
-        </init-param>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
         <async-supported>true</async-supported>
     </filter>
     <filter-mapping>

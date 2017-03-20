@@ -40,7 +40,7 @@ export class TimeTablesComponent implements OnInit {
           //pokud neni nyni zadny aktivni, tak udelam aktvni ten prvni
           if(!this.selectedTimeTable && timeTables.length > 0) {
             this.selectedTimeTable = timeTables[0];
-            this.userService.storeSelectedTimeTable(this.selectedTimeTable.id);
+            this.userService.storeSelectedTimeTable(this.selectedTimeTable.id, !this.selectedTimeTable.synchronizing);
           }
         }, err  => {});
   }
@@ -51,7 +51,7 @@ export class TimeTablesComponent implements OnInit {
 
   onSelect(timeTable: TimeTable): void {
     this.selectedTimeTable = timeTable;
-    this.userService.storeSelectedTimeTable(timeTable.id);
+    this.userService.storeSelectedTimeTable(timeTable.id, !timeTable.synchronizing);
   }
 
   // add(): void {

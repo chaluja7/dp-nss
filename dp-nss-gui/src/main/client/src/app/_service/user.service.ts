@@ -9,6 +9,8 @@ export class UserService {
 
   public static SELECTED_TIME_TABLE_IDENT = 'selectedTimeTable';
 
+  public static SELECTED_TIME_TABLE_ACTIVE = 'selectedTimeTableActive';
+
   msg: string;
 
   isLoggedIn(): boolean {
@@ -46,8 +48,14 @@ export class UserService {
       return sessionStorage.getItem(UserService.SELECTED_TIME_TABLE_IDENT);
   }
 
-  storeSelectedTimeTable(timeTable: string): void {
+  isSelectedTimeTableActive(): boolean {
+      let active = sessionStorage.getItem(UserService.SELECTED_TIME_TABLE_ACTIVE);
+      return active == 'true';
+  }
+
+  storeSelectedTimeTable(timeTable: string, active: boolean): void {
       sessionStorage.setItem(UserService.SELECTED_TIME_TABLE_IDENT, timeTable);
+      sessionStorage.setItem(UserService.SELECTED_TIME_TABLE_ACTIVE, active ? 'true' : 'false');
   }
 
   getApiPrefix(): string {

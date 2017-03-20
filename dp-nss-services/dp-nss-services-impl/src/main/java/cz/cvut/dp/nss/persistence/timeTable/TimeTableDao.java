@@ -29,7 +29,7 @@ public class TimeTableDao extends AbstractGenericJpaDao<TimeTable, String> {
     public List<TimeTable> getAll(boolean validOnly) {
         String queryString = "select distinct t from TimeTable t";
         if(validOnly) {
-            queryString += " where t.valid = true";
+            queryString += " where t.valid = true and t.synchronizing = false";
         }
         queryString += " order by t.name";
 

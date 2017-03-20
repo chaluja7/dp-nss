@@ -1,7 +1,10 @@
 package cz.cvut.dp.nss.filter;
 
 import cz.cvut.dp.nss.context.SchemaThreadLocal;
+import cz.cvut.dp.nss.services.timeTable.TimeTable;
+import cz.cvut.dp.nss.services.timeTable.TimeTableService;
 import org.apache.commons.lang.ArrayUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +20,11 @@ public class SchemaHandlerFilter implements Filter {
 
     private String apiPath;
 
+    private TimeTableService timeTableService;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        apiPath = filterConfig.getInitParameter("apiPath");
+        //empty
     }
 
     @Override
@@ -43,6 +48,12 @@ public class SchemaHandlerFilter implements Filter {
 
                 //zjistim, jestli nazev schematu odpovida nejakemu existujicimu
                 if(SchemaThreadLocal.AVAILABLE_SCHEMAS.contains(schema)) {
+                    //pokud ano tak nejdrive zjistim, jestli neni schema zamcene kvuli importu
+                    TimeTable timeTable = timeTableService.get(schema);
+                    if(timeTable.isSynchronizing()) {
+                        throw new IllegalStateException("this schema is currenty synchronizing.");
+                    }
+
                     //pokud ano, tak do threadLocal schema nastavim
                     SchemaThreadLocal.set(schema);
 
@@ -69,4 +80,13 @@ public class SchemaHandlerFilter implements Filter {
 
     }
 
+    @Required
+    public void setTimeTableService(TimeTableService timeTableService) {
+        this.timeTableService = timeTableService;
+    }
+
+    @Required
+    public void setApiPath(String apiPath) {
+        this.apiPath = apiPath;
+    }
 }

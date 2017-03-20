@@ -5,6 +5,7 @@ import cz.cvut.dp.nss.services.person.Person;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,6 +28,19 @@ public class TimeTable extends AbstractAssignedIdEntity {
 
     @Column
     private boolean valid;
+
+    /**
+     * pokud true, tak se zrovna nahrava novy jizdni rad (z gtfs importniho souboru)
+     */
+    @Column
+    private boolean synchronizing;
+
+    /**
+     * pokud nedobehne synchronizace spravne, tak zde bude hlaska :)
+     */
+    @Column
+    @Size(max = 4096)
+    private String synchronizingFailMessage;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "timeTables")
     private Set<Person> persons;
@@ -53,6 +67,22 @@ public class TimeTable extends AbstractAssignedIdEntity {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public boolean isSynchronizing() {
+        return synchronizing;
+    }
+
+    public String getSynchronizingFailMessage() {
+        return synchronizingFailMessage;
+    }
+
+    public void setSynchronizingFailMessage(String synchronizingFailMessage) {
+        this.synchronizingFailMessage = synchronizingFailMessage;
+    }
+
+    public void setSynchronizing(boolean synchronizing) {
+        this.synchronizing = synchronizing;
     }
 
     public Set<Person> getPersons() {

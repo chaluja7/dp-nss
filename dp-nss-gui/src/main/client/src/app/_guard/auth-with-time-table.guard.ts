@@ -8,11 +8,11 @@ export class AuthWithTimeTableGuard implements CanActivate {
     constructor(private router: Router, private userService: UserService) { }
 
     canActivate() {
-        if(this.userService.isLoggedIn() && this.userService.getSelectedTimeTable() !== null) {
+        if(this.userService.isLoggedIn() && this.userService.getSelectedTimeTable() !== null && this.userService.isSelectedTimeTableActive()) {
             return true;
         }
 
-        // not logged in so redirect to login page
+        // not logged in or inactive timetable so redirect to login page for safety reasons
         this.router.navigate(['/login']);
         return false;
     }

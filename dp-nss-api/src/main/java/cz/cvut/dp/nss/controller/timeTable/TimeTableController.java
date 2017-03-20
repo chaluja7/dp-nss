@@ -39,22 +39,13 @@ public class TimeTableController extends AbstractController {
         if(timeTable == null) return null;
 
         TimeTableWrapper wrapper = new TimeTableWrapper();
-        wrapper.setEntityId(timeTable.getId());
+        wrapper.setId(timeTable.getId());
         wrapper.setName(timeTable.getName());
         wrapper.setValid(timeTable.isValid());
+        wrapper.setSynchronizing(timeTable.isSynchronizing());
+        wrapper.setSynchronizationFailMessage(timeTable.getSynchronizingFailMessage());
 
         return wrapper;
-    }
-
-    public static TimeTable getTimeTable(TimeTableWrapper wrapper) {
-        if(wrapper == null) return null;
-
-        TimeTable timeTable = new TimeTable();
-        timeTable.setId(wrapper.getEntityId());
-        timeTable.setName(wrapper.getName());
-        timeTable.setValid(wrapper.isValid());
-
-        return timeTable;
     }
 
 }
