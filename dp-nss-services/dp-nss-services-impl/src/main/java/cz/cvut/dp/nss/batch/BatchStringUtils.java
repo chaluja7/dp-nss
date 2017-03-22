@@ -16,4 +16,31 @@ public final class BatchStringUtils {
         return "1".equals(s) || "true".equalsIgnoreCase(s);
     }
 
+    /**
+     * @param o objekt k zapsani jako csv hodnota
+     * @return string pro csv export. Pokud jde o string obsahujici ",", musi byt vysledek obalen do uvozovek.
+     */
+    public static String getCsvStringValue(Object o) {
+        if(o == null) return "";
+
+        if(o instanceof String) {
+            String s = (String) o;
+            //zdvojeni uvozovek, pokud obsahuje uvozovky a carku
+            if(s.contains(",") && s.contains("\"")) {
+                s = s.replaceAll("\"", "\"\"");
+            }
+
+            if(s.contains(",")) {
+                //wrapnuti do uvozovek, pokud obsahuje carku
+                return new StringBuilder("\"").append(s).append("\"").toString();
+            } else {
+                return s;
+            }
+        } else if(o instanceof Boolean) {
+            return Boolean.TRUE.equals(o) ? "1" : "0";
+        } else {
+            return o.toString();
+        }
+    }
+
 }

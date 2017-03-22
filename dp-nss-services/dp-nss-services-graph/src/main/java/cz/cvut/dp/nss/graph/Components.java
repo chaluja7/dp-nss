@@ -3,8 +3,6 @@ package cz.cvut.dp.nss.graph;
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.driver.Driver;
 import org.neo4j.ogm.service.DriverService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,8 +19,6 @@ import java.util.Map;
 public class Components {
 
     private Components() {}
-
-    private static final Logger logger = LoggerFactory.getLogger(Components.class);
 
     private static final Map<String, Configuration> configurations = Collections.synchronizedMap(new HashMap<>());
 
@@ -71,8 +67,6 @@ public class Components {
      * @param driver an instance of {@link Driver} to be used by the OGM.
      */
     public static void setDriver(String schema, Driver driver) {
-
-        logger.debug("Setting driver to: {}", driver.getClass().getName());
         Components.getConfiguration(schema).driverConfiguration().setDriverClassName(driver.getClass().getCanonicalName());
         Components.drivers.put(schema, driver);
     }

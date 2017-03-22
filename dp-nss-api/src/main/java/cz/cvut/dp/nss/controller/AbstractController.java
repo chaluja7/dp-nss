@@ -4,7 +4,8 @@ import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.exception.ForbiddenException;
 import cz.cvut.dp.nss.exception.ResourceNotFoundException;
 import cz.cvut.dp.nss.exception.UnauthorizedException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +23,7 @@ import javax.validation.ConstraintViolationException;
 @RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 public abstract class AbstractController {
 
-    private static final Logger LOGGER = Logger.getLogger(AbstractController.class);
+    private static final Logger LOGGER = LogManager.getLogger(AbstractController.class);
 
     protected <T> ResponseEntity<T> getResponseCreated(T body) {
         return new ResponseEntity<>(body, HttpStatus.CREATED);

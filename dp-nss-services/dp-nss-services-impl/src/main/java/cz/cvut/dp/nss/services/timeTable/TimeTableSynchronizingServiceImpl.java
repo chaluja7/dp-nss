@@ -13,7 +13,8 @@ import cz.cvut.dp.nss.services.shape.ShapeService;
 import cz.cvut.dp.nss.services.stop.StopService;
 import cz.cvut.dp.nss.services.stopTime.StopTimeService;
 import cz.cvut.dp.nss.services.trip.TripService;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameter;
@@ -37,7 +38,7 @@ import java.util.Map;
 @Service
 public class TimeTableSynchronizingServiceImpl implements TimeTableSynchronizingService {
 
-    private static final Logger LOGGER = Logger.getLogger(TimeTableSynchronizingServiceImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(TimeTableSynchronizingServiceImpl.class);
 
     /**
      * mapa ocekavanych souboru jizdniho radu. Hodnota je, zda je polozka povinna.
@@ -146,11 +147,11 @@ public class TimeTableSynchronizingServiceImpl implements TimeTableSynchronizing
     @Qualifier(value = "graphConnectStopBatchJob")
     private Job graphConnectStopBatchJob;
 
-      @Async
+    @Async
     @Override
     public void generateTimeTableToDatabases(String schema, String folder) throws Throwable {
         TimeTable timeTable;
-        String errMessage = null;
+        Throwable throwable = null;
         try {
             //protoze toto bez v jinem vlakne, nez caller tak musim nastavit schema rucne (jinak by bylo null)
             SchemaThreadLocal.set(schema);
@@ -220,19 +221,26 @@ public class TimeTableSynchronizingServiceImpl implements TimeTableSynchronizing
 
         } catch(Throwable t) {
             LOGGER.error("", t);
-            errMessage = t.getMessage();
-            if(errMessage.length() > 4096) errMessage = errMessage.substring(0, 4096);
-            throw(t);
+            throwable = t;
         } finally {
+            String msg = null;
+            if(throwable != null) {
+                msg = throwable.getMessage();
+                if (msg.length() > 4096) msg = msg.substring(0, 4096);
+            }
+
             timeTable = timeTableService.get(schema);
             timeTable.setSynchronizing(false);
-            timeTable.setSynchronizingFailMessage(errMessage);
+            timeTable.setSynchronizingFailMessage(msg);
             timeTableService.update(timeTable);
             SchemaThreadLocal.unset();
 
-            //TODO bylo by taky super smazat ty soubory, ktere uz jsou uplne k nicemu (v /tmp...)
+            if(throwable != null) {
+                throw(throwable);
+            }
         }
 
+        //TODO bylo by taky super smazat ty soubory, ktere uz jsou uplne k nicemu (v /tmp...)
     }
 
     public static void failOnJobFailure(JobExecution jobExecution) throws Throwable {
