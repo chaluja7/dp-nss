@@ -31,11 +31,13 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
     private StopTimeNodeService stopTimeNodeService;
 
     @Override
+    @Transactional("neo4jTransactionManager")
     public StopTimeNode findByStopTimeId(Long stopTimeId) {
         return repo.findByStopTimeId(stopTimeId).createStopTimeNode();
     }
 
     @Override
+    @Transactional("neo4jTransactionManager")
     public List<StopTimeNode> findByStopNameOrderByActionTime(String stopName) {
         return repo.findByStopNameOrderByActionTime(stopName);
     }
@@ -66,9 +68,7 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
 
             //ukladam v batchi po 120
             if(++i % 120 == 0) {
-                //velmi dulezite, jinak postupne dojde k degradaci rychlosti zapisovani
-                session.clear();
-                stopTimeNodeService.save(stopNodeToSave, 120);
+                stopTimeNodeService.save(stopNodeToSave, 120, true);
                 stopNodeToSave = stopNodeTo;
             }
 
@@ -78,10 +78,8 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
         //a nakonec ulozim zatim neulozene propojeni
         final int rest = i % 120;
         if(rest != 0) {
-            //velmi dulezite, jinak postupne dojde k degradaci rychlosti zapisovani
-            session.clear();
             //nyni ukladam o jednu vice, protoze jeste ukladam propojeni posledni->prvni
-            stopTimeNodeService.save(stopNodeToSave, rest + 1);
+            stopTimeNodeService.save(stopNodeToSave, rest + 1, true);
         }
 
     }
@@ -144,13 +142,28 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
     }
 
     @Override
+    @Transactional("neo4jTransactionManager")
+    public int deleteChunk() {
+        int count = repo.chunkDeleteAll();
+        session.clear();
+
+        return count;
+    }
+
+    @Override
+    @Transactional("neo4jTransactionManager")
+    public StopTimeNode save(StopTimeNode node, int depth, boolean performSessionClear) {
+        if(performSessionClear) session.clear();
+        return super.save(node, depth);
+    }
+
+    @Override
     public void deleteAll() {
         //schvalne neni transactional ale odmazava se to postupne (protoze potvrzeni transakce, kde se smaze vsechno vubec nemusi dobehnout)
         //dle https://neo4j.com/developer/kb/large-delete-transaction-best-practices-in-neo4j/
         int count;
         do {
-            count = repo.chunkDeleteAll();
-            session.clear();
+            count = stopTimeNodeService.deleteChunk();
         } while (count > 0);
     }
 

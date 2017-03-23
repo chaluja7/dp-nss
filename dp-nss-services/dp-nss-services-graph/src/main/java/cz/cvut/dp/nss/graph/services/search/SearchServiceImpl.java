@@ -6,6 +6,7 @@ import org.neo4j.ogm.model.Result;
 import org.neo4j.ogm.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -20,6 +21,7 @@ public class SearchServiceImpl implements SearchService {
     protected Session session;
 
     @Override
+    @Transactional("neo4jTransactionManager")
     public List<SearchResult> findPathByDepartureDate(String stopFromName, String stopToName, DateTime departure, int maxHoursAfterDeparture, int maxTransfers) {
         Map<String, Object> params = new HashMap<>();
         params.put("from", stopFromName);

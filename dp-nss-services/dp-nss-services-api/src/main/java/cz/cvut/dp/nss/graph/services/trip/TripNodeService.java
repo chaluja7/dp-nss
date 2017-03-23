@@ -21,4 +21,6 @@ public interface TripNodeService extends NodeService<TripNode> {
      */
     void deleteTripNode(String tripId);
 
+    int deleteChunk();
+
 }

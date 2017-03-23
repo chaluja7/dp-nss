@@ -38,6 +38,7 @@ public class CalendarNodeServiceImpl extends AbstractNodeService<CalendarNode, C
     }
 
     @Override
+    @Transactional("neo4jTransactionManager")
     public void initCalendarDates() {
         session.query("CALL cz.cvut.dp.nss.search.initCalendarDates()", new HashMap<>(), true);
     }

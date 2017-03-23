@@ -45,4 +45,15 @@ public interface StopTimeNodeService extends NodeService<StopTimeNode> {
 
     void deleteStopTimesByTripId(String tripId);
 
+    int deleteChunk();
+
+    /**
+     * ulozi NODE vcetne navazanych do uvedene hloubky
+     * @param node NODE k ulozeni
+     * @param depth max hloubka ulozeni (atributu)
+     * @param performSessionClear pokud true tak provede session.clear()
+     * @return ulozeny NODE
+     */
+    StopTimeNode save(StopTimeNode node, int depth, boolean performSessionClear);
+
 }
