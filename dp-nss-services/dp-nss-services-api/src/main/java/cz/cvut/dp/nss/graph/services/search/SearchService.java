@@ -24,9 +24,4 @@ public interface SearchService {
      */
     List<SearchResult> findPathByDepartureDate(String stopFromName, String stopToName, DateTime departure, int maxHoursAfterDeparture, int maxTransfers);
 
-    /**
-     * zavola initCalendarDates na neo4j
-     */
-    void initCalendarDates();
-
 }

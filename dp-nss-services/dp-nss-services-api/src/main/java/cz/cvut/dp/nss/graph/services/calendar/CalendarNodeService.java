@@ -15,4 +15,9 @@ public interface CalendarNodeService extends NodeService<CalendarNode> {
      */
     CalendarNode findByCalendarId(String calendarId);
 
+    /**
+     * zavola initCalendarDates na neo4j
+     */
+    void initCalendarDates();
+
 }

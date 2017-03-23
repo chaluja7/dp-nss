@@ -102,12 +102,14 @@ public class CalendarServiceImpl extends AbstractEntityService<Calendar, String,
         dao.create(calendar);
 
         if(neo4jSynchronize) {
-            //TODO aktualizovat mapu ve vyhledavaci neo4j pres cypher!
             //soucasne musim data ulozit do neo4j!
             //vytvorim si objekt pro neo4j
             CalendarNode calendarNode = getCalendarNodeFromCalendar(calendar);
             //a ulozim vsechno naraz
             calendarNodeService.save(calendarNode, -1);
+
+            //aktualizace datumu v neo4j
+            calendarNodeService.initCalendarDates();
         }
     }
 
@@ -134,7 +136,6 @@ public class CalendarServiceImpl extends AbstractEntityService<Calendar, String,
         }
 
         if(neo4jSynchronize) {
-            //TODO aktualizovat mapu ve vyhledavaci neo4j pres cypher!
             //update take v neo4j!
             //smazu vsechny calendarDateNodes k tomuto calendar z neo4j
             calendarDateNodeService.deleteByCalendarId(calendar.getId());
@@ -149,6 +150,9 @@ public class CalendarServiceImpl extends AbstractEntityService<Calendar, String,
 
             //a calendarNode ulozim i se vsemi calendarDates
             calendarNodeService.save(calendarNode, -1);
+
+            //aktualizace datumu v neo4j
+            calendarNodeService.initCalendarDates();
         }
     }
 
@@ -160,7 +164,6 @@ public class CalendarServiceImpl extends AbstractEntityService<Calendar, String,
 
         //soucasne to musim smazat z neo4j
         if(neo4jSynchronize) {
-            //TODO aktualizovat mapu ve vyhledavaci neo4j pres cypher!
             //nejdriv calendar dates
             calendarDateNodeService.deleteByCalendarId(calendar.getId());
 
@@ -170,6 +173,9 @@ public class CalendarServiceImpl extends AbstractEntityService<Calendar, String,
                 //mazu jen pokud v neo4j existuje
                 calendarNodeService.delete(calendarNode);
             }
+
+            //aktualizace datumu v neo4j
+            calendarNodeService.initCalendarDates();
         }
 
         //a nakonec smazat z postgre

@@ -28,7 +28,6 @@ public class SearchServiceImpl implements SearchService {
         params.put("maxDeparture", new DateTime(departure).plusHours(maxHoursAfterDeparture).getMillis());
         params.put("maxTransfers", maxTransfers);
 
-        //TODO na neo4j pridat kontrolu na existenci stanic from a to. Pokud to jednu nenajde tak hned zariznout vyhledavani (vubec nevyhledavat).
         Result result = session.query("CALL cz.cvut.dp.nss.search.byDepartureSearch({from}, {to}, {departure}, {maxDeparture}, {maxTransfers})", params, true);
 
         List<SearchResult> retList = new ArrayList<>();
@@ -37,11 +36,6 @@ public class SearchServiceImpl implements SearchService {
         }
 
         return retList;
-    }
-
-    @Override
-    public void initCalendarDates() {
-        session.query("CALL cz.cvut.dp.nss.search.initCalendarDates()", new HashMap<>(), true);
     }
 
     private static SearchResult buildSearchResultWrapperFromMap(Map<String, Object> map) {

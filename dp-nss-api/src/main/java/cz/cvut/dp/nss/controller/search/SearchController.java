@@ -43,7 +43,6 @@ public class SearchController extends AbstractController {
                                                @RequestParam("maxTransfers") int maxTransfers) {
 
         DateTime dateTime = DateTimeUtils.JODA_DATE_TIME_FORMATTER.parseDateTime(departure);
-        searchService.initCalendarDates();
 
         List<SearchResult> searchResults = searchService.findPathByDepartureDate(stopFromName, stopToName,
             dateTime, SearchService.DEFAULT_MAX_HOUR_AFTER_DEPARTURE, maxTransfers);

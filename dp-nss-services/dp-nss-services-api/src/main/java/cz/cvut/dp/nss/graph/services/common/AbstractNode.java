@@ -4,8 +4,7 @@ package cz.cvut.dp.nss.graph.services.common;
 import org.neo4j.ogm.annotation.GraphId;
 
 /**
- * TODO - indexy uz nejsou podporovane z anotaci entit
- * je treba je vyrobit na neo4j
+ * indexy uz nejsou podporovane z anotaci entit - je treba je vyrobit na neo4j
  * http://neo4j.com/docs/developer-manual/current/cypher/schema/index/
  *
  * @author jakubchalupa

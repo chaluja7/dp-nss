@@ -27,10 +27,6 @@ public class SecurityInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 
-        //TODO!!! - je treba udelat tabulku user-timetables, kde se bude ukladat, jaky uzivatel ma pravo na jake jizdni rady
-        //admin bude mit automaticky pravo na vsechny
-        //zde pak z threadlocal vytahnu aktualni jizdni rad a zjistim, zda na nej ma uzivatel pravo
-
         if(o instanceof HandlerMethod) {
             HandlerMethod method = (HandlerMethod) o;
 

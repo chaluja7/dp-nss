@@ -13,8 +13,6 @@ export class AdminCalendarService {
 
   static CALENDAR_URL = 'admin/calendar';
 
-  //TODO property startDate a endDate nacpat do startDateObject jako Date - bude to urcite zde???.
-
   constructor(private http: HttpClient, private errorService: ErrorService, private userService: UserService) { }
 
   getCalendars(filter: Calendar, offset: number, limit: number, order: string): Observable<Response> {

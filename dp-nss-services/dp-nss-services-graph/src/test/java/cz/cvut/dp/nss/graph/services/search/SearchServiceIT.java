@@ -1,6 +1,7 @@
 package cz.cvut.dp.nss.graph.services.search;
 
 import cz.cvut.dp.nss.graph.services.AbstractServiceIT;
+import cz.cvut.dp.nss.graph.services.calendar.CalendarNodeService;
 import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResult;
 import cz.cvut.dp.nss.services.common.DateTimeUtils;
 import org.joda.time.DateTime;
@@ -22,10 +23,13 @@ public class SearchServiceIT extends AbstractServiceIT {
     @Autowired
     private SearchService searchService;
 
+    @Autowired
+    private CalendarNodeService calendarNodeService;
+
     @Before
     public void init() {
         //inicializace calendar dates
-        searchService.initCalendarDates();
+        calendarNodeService.initCalendarDates();
     }
 
     @Test

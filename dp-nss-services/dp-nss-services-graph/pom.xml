@@ -48,16 +48,6 @@
         </dependency>
 
 
-        <!--TODO moc se mi to nelibi, ale potrebuji mit request scope pristupny pro getSession beanu-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-        <!--TODO moc se mi to nelibi-->
-
-
-
-
         <!-- test -->
         <dependency>
             <groupId>org.springframework</groupId>

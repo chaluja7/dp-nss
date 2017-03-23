@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
@@ -20,8 +19,6 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-context.xml"})
-//@Transactional(transactionManager = "transactionManager")
-@WebAppConfiguration
 public abstract class AbstractServiceIT {
 
     protected static final String GTFS_IN_LOCATION = "/Users/jakubchalupa/Documents/FEL/MGR/DP/gtfs/test/annapolis-transit_20150811_1647";
@@ -42,7 +39,6 @@ public abstract class AbstractServiceIT {
     protected void failOnJobFailure(JobExecution jobExecution) throws Throwable {
         List<Throwable> allFailureExceptions = jobExecution.getAllFailureExceptions();
         if(allFailureExceptions != null && !allFailureExceptions.isEmpty()) {
-            //todo nekontrolovat exit status?
             throw allFailureExceptions.get(0);
         }
     }
