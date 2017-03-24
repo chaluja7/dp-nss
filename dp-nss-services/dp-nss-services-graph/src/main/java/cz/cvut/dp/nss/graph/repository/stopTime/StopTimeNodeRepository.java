@@ -85,4 +85,7 @@ public interface StopTimeNodeRepository extends GraphRepository<StopTimeNode> {
     @Query("match (n:StopTimeNode) with n limit 10000 detach delete n return count(*)")
     int chunkDeleteAll();
 
+    @Query("match(n:StopTimeNode {stopId: {0}})-[r:IN_TRIP]->(t:TripNode) set n.wheelChair = ({1} and t.wheelChair)")
+    void updateWheelChairFlagOnStop(String stopId, boolean wheelChairAccessible);
+
 }

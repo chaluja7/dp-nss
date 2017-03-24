@@ -36,6 +36,7 @@ public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripN
             stopTimeNode.setStopTimeId(stopTime.getId());
             stopTimeNode.setStopId(stopTime.getStopId());
             stopTimeNode.setStopName(StopServiceImpl.getFixedStopName(stopTime.getStopName()));
+            stopTimeNode.setWheelChair(trip.isWheelChair() && stopTime.isStopWheelChair());
             stopTimeNode.setSequence(stopTime.getSequence());
             stopTimeNode.setTripId(trip.getId());
             stopTimeNode.setTripNode(tripNode);

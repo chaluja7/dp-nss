@@ -59,4 +59,6 @@ public interface StopService extends EntityService<Stop, String> {
      */
     boolean canBeDeleted(String id);
 
+    void update(Stop stop, boolean neo4jSynchronize);
+
 }

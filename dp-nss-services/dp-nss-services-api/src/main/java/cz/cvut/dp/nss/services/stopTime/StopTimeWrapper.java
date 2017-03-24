@@ -14,6 +14,8 @@ public class StopTimeWrapper {
 
     private String stopName;
 
+    private boolean stopWheelChair;
+
     private Integer sequence;
 
     private LocalTime departure;
@@ -66,5 +68,13 @@ public class StopTimeWrapper {
 
     public void setArrival(LocalTime arrival) {
         this.arrival = arrival;
+    }
+
+    public boolean isStopWheelChair() {
+        return stopWheelChair;
+    }
+
+    public void setStopWheelChair(boolean stopWheelChair) {
+        this.stopWheelChair = stopWheelChair;
     }
 }

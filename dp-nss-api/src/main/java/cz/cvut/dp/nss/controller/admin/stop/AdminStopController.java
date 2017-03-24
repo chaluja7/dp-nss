@@ -96,7 +96,7 @@ public class AdminStopController extends AdminAbstractController {
         stop.setId(id);
         //jmeno neni mozne updatovat, protoze je na tom zavisla struktura grafu neo4j
         stop.setName(existingStop.getName());
-        stopService.update(stop);
+        stopService.update(stop, true);
 
         return getStopWrapper(stop);
     }

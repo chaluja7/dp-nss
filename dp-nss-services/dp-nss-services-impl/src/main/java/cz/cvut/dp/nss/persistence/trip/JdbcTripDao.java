@@ -1,7 +1,9 @@
 package cz.cvut.dp.nss.persistence.trip;
 
 import cz.cvut.dp.nss.context.SchemaThreadLocal;
+import cz.cvut.dp.nss.services.stop.StopWheelchairBoardingType;
 import cz.cvut.dp.nss.services.stopTime.StopTimeWrapper;
+import cz.cvut.dp.nss.services.trip.TripWheelchairAccessibleType;
 import cz.cvut.dp.nss.services.trip.TripWrapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -35,8 +37,8 @@ public class JdbcTripDao extends JdbcDaoSupport {
         final String stopsTable = schema + ".stops";
 
         StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("select t.id as t_id, t.calendar_id t_calendar_id, st.id as st_id, st.sequence as st_sequence, ");
-        sqlBuilder.append("st.arrival as st_arrival, st.departure as st_departure, s.id as s_id, s.name as s_name");
+        sqlBuilder.append("select t.id as t_id, t.calendar_id as t_calendar_id, t.wheelChair as t_wheelChair, st.id as st_id, st.sequence as st_sequence, ");
+        sqlBuilder.append("st.arrival as st_arrival, st.departure as st_departure, s.id as s_id, s.name as s_name, s.wheelChair as s_wheelChair");
         sqlBuilder.append(" from ").append(tripsTable).append(" t left outer join ").append(stopTimesTable);
         sqlBuilder.append(" st on t.id = st.trip_id left outer join ").append(stopsTable);
         sqlBuilder.append(" s on st.stop_id = s.id order by t.id, st.sequence");
@@ -52,6 +54,8 @@ public class JdbcTripDao extends JdbcDaoSupport {
                     tripWrapper = new TripWrapper();
                     tripWrapper.setId(tripId);
                     tripWrapper.setCalendarId(rs.getString("t_calendar_id"));
+                    final String tripWheelChair = rs.getString("t_wheelChair");
+                    tripWrapper.setWheelChair(TripWheelchairAccessibleType.ACCESSIBLE.name().equals(tripWheelChair));
                     trips.put(tripId, tripWrapper);
                 }
 
@@ -67,6 +71,8 @@ public class JdbcTripDao extends JdbcDaoSupport {
 
                 stopTimeWrapper.setStopId(rs.getString("s_id"));
                 stopTimeWrapper.setStopName(rs.getString("s_name"));
+                final String stopWheelChair = rs.getString("s_wheelChair");
+                stopTimeWrapper.setStopWheelChair(StopWheelchairBoardingType.BOARDING_POSSIBLE.name().equals(stopWheelChair));
 
                 tripWrapper.getStopTimeWrappers().add(stopTimeWrapper);
                 return stopTimeWrapper;

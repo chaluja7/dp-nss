@@ -56,4 +56,12 @@ public interface StopTimeNodeService extends NodeService<StopTimeNode> {
      */
     StopTimeNode save(StopTimeNode node, int depth, boolean performSessionClear);
 
+    /**
+     * aktualizuje wheelChair flag na vsech stopTimes pod danou stanici
+     *
+     * @param stopId id stanice
+     * @param stopIsWheelChairAccessible true, pokud je na dane stanici mozne nastoupit s vozickem
+     */
+    void changeWheelChairOnStop(String stopId, boolean stopIsWheelChairAccessible);
+
 }

@@ -1,5 +1,6 @@
 package cz.cvut.dp.nss.services.stop;
 
+import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNodeService;
 import cz.cvut.dp.nss.persistence.stop.StopDao;
 import cz.cvut.dp.nss.services.common.AbstractEntityService;
 import cz.cvut.dp.nss.services.common.BatchProcessingIterator;
@@ -27,6 +28,9 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
 
     @Resource(name = "stopServiceImpl")
     private StopService stopService;
+
+    @Autowired
+    private StopTimeNodeService stopTimeNodeService;
 
     @Override
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
@@ -88,6 +92,18 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
         return false;
     }
 
+    @Override
+    @Transactional(value = "transactionManager")
+    public void update(Stop stop, boolean neo4jSynchronize) {
+        StopWheelchairBoardingType stopWheelchairBoardingType = get(stop.getId()).getStopWheelchairBoardingType();
+        dao.update(stop);
+
+        //aktualizace wheelChair v neo4j, pokud se hodnota zmenila
+        if(neo4jSynchronize && (stopWheelchairBoardingType == null || !stopWheelchairBoardingType.equals(stop.getStopWheelchairBoardingType()))) {
+            stopTimeNodeService.changeWheelChairOnStop(stop.getId(), StopWheelchairBoardingType.BOARDING_POSSIBLE.equals(stop.getStopWheelchairBoardingType()));
+        }
+    }
+
     private class BatchProcessingStopsIterator extends BatchProcessingIterator<Stop> {
 
         BatchProcessingStopsIterator() {
@@ -127,9 +143,11 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
             stopName = stopName.substring(0, stopName.length() - 4);
         }
 
-        //TODO - jmeno stanice muze koncit take vyrazem v zavorce (např. 'Želivského (ul. Votická)')
-        //TODO - v tom případě je nutné tu závorku smazat a nechat jen 'Želivského'
+        if(stopName.endsWith(")") && stopName.contains("(")) {
+            stopName = stopName.substring(0, stopName.lastIndexOf("("));
+        }
 
+        stopName = stopName.trim();
         return stopName;
     }
 

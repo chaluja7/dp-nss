@@ -9,6 +9,7 @@ import org.neo4j.ogm.annotation.Relationship;
 /**
  * CREATE CONSTRAINT ON (n:StopTimeNode) ASSERT n.stopTimeId IS UNIQUE
  * CREATE INDEX ON :StopTimeNode(stopName)
+ * CREATE INDEX ON :StopTimeNode(stopId)
  * CREATE INDEX ON :StopTimeNode(tripId)
  * CREATE INDEX ON :StopTimeNode(departureInSeconds)
  * CREATE INDEX ON :StopTimeNode(arrivalInSeconds)
@@ -70,6 +71,12 @@ public class StopTimeNode extends AbstractNode {
      */
     @Property
     private Boolean overMidnightDepartureInTrip;
+
+    /**
+     * pokud true, je mozne nastoupit bezbarierove (kombinace hodnoty z tripu a stopu)
+     */
+    @Property
+    private Boolean wheelChair;
 
     /**
      * Trip tohoto zastaveni
@@ -158,6 +165,14 @@ public class StopTimeNode extends AbstractNode {
 
     public void setOverMidnightDepartureInTrip(Boolean overMidnightDepartureInTrip) {
         this.overMidnightDepartureInTrip = overMidnightDepartureInTrip;
+    }
+
+    public Boolean getWheelChair() {
+        return wheelChair;
+    }
+
+    public void setWheelChair(Boolean wheelChair) {
+        this.wheelChair = wheelChair;
     }
 
     public TripNode getTripNode() {

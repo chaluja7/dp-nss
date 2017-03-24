@@ -9,6 +9,7 @@ import cz.cvut.dp.nss.persistence.trip.TripDao;
 import cz.cvut.dp.nss.services.common.AbstractEntityService;
 import cz.cvut.dp.nss.services.common.DateTimeUtils;
 import cz.cvut.dp.nss.services.stop.StopServiceImpl;
+import cz.cvut.dp.nss.services.stop.StopWheelchairBoardingType;
 import cz.cvut.dp.nss.services.stopTime.StopTime;
 import cz.cvut.dp.nss.services.stopTime.StopTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,8 +115,8 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
 
             //jenze pozor, jeste je nutne stopTimes spravne zakomponovat do struktury grafu v ramci stanice
             //tedy najit spravne misto, kam kazdy stopTime prijde a tam ho napojit
-            if (tripNode.getStopTimeNodes() != null) {
-                for (StopTimeNode stopTimeNode : tripNode.getStopTimeNodes()) {
+            if(tripNode.getStopTimeNodes() != null) {
+                for(StopTimeNode stopTimeNode : tripNode.getStopTimeNodes()) {
                     stopTimeNodeService.addNewStopTimeToStop(stopTimeNode);
                 }
             }
@@ -136,14 +137,14 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
 
             //pozor, musim mu priradit ID z neo4j
             TripNode existingTripNode = tripNodeService.findByTripId(trip.getId());
-            if (existingTripNode != null) {
+            if(existingTripNode != null) {
                 tripNode.setId(existingTripNode.getId());
             }
 
             //jenze pozor, jeste je nutne stopTimes spravne zakomponovat do struktury grafu v ramci stanice
             //tedy najit spravne misto, kam kazdy stopTime prijde a tam ho napojit
-            if (tripNode.getStopTimeNodes() != null) {
-                for (StopTimeNode stopTimeNode : tripNode.getStopTimeNodes()) {
+            if(tripNode.getStopTimeNodes() != null) {
+                for(StopTimeNode stopTimeNode : tripNode.getStopTimeNodes()) {
                     stopTimeNodeService.addNewStopTimeToStop(stopTimeNode);
                 }
             }
@@ -181,7 +182,7 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
         dao.delete(s);
     }
 
-    public static TripNode getTripNodeFromTrip(Trip trip) {
+    private static TripNode getTripNodeFromTrip(Trip trip) {
         TripNode tripNode = new TripNode();
         tripNode.setTripId(trip.getId());
         if(trip.getCalendar() != null) tripNode.setCalendarId(trip.getCalendar().getId());
@@ -197,6 +198,8 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
             if(stopTime.getStop() != null) {
                 stopTimeNode.setStopId(stopTime.getStop().getId());
                 stopTimeNode.setStopName(StopServiceImpl.getFixedStopName(stopTime.getStop().getName()));
+                stopTimeNode.setWheelChair(TripWheelchairAccessibleType.ACCESSIBLE.equals(trip.getTripWheelchairAccessibleType())
+                    && StopWheelchairBoardingType.BOARDING_POSSIBLE.equals(stopTime.getStop().getStopWheelchairBoardingType()));
             }
             stopTimeNode.setSequence(stopTime.getSequence());
             stopTimeNode.setTripId(trip.getId());

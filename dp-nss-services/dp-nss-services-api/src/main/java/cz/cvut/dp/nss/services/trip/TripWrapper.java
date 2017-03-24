@@ -15,6 +15,8 @@ public class TripWrapper {
 
     private String calendarId;
 
+    private boolean wheelChair;
+
     private List<StopTimeWrapper> stopTimeWrappers;
 
     public String getId() {
@@ -31,6 +33,14 @@ public class TripWrapper {
 
     public void setCalendarId(String calendarId) {
         this.calendarId = calendarId;
+    }
+
+    public boolean isWheelChair() {
+        return wheelChair;
+    }
+
+    public void setWheelChair(boolean wheelChair) {
+        this.wheelChair = wheelChair;
     }
 
     public List<StopTimeWrapper> getStopTimeWrappers() {

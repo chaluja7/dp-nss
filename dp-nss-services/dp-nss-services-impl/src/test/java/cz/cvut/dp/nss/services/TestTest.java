@@ -1,6 +1,7 @@
 package cz.cvut.dp.nss.services;
 
 import cz.cvut.dp.nss.services.common.DateTimeUtils;
+import cz.cvut.dp.nss.services.stop.StopServiceImpl;
 import org.junit.Test;
 
 import java.time.LocalTime;
@@ -19,6 +20,12 @@ public class TestTest {
 
         LocalTime parse = LocalTime.parse(s, DateTimeUtils.TIME_FORMATTER);
         int i = 0;
+
+        String fixedStopName = StopServiceImpl.getFixedStopName("Mníšek p. Brdy,závod (hl.sil.)");
+        fixedStopName = StopServiceImpl.getFixedStopName("Nádraží Hostivař (ul. Průmyslová)");
+        fixedStopName = StopServiceImpl.getFixedStopName("Želivského (ul. Votická)");
+        fixedStopName = StopServiceImpl.getFixedStopName("Želivského");
+        int k = 0;
     }
 
 }
