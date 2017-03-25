@@ -62,6 +62,8 @@
 <div *ngIf="searchResults">
     <h3>Nalezené výsledky</h3>
 
+    <div *ngIf="searchResults.length === 0" class="alert alert-danger">Nebyly nalezeny žádné výsledky.</div>
+
     <div *ngFor="let searchResult of searchResults">
         <table class="table table-bordered">
             <tr>
