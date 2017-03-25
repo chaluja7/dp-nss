@@ -9,8 +9,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -44,40 +42,35 @@ public class JdbcTripDao extends JdbcDaoSupport {
         sqlBuilder.append(" s on st.stop_id = s.id order by t.id, st.sequence");
 
         final Map<String, TripWrapper> trips = new LinkedHashMap<>();
-        RowMapper<StopTimeWrapper> tripWrapperRowMapper = new RowMapper<StopTimeWrapper>() {
-
-            @Override
-            public StopTimeWrapper mapRow(ResultSet rs, int rowNum) throws SQLException {
-                String tripId = rs.getString("t_id");
-                TripWrapper tripWrapper = trips.get(tripId);
-                if(tripWrapper == null) {
-                    tripWrapper = new TripWrapper();
-                    tripWrapper.setId(tripId);
-                    tripWrapper.setCalendarId(rs.getString("t_calendar_id"));
-                    final String tripWheelChair = rs.getString("t_wheelChair");
-                    tripWrapper.setWheelChair(TripWheelchairAccessibleType.ACCESSIBLE.name().equals(tripWheelChair));
-                    trips.put(tripId, tripWrapper);
-                }
-
-                StopTimeWrapper stopTimeWrapper = new StopTimeWrapper();
-                stopTimeWrapper.setId(rs.getLong("st_id"));
-                stopTimeWrapper.setSequence(rs.getInt("st_sequence"));
-
-                Timestamp arrival = rs.getTimestamp("st_arrival");
-                if(arrival != null) stopTimeWrapper.setArrival(arrival.toLocalDateTime().toLocalTime());
-
-                Timestamp departure = rs.getTimestamp("st_departure");
-                if(departure != null) stopTimeWrapper.setDeparture(departure.toLocalDateTime().toLocalTime());
-
-                stopTimeWrapper.setStopId(rs.getString("s_id"));
-                stopTimeWrapper.setStopName(rs.getString("s_name"));
-                final String stopWheelChair = rs.getString("s_wheelChair");
-                stopTimeWrapper.setStopWheelChair(StopWheelchairBoardingType.BOARDING_POSSIBLE.name().equals(stopWheelChair));
-
-                tripWrapper.getStopTimeWrappers().add(stopTimeWrapper);
-                return stopTimeWrapper;
+        RowMapper<StopTimeWrapper> tripWrapperRowMapper = (rs, rowNum) -> {
+            String tripId = rs.getString("t_id");
+            TripWrapper tripWrapper = trips.get(tripId);
+            if(tripWrapper == null) {
+                tripWrapper = new TripWrapper();
+                tripWrapper.setId(tripId);
+                tripWrapper.setCalendarId(rs.getString("t_calendar_id"));
+                final String tripWheelChair = rs.getString("t_wheelChair");
+                tripWrapper.setWheelChair(TripWheelchairAccessibleType.ACCESSIBLE.name().equals(tripWheelChair));
+                trips.put(tripId, tripWrapper);
             }
 
+            StopTimeWrapper stopTimeWrapper = new StopTimeWrapper();
+            stopTimeWrapper.setId(rs.getLong("st_id"));
+            stopTimeWrapper.setSequence(rs.getInt("st_sequence"));
+
+            Timestamp arrival = rs.getTimestamp("st_arrival");
+            if(arrival != null) stopTimeWrapper.setArrival(arrival.toLocalDateTime().toLocalTime());
+
+            Timestamp departure = rs.getTimestamp("st_departure");
+            if(departure != null) stopTimeWrapper.setDeparture(departure.toLocalDateTime().toLocalTime());
+
+            stopTimeWrapper.setStopId(rs.getString("s_id"));
+            stopTimeWrapper.setStopName(rs.getString("s_name"));
+            final String stopWheelChair = rs.getString("s_wheelChair");
+            stopTimeWrapper.setStopWheelChair(StopWheelchairBoardingType.BOARDING_POSSIBLE.name().equals(stopWheelChair));
+
+            tripWrapper.getStopTimeWrappers().add(stopTimeWrapper);
+            return stopTimeWrapper;
         };
 
         namedParameterJdbcTemplate.query(sqlBuilder.toString(), tripWrapperRowMapper);
