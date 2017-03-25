@@ -29,6 +29,11 @@
     </div>
 
     <div class="form-group">
+        <label for="stopThrough">Přes:</label>
+        <input type="text" class="form-control" name="stopThrough" id="stopThrough" [(ngModel)]="searchModel.stopThrough"  />
+    </div>
+
+    <div class="form-group">
         <label for="whenDate">Datum:</label>
         <datetime id="whenDate" [(ngModel)]="searchModel.date" [datepicker]="dateService.datepickerOpts"
                   [timepicker]="false" name="whenDate" required></datetime>

@@ -78,7 +78,7 @@ export class SearchComponent implements OnInit {
     this.searchResults = null;
     this.submitted = true;
     this.error = '';
-    this.searchService.search(this.searchModel.timeTableId, this.searchModel.stopFrom, this.searchModel.stopTo,
+    this.searchService.search(this.searchModel.timeTableId, this.searchModel.stopFrom, this.searchModel.stopTo, this.searchModel.stopThrough,
         this.searchModel.date, this.searchModel.time, this.searchModel.maxNumOfTransfers, this.searchModel.wheelChair === true)
         .subscribe(searchResults => {
                 this.submitted = false;

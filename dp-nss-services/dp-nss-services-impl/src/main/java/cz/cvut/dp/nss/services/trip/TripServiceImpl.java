@@ -106,6 +106,8 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
     @Override
     @Transactional(value = "transactionManager")
     public void create(Trip trip, boolean neo4jSynchronize) {
+        dao.create(trip);
+
         if(neo4jSynchronize) {
             //soucasne musim data ulozit do neo4j!
             //vytvorim si objekt pro neo4j
@@ -121,13 +123,25 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
                 }
             }
         }
-
-        dao.create(trip);
     }
 
     @Override
     @Transactional(value = "transactionManager")
     public void update(Trip trip, boolean neo4jSynchronize) {
+        //nejdriv smazu vsechny stopTimes k tomuto zaznamu z db
+        stopTimeService.deleteByTripId(trip.getId());
+
+        //ulozim vsechny stopTimes znovu
+        if(trip.getStopTimes() != null) {
+            for(StopTime stopTime : trip.getStopTimes()) {
+                stopTime.setId(null);
+                stopTimeService.create(stopTime);
+            }
+        }
+
+        //pak provedu update trip zaznamu
+        dao.update(trip);
+
         if(neo4jSynchronize) {
             //smazu vsechny stopTimes v neo4j. S tim je spojene to, ze se musi spravne propojit zbyvajici stopTimes na stanicich
             stopTimeNodeService.deleteStopTimesByTripId(trip.getId());
@@ -152,20 +166,6 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
             //a nakonec updatnu samotny tripNode
             tripNodeService.save(tripNode, 0);
         }
-
-        //nejdriv smazu vsechny stopTimes k tomuto zaznamu z db
-        stopTimeService.deleteByTripId(trip.getId());
-
-        //ulozim vsechny stopTimes znovu
-        if(trip.getStopTimes() != null) {
-            for(StopTime stopTime : trip.getStopTimes()) {
-                stopTime.setId(null);
-                stopTimeService.create(stopTime);
-            }
-        }
-
-        //pak provedu update trip zaznamu
-        dao.update(trip);
     }
 
     @Override

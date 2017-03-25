@@ -13,16 +13,20 @@ public interface SearchService {
 
     int DEFAULT_MAX_HOUR_AFTER_DEPARTURE = 3;
 
+    int DEFAULT_MAX_NUMBER_OF_RESULTS = 3;
+
     /**
      * Najde spojeni dle data odjezdu
      * @param stopFromName stanice z
      * @param stopToName stanice do
+     * @param stopThroughName prujezdni/prestupni stanice
      * @param departure datum odjezdu
      * @param maxHoursAfterDeparture max pocet hodin, o ktere muze spoj vyjet pozdeji nez departure
      * @param maxTransfers max pocet prestupu
      * @param withWheelChair pokud true hledame jen bezbarierove tripy a stopy
      * @return list vysledku
      */
-    List<SearchResult> findPathByDepartureDate(String stopFromName, String stopToName, DateTime departure, int maxHoursAfterDeparture, int maxTransfers, boolean withWheelChair);
+    List<SearchResult> findPathByDepartureDate(String stopFromName, String stopToName, String stopThroughName,
+                                               DateTime departure, int maxHoursAfterDeparture, int maxTransfers, boolean withWheelChair);
 
 }

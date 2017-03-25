@@ -12,6 +12,7 @@ import cz.cvut.dp.nss.services.trip.Trip;
 import cz.cvut.dp.nss.wrapper.output.search.SearchResultWrapper;
 import cz.cvut.dp.nss.wrapper.output.search.SearchStopTimeWrapper;
 import cz.cvut.dp.nss.wrapper.output.trip.TripWithRouteWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,16 +37,27 @@ public class SearchController extends AbstractController {
     @Autowired
     private StopTimeService stopTimeService;
 
+    /**
+     * @param stopFromName stanice z
+     * @param stopToName stanice do
+     * @param stopThroughName prujezdni/prestupni stanice
+     * @param departure cas vyjezdu
+     * @param maxTransfers max pocet prestupu
+     * @param withWheelChair pokud true tak hledam pouze bezbarierove spoje
+     * @return nalezene vysledky vyhledavani (serazene a vyfiltrovane)
+     */
     @RequestMapping(method = RequestMethod.GET)
     public List<SearchResultWrapper> findPaths(@RequestParam("stopFromName") String stopFromName,
                                                @RequestParam("stopToName") String stopToName,
+                                               @RequestParam(name = "stopThroughName", required = false) String stopThroughName,
                                                @RequestParam("departure") String departure,
                                                @RequestParam("maxTransfers") int maxTransfers,
                                                @RequestParam(name = "withWheelChair", required = false) Boolean withWheelChair) {
 
         DateTime dateTime = DateTimeUtils.JODA_DATE_TIME_FORMATTER.parseDateTime(departure);
 
-        List<SearchResult> searchResults = searchService.findPathByDepartureDate(stopFromName, stopToName,
+        if(StringUtils.isBlank(stopThroughName)) stopThroughName = null;
+        List<SearchResult> searchResults = searchService.findPathByDepartureDate(stopFromName, stopToName, stopThroughName,
             dateTime, SearchService.DEFAULT_MAX_HOUR_AFTER_DEPARTURE, maxTransfers, Boolean.TRUE.equals(withWheelChair));
 
         List<SearchResultWrapper> searchResultWrappers = new ArrayList<>();

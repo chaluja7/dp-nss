@@ -30,14 +30,14 @@ public final class DateTimeUtils {
     public static final String SIMPLE_TIME_PATTERN = "H:m:s";
 
     /**
-     * pocet milisekund za 24 hodin
+     * pocet sekund za 24 hodin
      */
-    public static final int MILLIS_IN_DAY = 86400000;
+    public static final int SECONDS_IN_DAY = 86400;
 
     /**
-     * 5 minut penalizace za prestup
+     * 2,5 minuty minimalne nutne na prestup
      */
-    public static final int TRANSFER_PENALTY_MILLIS = 300000;
+    public static final int MIN_TRANSFER_SECONDS = 150;
 
     /**
      * je thread-safe
