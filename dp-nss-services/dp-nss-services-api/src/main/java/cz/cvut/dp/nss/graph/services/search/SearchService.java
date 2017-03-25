@@ -20,8 +20,9 @@ public interface SearchService {
      * @param departure datum odjezdu
      * @param maxHoursAfterDeparture max pocet hodin, o ktere muze spoj vyjet pozdeji nez departure
      * @param maxTransfers max pocet prestupu
+     * @param withWheelChair pokud true hledame jen bezbarierove tripy a stopy
      * @return list vysledku
      */
-    List<SearchResult> findPathByDepartureDate(String stopFromName, String stopToName, DateTime departure, int maxHoursAfterDeparture, int maxTransfers);
+    List<SearchResult> findPathByDepartureDate(String stopFromName, String stopToName, DateTime departure, int maxHoursAfterDeparture, int maxTransfers, boolean withWheelChair);
 
 }

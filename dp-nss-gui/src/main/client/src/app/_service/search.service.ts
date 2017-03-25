@@ -12,12 +12,13 @@ export class SearchService {
 
     constructor(private http: HttpClient, private errorService: ErrorService) { }
 
-    search(timeTableId: string, stopFrom: string, stopTo: string, departureDate: Date, departureTime: Date, maxTransfers: number): Observable<SearchResultModel[]> {
+    search(timeTableId: string, stopFrom: string, stopTo: string, departureDate: Date, departureTime: Date, maxTransfers: number, withWheelChair: boolean): Observable<SearchResultModel[]> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('stopFromName', stopFrom);
         params.set('stopToName', stopTo);
         params.set('departure', DateService.getFormattedDate(departureDate, departureTime));
         params.set('maxTransfers', maxTransfers + '');
+        params.set('withWheelChair', withWheelChair + '');
 
         return this.http
             .get(AppSettings.API_ENDPOINT + AppSettings.getSchemaUrlParam(timeTableId) + "/search", params)

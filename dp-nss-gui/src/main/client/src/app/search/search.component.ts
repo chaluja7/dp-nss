@@ -33,6 +33,8 @@ export class SearchComponent implements OnInit {
 
   private stopSearchTerm: string;
 
+  error = '';
+
   constructor(private timeTableService: TimeTableService, public dateService: DateService,
               private searchService: SearchService, private completerService: CompleterService, private stopService: StopService) {
 
@@ -75,14 +77,15 @@ export class SearchComponent implements OnInit {
   onSubmit() : void {
     this.searchResults = null;
     this.submitted = true;
+    this.error = '';
     this.searchService.search(this.searchModel.timeTableId, this.searchModel.stopFrom, this.searchModel.stopTo,
-        this.searchModel.date, this.searchModel.time, this.searchModel.maxNumOfTransfers)
+        this.searchModel.date, this.searchModel.time, this.searchModel.maxNumOfTransfers, this.searchModel.wheelChair)
         .subscribe(searchResults => {
                 this.submitted = false;
                 this.searchResults = searchResults;
             },
             err  => {
-              console.log('ęe');
+              this.error = 'Chyba při vyhledávání. Zkuste prosím požadavek opakovat.';
               this.submitted = false;
             });
   }

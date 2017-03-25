@@ -40,12 +40,13 @@ public class SearchController extends AbstractController {
     public List<SearchResultWrapper> findPaths(@RequestParam("stopFromName") String stopFromName,
                                                @RequestParam("stopToName") String stopToName,
                                                @RequestParam("departure") String departure,
-                                               @RequestParam("maxTransfers") int maxTransfers) {
+                                               @RequestParam("maxTransfers") int maxTransfers,
+                                               @RequestParam(name = "withWheelChair", required = false) Boolean withWheelChair) {
 
         DateTime dateTime = DateTimeUtils.JODA_DATE_TIME_FORMATTER.parseDateTime(departure);
 
         List<SearchResult> searchResults = searchService.findPathByDepartureDate(stopFromName, stopToName,
-            dateTime, SearchService.DEFAULT_MAX_HOUR_AFTER_DEPARTURE, maxTransfers);
+            dateTime, SearchService.DEFAULT_MAX_HOUR_AFTER_DEPARTURE, maxTransfers, Boolean.TRUE.equals(withWheelChair));
 
         List<SearchResultWrapper> searchResultWrappers = new ArrayList<>();
         for(SearchResult searchResult : searchResults) {

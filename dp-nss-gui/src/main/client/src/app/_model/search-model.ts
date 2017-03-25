@@ -5,4 +5,5 @@ export class SearchModel {
   public maxNumOfTransfers: number;
   public date: Date;
   public time: Date;
+  public wheelChair: boolean;
 }

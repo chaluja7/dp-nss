@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 
 /**
@@ -17,12 +16,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-graph-context.xml"})
-@WebAppConfiguration
 public abstract class AbstractServiceIT {
 
     @Before
     public void before() {
-        SchemaThreadLocal.set(SchemaThreadLocal.SCHEMA_ANNAPOLIS);
+        SchemaThreadLocal.set(SchemaThreadLocal.SCHEMA_PID);
     }
 
     @After
