@@ -78,8 +78,16 @@ public class GraphTripBatchProcessor implements ItemProcessor<TripWrapper, TripN
             prevStopTimeNode = stopTimeNode;
             i++;
         }
-        tripNode.setStopTimeNodes(stopTimeNodes);
 
+        if(!stopTimeNodes.isEmpty()) {
+            //u prvniho uzlu mazeme arrival - mohl by se kvuli nemu rozbit graf v neo4j
+            stopTimeNodes.get(0).setArrivalInSeconds(null);
+
+            //u posledniho uzlu mazeme departure - mohl by se kvuli nemu rozbit graf v neo4j
+            stopTimeNodes.get(stopTimeNodes.size() - 1).setDepartureInSeconds(null);
+        }
+
+        tripNode.setStopTimeNodes(stopTimeNodes);
         return tripNode;
     }
 
