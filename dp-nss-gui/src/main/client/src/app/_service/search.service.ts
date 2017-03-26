@@ -6,23 +6,24 @@ import {SearchResultModel} from "../_model/search-result-model";
 import {ErrorService} from "./error.service";
 import {HttpClient} from "./http-client";
 import {Observable} from "rxjs";
+import {SearchModel} from "../_model/search-model";
 
 @Injectable()
 export class SearchService {
 
     constructor(private http: HttpClient, private errorService: ErrorService) { }
 
-    search(timeTableId: string, stopFrom: string, stopTo: string, stopThrough: string, departureDate: Date, departureTime: Date, maxTransfers: number, withWheelChair: boolean): Observable<SearchResultModel[]> {
+    search(searchModel: SearchModel): Observable<SearchResultModel[]> {
         let params: URLSearchParams = new URLSearchParams();
-        params.set('stopFromName', stopFrom);
-        params.set('stopToName', stopTo);
-        if(stopThrough) params.set('stopThroughName', stopThrough);
-        params.set('departure', DateService.getFormattedDate(departureDate, departureTime));
-        params.set('maxTransfers', maxTransfers + '');
-        params.set('withWheelChair', withWheelChair + '');
+        params.set('stopFromName', searchModel.stopFrom);
+        params.set('stopToName', searchModel.stopTo);
+        if(searchModel.stopThrough) params.set('stopThroughName', searchModel.stopThrough);
+        params.set('departure', DateService.getFormattedDate(searchModel.date, searchModel.time));
+        params.set('maxTransfers', searchModel.maxNumOfTransfers + '');
+        params.set('withWheelChair', (searchModel.wheelChair === true) + '');
 
         return this.http
-            .get(AppSettings.API_ENDPOINT + AppSettings.getSchemaUrlParam(timeTableId) + "/search", params)
+            .get(AppSettings.API_ENDPOINT + AppSettings.getSchemaUrlParam(searchModel.timeTableId) + "/search", params)
             .map((response => response.json() as SearchResultModel[]))
             .catch(err => this.errorService.handleServerError(err));
     }

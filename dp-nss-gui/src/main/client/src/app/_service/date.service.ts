@@ -107,12 +107,30 @@ export class DateService {
     if(!numOfSeconds) return null;
 
     let minutes = Math.floor(numOfSeconds / 60);
-    if(minutes < 1) return numOfSeconds + ' vteřin';
+    if(minutes < 1) return numOfSeconds + this.getSecondsLabel(numOfSeconds);
 
     let hours = Math.floor(minutes / 60);
-    if(hours < 1) return minutes + ' minut';
+    if(hours < 1) return minutes + this.getMinutesLabel(minutes);
 
-    return hours + ' hodin ' + minutes % 60 + ' minut';
+    return hours + this.getHoursLabel(hours) + minutes % 60 + this.getMinutesLabel(minutes % 60);
+  }
+
+  private getSecondsLabel(numOfSeconds: number): string {
+    if(numOfSeconds == 1) return ' vteřina';
+    if(numOfSeconds >= 2 && numOfSeconds <= 4) return ' vteřiny';
+    return ' vteřin';
+  }
+
+  private getMinutesLabel(numOfMinutes: number): string {
+    if(numOfMinutes == 1) return ' minuta';
+    if(numOfMinutes >= 2 && numOfMinutes <= 4) return ' minuty';
+    return ' minut';
+  }
+
+  private getHoursLabel(numOfHours: number): string {
+    if(numOfHours == 1) return ' hodina ';
+    if(numOfHours >= 2 && numOfHours <= 4) return ' hodiny ';
+    return ' hodin ';
   }
 
 }

@@ -109,6 +109,18 @@
             </div>
         </div>
 
+        <div *ngIf="searchResults.length > 0">
+            <div class="row">
+                <div class="col-md-12">
+                    <button *ngIf="!noMoreNextResults" type="button" class="btn btn-success" style="width: 100%;" (click)="showNextResults()" [disabled]="!searchForm.form.valid || submitted">
+                        <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                        Další výsledky
+                        <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </button>
+                    <div *ngIf="noMoreNextResults" class="alert alert-danger">Další výsledky nejsou k dispozici. Změňte prosím parametry vyhledávání.</div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

@@ -17,7 +17,12 @@ import {AppSettings} from "../_common/app.settings";
 })
 export class SearchComponent implements OnInit {
 
+
+  private static SEARCH_ERROR = 'Chyba při vyhledávání. Zkuste prosím požadavek opakovat.';
+
   searchModel: SearchModel = new SearchModel();
+
+  searchModelClone: SearchModel;
 
   timeTables: TimeTable[] = [];
 
@@ -38,6 +43,8 @@ export class SearchComponent implements OnInit {
   showThroughStop: boolean;
 
   error = '';
+
+  noMoreNextResults: boolean;
 
   constructor(private timeTableService: TimeTableService, public dateService: DateService,
               private searchService: SearchService, private completerService: CompleterService, private stopService: StopService) {
@@ -68,7 +75,7 @@ export class SearchComponent implements OnInit {
             },
             err  => {});
 
-    this.searchModel.maxNumOfTransfers = 2;
+    this.searchModel.maxNumOfTransfers = 3;
     this.searchModel.date = new Date();
     this.searchModel.time = new Date();
     this.searchModel.time.setSeconds(0, 0);
@@ -87,16 +94,56 @@ export class SearchComponent implements OnInit {
     this.searchResults = null;
     this.submitted = true;
     this.error = '';
-    this.searchService.search(this.searchModel.timeTableId, this.searchModel.stopFrom, this.searchModel.stopTo, this.searchModel.stopThrough,
-        this.searchModel.date, this.searchModel.time, this.searchModel.maxNumOfTransfers, this.searchModel.wheelChair === true)
+    this.copySearchModel();
+    this.searchService.search(this.searchModel)
         .subscribe(searchResults => {
                 this.submitted = false;
                 this.searchResults = searchResults;
             },
             err  => {
-              this.error = 'Chyba při vyhledávání. Zkuste prosím požadavek opakovat.';
+              this.error = SearchComponent.SEARCH_ERROR;
               this.submitted = false;
             });
+  }
+
+  showNextResults(): void {
+    this.noMoreNextResults = false;
+    this.submitted = true;
+    this.error = '';
+
+    let lastResult = this.searchResults[this.searchResults.length - 1];
+    //datum departure posledniho nalezeneho vysledku
+    let lastDepartureDate = DateService.getDateObjectFromString(lastResult.departureDate);
+    //cas departure posledniho nalezeneho vysledku
+    let lastDepartureTime = DateService.getTimeObjectFromString(lastResult.stopTimes[0].departure);
+
+    //a zvysim cas o jednu minutu, at hledam opravdu az dalsi spoje
+    let prevDay = lastDepartureTime.getDay();
+    lastDepartureTime.setMinutes(lastDepartureTime.getMinutes() + 1)
+    //pokud jsem presel pres pulnoc, tak zvysit o den i datum
+    if(prevDay < lastDepartureTime.getDay()) {
+        lastDepartureDate.setHours(24);
+    }
+
+    this.searchModelClone.date = lastDepartureDate;
+    this.searchModelClone.time = lastDepartureTime;
+
+      this.searchService.search(this.searchModelClone)
+          .subscribe(searchResults => {
+                  this.submitted = false;
+                  if(searchResults.length == 0) {
+                      this.noMoreNextResults = true;
+                  }
+
+                  for(let s of searchResults) {
+                      this.searchResults.push(s);
+                  }
+
+              },
+              err  => {
+                  this.error = SearchComponent.SEARCH_ERROR;
+                  this.submitted = false;
+              });
   }
 
   onTimeTableChange() : void {
@@ -117,5 +164,15 @@ export class SearchComponent implements OnInit {
   private static getStopSearchTerm(timeTableId: string) : string {
     return AppSettings.API_ENDPOINT + AppSettings.getSchemaUrlParam(timeTableId) + "/stop?startsWith=";
   }
+
+  private copySearchModel(): void {
+      this.searchModelClone = SearchComponent.createCopy(this.searchModel);
+      this.searchModelClone.date = new Date(this.searchModelClone.date);
+      this.searchModelClone.time = new Date(this.searchModelClone.time);
+  }
+
+    static createCopy(objectToCopy: SearchModel): SearchModel {
+        return (JSON.parse(JSON.stringify(objectToCopy)));
+    }
 
 }
