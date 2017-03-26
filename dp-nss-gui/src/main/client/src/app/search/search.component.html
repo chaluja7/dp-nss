@@ -1,97 +1,114 @@
 <div class="row">
-    <div class="col-md-12">
-        <h2>Vyhledávání spojení</h2>
+    <div class="col-md-6 col-md-offset-3 margin-top-20">
+
+        <form (ngSubmit)="onSubmit()" #searchForm="ngForm">
+            <div class="form-group">
+                <label for="timeTable">Jízdní řád:</label>
+                <select class="form-control" id="timeTable" required [(ngModel)]="searchModel.timeTableId" name="timeTableId" (change)="onTimeTableChange()">
+                    <option *ngFor="let timeTable of timeTables" [value]="timeTable.id">{{timeTable.name}}</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5 form-group">
+                    <label for="stopFrom">Odkud:</label>
+                    <ng2-completer [(ngModel)]="searchModel.stopFrom" [datasource]="remoteStopsFrom" [minSearchLength]="3" id="stopFrom" name="stopFrom"
+                                   [placeholder]="'Odkud...'" [textSearching]="'Hledám...'" [textNoResults]="'Stanice nenalezena'"
+                                   [inputClass]="'form-control'" [autofocus]="true" [required]="true">
+                    </ng2-completer>
+                </div>
+
+                <div class="col-md-2 form-group margin-top-25 padding-left-0 padding-right-0 align-center">
+                    <div class="btn btn-default max-width-47" (click)="swapFromAndTo()"><i class="fa fa-exchange" aria-hidden="true"></i></div>
+                    <div class="btn btn-default max-width-47" (click)="toogleThroughStop()"><i class="fa fa-plus-circle" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="col-md-5 form-group">
+                    <label for="stopTo">Kam:</label>
+                    <ng2-completer [(ngModel)]="searchModel.stopTo" [datasource]="remoteStopsTo" [minSearchLength]="3" id="stopTo" name="stopTo"
+                                   [placeholder]="'Kam...'" [textSearching]="'Hledám...'" [textNoResults]="'Stanice nenalezena'"
+                                   [inputClass]="'form-control'" [required]="true">
+                    </ng2-completer>
+                </div>
+            </div>
+
+            <div class="form-group" *ngIf="showThroughStop">
+                <label for="stopThrough">Přes:</label>
+                <ng2-completer [(ngModel)]="searchModel.stopThrough" [datasource]="remoteStopsThrough" [minSearchLength]="3" id="stopThrough" name="stopThrough"
+                               [placeholder]="'Přes...'" [textSearching]="'Hledám...'" [textNoResults]="'Stanice nenalezena'"
+                               [inputClass]="'form-control'">
+                </ng2-completer>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="whenDate">Datum:</label>
+                    <datetime id="whenDate" [(ngModel)]="searchModel.date" [datepicker]="dateService.datepickerOpts"
+                              [timepicker]="false" name="whenDate" required></datetime>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="whenTime">Čas:</label>
+                    <datetime id="whenTime" [(ngModel)]="searchModel.time" [timepicker]="dateService.timepickerOpts"
+                              [datepicker]="false" name="whenTime" required></datetime>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="maxNumOfTransfers">Maximální počet přestupů:</label>
+                    <select class="form-control" id="maxNumOfTransfers" required [(ngModel)]="searchModel.maxNumOfTransfers" name="maxNumOfTransfers">
+                        <option *ngFor="let numOfTransfer of numOfTransfers" [value]="numOfTransfer">{{numOfTransfer}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="wheelChair">Pouze bezbariérové:</label>
+                    <input type="checkbox" class="form-control" name="wheelChair" id="wheelChair" [(ngModel)]="searchModel.wheelChair" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-success" style="width: 100%;" [disabled]="!searchForm.form.valid || submitted">Hledat</button>
+                </div>
+            </div>
+        </form>
+
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
     </div>
 </div>
 
-<form (ngSubmit)="onSubmit()" #searchForm="ngForm">
-    <div class="form-group">
-        <label for="timeTable">Jízdní řád:</label>
-        <select class="form-control" id="timeTable" required [(ngModel)]="searchModel.timeTableId" name="timeTableId" (change)="onTimeTableChange()">
-            <option *ngFor="let timeTable of timeTables" [value]="timeTable.id">{{timeTable.name}}</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="stopFrom">Odkud:</label>
-        <ng2-completer [(ngModel)]="searchModel.stopFrom" [datasource]="remoteStopsFrom" [minSearchLength]="3" id="stopFrom" name="stopFrom"
-                       [placeholder]="'Odkud...'" [textSearching]="'Hledám...'" [textNoResults]="'Stanice nenalezena'"
-                       [inputClass]="'form-control'" [autofocus]="true" [required]="true">
-        </ng2-completer>
-    </div>
-
-    <div class="form-group">
-        <label for="stopTo">Kam:</label>
-        <ng2-completer [(ngModel)]="searchModel.stopTo" [datasource]="remoteStopsTo" [minSearchLength]="3" id="stopTo" name="stopTo"
-                       [placeholder]="'Kam...'" [textSearching]="'Hledám...'" [textNoResults]="'Stanice nenalezena'"
-                       [inputClass]="'form-control'" [required]="true">
-        </ng2-completer>
-    </div>
-
-    <div class="form-group">
-        <label for="stopThrough">Přes:</label>
-        <input type="text" class="form-control" name="stopThrough" id="stopThrough" [(ngModel)]="searchModel.stopThrough"  />
-    </div>
-
-    <div class="form-group">
-        <label for="whenDate">Datum:</label>
-        <datetime id="whenDate" [(ngModel)]="searchModel.date" [datepicker]="dateService.datepickerOpts"
-                  [timepicker]="false" name="whenDate" required></datetime>
-    </div>
-
-    <div class="form-group">
-        <label for="whenTime">Čas:</label>
-        <datetime id="whenTime" [(ngModel)]="searchModel.time" [timepicker]="dateService.timepickerOpts"
-                  [datepicker]="false" name="whenTime" required></datetime>
-    </div>
-
-    <div class="form-group">
-        <label for="maxNumOfTransfers">Maximální počet přestupů:</label>
-        <select class="form-control" id="maxNumOfTransfers" required [(ngModel)]="searchModel.maxNumOfTransfers" name="maxNumOfTransfers">
-            <option *ngFor="let numOfTransfer of numOfTransfers" [value]="numOfTransfer">{{numOfTransfer}}</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="wheelChair">Pouze bezbariérové:</label>
-        <input type="checkbox" class="form-control" name="wheelChair" id="wheelChair" [(ngModel)]="searchModel.wheelChair" />
-    </div>
-
-    <button type="submit" class="btn btn-success" [disabled]="!searchForm.form.valid || submitted">Hledat</button>
-</form>
-
-<div *ngIf="error" class="alert alert-danger">{{error}}</div>
-
 <!-- TODO dat do nove komponenty! -->
-<hr/>
-<div *ngIf="searchResults">
-    <h3>Nalezené výsledky</h3>
+<div class="row">
+    <hr/>
+    <div *ngIf="searchResults">
+        <h3>Nalezené výsledky</h3>
 
-    <div *ngIf="searchResults.length === 0" class="alert alert-danger">Nebyly nalezeny žádné výsledky.</div>
+        <div *ngIf="searchResults.length === 0" class="alert alert-danger">Nebyly nalezeny žádné výsledky.</div>
 
-    <div *ngFor="let searchResult of searchResults">
-        <table class="table table-bordered">
-            <tr>
-                <th>Datum</th>
-                <th>Stanice</th>
-                <th>Příjezd</th>
-                <th>Odjezd</th>
-                <th>Spoj</th>
-            </tr>
-            <tr *ngFor="let stopTime of searchResult.stopTimes; let i = index; let first = first; let last = last; let even = even; let odd = odd">
-                <td *ngIf="first">{{searchResult.departureDate}}</td>
-                <td [attr.rowspan]="searchResult.stopTimes.length - 2" *ngIf="i === 1 && !last"></td>
-                <td *ngIf="last">{{searchResult.arrivalDate}}</td>
-                <td>{{stopTime.stop.name}}</td>
-                <td><span *ngIf="odd">{{stopTime.arrival}}</span></td>
-                <td><span *ngIf="even">{{stopTime.departure}}</span></td>
-                <td *ngIf="even" [attr.rowspan]="2" class="vertical-middle">{{stopTime.trip.route.shortName}}</td>
-            </tr>
-        </table>
-        <div class="alert alert-info">
-            <strong>Celkový čas jízdy:</strong> {{dateService.getFormattedTimePeriod(searchResult.travelTime)}}
+        <div *ngFor="let searchResult of searchResults">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Datum</th>
+                    <th>Stanice</th>
+                    <th>Příjezd</th>
+                    <th>Odjezd</th>
+                    <th>Spoj</th>
+                </tr>
+                <tr *ngFor="let stopTime of searchResult.stopTimes; let i = index; let first = first; let last = last; let even = even; let odd = odd">
+                    <td *ngIf="first">{{searchResult.departureDate}}</td>
+                    <td [attr.rowspan]="searchResult.stopTimes.length - 2" *ngIf="i === 1 && !last"></td>
+                    <td *ngIf="last">{{searchResult.arrivalDate}}</td>
+                    <td>{{stopTime.stop.name}}</td>
+                    <td><span *ngIf="odd">{{stopTime.arrival}}</span></td>
+                    <td><span *ngIf="even">{{stopTime.departure}}</span></td>
+                    <td *ngIf="even" [attr.rowspan]="2" class="vertical-middle">{{stopTime.trip.route.shortName}}</td>
+                </tr>
+            </table>
+            <div class="alert alert-info">
+                <strong>Celkový čas jízdy:</strong> {{dateService.getFormattedTimePeriod(searchResult.travelTime)}}
+            </div>
         </div>
+
+
     </div>
-
-
 </div>

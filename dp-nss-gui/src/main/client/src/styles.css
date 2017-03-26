@@ -1,3 +1,7 @@
+body {
+    padding-bottom: 20px;
+}
+
 /* FORMS */
 input.ng-valid[required], select.ng-valid[required], input.ng-valid.required, select.ng-valid.required, .ng-valid[required] > div > input, .ng-valid.required > div > input {
     border-left: 5px solid #42A948;
@@ -54,15 +58,29 @@ ul.pagination li a {
 
 .margin-top-0 {margin-top: 0;}
 .padding-top-20 {padding-top: 20px;}
+.padding-left-0 {padding-left: 0;}
+.padding-right-0 {padding-right: 0;}
 .margin-bottom-10 {margin-bottom: 10px;}
 .margin-top-bottom-2 {margin-bottom: 2px;}
 .margin-top-20 {margin-top: 20px;}
+.margin-top-25 {margin-top: 25px;}
 .margin-left-10 {margin-left: 10px;}
+
+.max-width-47 {max-width: 47%;}
 
 .clearfix {
     clear: both;
 }
 
 .width-100 > div > div.date {
+    width: 100%;
+}
+
+.timepicker {
+    width: 100% !important;
+    margin-left: -5px !important;
+}
+
+#whenDate > div > div.input-group.date {
     width: 100%;
 }

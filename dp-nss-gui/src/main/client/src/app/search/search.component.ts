@@ -31,7 +31,11 @@ export class SearchComponent implements OnInit {
 
   private remoteStopsTo: RemoteData;
 
+  private remoteStopsThrough: RemoteData;
+
   private stopSearchTerm: string;
+
+  showThroughStop: boolean;
 
   error = '';
 
@@ -46,6 +50,11 @@ export class SearchComponent implements OnInit {
     this.remoteStopsTo = completerService.remote(null, null, "");
     this.remoteStopsTo.urlFormater(term => {return encodeURI(this.stopSearchTerm + `${term}`)});
     this.remoteStopsTo.dataField("");
+
+    //opravdu to musi byt zduplikovane, jinak mi nebudou obe pole fungovat spravne
+    this.remoteStopsThrough = completerService.remote(null, null, "");
+    this.remoteStopsThrough.urlFormater(term => {return encodeURI(this.stopSearchTerm + `${term}`)});
+    this.remoteStopsThrough.dataField("");
   }
 
   ngOnInit(): void {
@@ -92,6 +101,17 @@ export class SearchComponent implements OnInit {
 
   onTimeTableChange() : void {
     this.stopSearchTerm = SearchComponent.getStopSearchTerm(this.searchModel.timeTableId);
+  }
+
+  swapFromAndTo(): void {
+    let tmp = this.searchModel.stopFrom;
+    this.searchModel.stopFrom = this.searchModel.stopTo;
+    this.searchModel.stopTo = tmp;
+  }
+
+  toogleThroughStop(): void {
+    this.searchModel.stopThrough = null;
+    this.showThroughStop = !this.showThroughStop;
   }
 
   private static getStopSearchTerm(timeTableId: string) : string {
