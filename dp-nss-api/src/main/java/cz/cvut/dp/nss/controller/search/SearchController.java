@@ -58,7 +58,8 @@ public class SearchController extends AbstractController {
 
         if(StringUtils.isBlank(stopThroughName)) stopThroughName = null;
         List<SearchResult> searchResults = searchService.findPathByDepartureDate(stopFromName, stopToName, stopThroughName,
-            dateTime, SearchService.DEFAULT_MAX_HOUR_AFTER_DEPARTURE, maxTransfers, Boolean.TRUE.equals(withWheelChair));
+            dateTime, new DateTime(dateTime).plusHours(SearchService.DEFAULT_MAX_HOUR_AFTER_DEPARTURE), maxTransfers,
+            SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS, Boolean.TRUE.equals(withWheelChair), null);
 
         List<SearchResultWrapper> searchResultWrappers = new ArrayList<>();
         for(SearchResult searchResult : searchResults) {

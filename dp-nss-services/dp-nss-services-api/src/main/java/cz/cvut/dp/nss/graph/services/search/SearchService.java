@@ -21,12 +21,15 @@ public interface SearchService {
      * @param stopToName stanice do
      * @param stopThroughName prujezdni/prestupni stanice
      * @param departure datum odjezdu
-     * @param maxHoursAfterDeparture max pocet hodin, o ktere muze spoj vyjet pozdeji nez departure
+     * @param maxDeparture maximalni cas prijezdu
      * @param maxTransfers max pocet prestupu
+     * @param maxNumberOfResults max pocet vracenych vysledku
      * @param withWheelChair pokud true hledame jen bezbarierove tripy a stopy
+     * @param alreadyFoundedSearchResultsWithThroughStop pokud neni null tak obsahuje nalezene vysledky z drivejsi iterace. zavolano s ne null hodnotou slouzi k doplneni dalsich vysledku (s pozdejsim departure)
      * @return list vysledku
      */
     List<SearchResult> findPathByDepartureDate(String stopFromName, String stopToName, String stopThroughName,
-                                               DateTime departure, int maxHoursAfterDeparture, int maxTransfers, boolean withWheelChair);
+                                               DateTime departure, DateTime maxDeparture, int maxTransfers, int maxNumberOfResults,
+                                               boolean withWheelChair, List<SearchResult> alreadyFoundedSearchResultsWithThroughStop);
 
 }

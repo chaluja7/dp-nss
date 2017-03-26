@@ -1,6 +1,7 @@
 package cz.cvut.dp.nss.graph.services.search;
 
 import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResult;
+import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResultByDepartureDateComparator;
 import cz.cvut.dp.nss.services.common.DateTimeUtils;
 import org.joda.time.DateTime;
 import org.neo4j.ogm.model.Result;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -21,17 +23,21 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     protected Session session;
 
+    @Resource(name = "searchServiceImpl")
+    private SearchService searchService;
+
     @Override
     @Transactional("neo4jTransactionManager")
     public List<SearchResult> findPathByDepartureDate(String stopFromName, String stopToName, String stopThroughName,
-                                                      DateTime departure, int maxHoursAfterDeparture, int maxTransfers, boolean withWheelChair) {
+                                                      DateTime departure, DateTime maxDeparture, int maxTransfers, int maxNumberOfResults,
+                                                      boolean withWheelChair, List<SearchResult> alreadyFoundedSearchResultsWithThroughStop) {
         final Map<String, Object> params = new HashMap<>();
         params.put("from", stopFromName);
         params.put("to", stopThroughName != null ? stopThroughName : stopToName);
         params.put("departure", departure.getMillis());
-        params.put("maxDeparture", new DateTime(departure).plusHours(maxHoursAfterDeparture).getMillis());
+        params.put("maxDeparture", maxDeparture.getMillis());
         params.put("maxTransfers", maxTransfers);
-        params.put("maxNumberOfResults", DEFAULT_MAX_NUMBER_OF_RESULTS);
+        params.put("maxNumberOfResults", maxNumberOfResults);
         params.put("wheelChair", withWheelChair);
         params.put("stopToWheelChairAccessible", withWheelChair);
         params.put("stopTimeId", null);
@@ -44,13 +50,6 @@ public class SearchServiceImpl implements SearchService {
             retList.add(buildSearchResultWrapperFromMap(searchResultMap));
         }
 
-        //TODO muze se stat, ze vracene vysledky maji nejaky stejny TRIP - to je treba zkontrolovat a pokud to nastane
-        //TODO tak ten druhy smazat a najit dalsi vysledky, aby byly celkem 3
-
-        //TODO taky muze nastat situace Cervenanskeho -> Dejvicka pres Nove Butovice s 1 prestupem v 09:00
-        //TODO najde to jen jeden vysledek, protoze prvotni hledani na butovice najde 184, 142, 142
-        //TODO ty 142 ale konci na butovicich a je nutne dale prestoupit, cimz si vybereme prestup, ktery je pak treba
-        //TODO bud v nemocnici motol nebo na mustku. Spravne by to melo najit tri spoje kdy vsechny zacinaji 184 a jedou az do nemocnice motol
         if(stopThroughName != null) {
             //vyse nalezene vysledky jsou pouze do prujezdni/prestupni stanice. Nyni budu hledat spojeni dale do koncove
             //navic budu prizpusobovat parametry
@@ -67,12 +66,28 @@ public class SearchServiceImpl implements SearchService {
                 }
             }
 
+            //vyberu zatim nejvyssi nalezeny departure z vychozi stanice
+            //pro ucely vyhledavani s prestupem, pokud bych v prvni iteraci nenasel dostatecny pocet vysledku
+            DateTime currentMaxDepartureFromStart = new DateTime(0);
+            for(SearchResult searchResult : retList) {
+                DateTime thisDateTime = getThisDeparture(searchResult, departure);
+                if(thisDateTime.isAfter(currentMaxDepartureFromStart)) {
+                    currentMaxDepartureFromStart = thisDateTime;
+                }
+            }
+            for(SearchResult searchResult : retListForWheelChairs) {
+                DateTime thisDateTime = getThisDeparture(searchResult, departure);
+                if(thisDateTime.isAfter(currentMaxDepartureFromStart)) {
+                    currentMaxDepartureFromStart = thisDateTime;
+                }
+            }
+
             params.put("stopToWheelChairAccessible", withWheelChair);
             params.put("from", stopThroughName);
             params.put("to", stopToName);
             params.put("maxNumberOfResults", 1);
 
-            List<SearchResult> thisRetList = new ArrayList<>();
+            List<SearchResult> thisRetList = alreadyFoundedSearchResultsWithThroughStop != null ? alreadyFoundedSearchResultsWithThroughStop : new ArrayList<>();
             //a pro kazdy vysledek do prestupni stanice spustim vyhledavani do cilove
             for(int i = 0; i < Math.max(retList.size(), retListForWheelChairs.size()); i++) {
                 SearchResult searchResult;
@@ -80,7 +95,7 @@ public class SearchServiceImpl implements SearchService {
                 //nejdrive se pokusim najit vysledek bez prestupu na prujezdni stanici
                 //tedy search result beru z tech, ktere nemusi mit koncovou stanici bezbarierovou
                 searchResult = retListForWheelChairs.size() > i ? retListForWheelChairs.get(i) : retList.get(i);
-                DateTime thisDeparture = getThisDeparture(searchResult, departure);
+                DateTime thisDeparture = getThisArrival(searchResult, departure);
 
                 //stopTimeId bude posledni nalezeny stopTime zatim - budu hledat primo od nej
                 fillParams(params, searchResult.getStopTimes().get(searchResult.getStopTimes().size() - 1), thisDeparture.getMillis(), maxTransfers - searchResult.getNumberOfTransfers());
@@ -99,6 +114,7 @@ public class SearchServiceImpl implements SearchService {
                     //to proto, ze na te prestupni musim vystoupit a nastoupit do jineho vozu
                     searchResult = retList.get(i);
                     //upravim si params
+                    thisDeparture = getThisArrival(searchResult, departure);
                     fillParams(params, null, thisDeparture.plusSeconds(DateTimeUtils.MIN_TRANSFER_SECONDS).getMillis(), maxTransfers - searchResult.getNumberOfTransfers() - 1);
                     result = session.query(query, params, true);
                     for(Map<String, Object> searchResultMap : result) {
@@ -113,7 +129,7 @@ public class SearchServiceImpl implements SearchService {
                     //osetreni pulnoci - pokud je direct pred pulnoci a transfered po pulnoci nebo pokud je direct mensi tak beru ten, jinak transfered
                     final boolean directOverMidnight = searchResult.getDeparture() > directSearchResult.getArrival();
                     final boolean transferedOverMidnight = searchResult.getDeparture() > transferedSearchResult.getArrival();
-                    if((transferedOverMidnight && !directOverMidnight) || directSearchResult.getArrival() <= transferedSearchResult.getArrival()) {
+                    if((transferedOverMidnight && !directOverMidnight) || directSearchResult.getArrival() < transferedSearchResult.getArrival()) {
                         thisSearchResult = directSearchResult;
                     } else {
                         thisSearchResult = transferedSearchResult;
@@ -129,7 +145,40 @@ public class SearchServiceImpl implements SearchService {
 
                 //ted musim oboje zmergovat do jednoho vysledku - tedy start -> prestup a prestup -> end
                 SearchResult ret = mergeResults(searchResult, thisSearchResult);
-                thisRetList.add(ret);
+
+                //kouknu, jestli s predchozim vysledkem nemam nejaky spolecny stopTime, pokud ano, tak ten minuly smazu a nahraju jen tento
+                if(!thisRetList.isEmpty()) {
+                    SearchResult prevSearchResult = thisRetList.get(thisRetList.size() - 1);
+                    Set<Long> prevStopTimes = new HashSet<>(prevSearchResult.getStopTimes());
+                    Set<Long> thisStopTimes = new HashSet<>(ret.getStopTimes());
+
+                    if(!Collections.disjoint(prevStopTimes, thisStopTimes)) {
+                        //mam nejaky spolecny stopTime, ten horsi vysledek tedy smazu
+                        if(new SearchResultByDepartureDateComparator().compare(prevSearchResult, ret) > 0) {
+                            //lepsi je ten novy, takze ten minuly musim smazat a pridat ten novy
+                            thisRetList.remove(thisRetList.size() - 1);
+                            thisRetList.add(ret);
+                        }
+                    } else {
+                        thisRetList.add(ret);
+                    }
+                } else {
+                    thisRetList.add(ret);
+                }
+
+            }
+
+            //pokud neni nyni thisRetList plny na pozadovany pocet, tak je treba nejake vysledky doplnit
+            //zavolame rekurzivne vyhledavani s posunutym casem odjezdu a dalsimi upravenymi atributy
+            if(thisRetList.size() < SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS) {
+
+                //departure bude o vterinu vyssi, nez byl dozatim nalezeny vyjezd ze stopFromName
+                DateTime nextDeparture = currentMaxDepartureFromStart.plusSeconds(1);
+                if(nextDeparture.isBefore(maxDeparture)) {
+                    //a rekurzivne volam jen pokud mam jeste nejaky cas k hledani
+//                    return searchService.findPathByDepartureDate(stopFromName, stopToName, stopThroughName, nextDeparture, maxDeparture,
+//                        maxTransfers, SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS - thisRetList.size(), withWheelChair, thisRetList);
+                }
             }
 
             return thisRetList;
@@ -158,7 +207,7 @@ public class SearchServiceImpl implements SearchService {
         ret.setTravelTime(travelTime);
         ret.setNumberOfTransfers(searchResult.getNumberOfTransfers() + thisSearchResult.getNumberOfTransfers() + 1);
         ret.setOverMidnightDeparture(searchResult.isOverMidnightDeparture());
-        ret.setOverMidnightArrival(searchResult.isOverMidnightDeparture() || thisSearchResult.isOverMidnightArrival() || thisSearchResult.getArrival() < searchResult.getDeparture());
+        ret.setOverMidnightArrival(searchResult.isOverMidnightArrival() || thisSearchResult.isOverMidnightArrival() || thisSearchResult.getArrival() < searchResult.getDeparture());
 
         List<Long> stopTimes = new ArrayList<>(searchResult.getStopTimes());
         List<Long> thisStopTimes = new ArrayList<>(thisSearchResult.getStopTimes());
@@ -167,6 +216,9 @@ public class SearchServiceImpl implements SearchService {
         if(stopTimes.get(stopTimes.size() - 1).equals(thisStopTimes.get(0))) {
             stopTimes.remove(stopTimes.size() - 1);
             thisStopTimes.remove(0);
+
+            //a soucasne ubiram jeden prestup, protoze jsem ve skutecnosti neprestoupil ale zustal ve stejnem voze
+            ret.setNumberOfTransfers(ret.getNumberOfTransfers() - 1);
         }
 
         stopTimes.addAll(thisStopTimes);
@@ -178,17 +230,30 @@ public class SearchServiceImpl implements SearchService {
     /**
      * @param searchResult vysledek vyhledavani
      * @param departure caj vyjezdu od
+     * @return spravny datum dle departure ale zvyseny o 1 den, pokud byl prijezd po pulnoci
+     */
+    private DateTime getThisDateTime(SearchResult searchResult, DateTime departure) {
+        return searchResult.isOverMidnightArrival() ? new DateTime(departure).plusDays(1) : new DateTime(departure);
+    }
+
+    /**
+     * @param searchResult vysledek vyhledavani
+     * @param departure caj vyjezdu od
      * @return spravny datum ziskany ze searchResult.getArrival a naroubovany na den departure (tedy vteriny arrival se nastavi do dne departure)
      */
-    private DateTime getThisDeparture(SearchResult searchResult, DateTime departure) {
-        DateTime thisDeparture;
-        if(!searchResult.isOverMidnightArrival()) {
-            thisDeparture = new DateTime(departure);
-        } else {
-            thisDeparture = new DateTime(departure).plusDays(1);
-        }
-
+    private DateTime getThisArrival(SearchResult searchResult, DateTime departure) {
+        final DateTime thisDeparture = getThisDateTime(searchResult, departure);
         return thisDeparture.withMillisOfDay((int) searchResult.getArrival() * 1000);
+    }
+
+    /**
+     * @param searchResult vysledek vyhledavani
+     * @param departure caj vyjezdu od
+     * @return spravny datum ziskany ze searchResult.getDeparture a naroubovany na den departure (tedy vteriny departure se nastavi do dne departure)
+     */
+    private DateTime getThisDeparture(SearchResult searchResult, DateTime departure) {
+        final DateTime thisDeparture = getThisDateTime(searchResult, departure);
+        return thisDeparture.withMillisOfDay((int) searchResult.getDeparture() * 1000);
     }
 
     /**

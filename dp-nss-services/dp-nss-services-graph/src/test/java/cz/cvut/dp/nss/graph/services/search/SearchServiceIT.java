@@ -28,11 +28,12 @@ public class SearchServiceIT extends AbstractServiceIT {
         final String through = "Můstek";
         final DateTimeFormatter formatter = DateTimeFormat.forPattern(DateTimeUtils.DATE_TIME_PATTERN);
         final DateTime departureDateTime = formatter.parseDateTime("02.02.2017 9:00");
-        final int maxHoursAfterDeparture = 3;
+        final DateTime maxDepartureDateTime = new DateTime(departureDateTime).plusHours(SearchService.DEFAULT_MAX_HOUR_AFTER_DEPARTURE);
         final int maxTransfers = 2;
 
         List<SearchResult> pathByDepartureDate =
-            searchService.findPathByDepartureDate(from, to, through, departureDateTime, maxHoursAfterDeparture, maxTransfers, false);
+            searchService.findPathByDepartureDate(from, to, through, departureDateTime, maxDepartureDateTime, maxTransfers,
+                SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS, false, null);
         Assert.assertNotNull(pathByDepartureDate);
     }
 
