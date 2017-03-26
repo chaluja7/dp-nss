@@ -101,7 +101,10 @@
                     <td>{{stopTime.stop.name}}</td>
                     <td><span *ngIf="odd">{{stopTime.arrival}}</span></td>
                     <td><span *ngIf="even">{{stopTime.departure}}</span></td>
-                    <td *ngIf="even" [attr.rowspan]="2" class="vertical-middle">{{stopTime.trip.route.shortName}}</td>
+                    <td *ngIf="even" [attr.rowspan]="2" class="vertical-middle">
+                        <route-img [routeType]="stopTime.trip.route.typeCode"></route-img>
+                        {{stopTime.trip.route.shortName}}
+                    </td>
                 </tr>
             </table>
             <div class="alert alert-info">

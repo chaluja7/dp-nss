@@ -56,6 +56,7 @@ import {TripsComponent} from "./_admin/trip/trips.component";
 import {AdminTripService} from "./_service/_admin/admin-trip.service";
 import {TripComponent} from "./_admin/trip/trip.component";
 import {TripNewComponent} from "./_admin/trip/trip-new.component";
+import {RouteImgComponent} from "./route-img/route-img.component";
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import {TripNewComponent} from "./_admin/trip/trip-new.component";
     ShapeNewComponent,
     TripsComponent,
     TripComponent,
-    TripNewComponent
+    TripNewComponent,
+    RouteImgComponent
   ],
   imports: [
     BrowserModule,
