@@ -103,7 +103,7 @@
                     <td><span *ngIf="even">{{stopTime.departure}}</span></td>
                     <td *ngIf="even" [attr.rowspan]="2" class="vertical-middle">
                         <route-img [routeType]="stopTime.trip.route.typeCode"></route-img>
-                        {{stopTime.trip.route.shortName}}
+                        <a href="/#/search-trip/{{stopTime.trip.id}}?firstStopTime={{stopTime.id}}&lastStopTime={{searchResult.stopTimes[i + 1].id}}" target="search_trip">{{stopTime.trip.route.shortName}}</a>
                     </td>
                 </tr>
             </table>

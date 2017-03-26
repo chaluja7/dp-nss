@@ -113,7 +113,7 @@ public class AdminCalendarController extends AdminAbstractController {
         calendarService.delete(calendar.getId());
     }
 
-    private static CalendarWrapper getCalendarWrapper(Calendar calendar) {
+    public static CalendarWrapper getCalendarWrapper(Calendar calendar) {
         if(calendar == null) return null;
 
         CalendarWrapper wrapper = new CalendarWrapper();

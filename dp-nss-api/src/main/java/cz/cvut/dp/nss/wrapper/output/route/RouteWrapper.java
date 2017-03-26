@@ -1,5 +1,6 @@
 package cz.cvut.dp.nss.wrapper.output.route;
 
+import cz.cvut.dp.nss.wrapper.output.agency.AgencyWrapper;
 import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
 
 /**
@@ -19,6 +20,8 @@ public class RouteWrapper extends AbstractWrapper<String> {
     private String agencyId;
 
     private String agencyName;
+
+    private AgencyWrapper agency;
 
     public String getShortName() {
         return shortName;
@@ -66,5 +69,13 @@ public class RouteWrapper extends AbstractWrapper<String> {
 
     public void setAgencyName(String agencyName) {
         this.agencyName = agencyName;
+    }
+
+    public AgencyWrapper getAgency() {
+        return agency;
+    }
+
+    public void setAgency(AgencyWrapper agency) {
+        this.agency = agency;
     }
 }

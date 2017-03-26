@@ -1,6 +1,7 @@
 package cz.cvut.dp.nss.wrapper.output.stopTime;
 
 import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
+import cz.cvut.dp.nss.wrapper.output.stop.StopWrapper;
 
 /**
  * @author jakubchalupa
@@ -15,6 +16,8 @@ public class StopTimeWrapper extends AbstractWrapper<Long> {
     private Integer sequence;
 
     private String stopId;
+
+    private StopWrapper stop;
 
     public String getArrival() {
         return arrival;
@@ -48,4 +51,11 @@ public class StopTimeWrapper extends AbstractWrapper<Long> {
         this.stopId = stopId;
     }
 
+    public StopWrapper getStop() {
+        return stop;
+    }
+
+    public void setStop(StopWrapper stop) {
+        this.stop = stop;
+    }
 }

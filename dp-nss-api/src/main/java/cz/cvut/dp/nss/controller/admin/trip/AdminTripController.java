@@ -1,6 +1,9 @@
 package cz.cvut.dp.nss.controller.admin.trip;
 
 import cz.cvut.dp.nss.controller.admin.AdminAbstractController;
+import cz.cvut.dp.nss.controller.admin.calendar.AdminCalendarController;
+import cz.cvut.dp.nss.controller.admin.route.AdminRouteController;
+import cz.cvut.dp.nss.controller.admin.stop.AdminStopController;
 import cz.cvut.dp.nss.controller.admin.wrapper.OrderWrapper;
 import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.exception.ResourceNotFoundException;
@@ -82,7 +85,7 @@ public class AdminTripController extends AdminAbstractController {
         httpHeaders.add(X_COUNT_HEADER, tripService.getCountByFilter(filter) + "");
 
         for(Trip trip : trips) {
-            wrappers.add(getTripWrapper(trip, false));
+            wrappers.add(getTripWrapper(trip, false, false));
         }
 
         return new ResponseEntity<>(wrappers, httpHeaders, HttpStatus.OK);
@@ -93,7 +96,7 @@ public class AdminTripController extends AdminAbstractController {
         Trip trip = tripService.getLazyInitialized(id);
         if(trip == null) throw new ResourceNotFoundException();
 
-        TripWrapper wrapper = getTripWrapper(trip, true);
+        TripWrapper wrapper = getTripWrapper(trip, true, false);
         wrapper.setCanBeDeleted(true);
         return wrapper;
     }
@@ -103,7 +106,7 @@ public class AdminTripController extends AdminAbstractController {
         Trip trip = getTrip(wrapper);
         tripService.create(trip);
 
-        return getResponseCreated(getTripWrapper(tripService.getLazyInitialized(trip.getId()), true));
+        return getResponseCreated(getTripWrapper(tripService.getLazyInitialized(trip.getId()), true, false));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -115,7 +118,7 @@ public class AdminTripController extends AdminAbstractController {
         trip.setId(id);
         tripService.update(trip);
 
-        return getTripWrapper(trip, true);
+        return getTripWrapper(trip, true, false);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -129,7 +132,7 @@ public class AdminTripController extends AdminAbstractController {
         tripService.delete(trip.getId());
     }
 
-    private static TripWrapper getTripWrapper(Trip trip, boolean withStopTimes) {
+    public static TripWrapper getTripWrapper(Trip trip, boolean withStopTimes, boolean withAgency) {
         if(trip == null) return null;
 
         TripWrapper wrapper = new TripWrapper();
@@ -138,10 +141,14 @@ public class AdminTripController extends AdminAbstractController {
         if(trip.getRoute() != null) {
             wrapper.setRouteId(trip.getRoute().getId());
             wrapper.setRouteShortName(trip.getRoute().getShortName());
+            wrapper.setRoute(AdminRouteController.getRouteWrapper(trip.getRoute(), withAgency));
         }
         if(trip.getTripWheelchairAccessibleType() != null) wrapper.setWheelChairCode(trip.getTripWheelchairAccessibleType().getCode());
         wrapper.setShapeId(trip.getShapeId());
-        if(trip.getCalendar() != null) wrapper.setCalendarId(trip.getCalendar().getId());
+        if(trip.getCalendar() != null) {
+            wrapper.setCalendarId(trip.getCalendar().getId());
+            wrapper.setCalendar(AdminCalendarController.getCalendarWrapper(trip.getCalendar()));
+        }
 
         if(withStopTimes && trip.getStopTimes() != null) {
             List<StopTimeWrapper> stopTimeWrappers = new ArrayList<>();
@@ -160,7 +167,10 @@ public class AdminTripController extends AdminAbstractController {
         StopTimeWrapper wrapper = new StopTimeWrapper();
         wrapper.setId(stopTime.getId());
         wrapper.setSequence(stopTime.getSequence());
-        if(stopTime.getStop() != null) wrapper.setStopId(stopTime.getStop().getId());
+        if(stopTime.getStop() != null) {
+            wrapper.setStopId(stopTime.getStop().getId());
+            wrapper.setStop(AdminStopController.getStopWrapper(stopTime.getStop()));
+        }
         //schvalne zde neni trip, protoze stopTimes vzdy vybirame pouze v ramci tripu, takze jsou na nej navazane
 
         if(stopTime.getArrival() != null) {

@@ -9,6 +9,8 @@ import cz.cvut.dp.nss.wrapper.output.trip.TripWithRouteWrapper;
  */
 public class SearchStopTimeWrapper {
 
+    private Long id;
+
     /**
      * stanice
      */
@@ -22,6 +24,14 @@ public class SearchStopTimeWrapper {
 
     public StopWrapper getStop() {
         return stop;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setStop(StopWrapper stop) {

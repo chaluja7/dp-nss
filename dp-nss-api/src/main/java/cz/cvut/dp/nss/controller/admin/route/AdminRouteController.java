@@ -1,6 +1,7 @@
 package cz.cvut.dp.nss.controller.admin.route;
 
 import cz.cvut.dp.nss.controller.admin.AdminAbstractController;
+import cz.cvut.dp.nss.controller.admin.agency.AdminAgencyController;
 import cz.cvut.dp.nss.controller.admin.wrapper.OrderWrapper;
 import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.exception.ResourceNotFoundException;
@@ -131,6 +132,7 @@ public class AdminRouteController extends AdminAbstractController {
         if(withAgency) {
             wrapper.setAgencyId(route.getAgency() != null ? route.getAgency().getId() : null);
             wrapper.setAgencyName(route.getAgency() != null ? route.getAgency().getName() : null);
+            wrapper.setAgency(AdminAgencyController.getAgencyWrapper(route.getAgency()));
         }
 
         return wrapper;

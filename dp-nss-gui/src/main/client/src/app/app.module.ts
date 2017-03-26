@@ -57,6 +57,8 @@ import {AdminTripService} from "./_service/_admin/admin-trip.service";
 import {TripComponent} from "./_admin/trip/trip.component";
 import {TripNewComponent} from "./_admin/trip/trip-new.component";
 import {RouteImgComponent} from "./route-img/route-img.component";
+import {SearchTripComponent} from "./search/trip/search-trip.component";
+import {TripService} from "./_service/trip.service";
 
 @NgModule({
   declarations: [
@@ -91,7 +93,8 @@ import {RouteImgComponent} from "./route-img/route-img.component";
     TripsComponent,
     TripComponent,
     TripNewComponent,
-    RouteImgComponent
+    RouteImgComponent,
+    SearchTripComponent
   ],
   imports: [
     BrowserModule,
@@ -121,7 +124,8 @@ import {RouteImgComponent} from "./route-img/route-img.component";
       AdminRouteService,
       AdminCalendarService,
       AdminShapeService,
-      AdminTripService
+      AdminTripService,
+      TripService
   ],
   bootstrap: [AppComponent]
 })

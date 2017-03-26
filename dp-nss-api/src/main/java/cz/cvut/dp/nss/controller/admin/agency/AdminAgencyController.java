@@ -108,7 +108,7 @@ public class AdminAgencyController extends AdminAbstractController {
         agencyService.delete(agency.getId());
     }
 
-    private static AgencyWrapper getAgencyWrapper(Agency agency) {
+    public static AgencyWrapper getAgencyWrapper(Agency agency) {
         if(agency == null) return null;
 
         AgencyWrapper wrapper = new AgencyWrapper();

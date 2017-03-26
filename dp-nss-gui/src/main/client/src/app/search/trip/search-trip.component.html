@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-md-12">
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+        <div *ngIf="trip">
+            <h3>Spoj "{{trip.route?.typeCode | routeType}} {{trip.route?.shortName}}"</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Stanice</th>
+                    <th>Příjezd</th>
+                    <th>Odjezd</th>
+                </tr>
+                <tr *ngFor="let stopTime of trip.stopTimes">
+                    <td [style.font-weight]="getStopTimeFontWeight(stopTime.id)">{{stopTime.stop?.name}}</td>
+                    <td [style.font-weight]="getStopTimeFontWeight(stopTime.id)">{{stopTime.arrival}}</td>
+                    <td [style.font-weight]="getStopTimeFontWeight(stopTime.id)">{{stopTime.departure}}</td>
+                </tr>
+            </table>
+
+            <div class="alert alert-info">
+                <strong>Dopravce: </strong> {{trip.route?.agency?.name}}
+            </div>
+
+            <div class="alert alert-info">
+                <div>
+                    <strong>Jede: </strong> {{trip.calendar?.startDate}} - {{trip.calendar?.endDate}}
+                </div>
+                <div>
+                    <strong>Ve dnech: </strong>{{getTripCalendarDays(trip.calendar)}}
+                </div>
+                <div *ngIf="includeDays.length > 0">
+                    <strong>Navíc ve dnech: </strong>
+                    <span *ngFor="let day of includeDays; let last = last;">
+                        {{day}}<span *ngIf="!last">, </span>
+                    </span>
+                </div>
+                <div *ngIf="excludeDays.length > 0">
+                    <strong>Ale mimo dny: </strong>
+                    <span *ngFor="let day of excludeDays; let last = last;">
+                        {{day}}<span *ngIf="!last">, </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

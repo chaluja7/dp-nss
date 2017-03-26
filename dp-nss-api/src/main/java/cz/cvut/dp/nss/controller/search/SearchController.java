@@ -99,6 +99,7 @@ public class SearchController extends AbstractController {
         final String arrival = stopTime.getArrival() != null ? stopTime.getArrival().toString() : null;
         final String departure = stopTime.getDeparture() != null ? stopTime.getDeparture().toString() : null;
 
+        wrapper.setId(stopTime.getId());
         wrapper.setArrival(arrival);
         wrapper.setDeparture(departure);
         wrapper.setStop(AdminStopController.getStopWrapper(stopTime.getStop()));

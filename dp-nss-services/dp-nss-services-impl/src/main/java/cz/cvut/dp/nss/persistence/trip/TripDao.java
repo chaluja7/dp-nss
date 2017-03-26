@@ -121,7 +121,7 @@ public class TripDao extends AbstractGenericJpaDao<Trip, String> {
     public Trip getLazyInitialized(String id) {
         final String queryString = "select t from Trip t left outer join fetch t.calendar c " +
             "left outer join fetch t.route r left outer join fetch t.stopTimes st left outer join fetch st.stop s " +
-            "where t.id = :id";
+            "left outer join fetch r.agency a where t.id = :id";
 
         Query<Trip> query = sessionFactory.getCurrentSession().createQuery(queryString, Trip.class);
         query.setParameter("id", id);

@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.wrapper.output.trip;
 
+import cz.cvut.dp.nss.wrapper.output.calendar.CalendarWrapper;
 import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
+import cz.cvut.dp.nss.wrapper.output.route.RouteWrapper;
 import cz.cvut.dp.nss.wrapper.output.stopTime.StopTimeWrapper;
 
 import java.util.List;
@@ -22,6 +24,10 @@ public class TripWrapper extends AbstractWrapper<String> {
     private String routeId;
 
     private String routeShortName;
+
+    private RouteWrapper route;
+
+    private CalendarWrapper calendar;
 
     private List<StopTimeWrapper> stopTimes;
 
@@ -79,5 +85,21 @@ public class TripWrapper extends AbstractWrapper<String> {
 
     public void setStopTimes(List<StopTimeWrapper> stopTimes) {
         this.stopTimes = stopTimes;
+    }
+
+    public RouteWrapper getRoute() {
+        return route;
+    }
+
+    public void setRoute(RouteWrapper route) {
+        this.route = route;
+    }
+
+    public CalendarWrapper getCalendar() {
+        return calendar;
+    }
+
+    public void setCalendar(CalendarWrapper calendar) {
+        this.calendar = calendar;
     }
 }
