@@ -1,0 +1,11 @@
+<sebm-google-map [latitude]="stop?.lat" [longitude]="stop?.lon" [zoom]="13">
+    <sebm-google-map-marker [latitude]="stop?.lat" [longitude]="stop?.lon">
+        <sebm-google-map-info-window>
+            <h5>{{stop?.name}} ({{stop?.id}})</h5>
+            <strong>GPS:</strong> {{stop?.lat}}, {{stop?.lon}}<br/>
+            <strong>Bezbariérová:</strong>
+            <span *ngIf="stop && stop.wheelChairCode === 1">Ano</span>
+            <span *ngIf="!stop || stop.wheelChairCode !== 1">Ne</span>
+        </sebm-google-map-info-window>
+    </sebm-google-map-marker>
+</sebm-google-map>

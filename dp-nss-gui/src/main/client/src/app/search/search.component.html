@@ -98,7 +98,12 @@
                     <td *ngIf="first">{{searchResult.departureDate}}</td>
                     <td [attr.rowspan]="searchResult.stopTimes.length - 2" *ngIf="i === 1 && !last"></td>
                     <td *ngIf="last">{{searchResult.arrivalDate}}</td>
-                    <td>{{stopTime.stop.name}}</td>
+                    <td>
+                        <span *ngIf="stopTime.stop.lat === null && stopTime.stop.lon === null">{{stopTime.stop.name}}</span>
+                        <a *ngIf="stopTime.stop.lat !== null && stopTime.stop.lon !== null" href="/#/search-stop/{{searchModelClone.timeTableId}}/{{stopTime.stop.id}}" target="search_stop">
+                            {{stopTime.stop.name}}
+                        </a>
+                    </td>
                     <td><span *ngIf="odd">{{stopTime.arrival}}</span></td>
                     <td><span *ngIf="even">{{stopTime.departure}}</span></td>
                     <td *ngIf="even" [attr.rowspan]="2" class="vertical-middle">

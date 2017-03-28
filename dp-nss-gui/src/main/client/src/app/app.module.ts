@@ -13,7 +13,6 @@ import {StopService} from "./_service/stop.service";
 import {DateService} from "./_service/date.service";
 import {SearchService} from "./_service/search.service";
 import {ErrorService} from "./_service/error.service";
-import {StopSearchComponent} from "./stop/stop-search.component";
 import {SearchComponent} from "./search/search.component";
 import {NKDatetimeModule} from "ng2-datetime/ng2-datetime";
 import {Ng2CompleterModule} from "ng2-completer";
@@ -59,6 +58,8 @@ import {TripNewComponent} from "./_admin/trip/trip-new.component";
 import {RouteImgComponent} from "./route-img/route-img.component";
 import {SearchTripComponent} from "./search/trip/search-trip.component";
 import {TripService} from "./_service/trip.service";
+import {AgmCoreModule} from "angular2-google-maps/core";
+import {SearchStopComponent} from "./search/stop/search-stop.component";
 
 @NgModule({
   declarations: [
@@ -67,7 +68,6 @@ import {TripService} from "./_service/trip.service";
     LoginComponent,
     TimeTablesComponent,
     TimeTableComponent,
-    StopSearchComponent,
     SearchComponent,
     StopsComponent,
     StopComponent,
@@ -94,7 +94,8 @@ import {TripService} from "./_service/trip.service";
     TripComponent,
     TripNewComponent,
     RouteImgComponent,
-    SearchTripComponent
+    SearchTripComponent,
+    SearchStopComponent
   ],
   imports: [
     BrowserModule,
@@ -103,7 +104,10 @@ import {TripService} from "./_service/trip.service";
     AppRoutingModule,
     NKDatetimeModule,
     Ng2CompleterModule,
-    MdProgressBarModule
+    MdProgressBarModule,
+    AgmCoreModule.forRoot({
+        apiKey: 'AIzaSyDbG9yEX9XujpyaKn68wG3e4laNNa_roOI'
+    })
   ],
   providers: [
       UserService,

@@ -25,6 +25,7 @@ import {TripsComponent} from "./_admin/trip/trips.component";
 import {TripComponent} from "./_admin/trip/trip.component";
 import {TripNewComponent} from "./_admin/trip/trip-new.component";
 import {SearchTripComponent} from "./search/trip/search-trip.component";
+import {SearchStopComponent} from "./search/stop/search-stop.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -50,7 +51,8 @@ const routes: Routes = [
   { path: 'trip', component: TripsComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'trip/create', component: TripNewComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'trip/:id', component: TripComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'search-trip/:schema/:id', component: SearchTripComponent }
+  { path: 'search-trip/:schema/:id', component: SearchTripComponent },
+  { path: 'search-stop/:schema/:id', component: SearchStopComponent }
 ];
 
 @NgModule({

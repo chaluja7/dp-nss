@@ -84,3 +84,8 @@ ul.pagination li a {
 #whenDate > div > div.input-group.date {
     width: 100%;
 }
+
+/*google maps*/
+.sebm-google-map-container {
+    height: 500px;
+}
