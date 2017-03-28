@@ -23,6 +23,7 @@ export class SearchStopComponent {
 
   search(): void {
       this.error = null;
+      this.stop = null;
 
       this.route.params
           .switchMap((params: Params) => this.stopService.getStop(params['schema'], params['id']))
@@ -30,7 +31,7 @@ export class SearchStopComponent {
                 this.stop = stop;
               },
               err  => {
-                  this.error = 'Chyba při načítání jízdy.';
+                  this.error = 'Chyba při načítání stanice.';
               });
 
   }

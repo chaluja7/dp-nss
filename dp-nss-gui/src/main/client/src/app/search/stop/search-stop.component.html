@@ -1,4 +1,6 @@
-<sebm-google-map [latitude]="stop?.lat" [longitude]="stop?.lon" [zoom]="13">
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+<sebm-google-map *ngIf="stop" [latitude]="stop?.lat" [longitude]="stop?.lon" [zoom]="13">
     <sebm-google-map-marker [latitude]="stop?.lat" [longitude]="stop?.lon">
         <sebm-google-map-info-window>
             <h5>{{stop?.name}} ({{stop?.id}})</h5>
