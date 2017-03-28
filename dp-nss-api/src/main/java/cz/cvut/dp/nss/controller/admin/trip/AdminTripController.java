@@ -3,6 +3,7 @@ package cz.cvut.dp.nss.controller.admin.trip;
 import cz.cvut.dp.nss.controller.admin.AdminAbstractController;
 import cz.cvut.dp.nss.controller.admin.calendar.AdminCalendarController;
 import cz.cvut.dp.nss.controller.admin.route.AdminRouteController;
+import cz.cvut.dp.nss.controller.admin.shape.AdminShapeController;
 import cz.cvut.dp.nss.controller.admin.stop.AdminStopController;
 import cz.cvut.dp.nss.controller.admin.wrapper.OrderWrapper;
 import cz.cvut.dp.nss.exception.BadRequestException;
@@ -13,6 +14,7 @@ import cz.cvut.dp.nss.services.common.DateTimeUtils;
 import cz.cvut.dp.nss.services.common.EnumUtils;
 import cz.cvut.dp.nss.services.route.Route;
 import cz.cvut.dp.nss.services.route.RouteService;
+import cz.cvut.dp.nss.services.shape.Shape;
 import cz.cvut.dp.nss.services.shape.ShapeFilter;
 import cz.cvut.dp.nss.services.shape.ShapeService;
 import cz.cvut.dp.nss.services.stop.Stop;
@@ -133,6 +135,10 @@ public class AdminTripController extends AdminAbstractController {
     }
 
     public static TripWrapper getTripWrapper(Trip trip, boolean withStopTimes, boolean withAgency) {
+        return getTripWrapper(trip, withStopTimes, withAgency, null);
+    }
+
+    public static TripWrapper getTripWrapper(Trip trip, boolean withStopTimes, boolean withAgency, List<Shape> shapes) {
         if(trip == null) return null;
 
         TripWrapper wrapper = new TripWrapper();
@@ -156,6 +162,13 @@ public class AdminTripController extends AdminAbstractController {
                 stopTimeWrappers.add(getStopTimeWrapper(stopTime));
             }
             wrapper.setStopTimes(stopTimeWrappers);
+        }
+
+        if(shapes != null && !shapes.isEmpty()) {
+            wrapper.setShapes(new ArrayList<>());
+            for(Shape shape : shapes) {
+                wrapper.getShapes().add(AdminShapeController.getShapeWrapper(shape));
+            }
         }
 
         return wrapper;

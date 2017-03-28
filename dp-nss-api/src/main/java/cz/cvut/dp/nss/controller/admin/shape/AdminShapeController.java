@@ -147,7 +147,7 @@ public class AdminShapeController extends AdminAbstractController {
         return wrappers;
     }
 
-    private static ShapeWrapper getShapeWrapper(Shape shape) {
+    public static ShapeWrapper getShapeWrapper(Shape shape) {
         if(shape == null) return null;
 
         ShapeWrapper wrapper = new ShapeWrapper();

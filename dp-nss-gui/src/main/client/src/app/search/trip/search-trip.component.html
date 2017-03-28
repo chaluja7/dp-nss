@@ -3,7 +3,19 @@
         <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 
         <div *ngIf="trip">
-            <h3>Spoj "{{trip.route?.typeCode | routeType}} {{trip.route?.shortName}}"</h3>
+            <div class="row padding-top-20">
+                <div class="col-md-10">
+                    <h3 class="margin-top-0">Spoj "{{trip.route?.typeCode | routeType}} {{trip.route?.shortName}}"</h3>
+                </div>
+                <div class="col-md-2">
+                    <div class="pull-right">
+                        <a *ngIf="trip.shapeId" class="btn btn-info" href="/#/search-trip-map/{{schema}}/{{trip.id}}" target="search_trip_map">
+                            <i class="fa fa-map" aria-hidden="true"></i>
+                            Mapa
+                        </a>
+                    </div>
+                </div>
+            </div>
             <table class="table table-bordered">
                 <tr>
                     <th>Stanice</th>

@@ -1,0 +1,20 @@
+<div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+<!-- TODO bylo by pekne pocitat zoom na zaklade delky tripu aby to bylo hezky odzoomovane-->
+<!-- TODO taky by bylo hezke aby byl otevreny jen jeden info dialog najednou - tedy listenera na click a vsechny zavrit -->
+<!-- TODO a zvyraznit zastavky ktere by mely prijit jako GET parametry (napr jina barva) -->
+<sebm-google-map *ngIf="trip && trip.shapes" [latitude]="mapCenterLat" [longitude]="mapCenterLon" [zoom]="13">
+    <sebm-google-map-polyline>
+        <sebm-google-map-polyline-point *ngFor="let shape of trip.shapes" [latitude]="shape.lat" [longitude]="shape.lon">
+        </sebm-google-map-polyline-point>
+    </sebm-google-map-polyline>
+    <sebm-google-map-marker *ngFor="let stopTime of trip.stopTimes" [latitude]="stopTime.stop?.lat" [longitude]="stopTime.stop?.lon">
+        <sebm-google-map-info-window [disableAutoPan]="true">
+            <h5>{{stopTime.stop?.name}} ({{stopTime.stop?.id}})</h5>
+            <strong>GPS:</strong> {{stopTime.stop?.lat}}, {{stopTime.stop?.lon}}<br/>
+            <strong>Bezbariérová:</strong>
+            <span *ngIf="stopTime.stop && stopTime.stop.wheelChairCode === 1">Ano</span>
+            <span *ngIf="!stopTime.stop || stopTime.stop.wheelChairCode !== 1">Ne</span>
+        </sebm-google-map-info-window>
+    </sebm-google-map-marker>
+</sebm-google-map>

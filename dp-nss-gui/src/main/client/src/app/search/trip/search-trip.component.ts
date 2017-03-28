@@ -10,6 +10,7 @@ import {TripService} from "../../_service/trip.service";
 })
 export class SearchTripComponent {
 
+    schema: string;
     trip: any;
     includeDays: string[];
     excludeDays: string[];
@@ -35,7 +36,7 @@ export class SearchTripComponent {
       this.error = null;
 
       this.route.params
-          .switchMap((params: Params) => this.tripService.getTrip(params['schema'], params['id']))
+          .switchMap((params: Params) => this.tripService.getTrip(params['schema'], params['id'], false))
           .subscribe(trip => {
                   this.trip = trip;
                   if(trip.calendar && trip.calendar.calendarDates && trip.calendar.calendarDates.length > 0) {
@@ -52,6 +53,9 @@ export class SearchTripComponent {
                   this.error = 'Chyba při načítání jízdy.';
               });
 
+      this.route.params.subscribe((params: Params) => {
+          this.schema = params['schema'];
+      });
       this.route.queryParams.subscribe((params: Params) => {
           this.firstStopTime = params['firstStopTime'];
           this.lastStopTime = params['lastStopTime'];

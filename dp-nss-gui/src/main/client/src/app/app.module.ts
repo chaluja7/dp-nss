@@ -60,6 +60,7 @@ import {SearchTripComponent} from "./search/trip/search-trip.component";
 import {TripService} from "./_service/trip.service";
 import {AgmCoreModule} from "angular2-google-maps/core";
 import {SearchStopComponent} from "./search/stop/search-stop.component";
+import {SearchTripMapComponent} from "./search/trip/search-trip-map.component";
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import {SearchStopComponent} from "./search/stop/search-stop.component";
     TripNewComponent,
     RouteImgComponent,
     SearchTripComponent,
-    SearchStopComponent
+    SearchStopComponent,
+    SearchTripMapComponent
   ],
   imports: [
     BrowserModule,
