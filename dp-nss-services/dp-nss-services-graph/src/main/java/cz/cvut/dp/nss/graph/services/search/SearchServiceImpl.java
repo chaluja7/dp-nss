@@ -176,8 +176,8 @@ public class SearchServiceImpl implements SearchService {
                 DateTime nextDeparture = currentMaxDepartureFromStart.plusSeconds(1);
                 if(nextDeparture.isBefore(maxDeparture)) {
                     //a rekurzivne volam jen pokud mam jeste nejaky cas k hledani
-//                    return searchService.findPathByDepartureDate(stopFromName, stopToName, stopThroughName, nextDeparture, maxDeparture,
-//                        maxTransfers, SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS - thisRetList.size(), withWheelChair, thisRetList);
+                    return searchService.findPathByDepartureDate(stopFromName, stopToName, stopThroughName, nextDeparture, maxDeparture,
+                        maxTransfers, SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS - thisRetList.size(), withWheelChair, thisRetList);
                 }
             }
 

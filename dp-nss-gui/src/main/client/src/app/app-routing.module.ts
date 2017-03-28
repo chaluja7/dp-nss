@@ -50,7 +50,7 @@ const routes: Routes = [
   { path: 'trip', component: TripsComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'trip/create', component: TripNewComponent, canActivate: [AuthWithTimeTableGuard] },
   { path: 'trip/:id', component: TripComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'search-trip/:id', component: SearchTripComponent }
+  { path: 'search-trip/:schema/:id', component: SearchTripComponent }
 ];
 
 @NgModule({

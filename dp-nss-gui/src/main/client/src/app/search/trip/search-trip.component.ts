@@ -1,5 +1,5 @@
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute, Params} from "@angular/router";
+import {Component} from "@angular/core";
+import {ActivatedRoute, Params, Router, NavigationEnd} from "@angular/router";
 import {Location} from "@angular/common";
 import {TripService} from "../../_service/trip.service";
 
@@ -8,7 +8,7 @@ import {TripService} from "../../_service/trip.service";
   selector: 'search-trip-component',
   templateUrl: './search-trip.component.html'
 })
-export class SearchTripComponent implements OnInit {
+export class SearchTripComponent {
 
     trip: any;
     includeDays: string[];
@@ -18,28 +18,36 @@ export class SearchTripComponent implements OnInit {
 
     error = '';
 
-    constructor(protected route: ActivatedRoute, protected location: Location, protected tripService: TripService) {
-
+    constructor(protected route: ActivatedRoute, protected location: Location, protected tripService: TripService, protected router: Router) {
+        //při změně url voláme nový dotaz na search
+        router.events.filter(event => event instanceof NavigationEnd)
+            .subscribe((event: NavigationEnd) => {
+                this.search();
+            });
     }
 
-  ngOnInit(): void {
+  search(): void {
       this.includeDays = [];
       this.excludeDays = [];
+      this.trip = null;
+      this.firstStopTime = null;
+      this.lastStopTime = null;
+      this.error = null;
 
       this.route.params
-          .switchMap((params: Params) => this.tripService.getTrip('pid', params['id']))
+          .switchMap((params: Params) => this.tripService.getTrip(params['schema'], params['id']))
           .subscribe(trip => {
-              this.trip = trip;
-              if(trip.calendar && trip.calendar.calendarDates && trip.calendar.calendarDates.length > 0) {
-                  for(let c of trip.calendar.calendarDates) {
-                      if(c.exceptionType === 1) {
-                          this.includeDays.push(c.date);
-                      } else if(c.exceptionType === 2) {
-                          this.excludeDays.push(c.date);
+                  this.trip = trip;
+                  if(trip.calendar && trip.calendar.calendarDates && trip.calendar.calendarDates.length > 0) {
+                      for(let c of trip.calendar.calendarDates) {
+                          if(c.exceptionType === 1) {
+                              this.includeDays.push(c.date);
+                          } else if(c.exceptionType === 2) {
+                              this.excludeDays.push(c.date);
+                          }
                       }
                   }
-              }
-          },
+              },
               err  => {
                   this.error = 'Chyba při načítání jízdy.';
               });
