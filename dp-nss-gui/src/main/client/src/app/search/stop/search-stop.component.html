@@ -1,5 +1,6 @@
 <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 
+<h3 *ngIf="stop">Stanice "{{stop.name}} ({{stop.id}})"</h3>
 <sebm-google-map *ngIf="stop" [latitude]="stop?.lat" [longitude]="stop?.lon" [zoom]="13">
     <sebm-google-map-marker [latitude]="stop?.lat" [longitude]="stop?.lon">
         <sebm-google-map-info-window>

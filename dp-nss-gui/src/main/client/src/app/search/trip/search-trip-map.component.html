@@ -1,8 +1,9 @@
 <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 
+<h3 *ngIf="trip">Spoj "{{trip.route?.typeCode | routeType}} {{trip.route?.shortName}}"</h3>
 <!-- TODO bylo by pekne pocitat zoom na zaklade delky tripu aby to bylo hezky odzoomovane-->
 <sebm-google-map *ngIf="trip && trip.shapes" [latitude]="mapCenterLat" [longitude]="mapCenterLon" [zoom]="13">
-    <sebm-google-map-polyline>
+    <sebm-google-map-polyline [strokeColor]="trip.route?.color ? '#' + trip.route.color : ''">
         <sebm-google-map-polyline-point *ngFor="let shape of trip.shapes" [latitude]="shape.lat" [longitude]="shape.lon">
         </sebm-google-map-polyline-point>
     </sebm-google-map-polyline>

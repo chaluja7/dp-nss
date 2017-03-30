@@ -20,7 +20,7 @@ public abstract class AbstractServiceIT {
 
     @Before
     public void before() {
-        SchemaThreadLocal.set(SchemaThreadLocal.SCHEMA_PID);
+        SchemaThreadLocal.set(SchemaThreadLocal.SCHEMA_ANNAPOLIS);
     }
 
     @After

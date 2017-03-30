@@ -3,6 +3,7 @@ package cz.cvut.dp.nss.graph;
 import cz.cvut.dp.nss.context.SchemaThreadLocal;
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.session.Session;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -33,31 +34,36 @@ public class Neo4jConfig extends Neo4jConfiguration {
 
     private static final String ENTITY_PACKAGES = "cz.cvut.dp.nss.graph.services";
 
-    private static final Map<String, Configuration> CONFIGURATION_MAP;
+    @Value("${neo4j.bolt.pid}")
+    private String boltPidConnector;
 
-    static {
+    @Value("${neo4j.bolt.annapolis}")
+    private String boltAnnapolisConnector;
+
+    @Bean
+    public Map<String, Configuration> getConfigurationMap() {
         Configuration configPid = new Configuration();
         configPid.driverConfiguration()
             .setDriverClassName(BOLT_DRIVER_CLASS)
-            .setURI("bolt://neo4j:neo@localhost:7687");
+            .setURI(boltPidConnector);
 
         Configuration configAnnapolis = new Configuration();
         configAnnapolis.driverConfiguration()
             .setDriverClassName(BOLT_DRIVER_CLASS)
-            .setURI("bolt://neo4j:neo@localhost:7688");
+            .setURI(boltAnnapolisConnector);
 
         Map<String, Configuration> map = new HashMap<>();
         map.put(SchemaThreadLocal.SCHEMA_ANNAPOLIS, configAnnapolis);
         map.put(SchemaThreadLocal.SCHEMA_PID, configPid);
         //mapa nemusi byt synchronized - je definovana jako static final a nikdy se do ni uz nebude zapisovat
-        CONFIGURATION_MAP = Collections.unmodifiableMap(map);
+        return Collections.unmodifiableMap(map);
     }
 
     @Bean
     public Map<String, SessionFactory> getSessionFactoryMaps() {
         Map<String, SessionFactory> map = new HashMap<>();
 
-        for(Map.Entry<String, Configuration> entry : CONFIGURATION_MAP.entrySet()) {
+        for(Map.Entry<String, Configuration> entry : getConfigurationMap().entrySet()) {
             map.put(entry.getKey(), new SessionFactory(entry.getKey(), entry.getValue(), ENTITY_PACKAGES));
         }
 
@@ -67,7 +73,7 @@ public class Neo4jConfig extends Neo4jConfiguration {
     @Bean
     public org.neo4j.ogm.session.SessionFactory getSessionFactory() {
         //bude pouzito jen pro metadata, proto si mohu dovolit si zde vybrat jednu, tato metoda totiz musi byt prepsana :)
-        return new org.neo4j.ogm.session.SessionFactory(CONFIGURATION_MAP.get(SchemaThreadLocal.SCHEMA_PID), ENTITY_PACKAGES);
+        return new org.neo4j.ogm.session.SessionFactory(getConfigurationMap().get(SchemaThreadLocal.SCHEMA_PID), ENTITY_PACKAGES);
     }
 
     @Bean

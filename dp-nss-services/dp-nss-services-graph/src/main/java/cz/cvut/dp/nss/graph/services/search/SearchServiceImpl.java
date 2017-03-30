@@ -170,7 +170,7 @@ public class SearchServiceImpl implements SearchService {
 
             //pokud neni nyni thisRetList plny na pozadovany pocet, tak je treba nejake vysledky doplnit
             //zavolame rekurzivne vyhledavani s posunutym casem odjezdu a dalsimi upravenymi atributy
-            if(thisRetList.size() < SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS) {
+            if(!thisRetList.isEmpty() && thisRetList.size() < SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS) {
 
                 //departure bude o vterinu vyssi, nez byl dozatim nalezeny vyjezd ze stopFromName
                 DateTime nextDeparture = currentMaxDepartureFromStart.plusSeconds(1);

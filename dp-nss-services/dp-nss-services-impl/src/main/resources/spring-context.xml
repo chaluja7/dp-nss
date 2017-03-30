@@ -18,7 +18,7 @@
 
     <tx:annotation-driven transaction-manager="transactionManager" order="0"/>
 
-    <context:property-placeholder location="classpath:dp-nssLocal.properties" />
+    <context:property-placeholder location="classpath:config.properties" />
 
     <task:annotation-driven executor="executor" />
     <task:executor id="executor" pool-size="20" queue-capacity="20"/>

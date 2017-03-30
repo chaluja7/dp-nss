@@ -21,13 +21,13 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:spring-context.xml"})
 public abstract class AbstractServiceIT {
 
-//    protected static final String GTFS_IN_LOCATION = "/Users/jakubchalupa/Documents/FEL/MGR/DP/gtfs/test/annapolis-transit_20150811_1647";
-    protected static final String GTFS_IN_LOCATION = "/Users/jakubchalupa/Documents/FEL/MGR/DP/gtfs/pid2017/jrdata";
+    protected static final String GTFS_IN_LOCATION = "/Users/jakubchalupa/Documents/FEL/MGR/DP/gtfs/test/annapolis-transit_20150811_1647";
+//    protected static final String GTFS_IN_LOCATION = "/Users/jakubchalupa/Documents/FEL/MGR/DP/gtfs/pid2017/jrdata";
     protected static final String GTFS_OUT_LOCATION = "/tmp/testExportGtfs";
 
     @Before
     public void before() {
-        SchemaThreadLocal.set(SchemaThreadLocal.SCHEMA_PID);
+        SchemaThreadLocal.set(SchemaThreadLocal.SCHEMA_ANNAPOLIS);
     }
 
     @After
