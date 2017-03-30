@@ -12,6 +12,8 @@ export class SearchTripMapComponent {
 
     mapCenterLat: number;
     mapCenterLon: number;
+    firstStopTime = null;
+    lastStopTime = null;
     trip: any;
     error = '';
 
@@ -40,10 +42,29 @@ export class SearchTripMapComponent {
                       this.mapCenterLon = trip.shapes[center].lon;
                   }
 
+                  if(trip.stopTimes) {
+                      for(let stopTime of trip.stopTimes) {
+                          stopTime.isOpen = false;
+                      }
+                  }
+
               },
               err  => {
                   this.error = 'Chyba při načítání jízdy.';
               });
+
+      this.route.queryParams.subscribe((params: Params) => {
+          this.firstStopTime = params['firstStopTime'];
+          this.lastStopTime = params['lastStopTime'];
+      });
   }
+
+    openSimple(stopTimeId: number) {
+        if(this.trip && this.trip.stopTimes && this.trip.stopTimes.length > 0) {
+            this.trip.stopTimes.forEach((i) => {
+                i.isOpen = i.id === stopTimeId;
+            });
+        }
+    }
 
 }

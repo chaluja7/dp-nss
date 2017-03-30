@@ -9,7 +9,9 @@
                 </div>
                 <div class="col-md-2">
                     <div class="pull-right">
-                        <a *ngIf="trip.shapeId" class="btn btn-info" href="/#/search-trip-map/{{schema}}/{{trip.id}}" target="search_trip_map">
+                        <a *ngIf="trip.shapeId" class="btn btn-info"
+                           href="/#/search-trip-map/{{schema}}/{{trip.id}}?firstStopTime={{firstStopTime}}&lastStopTime={{lastStopTime}}"
+                           target="search_trip_map">
                             <i class="fa fa-map" aria-hidden="true"></i>
                             Mapa
                         </a>
