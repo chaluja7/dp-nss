@@ -13,9 +13,11 @@ import java.util.List;
 public interface TripService extends EntityService<Trip, String> {
 
     /**
+     * @param limit max pocet tripu
+     * @param offset offset tripu (razeno dle id tripu asc)
      * @return vsechny tripy s najoinovanymi calendar, stopTimes a stops
      */
-    List<TripWrapper> getAllForInsertToGraph();
+    List<TripWrapper> getAllForInsertToGraph(int limit, int offset);
 
     /**
      * @param calendarId id calendar

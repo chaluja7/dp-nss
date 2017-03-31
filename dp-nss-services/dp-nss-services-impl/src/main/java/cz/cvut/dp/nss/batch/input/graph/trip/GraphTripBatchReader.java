@@ -23,6 +23,10 @@ public class GraphTripBatchReader extends AbstractItemCountingItemStreamItemRead
 
     private Iterator<TripWrapper> trips;
 
+    private int offset = 0;
+
+    private static final int MAX_READ_BATCH_SIZE = 10;
+
     public GraphTripBatchReader() {
         this.setName(ClassUtils.getShortName(GraphTripBatchReader.class));
     }
@@ -33,12 +37,19 @@ public class GraphTripBatchReader extends AbstractItemCountingItemStreamItemRead
             return trips.next();
         }
 
+        //zkusime nacist dalsi davku z db
+        trips = tripService.getAllForInsertToGraph(MAX_READ_BATCH_SIZE, ++offset * MAX_READ_BATCH_SIZE).iterator();
+        if(trips.hasNext()) {
+            return trips.next();
+        }
+
+        //uz opravdu nic nemame
         return null;
     }
 
     @Override
     protected void doOpen() throws Exception {
-        trips = tripService.getAllForInsertToGraph().iterator();
+        trips = tripService.getAllForInsertToGraph(MAX_READ_BATCH_SIZE, offset * MAX_READ_BATCH_SIZE).iterator();
     }
 
     @Override

@@ -67,8 +67,9 @@ public class TripServiceImpl extends AbstractEntityService<Trip, String, TripDao
 
     @Override
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<TripWrapper> getAllForInsertToGraph() {
-        return jdbcTripDao.getAllForInsertToGraph();
+    public List<TripWrapper> getAllForInsertToGraph(int limit, int offset) {
+        if(limit > 1000) limit = 1000;
+        return jdbcTripDao.getAllForInsertToGraph(limit, offset);
     }
 
     @Override
