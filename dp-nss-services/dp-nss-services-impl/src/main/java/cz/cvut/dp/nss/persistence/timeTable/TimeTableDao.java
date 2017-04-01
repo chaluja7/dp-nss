@@ -27,11 +27,11 @@ public class TimeTableDao extends AbstractGenericJpaDao<TimeTable, String> {
      * @return vsechny jizdni rady
      */
     public List<TimeTable> getAll(boolean validOnly) {
-        String queryString = "select distinct t from TimeTable t";
+        String queryString = "select t from TimeTable t";
         if(validOnly) {
             queryString += " where t.valid = true and t.synchronizing = false";
         }
-        queryString += " order by t.name";
+        queryString += " order by case when t.id = 'pid' then 1 else 2 end, t.name";
 
         Query<TimeTable> query = sessionFactory.getCurrentSession().createQuery(queryString, TimeTable.class);
         return query.list();

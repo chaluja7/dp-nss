@@ -68,9 +68,7 @@ export class SearchComponent implements OnInit {
     this.timeTableService.getTimeTables()
         .subscribe(timeTables => {
               this.timeTables = timeTables;
-              // this.searchModel.timeTableId = timeTables.length > 0 ? timeTables[0].id : null;
-              //TODO to nahore plati!
-              this.searchModel.timeTableId = 'pid';
+              this.searchModel.timeTableId = timeTables.length > 0 ? timeTables[0].id : null;
               this.stopSearchTerm = SearchComponent.getStopSearchTerm(this.searchModel.timeTableId);
             },
             err  => {});
@@ -79,15 +77,6 @@ export class SearchComponent implements OnInit {
     this.searchModel.date = new Date();
     this.searchModel.time = new Date();
     this.searchModel.time.setSeconds(0, 0);
-
-    //TODO delete
-    this.searchModel.date.setMonth(1);
-    this.searchModel.date.setDate(2);
-    this.searchModel.time.setHours(9);
-    this.searchModel.time.setMinutes(0);
-
-    this.searchModel.stopFrom = 'Dejvická';
-    this.searchModel.stopTo = 'Karlovo náměstí';
   }
 
   onSubmit() : void {
