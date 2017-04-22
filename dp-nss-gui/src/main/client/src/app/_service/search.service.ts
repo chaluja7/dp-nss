@@ -18,9 +18,10 @@ export class SearchService {
         params.set('stopFromName', searchModel.stopFrom);
         params.set('stopToName', searchModel.stopTo);
         if(searchModel.stopThrough) params.set('stopThroughName', searchModel.stopThrough);
-        params.set('departure', DateService.getFormattedDate(searchModel.date, searchModel.time));
+        params.set('date', DateService.getFormattedDate(searchModel.date, searchModel.time));
         params.set('maxTransfers', searchModel.maxNumOfTransfers + '');
         params.set('withWheelChair', (searchModel.wheelChair === true) + '');
+        params.set('byArrival', (searchModel.byArrival === true) + '');
 
         return this.http
             .get(AppSettings.API_ENDPOINT + AppSettings.getSchemaUrlParam(searchModel.timeTableId) + "/search", params)

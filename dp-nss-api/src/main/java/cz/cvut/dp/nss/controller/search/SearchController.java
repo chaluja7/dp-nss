@@ -41,25 +41,33 @@ public class SearchController extends AbstractController {
      * @param stopFromName stanice z
      * @param stopToName stanice do
      * @param stopThroughName prujezdni/prestupni stanice
-     * @param departure cas vyjezdu
+     * @param date cas vyjezdu nebo prijezdu
      * @param maxTransfers max pocet prestupu
      * @param withWheelChair pokud true tak hledam pouze bezbarierove spoje
+     * @param searchByArrival pokud true tak hledame podle dat prijezdu do cilove stanice
      * @return nalezene vysledky vyhledavani (serazene a vyfiltrovane)
      */
     @RequestMapping(method = RequestMethod.GET)
     public List<SearchResultWrapper> findPaths(@RequestParam("stopFromName") String stopFromName,
                                                @RequestParam("stopToName") String stopToName,
                                                @RequestParam(name = "stopThroughName", required = false) String stopThroughName,
-                                               @RequestParam("departure") String departure,
+                                               @RequestParam("date") String date,
                                                @RequestParam("maxTransfers") int maxTransfers,
-                                               @RequestParam(name = "withWheelChair", required = false) Boolean withWheelChair) {
+                                               @RequestParam(name = "withWheelChair", required = false) Boolean withWheelChair,
+                                               @RequestParam(name = "byArrival", required = false) Boolean searchByArrival) {
 
-        DateTime dateTime = DateTimeUtils.JODA_DATE_TIME_FORMATTER.parseDateTime(departure);
-
+        DateTime dateTime = DateTimeUtils.JODA_DATE_TIME_FORMATTER.parseDateTime(date);
         if(StringUtils.isBlank(stopThroughName)) stopThroughName = null;
-        List<SearchResult> searchResults = searchService.findPathByDepartureDate(stopFromName, stopToName, stopThroughName,
-            dateTime, new DateTime(dateTime).plusHours(SearchService.DEFAULT_MAX_HOUR_AFTER_DEPARTURE), maxTransfers,
-            SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS, Boolean.TRUE.equals(withWheelChair), null);
+
+        List<SearchResult> searchResults;
+        if(Boolean.TRUE.equals(searchByArrival)) {
+            //TODO napsat vyhledavani dle prijezdu
+            throw new UnsupportedOperationException("TODO - vyhledavani dle prijezdu zatim neni napsane");
+        } else {
+            searchResults = searchService.findPathByDepartureDate(stopFromName, stopToName, stopThroughName,
+                dateTime, new DateTime(dateTime).plusHours(SearchService.DEFAULT_MAX_HOUR_AFTER_DEPARTURE), maxTransfers,
+                SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS, Boolean.TRUE.equals(withWheelChair), null);
+        }
 
         List<SearchResultWrapper> searchResultWrappers = new ArrayList<>();
         for(SearchResult searchResult : searchResults) {

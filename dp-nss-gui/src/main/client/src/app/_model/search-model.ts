@@ -7,4 +7,5 @@ export class SearchModel {
   public date: Date;
   public time: Date;
   public wheelChair: boolean;
+  public byArrival: boolean;
 }
