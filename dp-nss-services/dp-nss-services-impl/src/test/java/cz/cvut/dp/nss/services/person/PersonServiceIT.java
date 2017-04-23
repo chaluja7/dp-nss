@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.services.person;
 
 import cz.cvut.dp.nss.exception.BadCredentialsException;
+import cz.cvut.dp.nss.exception.PasswordsDoNotMatchException;
+import cz.cvut.dp.nss.exception.WeakPasswordException;
 import cz.cvut.dp.nss.services.AbstractServiceIT;
 import cz.cvut.dp.nss.services.role.Role;
 import cz.cvut.dp.nss.services.timeTable.TimeTable;
@@ -19,7 +21,7 @@ public class PersonServiceIT extends AbstractServiceIT {
     @Autowired
     private PersonService personService;
 
-    private static final String USER = "user";
+    private static final String USER = "userrrr";
 
     private static final String PASSWORD = "admin";
 
@@ -136,6 +138,43 @@ public class PersonServiceIT extends AbstractServiceIT {
 
         byUsername.setToken(TOKEN);
         personService.update(byUsername);
+    }
+
+    @Test(expected = BadCredentialsException.class)
+    public void testChangePasswordBadCredentials() throws Exception {
+        Person person = getPerson("x" + System.currentTimeMillis(), "z");
+        //insert
+        personService.create(person);
+        personService.changePassword(person.getId(), "x", "y", "y");
+    }
+
+    @Test(expected = WeakPasswordException.class)
+    public void testChangePasswordWeak() throws Exception {
+        Person person = getPerson("xx" + System.currentTimeMillis(), "z");
+        //insert
+        personService.create(person);
+        personService.changePassword(person.getId(), "z", "y", "y");
+    }
+
+    @Test(expected = PasswordsDoNotMatchException.class)
+    public void testChangePasswordDifferent() throws Exception {
+        Person person = getPerson("xxx" + System.currentTimeMillis(), "z");
+        //insert
+        personService.create(person);
+        personService.changePassword(person.getId(), "z", "yyyyyyyy", "zzzzzzzz");
+    }
+
+    @Test
+    public void testChangePassword() throws Exception {
+        final String pwd = "yyyyyyyy";
+        Person person = getPerson("xxxx" + System.currentTimeMillis(), "z");
+        //insert
+        personService.create(person);
+        personService.changePassword(person.getId(), "z", pwd, pwd);
+
+        //find
+        Person retrieved = personService.generateTokenAndGet(person.getUsername(), pwd);
+        Assert.assertNotNull(retrieved);
     }
 
     public static Person getPerson(String username, String password) {

@@ -1,6 +1,6 @@
-export class LoggedUser {
+export class Person {
     id: number;
     username: string;
-    token: string;
     roles: string[];
+    timeTables: string[];
 }

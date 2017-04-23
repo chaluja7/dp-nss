@@ -9,7 +9,7 @@ public class BadCredentialsException extends Exception {
     private static final long serialVersionUID = 1274383793204037527L;
 
     public BadCredentialsException() {
-        super();
+        super("Spatne prihlasovaci udaje.");
     }
 
     public BadCredentialsException(String message) {

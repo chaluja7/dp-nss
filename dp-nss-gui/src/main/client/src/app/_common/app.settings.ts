@@ -19,6 +19,8 @@ export class AppSettings {
 
     public static SAVE_SUCCESS = 'Záznam byl úspěšně uložen.';
 
+    public static PWD_SUCCESS = 'Heslo bylo úspěšně změněno';
+
     public static DELETE_SUCCESS = 'Záznam byl úspěšně smazán.';
 
     public static SAVE_ERROR = 'Chyba při zpracování.';

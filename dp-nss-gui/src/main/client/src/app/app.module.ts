@@ -61,6 +61,8 @@ import {TripService} from "./_service/trip.service";
 import {AgmCoreModule} from "angular2-google-maps/core";
 import {SearchStopComponent} from "./search/stop/search-stop.component";
 import {SearchTripMapComponent} from "./search/trip/search-trip-map.component";
+import {AdminPersonService} from "./_service/_admin/admin-person.service";
+import {PersonComponent} from "./_admin/person/person.component";
 
 @NgModule({
   declarations: [
@@ -97,7 +99,8 @@ import {SearchTripMapComponent} from "./search/trip/search-trip-map.component";
     RouteImgComponent,
     SearchTripComponent,
     SearchStopComponent,
-    SearchTripMapComponent
+    SearchTripMapComponent,
+    PersonComponent
   ],
   imports: [
     BrowserModule,
@@ -131,7 +134,8 @@ import {SearchTripMapComponent} from "./search/trip/search-trip-map.component";
       AdminCalendarService,
       AdminShapeService,
       AdminTripService,
-      TripService
+      TripService,
+      AdminPersonService
   ],
   bootstrap: [AppComponent]
 })

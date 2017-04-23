@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-context.xml"})
+@Transactional
 public abstract class AbstractServiceIT {
 
     protected static final String GTFS_IN_LOCATION = "/Users/jakubchalupa/Documents/FEL/MGR/DP/gtfs/test/annapolis-transit_20150811_1647";

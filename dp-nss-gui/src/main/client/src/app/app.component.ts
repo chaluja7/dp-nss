@@ -27,4 +27,8 @@ export class AppComponent {
     return this.userService.isSelectedTimeTableActive();
   }
 
+  getLoggedUserId(): number {
+    return this.userService.getLoggedUser().id;
+  }
+
 }

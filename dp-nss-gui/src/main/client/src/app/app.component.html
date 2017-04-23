@@ -18,6 +18,7 @@
           <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive()" [routerLink]="['/calendar']" routerLinkActive="active">Intervaly</a>
           <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive()" [routerLink]="['/shape']" routerLinkActive="active">Průjezdní body</a>
           <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive()" [routerLink]="['/trip']" routerLinkActive="active">Jízdy</a>
+          <a *ngIf="isLoggedIn()" [routerLink]="['/person', getLoggedUserId()]" routerLinkActive="active">Uživ. účet</a>
           <a *ngIf="!isLoggedIn()" [routerLink]="['/login']" routerLinkActive="active">Administrace</a>
           <a *ngIf="isLoggedIn()" [routerLink]="['/login']">Odhlásit</a>
         </div>

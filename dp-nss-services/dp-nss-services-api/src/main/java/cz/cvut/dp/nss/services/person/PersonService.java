@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.services.person;
 
 import cz.cvut.dp.nss.exception.BadCredentialsException;
+import cz.cvut.dp.nss.exception.PasswordsDoNotMatchException;
+import cz.cvut.dp.nss.exception.WeakPasswordException;
 import cz.cvut.dp.nss.services.common.EntityService;
 
 /**
@@ -38,5 +40,14 @@ public interface PersonService extends EntityService<Person, Long> {
      * @param token api token
      */
     void destroyToken(String token);
+
+    /**
+     * zmeni heslo uzivatele
+     * @param personId id uzivatele
+     * @param oldPassword stare heslo uzivatele
+     * @param newPassword nove heslo uzivatele
+     * @param newPasswordConfirmation potvrzeni noveho hesla uzivatele
+     */
+    void changePassword(Long personId, String oldPassword, String newPassword, String newPasswordConfirmation) throws BadCredentialsException, PasswordsDoNotMatchException, WeakPasswordException;
 
 }

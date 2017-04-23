@@ -1,0 +1,30 @@
+<div class="col-md-6 col-md-offset-3" *ngIf="person">
+  <h2>Detail uživatele</h2>
+
+  <label for="username">Uživatelské jméno:</label>
+  <input type="text" class="form-control" name="username" id="username" value="{{person.username}}" disabled />
+
+
+  <h3 class="margin-top-50">Změna hesla</h3>
+  <form (ngSubmit)="changePassword()" #f="ngForm">
+    <div class="form-group">
+      <label for="oldPassword">Současné heslo:</label>
+      <input type="password" class="form-control" name="oldPassword" id="oldPassword" [(ngModel)]="resetPassword.oldPassword" required />
+    </div>
+    <div class="form-group">
+      <label for="newPassword">Nové heslo:</label>
+      <input type="password" class="form-control" name="newPassword" id="newPassword" [(ngModel)]="resetPassword.newPassword" required minlength="8"/>
+    </div>
+    <div class="form-group">
+      <label for="newPasswordConfirmation">Potvrzení nového hesla:</label>
+      <input type="password" class="form-control" name="newPasswordConfirmation" id="newPasswordConfirmation" [(ngModel)]="resetPassword.newPasswordConfirmation" required minlength="8" />
+    </div>
+    <div class="form-group">
+      <button [disabled]="!f.form.valid || loading" class="btn btn-success pull-right" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Změnit heslo</button>
+      <div class="clearfix"></div>
+    </div>
+    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    <div *ngIf="ok" class="alert alert-success">{{ok}}</div>
+  </form>
+
+</div>
