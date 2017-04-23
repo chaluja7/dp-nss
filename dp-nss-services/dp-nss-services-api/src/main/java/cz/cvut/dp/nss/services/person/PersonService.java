@@ -5,6 +5,8 @@ import cz.cvut.dp.nss.exception.PasswordsDoNotMatchException;
 import cz.cvut.dp.nss.exception.WeakPasswordException;
 import cz.cvut.dp.nss.services.common.EntityService;
 
+import java.util.Set;
+
 /**
  * Common interface for all PersonService implementations.
  *
@@ -49,5 +51,12 @@ public interface PersonService extends EntityService<Person, Long> {
      * @param newPasswordConfirmation potvrzeni noveho hesla uzivatele
      */
     void changePassword(Long personId, String oldPassword, String newPassword, String newPasswordConfirmation) throws BadCredentialsException, PasswordsDoNotMatchException, WeakPasswordException;
+
+    /**
+     * uzivateli priradi jizdni rady dle timeTables
+     * @param personId id uzivatele
+     * @param timeTables nove jizdni rady pro uzivatele
+     */
+    void updateTimeTables(Long personId, Set<String> timeTables);
 
 }

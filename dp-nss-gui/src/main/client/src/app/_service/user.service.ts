@@ -19,15 +19,7 @@ export class UserService {
 
   isAdminLoggedIn(): boolean {
       let user = this.getLoggedUser();
-      if(user && user.roles && user.roles.length > 0) {
-          for(let role of user.roles) {
-              if (role === 'ADMIN') {
-                  return true;
-              }
-          }
-      }
-
-      return false;
+      return user && user.isAdmin;
   }
 
   getLoggedUser(): LoggedUser {
@@ -35,6 +27,15 @@ export class UserService {
   }
 
   storeUser(user: LoggedUser): void {
+      if(user && user.roles) {
+          for(let role of user.roles) {
+              if(role === 'ADMIN') {
+                  user.isAdmin = true;
+                  break;
+              }
+          }
+      }
+
       sessionStorage.setItem(UserService.LOGGED_USER_IDENT, JSON.stringify(user));
       sessionStorage.removeItem(UserService.SELECTED_TIME_TABLE_IDENT);
   }

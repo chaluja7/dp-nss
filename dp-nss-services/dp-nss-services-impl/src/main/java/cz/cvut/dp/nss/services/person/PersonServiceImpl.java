@@ -5,12 +5,16 @@ import cz.cvut.dp.nss.exception.PasswordsDoNotMatchException;
 import cz.cvut.dp.nss.exception.WeakPasswordException;
 import cz.cvut.dp.nss.persistence.person.PersonDao;
 import cz.cvut.dp.nss.services.common.AbstractEntityService;
+import cz.cvut.dp.nss.services.timeTable.TimeTable;
+import cz.cvut.dp.nss.services.timeTable.TimeTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -24,11 +28,14 @@ public class PersonServiceImpl extends AbstractEntityService<Person, Long, Perso
 
     private PasswordEncoder passwordEncoder;
 
+    private TimeTableService timeTableService;
+
     private static final int MIN_PASSWORD_LENGTH = 8;
 
     @Autowired
-    public PersonServiceImpl(PersonDao dao, PasswordEncoder passwordEncoder) {
+    public PersonServiceImpl(PersonDao dao, PasswordEncoder passwordEncoder, TimeTableService timeTableService) {
         super(dao);
+        this.timeTableService = timeTableService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -83,8 +90,6 @@ public class PersonServiceImpl extends AbstractEntityService<Person, Long, Perso
     @Transactional(value = "transactionManager")
     public void changePassword(Long personId, String oldPassword, String newPassword, String newPasswordConfirmation) throws BadCredentialsException, PasswordsDoNotMatchException, WeakPasswordException {
         Person person = dao.find(personId);
-        if(person == null) throw new BadCredentialsException();
-
         //heslo musim zkontrolovat az nyni, protoze hash je pokazde jinaci
         if(!passwordEncoder.matches(oldPassword, person.getPassword())) throw new BadCredentialsException();
         if(newPassword == null || newPassword.length() < MIN_PASSWORD_LENGTH) throw new WeakPasswordException();
@@ -92,6 +97,26 @@ public class PersonServiceImpl extends AbstractEntityService<Person, Long, Perso
 
         //ok muzu zmenit
         person.setPassword(passwordEncoder.encode(newPassword));
+        dao.update(person);
+    }
+
+    @Override
+    @Transactional(value = "transactionManager")
+    public void updateTimeTables(Long personId, Set<String> timeTables) {
+        Person person = dao.find(personId);
+
+        //nejdrive vsechny jizdni rady pro uzivatele smazu
+        person.setTimeTables(new HashSet<>());
+        dao.update(person);
+
+        //a pak mu vlozim ty nove
+        Set<TimeTable> newTimeTables = new HashSet<>();
+        for(String timeTable : timeTables) {
+            TimeTable t = timeTableService.get(timeTable);
+            if(t != null) newTimeTables.add(t);
+        }
+
+        person.setTimeTables(newTimeTables);
         dao.update(person);
     }
 

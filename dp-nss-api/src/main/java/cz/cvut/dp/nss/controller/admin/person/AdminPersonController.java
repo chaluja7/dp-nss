@@ -59,6 +59,20 @@ public class AdminPersonController extends AdminAbstractController {
         return getPersonWrapper(person);
     }
 
+    //pouze update jizdnich radu
+    @CheckAccess(Role.Type.ADMIN)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public PersonWrapper update(@PathVariable("id") Long id, @RequestBody PersonWrapper wrapper) throws BadRequestException, UnauthorizedException {
+        Person person = personService.get(id);
+        if(person == null) throw new ResourceNotFoundException();
+
+        Set<String> timeTables = wrapper.getTimeTables();
+        if(timeTables == null) timeTables = new HashSet<>();
+
+        personService.updateTimeTables(person.getId(), timeTables);
+        return getPersonWrapper(personService.get(person.getId()));
+    }
+
     @RequestMapping(value = "/{id}/resetPassword", method = RequestMethod.PUT)
     public void changePassword(@PathVariable("id") Long id, @RequestBody ResetPasswordWrapper wrapper, @RequestHeader(SecurityInterceptor.SECURITY_HEADER) String xAuth) throws BadRequestException, UnauthorizedException {
         Person person = personService.get(id);

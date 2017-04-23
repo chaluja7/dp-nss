@@ -12,6 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author jakubchalupa
  * @since 12.12.16
@@ -175,6 +178,24 @@ public class PersonServiceIT extends AbstractServiceIT {
         //find
         Person retrieved = personService.generateTokenAndGet(person.getUsername(), pwd);
         Assert.assertNotNull(retrieved);
+    }
+
+    @Test
+    public void updateTimeTables() {
+        Set<String> set = new HashSet<>();
+        set.add("annapolis");
+        personService.updateTimeTables(1L, set);
+
+        Person person = personService.get(1L);
+        Assert.assertTrue(person.getTimeTables().contains(new TimeTable("annapolis")));
+
+        set = new HashSet<>();
+        set.add("pid");
+        personService.updateTimeTables(1L, set);
+
+        person = personService.get(1L);
+        Assert.assertTrue(person.getTimeTables().contains(new TimeTable("pid")));
+        Assert.assertFalse(person.getTimeTables().contains(new TimeTable("annapolis")));
     }
 
     public static Person getPerson(String username, String password) {

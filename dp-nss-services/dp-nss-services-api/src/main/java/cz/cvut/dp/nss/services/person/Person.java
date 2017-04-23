@@ -42,7 +42,7 @@ public class Person extends AbstractGeneratedIdEntity {
         inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false, updatable = false))
     private Set<Role> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name = "global.person_time_table", joinColumns = @JoinColumn(name = "person_id", nullable = false, updatable = false),
         inverseJoinColumns = @JoinColumn(name = "time_table_id", nullable = false, updatable = false))
     private Set<TimeTable> timeTables;
