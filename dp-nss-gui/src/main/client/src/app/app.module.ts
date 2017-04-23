@@ -63,6 +63,7 @@ import {SearchStopComponent} from "./search/stop/search-stop.component";
 import {SearchTripMapComponent} from "./search/trip/search-trip-map.component";
 import {AdminPersonService} from "./_service/_admin/admin-person.service";
 import {PersonComponent} from "./_admin/person/person.component";
+import {PersonsComponent} from "./_admin/person/persons.component";
 
 @NgModule({
   declarations: [
@@ -100,6 +101,7 @@ import {PersonComponent} from "./_admin/person/person.component";
     SearchTripComponent,
     SearchStopComponent,
     SearchTripMapComponent,
+    PersonsComponent,
     PersonComponent
   ],
   imports: [

@@ -28,6 +28,8 @@ import {SearchTripComponent} from "./search/trip/search-trip.component";
 import {SearchStopComponent} from "./search/stop/search-stop.component";
 import {SearchTripMapComponent} from "./search/trip/search-trip-map.component";
 import {PersonComponent} from "./_admin/person/person.component";
+import {PersonsComponent} from "./_admin/person/persons.component";
+import {AuthAdminGuard} from "./_guard/auth-admin.guard";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -56,6 +58,7 @@ const routes: Routes = [
   { path: 'search-trip/:schema/:id', component: SearchTripComponent },
   { path: 'search-trip-map/:schema/:id', component: SearchTripMapComponent },
   { path: 'search-stop/:schema/:id', component: SearchStopComponent },
+  { path: 'person', component: PersonsComponent, canActivate: [AuthAdminGuard] },
   { path: 'person/:id', component: PersonComponent, canActivate: [AuthGuard] }
 ];
 

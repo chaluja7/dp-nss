@@ -3,4 +3,5 @@ export class Person {
     username: string;
     roles: string[];
     timeTables: string[];
+    isAdmin: boolean;
 }
