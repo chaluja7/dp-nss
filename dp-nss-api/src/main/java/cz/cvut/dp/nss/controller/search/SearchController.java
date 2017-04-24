@@ -4,6 +4,7 @@ import cz.cvut.dp.nss.context.SchemaThreadLocal;
 import cz.cvut.dp.nss.controller.AbstractController;
 import cz.cvut.dp.nss.controller.admin.route.AdminRouteController;
 import cz.cvut.dp.nss.controller.admin.stop.AdminStopController;
+import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.graph.services.search.SearchService;
 import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResult;
 import cz.cvut.dp.nss.services.common.DateTimeUtils;
@@ -60,12 +61,13 @@ public class SearchController extends AbstractController {
                                                @RequestParam("date") String date,
                                                @RequestParam("maxTransfers") int maxTransfers,
                                                @RequestParam(name = "withWheelChair", required = false) Boolean withWheelChair,
-                                               @RequestParam(name = "byArrival", required = false) Boolean searchByArrival) {
+                                               @RequestParam(name = "byArrival", required = false) Boolean searchByArrival) throws BadRequestException {
 
         DateTime dateTime = DateTimeUtils.JODA_DATE_TIME_FORMATTER.parseDateTime(date);
         if(StringUtils.isBlank(stopThroughName)) stopThroughName = null;
 
         final TimeTable timeTable = timeTableService.get(SchemaThreadLocal.get());
+        if(timeTable == null) throw new BadRequestException("Neni zvolen jizdni rad pro vyhledavani.");
         final Integer maxTravelTime = timeTable.getMaxTravelTime();
 
         List<SearchResult> searchResults;
