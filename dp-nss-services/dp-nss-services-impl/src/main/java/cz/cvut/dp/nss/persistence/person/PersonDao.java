@@ -5,6 +5,8 @@ import cz.cvut.dp.nss.services.person.Person;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 /**
  * JPA implementation of PersonDao.
  *
@@ -27,8 +29,10 @@ public class PersonDao extends AbstractGenericJpaDao<Person, Long> {
     }
 
     public Person getByToken(String token) {
-        Query<Person> query = sessionFactory.getCurrentSession().createQuery("select p from Person p where token = :token", Person.class);
+        final String queryString = "select p from Person p where token = :token and tokenValidity >= :validity";
+        Query<Person> query = sessionFactory.getCurrentSession().createQuery(queryString, Person.class);
         query.setParameter("token", token);
+        query.setParameter("validity", LocalDateTime.now());
 
         return query.uniqueResult();
     }

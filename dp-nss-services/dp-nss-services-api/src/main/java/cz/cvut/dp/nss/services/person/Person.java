@@ -3,10 +3,12 @@ package cz.cvut.dp.nss.services.person;
 import cz.cvut.dp.nss.services.common.AbstractGeneratedIdEntity;
 import cz.cvut.dp.nss.services.role.Role;
 import cz.cvut.dp.nss.services.timeTable.TimeTable;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,11 +33,16 @@ public class Person extends AbstractGeneratedIdEntity {
     @Column
     private String password;
 
+    @Column
+    private boolean passwordChangeRequired;
+
     @Column(unique = true)
     @Size(max = 255)
     private String token;
 
-    //TODO pripadne dodelat token validity
+    @Column
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
+    private LocalDateTime tokenValidity;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "global.person_role", joinColumns = @JoinColumn(name = "person_id", nullable = false, updatable = false),
@@ -101,4 +108,19 @@ public class Person extends AbstractGeneratedIdEntity {
         return hasRole(Role.Type.ADMIN) || getTimeTables().contains(new TimeTable(timeTableId));
     }
 
+    public boolean isPasswordChangeRequired() {
+        return passwordChangeRequired;
+    }
+
+    public void setPasswordChangeRequired(boolean passwordChangeRequired) {
+        this.passwordChangeRequired = passwordChangeRequired;
+    }
+
+    public LocalDateTime getTokenValidity() {
+        return tokenValidity;
+    }
+
+    public void setTokenValidity(LocalDateTime tokenValidity) {
+        this.tokenValidity = tokenValidity;
+    }
 }

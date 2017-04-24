@@ -14,6 +14,10 @@ public class PersonWrapper {
 
     private String token;
 
+    private String tokenValidity;
+
+    private boolean passwordChangeRequired;
+
     private Set<String> roles;
 
     private Set<String> timeTables;
@@ -56,5 +60,21 @@ public class PersonWrapper {
 
     public void setTimeTables(Set<String> timeTables) {
         this.timeTables = timeTables;
+    }
+
+    public String getTokenValidity() {
+        return tokenValidity;
+    }
+
+    public void setTokenValidity(String tokenValidity) {
+        this.tokenValidity = tokenValidity;
+    }
+
+    public boolean isPasswordChangeRequired() {
+        return passwordChangeRequired;
+    }
+
+    public void setPasswordChangeRequired(boolean passwordChangeRequired) {
+        this.passwordChangeRequired = passwordChangeRequired;
     }
 }

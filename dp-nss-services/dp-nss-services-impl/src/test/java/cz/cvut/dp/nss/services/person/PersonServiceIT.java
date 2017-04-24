@@ -26,7 +26,7 @@ public class PersonServiceIT extends AbstractServiceIT {
 
     private static final String USER = "userrrr";
 
-    private static final String PASSWORD = "admin";
+    private static final String PASSWORD = "adminadmin";
 
     private static final String TOKEN = "token";
 
@@ -107,8 +107,9 @@ public class PersonServiceIT extends AbstractServiceIT {
     }
 
     @Test
-    public void testGetByToken() {
-        Person person = personService.getByToken(TOKEN);
+    public void testGetByToken() throws BadCredentialsException {
+        Person person1 = personService.generateTokenAndGet(USER, PASSWORD);
+        Person person = personService.getByToken(person1.getToken());
         Assert.assertNotNull(person);
     }
 
@@ -129,11 +130,12 @@ public class PersonServiceIT extends AbstractServiceIT {
     }
 
     @Test
-    public void testDestroyToken() {
-        Person person = personService.getByToken(TOKEN);
+    public void testDestroyToken() throws BadCredentialsException {
+        Person person1 = personService.generateTokenAndGet(USER, PASSWORD);
+        Person person = personService.getByToken(person1.getToken());
         Assert.assertNotNull(person);
 
-        personService.destroyToken(TOKEN);
+        personService.destroyToken(person1.getToken());
 
         Person byUsername = personService.getByUsername(USER);
         Assert.assertNotNull(byUsername);

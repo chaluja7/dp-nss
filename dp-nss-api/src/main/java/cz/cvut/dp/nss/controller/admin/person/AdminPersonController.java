@@ -6,6 +6,7 @@ import cz.cvut.dp.nss.controller.interceptor.SecurityInterceptor;
 import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.exception.ResourceNotFoundException;
 import cz.cvut.dp.nss.exception.UnauthorizedException;
+import cz.cvut.dp.nss.services.common.DateTimeUtils;
 import cz.cvut.dp.nss.services.person.Person;
 import cz.cvut.dp.nss.services.person.PersonService;
 import cz.cvut.dp.nss.services.role.Role;
@@ -95,6 +96,10 @@ public class AdminPersonController extends AdminAbstractController {
         wrapper.setId(person.getId());
         wrapper.setUsername(person.getUsername());
         wrapper.setToken(person.getToken());
+        if(person.getTokenValidity() != null) {
+            wrapper.setTokenValidity(person.getTokenValidity().format(DateTimeUtils.DATE_TIME_FORMATTER));
+        }
+        wrapper.setPasswordChangeRequired(person.isPasswordChangeRequired());
 
         Set<String> roles = new HashSet<>();
         for(Role role : person.getRoles()) {

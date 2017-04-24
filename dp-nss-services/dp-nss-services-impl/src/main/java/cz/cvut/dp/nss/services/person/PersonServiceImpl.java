@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -45,6 +46,8 @@ public class PersonServiceImpl extends AbstractEntityService<Person, Long, Perso
         if(person == null) return;
         //zde schvalne neni kontrola na delku hesla, protoze pri vkladani se insertuje pouze jednorazove heslo
         person.setPassword(passwordEncoder.encode(person.getPassword()));
+        //po vytvoreni je nutne zmenit heslo!
+        person.setPasswordChangeRequired(true);
         dao.create(person);
     }
 
@@ -71,6 +74,7 @@ public class PersonServiceImpl extends AbstractEntityService<Person, Long, Perso
 
         final String token = UUID.randomUUID().toString().replaceAll("-", "");
         person.setToken(token);
+        person.setTokenValidity(LocalDateTime.now().plusMinutes(30));
         dao.update(person);
 
         return person;
@@ -82,6 +86,7 @@ public class PersonServiceImpl extends AbstractEntityService<Person, Long, Perso
         Person person = getByToken(token);
         if(person != null) {
             person.setToken(null);
+            person.setTokenValidity(null);
             dao.update(person);
         }
     }

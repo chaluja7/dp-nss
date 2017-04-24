@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 
 /**
  * @author jakubchalupa
@@ -54,6 +55,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
             if(person != null) {
                 //admin ma pravo automaticky na vsechno
                 if(person.hasRole(Role.Type.ADMIN)) {
+                    updateTokenValidity(person);
                     return true;
                 }
 
@@ -64,11 +66,13 @@ public class SecurityInterceptor implements HandlerInterceptor {
                         final String currentSchema = SchemaThreadLocal.get();
                         if(currentSchema == null) {
                             //dotazy bez schematu, napr logout :)
+                            updateTokenValidity(person);
                             return true;
                         }
 
                         if(person.ownTimeTable(currentSchema)) {
                             //uzivatel ma pravo na dany jizdni rad :)
+                            updateTokenValidity(person);
                             return true;
                         } else {
                             throw new UnauthorizedException();
@@ -81,6 +85,15 @@ public class SecurityInterceptor implements HandlerInterceptor {
         }
 
         throw new UnauthorizedException();
+    }
+
+    /**
+     * prodlouzi validitu tokenu uzivatele
+     * @param person person
+     */
+    private void updateTokenValidity(Person person) {
+        person.setTokenValidity(LocalDateTime.now().plusMinutes(30));
+        personService.update(person);
     }
 
     @Override

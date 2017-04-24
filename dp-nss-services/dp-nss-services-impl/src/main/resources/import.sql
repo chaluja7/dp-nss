@@ -11,8 +11,8 @@ TRUNCATE global.persons CASCADE;
 
 --Users
 -- admin/admin ---- user/admin
-INSERT INTO global.persons(id, username, password, token) VALUES (1, 'admin', '$2a$11$pFWVM2513P5FZWXX5nS0t.Z6llSDroVrDNFPmg3YoZtUX36N3zAgy', 'x');
-INSERT INTO global.persons(id, username, password, token) VALUES (2, 'user', '$2a$11$pFWVM2513P5FZWXX5nS0t.Z6llSDroVrDNFPmg3YoZtUX36N3zAgy', 'y');
+INSERT INTO global.persons(id, username, password, token, passwordChangeRequired) VALUES (1, 'admin', '$2a$11$pFWVM2513P5FZWXX5nS0t.Z6llSDroVrDNFPmg3YoZtUX36N3zAgy', 'x', false);
+INSERT INTO global.persons(id, username, password, token, passwordChangeRequired) VALUES (2, 'user', '$2a$11$pFWVM2513P5FZWXX5nS0t.Z6llSDroVrDNFPmg3YoZtUX36N3zAgy', 'y', false);
 ALTER SEQUENCE global.persons_id_seq RESTART WITH 30;
 
 --ROLES
