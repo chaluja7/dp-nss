@@ -11,15 +11,14 @@ import cz.cvut.dp.nss.services.person.Person;
 import cz.cvut.dp.nss.services.person.PersonService;
 import cz.cvut.dp.nss.services.role.Role;
 import cz.cvut.dp.nss.services.timeTable.TimeTable;
+import cz.cvut.dp.nss.services.timeTable.TimeTableService;
 import cz.cvut.dp.nss.wrapper.input.ResetPasswordWrapper;
 import cz.cvut.dp.nss.wrapper.output.person.PersonWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author jakubchalupa
@@ -31,6 +30,9 @@ public class AdminPersonController extends AdminAbstractController {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private TimeTableService timeTableService;
 
     @CheckAccess(Role.Type.ADMIN)
     @RequestMapping(method = RequestMethod.GET)
@@ -74,6 +76,42 @@ public class AdminPersonController extends AdminAbstractController {
         return getPersonWrapper(personService.get(person.getId()));
     }
 
+    @CheckAccess(Role.Type.ADMIN)
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<PersonWrapper> create(@RequestBody PersonWrapper wrapper) throws BadRequestException {
+        Person person = getPerson(wrapper);
+
+        //vytvarime pouze usera
+        Set<Role> roles = new HashSet<>();
+        roles.add(new Role(Role.Type.USER));
+        person.setRoles(roles);
+
+        //vygenerovavame jednorazove heslo, schvalne se vrati v response
+        final String password = UUID.randomUUID().toString().split("-")[0];
+        person.setPassword(password);
+
+        personService.create(person);
+        return getResponseCreated(getPersonWrapper(person));
+    }
+
+    @CheckAccess(Role.Type.ADMIN)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable("id") Long id, @RequestHeader(SecurityInterceptor.SECURITY_HEADER) String xAuth) throws BadRequestException {
+        Person person = personService.get(id);
+        if(person == null) {
+            //ok, jiz neni v DB
+            return;
+        }
+
+        //uzivatel nemuze smazat sam sebe
+        Person byToken = personService.getByToken(xAuth);
+        if(byToken.getId().equals(id)) {
+            throw new BadRequestException("Nemuzete smazat sam sebe.");
+        }
+
+        personService.delete(person.getId());
+    }
+
     @RequestMapping(value = "/{id}/resetPassword", method = RequestMethod.PUT)
     public void changePassword(@PathVariable("id") Long id, @RequestBody ResetPasswordWrapper wrapper, @RequestHeader(SecurityInterceptor.SECURITY_HEADER) String xAuth) throws BadRequestException, UnauthorizedException {
         Person person = personService.get(id);
@@ -114,6 +152,25 @@ public class AdminPersonController extends AdminAbstractController {
         wrapper.setTimeTables(timeTables);
 
         return wrapper;
+    }
+
+    private Person getPerson(PersonWrapper wrapper) {
+        if(wrapper == null) return null;
+
+        Person person = new Person();
+        person.setUsername(wrapper.getUsername());
+
+        Set<TimeTable> timeTables = new HashSet<>();
+        if(wrapper.getTimeTables() != null) {
+            for(String timeTableId : wrapper.getTimeTables()) {
+                TimeTable timeTable = timeTableService.get(timeTableId);
+                if(timeTable != null) {
+                    timeTables.add(timeTable);
+                }
+            }
+        }
+        person.setTimeTables(timeTables);
+        return person;
     }
 
 }

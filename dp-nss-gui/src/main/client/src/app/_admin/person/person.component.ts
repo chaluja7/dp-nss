@@ -1,39 +1,28 @@
 import "rxjs/add/operator/switchMap";
 import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute, Params} from "@angular/router";
-import {Location} from "@angular/common";
-import {UserService} from "../../_service/user.service";
-import {HttpClient} from "../../_service/http-client";
-import {AdminPersonService} from "../../_service/_admin/admin-person.service";
-import {Person} from "../../_model/person";
+import {Params} from "@angular/router";
 import {ResetPassword} from "../../_model/reset-password";
 import {AppSettings} from "../../_common/app.settings";
-import {TimeTableService} from "../../_service/time-table.service";
-import {LoggedUser} from "../../_model/logged-user";
+import {AbstractPersonComponent, StringValue} from "./abstract-person.component";
 @Component({
     moduleId: module.id,
     selector: 'person-component',
     templateUrl: './person.component.html'
 })
-export class PersonComponent implements OnInit {
+export class PersonComponent extends AbstractPersonComponent implements OnInit {
 
-    person: Person;
     resetPassword: ResetPassword = new ResetPassword();
-    loading = false;
-    error = '';
-    ok = '';
-    currentTimeTables: StringValue[] = [];
-    availableTimeTables : string[] = [];
-
-    constructor(private adminPersonService: AdminPersonService, private route: ActivatedRoute, private location: Location,
-                private userService: UserService, private timeTableService: TimeTableService, private http: HttpClient) {
-    }
+    newRecord = false;
+    canBeDeleted: boolean;
 
     ngOnInit(): void {
+        super.onInit();
+
         this.route.params
             .switchMap((params: Params) => this.adminPersonService.getPerson(params['id']))
             .subscribe(person => {
                 this.person = person;
+                this.canBeDeleted = this.getCurrentPerson().id !== person.id;
 
                 for(let role of person.roles) {
                     if(role === 'ADMIN') {
@@ -46,13 +35,6 @@ export class PersonComponent implements OnInit {
                     this.currentTimeTables.push(new StringValue(timeTable));
                 }
             }, err => {});
-
-        this.timeTableService.getTimeTables()
-            .subscribe(timeTables => {
-                for(let timeTable of timeTables) {
-                    this.availableTimeTables.push(timeTable.id);
-                }
-            }, err  => {});
     }
 
     changePassword(): void {
@@ -91,40 +73,16 @@ export class PersonComponent implements OnInit {
                 });
     }
 
-    handleTimeTables(): void {
-        this.person.timeTables = [];
-        for(let timeTable of this.currentTimeTables) {
-            this.person.timeTables.push(timeTable.value);
-        }
+    doDelete(): void {
+        this.adminPersonService.delete(this.person.id)
+            .subscribe(() => {
+                    this.userService.setMsg(AppSettings.DELETE_SUCCESS);
+                    this.goBack()
+                },
+                err => {
+                    this.error = AppSettings.SAVE_ERROR;
+                    this.loading = false;
+                });
     }
 
-    getCurrentPerson(): LoggedUser {
-        return this.userService.getLoggedUser();
-    }
-
-    addNewTimeTable(): void {
-        if(!this.currentTimeTables) this.currentTimeTables = [];
-        this.currentTimeTables.push(new StringValue(null));
-    }
-
-    deleteTimeTableItem(index: number) {
-        this.currentTimeTables.splice(index, 1);
-    }
-
-    confirm(msg: string): boolean {
-        return confirm(msg);
-    }
-
-    goBack(): void {
-        this.location.back();
-    }
-
-}
-
-export class StringValue {
-    value: string;
-
-    constructor(value: string) {
-        this.value = value;
-    }
 }

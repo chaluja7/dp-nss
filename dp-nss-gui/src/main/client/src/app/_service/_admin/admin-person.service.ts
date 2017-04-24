@@ -35,11 +35,25 @@ export class AdminPersonService {
         .catch(err => this.errorService.handleServerError(err));
   }
 
+  create(person: Person): Observable<Person> {
+    const url = AppSettings.API_ENDPOINT + `${AdminPersonService.PERSON_URL}`;
+    return this.http.post(url, JSON.stringify(person))
+        .map((response => response.json() as Person))
+        .catch(err => this.errorService.handleServerError(err));
+  }
+
   changePassword(id: number, resetPassword: ResetPassword): Observable<void> {
       const url = AppSettings.API_ENDPOINT + `${AdminPersonService.PERSON_URL}/${id}/resetPassword`;
       return this.http.put(url, JSON.stringify(resetPassword))
           .map(() => {})
           .catch(err => this.errorService.handleServerError(err));
+  }
+
+  delete(id: number): Observable<void> {
+    const url = AppSettings.API_ENDPOINT + `${AdminPersonService.PERSON_URL}/${id}`;
+    return this.http.delete(url)
+        .map(() => null)
+        .catch(err => this.errorService.handleServerError(err));
   }
 
 }
