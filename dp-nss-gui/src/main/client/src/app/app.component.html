@@ -11,14 +11,14 @@
         <a [routerLink]="['/home']" routerLinkActive="active">Vyhledávač</a>
 
         <div class="pull-right">
-          <a *ngIf="isLoggedIn()" [routerLink]="['/timeTable']" routerLinkActive="active">Jízdní řády</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive()" [routerLink]="['/agency']" routerLinkActive="active">Dopravci</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive()" [routerLink]="['/route']" routerLinkActive="active">Spoje</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive()" [routerLink]="['/stop']" routerLinkActive="active">Stanice</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive()" [routerLink]="['/calendar']" routerLinkActive="active">Intervaly</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive()" [routerLink]="['/shape']" routerLinkActive="active">Průjezdní body</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive()" [routerLink]="['/trip']" routerLinkActive="active">Jízdy</a>
-          <a *ngIf="isAdminLoggedIn()" [routerLink]="['/person']" routerLinkActive="active">Uživatelé</a>
+          <a *ngIf="isLoggedIn() && hasPassword()" [routerLink]="['/timeTable']" routerLinkActive="active">Jízdní řády</a>
+          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/agency']" routerLinkActive="active">Dopravci</a>
+          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/route']" routerLinkActive="active">Spoje</a>
+          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/stop']" routerLinkActive="active">Stanice</a>
+          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/calendar']" routerLinkActive="active">Intervaly</a>
+          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/shape']" routerLinkActive="active">Průjezdní body</a>
+          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/trip']" routerLinkActive="active">Jízdy</a>
+          <a *ngIf="isAdminLoggedIn() && hasPassword()" [routerLink]="['/person']" routerLinkActive="active">Uživatelé</a>
           <a *ngIf="isLoggedIn() && !isAdminLoggedIn()" [routerLink]="['/person', getLoggedUserId()]" routerLinkActive="active">Uživ. účet</a>
           <a *ngIf="!isLoggedIn()" [routerLink]="['/login']" routerLinkActive="active">Administrace</a>
           <a *ngIf="isLoggedIn()" [routerLink]="['/login']">Odhlásit</a>

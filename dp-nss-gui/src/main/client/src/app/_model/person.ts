@@ -5,4 +5,5 @@ export class Person {
     timeTables: string[];
     isAdmin: boolean;
     oneTimePassword: string;
+    passwordChangeRequired: boolean;
 }

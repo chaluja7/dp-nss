@@ -102,6 +102,7 @@ public class PersonServiceImpl extends AbstractEntityService<Person, Long, Perso
 
         //ok muzu zmenit
         person.setPassword(passwordEncoder.encode(newPassword));
+        person.setPasswordChangeRequired(false);
         dao.update(person);
     }
 

@@ -1,6 +1,6 @@
 import "rxjs/add/operator/switchMap";
 import {Component} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {UserService} from "../../_service/user.service";
 import {AdminPersonService} from "../../_service/_admin/admin-person.service";
@@ -22,7 +22,7 @@ export abstract class AbstractPersonComponent {
   abstract newRecord: boolean;
 
   constructor(protected adminPersonService: AdminPersonService, protected route: ActivatedRoute, protected location: Location,
-              protected userService: UserService, protected timeTableService: TimeTableService, protected http: HttpClient) {}
+              protected userService: UserService, protected timeTableService: TimeTableService, protected http: HttpClient, protected router: Router) {}
 
   //musi zavolat extendujici trida!
   onInit() {

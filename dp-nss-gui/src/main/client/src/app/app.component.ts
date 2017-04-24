@@ -31,4 +31,8 @@ export class AppComponent {
     return this.userService.getLoggedUser().id;
   }
 
+  hasPassword(): boolean {
+    return !this.userService.getLoggedUser().passwordChangeRequired;
+  }
+
 }

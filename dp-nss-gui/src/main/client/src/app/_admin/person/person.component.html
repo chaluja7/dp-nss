@@ -10,6 +10,10 @@
     </div>
   </div>
 
+  <div *ngIf="getCurrentPerson().passwordChangeRequired" class="alert alert-danger">
+      Před umožněním správy jízdních řádů si musíte změnit heslo. Minimální délka je 8 znaků.
+  </div>
+
   <form (ngSubmit)="onSubmit()" #fx="ngForm">
     <div class="form-group">
       <label for="username">Uživatelské jméno:</label>

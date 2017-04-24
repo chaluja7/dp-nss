@@ -13,6 +13,8 @@ export class UserService {
 
   msg: string;
 
+  importantMsg: boolean;
+
   isLoggedIn(): boolean {
       return sessionStorage.getItem(UserService.LOGGED_USER_IDENT) != null;
   }
@@ -68,13 +70,20 @@ export class UserService {
       return AppSettings.API_ENDPOINT;
   }
 
-  setMsg(msg: string) {
+  setMsg(msg: string, important?: boolean, longDuration?: boolean) {
+      if(this.importantMsg) {
+          //pokud je aktualni important tak ji nechci prebit
+          this.importantMsg = false;
+          return;
+      }
+
       this.msg = msg;
+      if(important) this.importantMsg = true;
 
       //zobrazujeme jen na 3s
       setTimeout(() => {
           this.msg = null;
-      }, 2500);
+      }, longDuration ? 5000 : 2500);
   }
 
 }

@@ -21,4 +21,9 @@ public @interface CheckAccess {
      */
     Role.Type[] value() default {Role.Type.USER};
 
+    /**
+     * pokud true tak je mozne zabezpeceny endpoint navstivit i s jednorazovym heslem
+     */
+    boolean accessibleWithOneTimePassword() default false;
+
 }

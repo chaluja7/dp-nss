@@ -47,6 +47,7 @@ public class AdminPersonController extends AdminAbstractController {
         return wrappers;
     }
 
+    @CheckAccess(value = Role.Type.USER, accessibleWithOneTimePassword = true)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public PersonWrapper get(@PathVariable("id") Long id, @RequestHeader(SecurityInterceptor.SECURITY_HEADER) String xAuth) throws BadRequestException, UnauthorizedException {
         Person person = personService.get(id);
@@ -114,6 +115,7 @@ public class AdminPersonController extends AdminAbstractController {
         personService.delete(person.getId());
     }
 
+    @CheckAccess(value = Role.Type.USER, accessibleWithOneTimePassword = true)
     @RequestMapping(value = "/{id}/resetPassword", method = RequestMethod.PUT)
     public void changePassword(@PathVariable("id") Long id, @RequestBody ResetPasswordWrapper wrapper, @RequestHeader(SecurityInterceptor.SECURITY_HEADER) String xAuth) throws BadRequestException, UnauthorizedException {
         Person person = personService.get(id);

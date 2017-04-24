@@ -47,6 +47,13 @@ export class PersonComponent extends AbstractPersonComponent implements OnInit {
         this.loading = true;
         this.adminPersonService.changePassword(this.person.id, this.resetPassword)
             .subscribe(() => {
+                    if(this.person.passwordChangeRequired) {
+                        //musel si zmenit heslo, takze jej odhlasim aby se prihlasil s novym heslem
+                        this.userService.setMsg('Heslo bylo úspěšně změněno. Přihlaste se prosím pomocí nového hesla.', true, true);
+                        this.router.navigate(['/login']);
+                        return;
+                    }
+
                     this.ok = AppSettings.PWD_SUCCESS;
                     this.loading = false;
                     this.resetPassword = new ResetPassword();

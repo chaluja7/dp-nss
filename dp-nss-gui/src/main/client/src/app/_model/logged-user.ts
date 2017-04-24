@@ -4,4 +4,5 @@ export class LoggedUser {
     token: string;
     roles: string[];
     isAdmin: boolean;
+    passwordChangeRequired: boolean;
 }

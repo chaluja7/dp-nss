@@ -53,6 +53,11 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
             Person person = personService.getByToken(securityHeader);
             if(person != null) {
+                //zjistime, jestli uzivatele nema pouze jednorazove heslo a tento endpont to zakazuje
+                if(!methodAnnotation.accessibleWithOneTimePassword() && person.isPasswordChangeRequired()) {
+                    throw new UnauthorizedException();
+                }
+
                 //admin ma pravo automaticky na vsechno
                 if(person.hasRole(Role.Type.ADMIN)) {
                     updateTokenValidity(person);

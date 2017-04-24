@@ -31,6 +31,7 @@ import {PersonComponent} from "./_admin/person/person.component";
 import {PersonsComponent} from "./_admin/person/persons.component";
 import {AuthAdminGuard} from "./_guard/auth-admin.guard";
 import {PersonNewComponent} from "./_admin/person/person-new.component";
+import {AuthWithOneTimePwdGuard} from "./_guard/auth-with-one-time-pwd.guard";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -61,7 +62,7 @@ const routes: Routes = [
   { path: 'search-stop/:schema/:id', component: SearchStopComponent },
   { path: 'person', component: PersonsComponent, canActivate: [AuthAdminGuard] },
   { path: 'person/create', component: PersonNewComponent, canActivate: [AuthAdminGuard] },
-  { path: 'person/:id', component: PersonComponent, canActivate: [AuthGuard] }
+  { path: 'person/:id', component: PersonComponent, canActivate: [AuthWithOneTimePwdGuard] }
 ];
 
 @NgModule({

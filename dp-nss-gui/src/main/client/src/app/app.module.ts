@@ -65,6 +65,7 @@ import {AdminPersonService} from "./_service/_admin/admin-person.service";
 import {PersonComponent} from "./_admin/person/person.component";
 import {PersonsComponent} from "./_admin/person/persons.component";
 import {PersonNewComponent} from "./_admin/person/person-new.component";
+import {AuthWithOneTimePwdGuard} from "./_guard/auth-with-one-time-pwd.guard";
 
 @NgModule({
   declarations: [
@@ -126,6 +127,7 @@ import {PersonNewComponent} from "./_admin/person/person-new.component";
       AuthGuard,
       AuthAdminGuard,
       AuthWithTimeTableGuard,
+      AuthWithOneTimePwdGuard,
       DateService,
       ErrorService,
       TimeTableService,
