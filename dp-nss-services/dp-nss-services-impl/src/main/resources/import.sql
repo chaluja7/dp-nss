@@ -26,8 +26,8 @@ INSERT INTO global.person_role(person_id, role_id) VALUES (2, 'USER');
 
 
 --TimeTables
-INSERT INTO global.time_tables(id, name, valid, synchronizing) VALUES ('pid', 'Pražská integrovaná doprava (PID)', true, false);
-INSERT INTO global.time_tables(id, name, valid, synchronizing) VALUES ('annapolis', 'Annapolis', true, false);
+INSERT INTO global.time_tables(id, name, maxTravelTime, valid, synchronizing) VALUES ('pid', 'Pražská integrovaná doprava (PID)', 3, true, false);
+INSERT INTO global.time_tables(id, name, maxTravelTime, valid, synchronizing) VALUES ('annapolis', 'Annapolis', 3, true, false);
 
 --user time tables
 INSERT INTO global.person_time_table(person_id, time_table_id) VALUES (1, 'pid');

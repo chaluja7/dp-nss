@@ -10,6 +10,8 @@ public class TimeTableWrapper {
 
     private String name;
 
+    private Integer maxTravelTime;
+
     private boolean valid;
 
     private boolean synchronizing;
@@ -38,6 +40,14 @@ public class TimeTableWrapper {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public Integer getMaxTravelTime() {
+        return maxTravelTime;
+    }
+
+    public void setMaxTravelTime(Integer maxTravelTime) {
+        this.maxTravelTime = maxTravelTime;
     }
 
     public boolean isSynchronizing() {

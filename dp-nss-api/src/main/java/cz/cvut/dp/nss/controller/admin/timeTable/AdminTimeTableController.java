@@ -79,6 +79,7 @@ public class AdminTimeTableController extends AdminAbstractController {
         timeTable.setId(wrapper.getId());
         timeTable.setName(wrapper.getName());
         timeTable.setValid(wrapper.isValid());
+        timeTable.setMaxTravelTime(wrapper.getMaxTravelTime());
 
         return timeTable;
     }

@@ -21,6 +21,13 @@
       <input type="text" class="form-control" name="name" id="name" [(ngModel)]="timeTable.name" required />
     </div>
     <div class="form-group">
+      <label for="maxTravelTime"
+             title="Slouží pro účely vyhledávání. Pokud se nenajdou výsledky nejvýše v tomto čase od času výjezdu, tak se vyhledávání ukončí">
+        Maximální čas cesty v hodinách:
+      </label>
+      <input type="number" min="1" max="23" class="form-control" name="maxTravelTime" id="maxTravelTime" [(ngModel)]="timeTable.maxTravelTime" required />
+    </div>
+    <div class="form-group">
       <label for="valid">Aktivní:</label>
       <input type="checkbox" class="form-control" name="valid" id="valid" [(ngModel)]="timeTable.valid" />
     </div>

@@ -28,7 +28,7 @@ public class SearchServiceIT extends AbstractServiceIT {
         final String through = "Můstek";
         final DateTimeFormatter formatter = DateTimeFormat.forPattern(DateTimeUtils.DATE_TIME_PATTERN);
         final DateTime departureDateTime = formatter.parseDateTime("02.02.2017 9:00");
-        final DateTime maxDepartureDateTime = new DateTime(departureDateTime).plusHours(SearchService.DEFAULT_MAX_HOUR_AFTER_DEPARTURE);
+        final DateTime maxDepartureDateTime = new DateTime(departureDateTime).plusHours(3);
         final int maxTransfers = 2;
 
         List<SearchResult> pathByDepartureDate =

@@ -42,6 +42,7 @@ public class TimeTableController extends AbstractController {
         wrapper.setId(timeTable.getId());
         wrapper.setName(timeTable.getName());
         wrapper.setValid(timeTable.isValid());
+        wrapper.setMaxTravelTime(timeTable.getMaxTravelTime());
         wrapper.setSynchronizing(timeTable.isSynchronizing());
         wrapper.setSynchronizationFailMessage(timeTable.getSynchronizingFailMessage());
 

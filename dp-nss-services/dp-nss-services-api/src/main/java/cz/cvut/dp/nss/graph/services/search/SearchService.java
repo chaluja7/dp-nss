@@ -11,8 +11,6 @@ import java.util.List;
  */
 public interface SearchService {
 
-    int DEFAULT_MAX_HOUR_AFTER_DEPARTURE = 3;
-
     int DEFAULT_MAX_NUMBER_OF_RESULTS = 3;
 
     /**

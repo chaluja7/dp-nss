@@ -1,5 +1,6 @@
 package cz.cvut.dp.nss.controller.search;
 
+import cz.cvut.dp.nss.context.SchemaThreadLocal;
 import cz.cvut.dp.nss.controller.AbstractController;
 import cz.cvut.dp.nss.controller.admin.route.AdminRouteController;
 import cz.cvut.dp.nss.controller.admin.stop.AdminStopController;
@@ -8,6 +9,8 @@ import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResult;
 import cz.cvut.dp.nss.services.common.DateTimeUtils;
 import cz.cvut.dp.nss.services.stopTime.StopTime;
 import cz.cvut.dp.nss.services.stopTime.StopTimeService;
+import cz.cvut.dp.nss.services.timeTable.TimeTable;
+import cz.cvut.dp.nss.services.timeTable.TimeTableService;
 import cz.cvut.dp.nss.services.trip.Trip;
 import cz.cvut.dp.nss.wrapper.output.search.SearchResultWrapper;
 import cz.cvut.dp.nss.wrapper.output.search.SearchStopTimeWrapper;
@@ -37,6 +40,9 @@ public class SearchController extends AbstractController {
     @Autowired
     private StopTimeService stopTimeService;
 
+    @Autowired
+    private TimeTableService timeTableService;
+
     /**
      * @param stopFromName stanice z
      * @param stopToName stanice do
@@ -59,13 +65,16 @@ public class SearchController extends AbstractController {
         DateTime dateTime = DateTimeUtils.JODA_DATE_TIME_FORMATTER.parseDateTime(date);
         if(StringUtils.isBlank(stopThroughName)) stopThroughName = null;
 
+        final TimeTable timeTable = timeTableService.get(SchemaThreadLocal.get());
+        final Integer maxTravelTime = timeTable.getMaxTravelTime();
+
         List<SearchResult> searchResults;
         if(Boolean.TRUE.equals(searchByArrival)) {
             //TODO napsat vyhledavani dle prijezdu
             throw new UnsupportedOperationException("TODO - vyhledavani dle prijezdu zatim neni napsane");
         } else {
             searchResults = searchService.findPathByDepartureDate(stopFromName, stopToName, stopThroughName,
-                dateTime, new DateTime(dateTime).plusHours(SearchService.DEFAULT_MAX_HOUR_AFTER_DEPARTURE), maxTransfers,
+                dateTime, new DateTime(dateTime).plusHours(maxTravelTime), maxTransfers,
                 SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS, Boolean.TRUE.equals(withWheelChair), null);
         }
 

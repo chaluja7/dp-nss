@@ -5,6 +5,8 @@ import cz.cvut.dp.nss.services.person.Person;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +27,15 @@ public class TimeTable extends AbstractAssignedIdEntity {
     @Column(nullable = false)
     @NotBlank
     private String name;
+
+    /**
+     * pocet hodin, v ramci kterych se bude nejdele vyhledavat v tomto jizdnim radu
+     * pokud se tedy nenajdou vysledky v case, ktery prekracuje departure + maxTraveTime hodin tak se vyledavani ukonci
+     */
+    @Column(nullable = false)
+    @Min(1)
+    @Max(23)
+    private Integer maxTravelTime;
 
     @Column
     private boolean valid;
@@ -94,5 +105,13 @@ public class TimeTable extends AbstractAssignedIdEntity {
 
     public void setPersons(Set<Person> persons) {
         this.persons = persons;
+    }
+
+    public Integer getMaxTravelTime() {
+        return maxTravelTime;
+    }
+
+    public void setMaxTravelTime(Integer maxTravelTime) {
+        this.maxTravelTime = maxTravelTime;
     }
 }
