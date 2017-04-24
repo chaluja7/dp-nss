@@ -28,11 +28,11 @@ export class PersonNewComponent extends AbstractPersonComponent implements OnIni
 
         this.adminPersonService.create(this.person)
             .subscribe(person => {
-                    this.userService.setMsg(AppSettings.SAVE_SUCCESS);
-                    this.goBack()
+                    this.userService.setMsg(AppSettings.SAVE_SUCCESS + ' Poznamenejte si jednorázové heslo.');
+                    this.person = person;
                 },
                 err  => {
-                    this.error = AppSettings.SAVE_ERROR;
+                    this.error = AppSettings.SAVE_ERROR + ' Neexistuje již uživatel se stejným uživatelským jménem?';
                     this.loading = false;
                 });
 

@@ -91,7 +91,9 @@ public class AdminPersonController extends AdminAbstractController {
         person.setPassword(password);
 
         personService.create(person);
-        return getResponseCreated(getPersonWrapper(person));
+        PersonWrapper personWrapper = getPersonWrapper(person);
+        personWrapper.setOneTimePassword(password);
+        return getResponseCreated(personWrapper);
     }
 
     @CheckAccess(Role.Type.ADMIN)

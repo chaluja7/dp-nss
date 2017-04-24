@@ -18,6 +18,8 @@ public class PersonWrapper {
 
     private boolean passwordChangeRequired;
 
+    private String oneTimePassword;
+
     private Set<String> roles;
 
     private Set<String> timeTables;
@@ -76,5 +78,13 @@ public class PersonWrapper {
 
     public void setPasswordChangeRequired(boolean passwordChangeRequired) {
         this.passwordChangeRequired = passwordChangeRequired;
+    }
+
+    public String getOneTimePassword() {
+        return oneTimePassword;
+    }
+
+    public void setOneTimePassword(String oneTimePassword) {
+        this.oneTimePassword = oneTimePassword;
     }
 }

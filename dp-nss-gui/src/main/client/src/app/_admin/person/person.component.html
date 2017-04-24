@@ -17,6 +17,11 @@
       <div *ngIf="!newRecord" id="username" class="margin-left-10">{{person.username}}</div>
     </div>
 
+    <div *ngIf="person.oneTimePassword" class="form-group">
+      <label for="oneTimePwd">Jednorázové heslo:</label>
+      <div id="oneTimePwd" class="margin-left-10">{{person.oneTimePassword}}</div>
+    </div>
+
     <div class="form-group">
       <label for="roles">Role:</label>
       <div id="roles" class="margin-left-10">

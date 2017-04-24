@@ -4,4 +4,5 @@ export class Person {
     roles: string[];
     timeTables: string[];
     isAdmin: boolean;
+    oneTimePassword: string;
 }
