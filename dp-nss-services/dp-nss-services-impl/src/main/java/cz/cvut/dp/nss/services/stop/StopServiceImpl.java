@@ -45,11 +45,11 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
 
     @Override
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
-    public Set<String> findStopNamesByStartPattern(String startPattern) {
-        if(startPattern == null || startPattern.length() < 3) return new HashSet<>();
+    public Set<String> findStopNamesByPattern(String pattern, boolean withWildCards) {
+        if(pattern == null || pattern.length() < 3) return new HashSet<>();
 
         //vytahnu stanice z db
-        List<String> stops = dao.findStopNamesByStartPattern(startPattern);
+        List<String> stops = dao.findStopNamesByPattern(pattern, withWildCards);
 
         //vytvorim si set pro navraceni vysledku (zachova razeni z dao vrstvy)
         Set<String> set = new LinkedHashSet<>();

@@ -8,6 +8,7 @@ import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.graph.services.search.SearchService;
 import cz.cvut.dp.nss.graph.services.search.wrappers.SearchResult;
 import cz.cvut.dp.nss.services.common.DateTimeUtils;
+import cz.cvut.dp.nss.services.stop.StopService;
 import cz.cvut.dp.nss.services.stopTime.StopTime;
 import cz.cvut.dp.nss.services.stopTime.StopTimeService;
 import cz.cvut.dp.nss.services.timeTable.TimeTable;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author jakubchalupa
@@ -44,6 +46,9 @@ public class SearchController extends AbstractController {
     @Autowired
     private TimeTableService timeTableService;
 
+    @Autowired
+    private StopService stopService;
+
     /**
      * @param stopFromName stanice z
      * @param stopToName stanice do
@@ -54,6 +59,7 @@ public class SearchController extends AbstractController {
      * @param searchByArrival pokud true tak hledame podle dat prijezdu do cilove stanice
      * @return nalezene vysledky vyhledavani (serazene a vyfiltrovane)
      */
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @RequestMapping(method = RequestMethod.GET)
     public List<SearchResultWrapper> findPaths(@RequestParam("stopFromName") String stopFromName,
                                                @RequestParam("stopToName") String stopToName,
@@ -69,6 +75,21 @@ public class SearchController extends AbstractController {
         final TimeTable timeTable = timeTableService.get(SchemaThreadLocal.get());
         if(timeTable == null) throw new BadRequestException("Neni zvolen jizdni rad pro vyhledavani.");
         final Integer maxTravelTime = timeTable.getMaxTravelTime();
+
+        //pokusim se najit stanici odkud, pres a kam. Pokud ji nenajdu tak koncim vyhledavani
+        Set<String> stops = stopService.findStopNamesByPattern(stopFromName, false);
+        if(stops.size() != 1) throw new BadRequestException("Výchozí stanice nebyla nalezena nebo je nejednoznačná");
+        stopFromName = stops.stream().findFirst().get();
+
+        stops = stopService.findStopNamesByPattern(stopToName, false);
+        if(stops.size() != 1) throw new BadRequestException("Cílová stanice nebyla nalezena nebo je nejednoznačná");
+        stopToName = stops.stream().findFirst().get();
+
+        if(stopThroughName != null) {
+            stops = stopService.findStopNamesByPattern(stopThroughName, false);
+            if (stops.size() != 1) throw new BadRequestException("Přestupní stanice nebyla nalezena nebo je nejednoznačná");
+            stopThroughName = stops.stream().findFirst().get();
+        }
 
         List<SearchResult> searchResults;
         if(Boolean.TRUE.equals(searchByArrival)) {

@@ -18,7 +18,7 @@ export class ErrorService {
       return Observable.empty();
     }
 
-    return Observable.throw(error.json().error || 'Server error'); // Observable.throw() is undefined at runtime using Webpack
+    return Observable.throw(error.json().message || 'Server error'); // Observable.throw() is undefined at runtime using Webpack
   }
 
 }

@@ -90,7 +90,10 @@ public class StopServiceIT extends AbstractServiceIT {
 
     @Test
     public void testFindStopNamesByStartPattern() {
-        Set<String> set = stopService.findStopNamesByStartPattern("flo");
+        Set<String> set = stopService.findStopNamesByPattern("flo", true);
+        Assert.assertNotNull(set);
+
+        set = stopService.findStopNamesByPattern("belocerkevska", false);
         Assert.assertNotNull(set);
     }
 

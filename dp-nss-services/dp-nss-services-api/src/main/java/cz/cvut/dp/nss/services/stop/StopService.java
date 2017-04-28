@@ -27,10 +27,11 @@ public interface StopService extends EntityService<Stop, String> {
     Iterator<Stop> iteratorOverAllStops();
 
     /**
-     * @param startPattern retezec, kterym zacina nazev stanice
+     * @param pattern retezec, ktery se objevuje v nazvu stanice
+     * @param withWildCards pokud true tak se doplni % na zacatek i konec retezce
      * @return vsechny stanice, ktere zacinaji na pattern (case insensitive)
      */
-    Set<String> findStopNamesByStartPattern(String startPattern);
+    Set<String> findStopNamesByPattern(String pattern, boolean withWildCards);
 
     /**
      * @param searchQuery retezec, ktery se vyskytuje v ID nebo nazvu stanice

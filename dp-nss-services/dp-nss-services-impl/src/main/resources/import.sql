@@ -1,13 +1,13 @@
 --v databazi (dpp) je nutne mit krome defaultniho public schematu take schema 'global'
 --CREATE SCHEMA IF NOT EXISTS global;
 
-TRUNCATE global.person_role CASCADE;
-TRUNCATE global.roles CASCADE;
+delete from global.person_role;
+delete from global.roles;
 
-TRUNCATE global.person_time_table CASCADE;
-TRUNCATE global.time_tables CASCADE;
+delete from global.person_time_table;
+delete from global.time_tables;
 
-TRUNCATE global.persons CASCADE;
+delete from global.persons;
 
 --Users
 -- admin/admin ---- user/admin

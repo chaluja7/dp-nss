@@ -24,7 +24,7 @@ public class StopController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Set<String> getStopsByStartPattern(@RequestParam("startsWith") String startsWith) {
-        return stopService.findStopNamesByStartPattern(startsWith);
+        return stopService.findStopNamesByPattern(startsWith, true);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

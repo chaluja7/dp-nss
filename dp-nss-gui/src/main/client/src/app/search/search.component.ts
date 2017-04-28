@@ -18,7 +18,7 @@ import {AppSettings} from "../_common/app.settings";
 export class SearchComponent implements OnInit {
 
 
-  private static SEARCH_ERROR = 'Chyba při vyhledávání. Zkuste prosím požadavek opakovat.';
+  private static SEARCH_ERROR = 'Chyba - ';
 
   searchModel: SearchModel = new SearchModel();
 
@@ -90,7 +90,7 @@ export class SearchComponent implements OnInit {
                 this.searchResults = searchResults;
             },
             err  => {
-              this.error = SearchComponent.SEARCH_ERROR;
+              this.error = SearchComponent.SEARCH_ERROR + err;
               this.submitted = false;
             });
   }
@@ -130,7 +130,7 @@ export class SearchComponent implements OnInit {
 
               },
               err  => {
-                  this.error = SearchComponent.SEARCH_ERROR;
+                  this.error = SearchComponent.SEARCH_ERROR + err;
                   this.submitted = false;
               });
   }
