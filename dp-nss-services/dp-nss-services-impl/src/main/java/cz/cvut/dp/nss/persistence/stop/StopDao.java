@@ -48,7 +48,7 @@ public class StopDao extends AbstractGenericJpaDao<Stop, String> {
     public List<String> findStopNamesByPattern(String pattern, boolean withWildCards) {
         if(withWildCards) pattern = "%" + pattern + "%";
 
-        final String queryString = "select distinct s.name from stops s where public.asciize(lower(s.name)) like public.asciize(lower(:pattern)) order by s.name";
+        final String queryString = "select distinct s.name from stops s where unaccent(lower(s.name)) like unaccent(lower(:pattern)) order by s.name";
 
         Query query = sessionFactory.getCurrentSession().createNativeQuery(queryString);
         query.setParameter("pattern", pattern);
