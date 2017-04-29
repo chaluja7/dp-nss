@@ -14,6 +14,7 @@ import cz.cvut.dp.nss.services.route.RouteType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,20 +38,9 @@ public class TripServiceIT extends AbstractServiceIT {
     private AgencyService agencyService;
 
     @Test
+    @Transactional
     public void testCRUD() {
-        Calendar calendar = CalendarServiceIT.getCalendar("calendar" + System.currentTimeMillis(), LocalDate.now(), LocalDate.now(), true, true);
-        calendarService.create(calendar);
-
-        Agency agency = AgencyServiceIT.getAgency("agency" + System.currentTimeMillis(), "agencyZ", "", "");
-        agencyService.create(agency);
-
-        Route route = RouteServiceIT.getRoute("route" + System.currentTimeMillis(), agency, "sh", "lon", "col", RouteType.BOAT);
-        routeService.create(route);
-
-        final String id = "stop" + System.currentTimeMillis();
-        String headSign = "headSign";
-
-        Trip trip = getTrip(id, calendar, route, headSign);
+        Trip trip = prepareTrip();
 
         //insert
         tripService.create(trip);
@@ -58,11 +48,11 @@ public class TripServiceIT extends AbstractServiceIT {
         //retrieve
         Trip retrieved = tripService.get(trip.getId());
         Assert.assertNotNull(retrieved);
-        Assert.assertEquals(id, retrieved.getId());
-        Assert.assertEquals(headSign, retrieved.getHeadSign());
+        Assert.assertEquals(trip.getId(), retrieved.getId());
+        Assert.assertEquals(trip.getHeadSign(), retrieved.getHeadSign());
 
         //update
-        headSign = "newHeadSign";
+        String headSign = "newHeadSign";
         retrieved.setHeadSign(headSign);
         tripService.update(retrieved);
 
@@ -78,9 +68,9 @@ public class TripServiceIT extends AbstractServiceIT {
         Assert.assertNull(tripService.get(retrieved.getId()));
 
         //delete other entities
-        routeService.delete(route.getId());
-        agencyService.delete(agency.getId());
-        calendarService.delete(calendar.getId());
+        routeService.delete(trip.getRoute().getId());
+        agencyService.delete(trip.getRoute().getAgency().getId());
+        calendarService.delete(trip.getCalendar().getId());
     }
 
     @Test
@@ -109,8 +99,11 @@ public class TripServiceIT extends AbstractServiceIT {
 
     @Test
     public void testGetLazyInitialized() {
-        Trip trip = tripService.getLazyInitialized("1");
-        Assert.assertNotNull(trip);
+        Trip trip = prepareTrip();
+        tripService.create(trip);
+
+        Trip retrieved = tripService.getLazyInitialized(trip.getId());
+        Assert.assertNotNull(retrieved);
     }
 
     public static Trip getTrip(final String id, Calendar calendar, Route route, String headSign) {
@@ -128,6 +121,22 @@ public class TripServiceIT extends AbstractServiceIT {
         filter.setRouteShortName("124");
 
         return filter;
+    }
+
+    private Trip prepareTrip() {
+        Calendar calendar = CalendarServiceIT.getCalendar("calendar" + System.currentTimeMillis(), LocalDate.now(), LocalDate.now(), true, true);
+        calendarService.create(calendar);
+
+        Agency agency = AgencyServiceIT.getAgency("agency" + System.currentTimeMillis(), "agencyZ", "", "");
+        agencyService.create(agency);
+
+        Route route = RouteServiceIT.getRoute("route" + System.currentTimeMillis(), agency, "sh", "lon", "col", RouteType.BOAT);
+        routeService.create(route);
+
+        final String id = "stop" + System.currentTimeMillis();
+        String headSign = "headSign";
+
+        return getTrip(id, calendar, route, headSign);
     }
 
 }

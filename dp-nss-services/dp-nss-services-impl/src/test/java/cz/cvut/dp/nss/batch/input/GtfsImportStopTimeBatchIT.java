@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.batch.input;
 
 import cz.cvut.dp.nss.services.AbstractServiceIT;
+import cz.cvut.dp.nss.services.stopTime.StopTimeService;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -23,8 +25,17 @@ public class GtfsImportStopTimeBatchIT extends AbstractServiceIT {
     private JobLauncher jobLauncher;
 
     @Autowired
+    private StopTimeService stopTimeService;
+
+    @Autowired
     @Qualifier(value = "gtfsImportStopTimeBatchJob")
     private Job gtfsImportStopTimeBatchJob;
+
+    @Before
+    public void before() {
+        super.before();
+        stopTimeService.truncateAll();
+    }
 
     @Test
     public void testImport() throws Throwable {

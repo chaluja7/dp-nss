@@ -73,8 +73,21 @@ public class RouteServiceIT extends AbstractServiceIT {
 
     @Test
     public void testGetWithAgency() {
-        Route route = routeService.getWithAgency("L125D1");
-        Assert.assertNotNull(route);
+        Agency agency = AgencyServiceIT.getAgency("agency" + System.currentTimeMillis(), "agency1", "", "");
+        agencyService.create(agency);
+
+        final String id = "route" + System.currentTimeMillis();
+        String shortName = "routeShort";
+        String longName = "routeLong";
+        String color = "color";
+        RouteType routeType = RouteType.METRO;
+        Route route = getRoute(id, agency, shortName, longName, color, routeType);
+
+        //insert
+        routeService.create(route);
+
+        Route retrieved = routeService.getWithAgency(id);
+        Assert.assertNotNull(retrieved);
     }
 
     @Test

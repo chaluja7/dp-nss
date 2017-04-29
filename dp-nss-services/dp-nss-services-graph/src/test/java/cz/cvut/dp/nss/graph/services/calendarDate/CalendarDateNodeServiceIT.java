@@ -17,6 +17,7 @@ public class CalendarDateNodeServiceIT extends AbstractServiceIT {
 
     @Before
     public void before() {
+        super.before();
         calendarDateNodeService.deleteAll();
     }
 
