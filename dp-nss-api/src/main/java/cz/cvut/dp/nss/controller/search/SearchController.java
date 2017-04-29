@@ -78,18 +78,29 @@ public class SearchController extends AbstractController {
 
         //pokusim se najit stanici odkud, pres a kam. Pokud ji nenajdu tak koncim vyhledavani
         Set<String> stops = stopService.findStopNamesByPattern(stopFromName, false);
-        if(stops.size() != 1) throw new BadRequestException("Výchozí stanice nebyla nalezena nebo je nejednoznačná");
+        if(stops.size() != 1) {
+            stops = stopService.findStopNamesByPattern(stopFromName, true);
+            if(stops.size() != 1) throw new BadRequestException("Výchozí stanice nebyla nalezena nebo je nejednoznačná");
+        }
         stopFromName = stops.stream().findFirst().get();
 
         stops = stopService.findStopNamesByPattern(stopToName, false);
-        if(stops.size() != 1) throw new BadRequestException("Cílová stanice nebyla nalezena nebo je nejednoznačná");
+        if(stops.size() != 1) {
+            stops = stopService.findStopNamesByPattern(stopToName, true);
+            if(stops.size() != 1) throw new BadRequestException("Cílová stanice nebyla nalezena nebo je nejednoznačná");
+        }
         stopToName = stops.stream().findFirst().get();
 
         if(stopThroughName != null) {
             stops = stopService.findStopNamesByPattern(stopThroughName, false);
-            if (stops.size() != 1) throw new BadRequestException("Přestupní stanice nebyla nalezena nebo je nejednoznačná");
+            if(stops.size() != 1) {
+                stops = stopService.findStopNamesByPattern(stopThroughName, true);
+                if(stops.size() != 1) throw new BadRequestException("Přestupní stanice nebyla nalezena nebo je nejednoznačná");
+            }
             stopThroughName = stops.stream().findFirst().get();
         }
+
+        checkStops(stopFromName, stopToName, stopThroughName);
 
         List<SearchResult> searchResults;
         if(Boolean.TRUE.equals(searchByArrival)) {
@@ -107,6 +118,14 @@ public class SearchController extends AbstractController {
         }
 
         return searchResultWrappers;
+    }
+
+    private void checkStops(String stopFrom, String stopTo, String stopThrough) throws BadRequestException {
+        if(stopFrom.equals(stopTo)) throw new BadRequestException("Výchozí a cílová stanice nemohou být shodné");
+        if(stopThrough != null) {
+            if(stopFrom.equals(stopThrough)) throw new BadRequestException("Výchozí a přestupní stanice nemohou být shodné");
+            if(stopTo.equals(stopThrough)) throw new BadRequestException("Cílová a přestupní stanice nemohou být shodné");
+        }
     }
 
     private SearchResultWrapper getSearchResultWrapper(SearchResult searchResult, DateTime departureDateTime) {
