@@ -41,7 +41,7 @@ export class TimeTableComponent implements OnInit {
                     this.userService.setMsg(AppSettings.SAVE_SUCCESS);
                 },
                 err => {
-                    this.error = AppSettings.SAVE_ERROR;
+                    this.error = AppSettings.SAVE_ERROR + err;
                     this.loading = false;
                 });
     }
@@ -56,7 +56,7 @@ export class TimeTableComponent implements OnInit {
                     this.http.extractZipContent(response, this.userService.getSelectedTimeTable());
                 },
                 err => {
-                    this.error = AppSettings.SAVE_ERROR;
+                    this.error = AppSettings.SAVE_ERROR + err;
                 });
     }
 

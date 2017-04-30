@@ -47,7 +47,7 @@ export class CalendarComponent extends AbstractCalendarComponent implements OnIn
             this.goBack()
         },
             err  => {
-              this.error = AppSettings.SAVE_ERROR;
+              this.error = AppSettings.SAVE_ERROR + err;
               this.loading = false;
             });
   }
@@ -59,7 +59,7 @@ export class CalendarComponent extends AbstractCalendarComponent implements OnIn
                   this.goBack()
               },
             err => {
-                this.error = AppSettings.SAVE_ERROR;
+                this.error = AppSettings.SAVE_ERROR + err;
                 this.loading = false;
             });
 

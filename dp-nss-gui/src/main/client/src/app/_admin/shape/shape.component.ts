@@ -33,7 +33,7 @@ export class ShapeComponent extends AbstractShapeComponent implements OnInit {
             this.goBack()
         },
             err  => {
-              this.error = AppSettings.SAVE_ERROR;
+              this.error = AppSettings.SAVE_ERROR + err;
               this.loading = false;
             });
   }
@@ -45,7 +45,7 @@ export class ShapeComponent extends AbstractShapeComponent implements OnInit {
                   this.goBack()
               },
             err => {
-                this.error = AppSettings.SAVE_ERROR;
+                this.error = AppSettings.SAVE_ERROR + err;
                 this.loading = false;
             });
 

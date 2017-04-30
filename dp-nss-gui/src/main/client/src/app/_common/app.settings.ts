@@ -23,7 +23,7 @@ export class AppSettings {
 
     public static DELETE_SUCCESS = 'Záznam byl úspěšně smazán.';
 
-    public static SAVE_ERROR = 'Chyba při zpracování.';
+    public static SAVE_ERROR = 'Chyba při zpracování - ';
 
     public static LOGOUT_SUCCESS = 'Odhlášení proběhlo úspěšně.';
 

@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {LoggedUser} from "../_model/logged-user";
 import {AppSettings} from "../_common/app.settings";
+import {Cookie} from "ng2-cookies";
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,8 @@ export class UserService {
   importantMsg: boolean;
 
   isLoggedIn(): boolean {
-      return sessionStorage.getItem(UserService.LOGGED_USER_IDENT) != null;
+      let x = Cookie.get(UserService.LOGGED_USER_IDENT);
+      return x != null && x ? true : false;
   }
 
   isAdminLoggedIn(): boolean {
@@ -25,7 +27,7 @@ export class UserService {
   }
 
   getLoggedUser(): LoggedUser {
-      return this.isLoggedIn() ? JSON.parse(sessionStorage.getItem(UserService.LOGGED_USER_IDENT)) : null;
+      return this.isLoggedIn() ? JSON.parse(Cookie.get(UserService.LOGGED_USER_IDENT)) : null;
   }
 
   storeUser(user: LoggedUser): void {
@@ -38,27 +40,27 @@ export class UserService {
           }
       }
 
-      sessionStorage.setItem(UserService.LOGGED_USER_IDENT, JSON.stringify(user));
-      sessionStorage.removeItem(UserService.SELECTED_TIME_TABLE_IDENT);
+      Cookie.set(UserService.LOGGED_USER_IDENT, JSON.stringify(user));
+      Cookie.delete(UserService.SELECTED_TIME_TABLE_IDENT);
   }
 
   removeUser(): void {
-      sessionStorage.removeItem(UserService.LOGGED_USER_IDENT);
-      sessionStorage.removeItem(UserService.SELECTED_TIME_TABLE_IDENT);
+      Cookie.delete(UserService.LOGGED_USER_IDENT);
+      Cookie.delete(UserService.SELECTED_TIME_TABLE_IDENT);
   }
 
   getSelectedTimeTable(): string {
-      return sessionStorage.getItem(UserService.SELECTED_TIME_TABLE_IDENT);
+      return Cookie.get(UserService.SELECTED_TIME_TABLE_IDENT);
   }
 
   isSelectedTimeTableActive(): boolean {
-      let active = sessionStorage.getItem(UserService.SELECTED_TIME_TABLE_ACTIVE);
+      let active = Cookie.get(UserService.SELECTED_TIME_TABLE_ACTIVE);
       return active == 'true';
   }
 
   storeSelectedTimeTable(timeTable: string, active: boolean): void {
-      sessionStorage.setItem(UserService.SELECTED_TIME_TABLE_IDENT, timeTable);
-      sessionStorage.setItem(UserService.SELECTED_TIME_TABLE_ACTIVE, active ? 'true' : 'false');
+      Cookie.set(UserService.SELECTED_TIME_TABLE_IDENT, timeTable);
+      Cookie.set(UserService.SELECTED_TIME_TABLE_ACTIVE, active ? 'true' : 'false');
   }
 
   getApiPrefix(): string {
