@@ -27,7 +27,7 @@ public class SearchServiceImpl implements SearchService {
     private SearchService searchService;
 
     @Override
-    @Transactional("neo4jTransactionManager")
+    @Transactional(value = "neo4jTransactionManager", readOnly = true)
     public List<SearchResult> findPathByDepartureDate(String stopFromName, String stopToName, String stopThroughName,
                                                       DateTime departure, DateTime maxDeparture, int maxTransfers, int maxNumberOfResults,
                                                       boolean withWheelChair, List<SearchResult> alreadyFoundedSearchResultsWithThroughStop) {
@@ -182,6 +182,35 @@ public class SearchServiceImpl implements SearchService {
             }
 
             return thisRetList;
+        }
+
+        return retList;
+    }
+
+    @Override
+    @Transactional(value = "neo4jTransactionManager", readOnly = true)
+    public List<SearchResult> findPathByArrivalDate(String stopFromName, String stopToName, String stopThroughName, DateTime arrival, DateTime minArrival, int maxTransfers, int maxNumberOfResults, boolean withWheelChair, List<SearchResult> alreadyFoundedSearchResultsWithThroughStop) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("from", stopFromName);
+        params.put("to", stopThroughName != null ? stopThroughName : stopToName);
+        params.put("arrival", arrival.getMillis());
+        params.put("minArrival", minArrival.getMillis());
+        params.put("maxTransfers", maxTransfers);
+        params.put("maxNumberOfResults", maxNumberOfResults);
+        params.put("wheelChair", withWheelChair);
+        params.put("stopFromWheelChairAccessible", withWheelChair);
+        params.put("stopTimeId", null);
+
+        final String query = "CALL cz.cvut.dp.nss.search.byArrivalSearch({from}, {to}, {arrival}, {minArrival}, {maxTransfers}, {maxNumberOfResults}, {wheelChair}, {stopFromWheelChairAccessible}, {stopTimeId})";
+        Result result = session.query(query, params, true);
+
+        List<SearchResult> retList = new ArrayList<>();
+        for(Map<String, Object> searchResultMap : result) {
+            retList.add(buildSearchResultWrapperFromMap(searchResultMap));
+        }
+
+        if(stopThroughName != null) {
+            //TODO vyhledavani s prestupni stanici!
         }
 
         return retList;

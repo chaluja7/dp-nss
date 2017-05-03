@@ -104,8 +104,9 @@ public class SearchController extends AbstractController {
 
         List<SearchResult> searchResults;
         if(Boolean.TRUE.equals(searchByArrival)) {
-            //TODO napsat vyhledavani dle prijezdu
-            throw new UnsupportedOperationException("TODO - vyhledavani dle prijezdu zatim neni napsane");
+            searchResults = searchService.findPathByArrivalDate(stopFromName, stopToName, stopThroughName,
+                dateTime, new DateTime(dateTime).minusHours(maxTravelTime), maxTransfers,
+                SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS, Boolean.TRUE.equals(withWheelChair), null);
         } else {
             searchResults = searchService.findPathByDepartureDate(stopFromName, stopToName, stopThroughName,
                 dateTime, new DateTime(dateTime).plusHours(maxTravelTime), maxTransfers,
@@ -114,7 +115,7 @@ public class SearchController extends AbstractController {
 
         List<SearchResultWrapper> searchResultWrappers = new ArrayList<>();
         for(SearchResult searchResult : searchResults) {
-            searchResultWrappers.add(getSearchResultWrapper(searchResult, dateTime));
+            searchResultWrappers.add(getSearchResultWrapper(searchResult, dateTime, Boolean.TRUE.equals(searchByArrival)));
         }
 
         return searchResultWrappers;
@@ -128,11 +129,18 @@ public class SearchController extends AbstractController {
         }
     }
 
-    private SearchResultWrapper getSearchResultWrapper(SearchResult searchResult, DateTime departureDateTime) {
+    private SearchResultWrapper getSearchResultWrapper(SearchResult searchResult, DateTime departureDateTime, boolean byArrival) {
         if(searchResult == null) return new SearchResultWrapper();
 
-        final DateTime thisDeparture = searchResult.isOverMidnightDeparture() ? departureDateTime.plusDays(1) : departureDateTime;
-        final DateTime thisArrival = searchResult.isOverMidnightArrival() ? departureDateTime.plusDays(1) : departureDateTime;
+        final DateTime thisDeparture;
+        final DateTime thisArrival;
+        if(!byArrival) {
+            thisDeparture = searchResult.isOverMidnightDeparture() ? departureDateTime.plusDays(1) : departureDateTime;
+            thisArrival = searchResult.isOverMidnightArrival() ? departureDateTime.plusDays(1) : departureDateTime;
+        } else {
+            thisDeparture = searchResult.isOverMidnightDeparture() ? departureDateTime.minusDays(1) : departureDateTime;
+            thisArrival = searchResult.isOverMidnightArrival() ? departureDateTime.minusDays(1) : departureDateTime;
+        }
 
         SearchResultWrapper wrapper = new SearchResultWrapper();
         wrapper.setDepartureDate(thisDeparture.toString(DateTimeUtils.JODA_DATE_FORMATTER));

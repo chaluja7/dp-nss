@@ -22,7 +22,7 @@ public class SearchServiceIT extends AbstractServiceIT {
     private SearchService searchService;
 
     @Test
-    public void testSearch() {
+    public void testByDepartureSearch() {
         final String from = "Dejvická";
         final String to = "Karlovo náměstí";
         final String through = "Můstek";
@@ -37,5 +37,20 @@ public class SearchServiceIT extends AbstractServiceIT {
         Assert.assertNotNull(pathByDepartureDate);
     }
 
+    @Test
+    public void testByArrivalSearch() {
+        final String from = "Dejvická";
+        final String to = "Karlovo náměstí";
+        final String through = null;
+        final DateTimeFormatter formatter = DateTimeFormat.forPattern(DateTimeUtils.DATE_TIME_PATTERN);
+        final DateTime arrivalDateTime = formatter.parseDateTime("03.05.2017 15:00");
+        final DateTime minArrivalDateTime = new DateTime(arrivalDateTime).minusHours(6);
+        final int maxTransfers = 3;
+
+        List<SearchResult> pathByArrivalDate =
+            searchService.findPathByArrivalDate(from, to, through, arrivalDateTime, minArrivalDateTime, maxTransfers,
+                SearchService.DEFAULT_MAX_NUMBER_OF_RESULTS, false, null);
+        Assert.assertNotNull(pathByArrivalDate);
+    }
 
 }

@@ -30,4 +30,21 @@ public interface SearchService {
                                                DateTime departure, DateTime maxDeparture, int maxTransfers, int maxNumberOfResults,
                                                boolean withWheelChair, List<SearchResult> alreadyFoundedSearchResultsWithThroughStop);
 
+    /**
+     * Najde spojeni dle data prijezdu
+     * @param stopFromName stanice z
+     * @param stopToName stanice do
+     * @param stopThroughName prujezdni/prestupni stanice
+     * @param arrival datum prijezdu
+     * @param minArrival minimalni cas odjezdu
+     * @param maxTransfers max pocet prestupu
+     * @param maxNumberOfResults max pocet vracenych vysledku
+     * @param withWheelChair pokud true hledame jen bezbarierove tripy a stopy
+     * @param alreadyFoundedSearchResultsWithThroughStop pokud neni null tak obsahuje nalezene vysledky z drivejsi iterace. zavolano s ne null hodnotou slouzi k doplneni dalsich vysledku (s drivejsim arrival)
+     * @return list vysledku
+     */
+    List<SearchResult> findPathByArrivalDate(String stopFromName, String stopToName, String stopThroughName,
+                                               DateTime arrival, DateTime minArrival, int maxTransfers, int maxNumberOfResults,
+                                               boolean withWheelChair, List<SearchResult> alreadyFoundedSearchResultsWithThroughStop);
+
 }

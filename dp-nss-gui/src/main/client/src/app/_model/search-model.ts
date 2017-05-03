@@ -8,4 +8,5 @@ export class SearchModel {
   public time: Date;
   public wheelChair: boolean;
   public byArrival: boolean;
+  public dateType: string;
 }

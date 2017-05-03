@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
 
   private static SEARCH_ERROR = 'Chyba - ';
 
-  searchModel: SearchModel = new SearchModel();
+  searchModel: SearchModel;
 
   searchModelClone: SearchModel;
 
@@ -46,8 +46,13 @@ export class SearchComponent implements OnInit {
 
   noMoreNextResults: boolean;
 
+  noMorePrevResults: boolean;
+
   constructor(private timeTableService: TimeTableService, public dateService: DateService,
               private searchService: SearchService, private completerService: CompleterService, private stopService: StopService) {
+
+    this.searchModel = new SearchModel();
+    this.searchModel.dateType = 'departure';
 
     this.remoteStopsFrom = completerService.remote(null, null, "");
     this.remoteStopsFrom.urlFormater(term => {return encodeURI(this.stopSearchTerm + `${term}`)});
@@ -84,6 +89,7 @@ export class SearchComponent implements OnInit {
     this.submitted = true;
     this.error = '';
     this.copySearchModel();
+    this.searchModel.byArrival = this.searchModel.dateType === 'arrival';
     this.searchService.search(this.searchModel)
         .subscribe(searchResults => {
                 this.submitted = false;
@@ -106,16 +112,21 @@ export class SearchComponent implements OnInit {
     //cas departure posledniho nalezeneho vysledku
     let lastDepartureTime = DateService.getTimeObjectFromString(lastResult.stopTimes[0].departure);
 
+    lastDepartureTime.setDate(lastDepartureDate.getDate());
+    lastDepartureTime.setMonth(lastDepartureDate.getMonth());
+    lastDepartureTime.setFullYear(lastDepartureDate.getFullYear());
+
     //a zvysim cas o jednu minutu, at hledam opravdu az dalsi spoje
     let prevDay = lastDepartureTime.getDay();
-    lastDepartureTime.setMinutes(lastDepartureTime.getMinutes() + 1)
-    //pokud jsem presel pres pulnoc, tak zvysit o den i datum
-    if(prevDay < lastDepartureTime.getDay()) {
+    lastDepartureTime.setMinutes(lastDepartureTime.getMinutes() + 1);
+      //pokud jsem presel pres pulnoc, tak zvysit o den i datum
+    if(prevDay != lastDepartureTime.getDay()) {
         lastDepartureDate.setHours(24);
     }
 
     this.searchModelClone.date = lastDepartureDate;
     this.searchModelClone.time = lastDepartureTime;
+    this.searchModelClone.byArrival = false;
 
       this.searchService.search(this.searchModelClone)
           .subscribe(searchResults => {
@@ -128,6 +139,59 @@ export class SearchComponent implements OnInit {
                       this.searchResults.push(s);
                   }
 
+              },
+              err  => {
+                  this.error = SearchComponent.SEARCH_ERROR + err;
+                  this.submitted = false;
+              });
+  }
+
+  showPrevResults(): void {
+      this.noMorePrevResults = false;
+      this.submitted = true;
+      this.error = '';
+
+      let firstResult = this.searchResults[0];
+      //datum arrival prvniho nalezeneho vysledku
+      let firstArrivalDate = DateService.getDateObjectFromString(firstResult.arrivalDate);
+      //cas arrival prvniho nalezeneho vysledku
+      let firstArrivalTime = DateService.getTimeObjectFromString(firstResult.stopTimes[firstResult.stopTimes.length - 1].arrival);
+
+      firstArrivalTime.setDate(firstArrivalDate.getDate());
+      firstArrivalTime.setMonth(firstArrivalDate.getMonth());
+      firstArrivalTime.setFullYear(firstArrivalDate.getFullYear());
+
+      //a snizim cas o jednu minutu, at hledam opravdu az predchozi spoje
+      let prevDay = firstArrivalTime.getDay();
+      firstArrivalTime.setMinutes(firstArrivalTime.getMinutes() - 1);
+      //pokud jsem presel pres pulnoc, tak snizit o den i datum
+      if(prevDay != firstArrivalTime.getDay()) {
+          firstArrivalDate.setHours(-1);
+      }
+
+      this.searchModelClone.date = firstArrivalDate;
+      this.searchModelClone.time = firstArrivalTime;
+      this.searchModelClone.byArrival = true;
+
+      this.searchService.search(this.searchModelClone)
+          .subscribe(searchResults => {
+                  this.submitted = false;
+                  if(searchResults.length == 0) {
+                      this.noMorePrevResults = true;
+                  } else {
+                      //musim vytvorit nove pole kam dam prve tyto nalezen vysledky a pak do nej nakopiruju jiz drive nalezene
+                      //pri pouziti splice bych totiz musel delat deepcopy kazdeho prvku v this.searchResults
+                      let newSearchResults: SearchResultModel[] = [];
+                      for (let s of searchResults) {
+                          newSearchResults.push(s);
+                      }
+
+                      for (let s of this.searchResults) {
+                          newSearchResults.push(s);
+                      }
+
+                      this.searchResults = newSearchResults;
+                  }
               },
               err  => {
                   this.error = SearchComponent.SEARCH_ERROR + err;

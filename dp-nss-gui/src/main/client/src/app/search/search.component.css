@@ -1,0 +1,8 @@
+.searchRadios input {
+    margin-top: 10px;
+}
+
+.searchRadios span {
+    padding-left: 10px;
+    font-weight: bold;
+}

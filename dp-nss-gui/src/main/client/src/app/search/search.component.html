@@ -54,13 +54,26 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6 form-group">
-                    <label for="maxNumOfTransfers">Maximální počet přestupů:</label>
+                <div class="col-md-3 form-group">
+                    <div class="searchRadios">
+                        <label for="dateType">
+                            <input type="radio" [(ngModel)]="searchModel.dateType"  name="dateType" id="dateType" value="departure">
+                            <span>Odjezd</span>
+                        </label>
+                        <br />
+                        <label for="dateType2">
+                            <input type="radio" [(ngModel)]="searchModel.dateType"  name="dateType" id="dateType2" value="arrival">
+                            <span>Příjezd</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-5 form-group">
+                    <label for="maxNumOfTransfers">Max. počet přestupů:</label>
                     <select class="form-control" id="maxNumOfTransfers" required [(ngModel)]="searchModel.maxNumOfTransfers" name="maxNumOfTransfers">
                         <option *ngFor="let numOfTransfer of numOfTransfers" [value]="numOfTransfer">{{numOfTransfer}}</option>
                     </select>
                 </div>
-                <div class="col-md-6 form-group">
+                <div class="col-md-4 form-group">
                     <label for="wheelChair">Pouze bezbariérové:</label>
                     <input type="checkbox" class="form-control" name="wheelChair" id="wheelChair" [(ngModel)]="searchModel.wheelChair" />
                 </div>
@@ -84,6 +97,19 @@
         <h3>Nalezené výsledky</h3>
 
         <div *ngIf="searchResults.length === 0" class="alert alert-danger">Nebyly nalezeny žádné výsledky.</div>
+
+        <div *ngIf="searchResults.length > 0" class="margin-bottom-20">
+            <div class="row">
+                <div class="col-md-12">
+                    <button *ngIf="!noMorePrevResults" type="button" class="btn btn-success" style="width: 100%;" (click)="showPrevResults()" [disabled]="!searchForm.form.valid || submitted">
+                        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                        Předchozí výsledky
+                        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                    </button>
+                    <div *ngIf="noMorePrevResults" class="alert alert-danger">Předchozí výsledky nejsou k dispozici. Změňte prosím parametry vyhledávání.</div>
+                </div>
+            </div>
+        </div>
 
         <div *ngFor="let searchResult of searchResults">
             <table class="table table-bordered">
