@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.exception;
 
 /**
+ * Hesla se neshoduji.
+ *
  * @author jakubchalupa
  * @since 23.04.17
  */

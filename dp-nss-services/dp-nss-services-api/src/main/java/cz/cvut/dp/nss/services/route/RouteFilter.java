@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.services.route;
 import cz.cvut.dp.nss.services.common.AbstractEntityFilter;
 
 /**
+ * Filtr spoje.
+ *
  * @author jakubchalupa
  * @since 12.03.17
  */

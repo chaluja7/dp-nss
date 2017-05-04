@@ -5,6 +5,8 @@ import cz.cvut.dp.nss.graph.services.common.NodeService;
 import java.util.List;
 
 /**
+ * Servica zastaveni.
+ *
  * @author jakubchalupa
  * @since 18.01.17
  */

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Wrapper jizdy.
+ *
  * @author jakubchalupa
  * @since 12.02.17
  */

@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.services.trip;
 import cz.cvut.dp.nss.services.common.AbstractEntityFilter;
 
 /**
+ * Filtr jizdy.
+ *
  * @author jakubchalupa
  * @since 16.03.17
  */

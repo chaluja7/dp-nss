@@ -6,6 +6,8 @@ import org.joda.time.DateTime;
 import java.util.List;
 
 /**
+ * Servica vyhledavani.
+ *
  * @author jakubchalupa
  * @since 11.02.17
  */

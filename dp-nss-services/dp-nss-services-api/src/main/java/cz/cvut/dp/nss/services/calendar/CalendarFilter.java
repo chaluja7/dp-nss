@@ -5,6 +5,8 @@ import cz.cvut.dp.nss.services.common.AbstractEntityFilter;
 import java.time.LocalDate;
 
 /**
+ * Filtr intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 13.03.17
  */

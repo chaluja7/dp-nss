@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.graph.services.calendar;
 import cz.cvut.dp.nss.graph.services.common.NodeService;
 
 /**
+ * Servica intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 11.02.17
  */

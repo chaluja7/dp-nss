@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.services.stopTime;
 import java.time.LocalTime;
 
 /**
+ * Wrapper zastaveni.
+ *
  * @author jakubchalupa
  * @since 12.02.17
  */

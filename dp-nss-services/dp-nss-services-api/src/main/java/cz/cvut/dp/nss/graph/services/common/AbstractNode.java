@@ -6,6 +6,7 @@ import org.neo4j.ogm.annotation.GraphId;
 /**
  * indexy uz nejsou podporovane z anotaci entit - je treba je vyrobit na neo4j
  * http://neo4j.com/docs/developer-manual/current/cypher/schema/index/
+ * Dotazy, ktere je nad databazi Neo4j treba provest jsou na jednotlivych entitach, kterych se tykaji.
  *
  * @author jakubchalupa
  * @since 18.01.17

@@ -18,6 +18,8 @@ import java.time.LocalDate;
 @Table(name = "calendar_date", indexes = {@Index(name = "calendar_date_calendar_index", columnList = "calendar_id")})
 public class CalendarDate extends AbstractGeneratedIdEntity {
 
+    private static final long serialVersionUID = 363679435699506977L;
+
     /**
      * datum vyjimky z Calendar
      */

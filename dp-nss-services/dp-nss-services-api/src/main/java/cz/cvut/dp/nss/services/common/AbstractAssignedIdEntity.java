@@ -13,6 +13,8 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class AbstractAssignedIdEntity extends AbstractEntity<String> {
 
+    private static final long serialVersionUID = 1127984985710425894L;
+
     @Id
     @Column
     private String id;

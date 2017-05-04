@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.services.agency;
 import cz.cvut.dp.nss.services.common.AbstractEntityFilter;
 
 /**
+ * Filtr dopravce.
+ *
  * @author jakubchalupa
  * @since 12.03.17
  */

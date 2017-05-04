@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.exception;
 
 /**
+ * Spatne prihlasovaci udaje.
+ *
  * @author jakubchalupa
  * @since 06.03.17
  */

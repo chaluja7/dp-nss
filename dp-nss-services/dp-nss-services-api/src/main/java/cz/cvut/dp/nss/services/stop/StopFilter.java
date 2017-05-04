@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.services.stop;
 import cz.cvut.dp.nss.services.common.AbstractEntityFilter;
 
 /**
+ * Filtr stanic.
+ *
  * @author jakubchalupa
  * @since 11.03.17
  */

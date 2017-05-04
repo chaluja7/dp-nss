@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.graph.services.trip;
 import cz.cvut.dp.nss.graph.services.common.NodeService;
 
 /**
+ * Servica jizdy.
+ *
  * @author jakubchalupa
  * @since 18.01.17
  */
@@ -21,6 +23,10 @@ public interface TripNodeService extends NodeService<TripNode> {
      */
     void deleteTripNode(String tripId);
 
+    /**
+     * smaze cast ze vsech uzlu jizd
+     * @return pocet smazanych jizd
+     */
     int deleteChunk();
 
 }
