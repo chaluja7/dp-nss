@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row margin-bottom-20">
     <div class="col-md-12">
         <div *ngFor="let timeTable of timeTables" class="btn time-table-dash {{timeTable.valid ? 'btn-primary' : 'btn-warning'}}"
              [class.selected]="timeTable === selectedTimeTable" (click)="onSelect(timeTable)">
@@ -16,17 +16,7 @@
     </div>
 </div>
 
-<!--<h4>Vložit</h4>-->
-<!--<div>-->
-    <!--<div>-->
-        <!--<input [(ngModel)]="newTimeTable.id" placeholder="id"/>-->
-    <!--</div>-->
-    <!--<div>-->
-        <!--<input [(ngModel)]="newTimeTable.name" placeholder="name"/>-->
-    <!--</div>-->
-    <!--<div>-->
-        <!--<label>valid: </label>-->
-        <!--<input type="checkbox" [(ngModel)]="newTimeTable.valid"/>-->
-    <!--</div>-->
-    <!--<button (click)="add();">Uložit</button>-->
-<!--</div>-->
+
+<div class="alert alert-info">
+    Data zde zvoleného jízdního řádu se budou zobrazovat k administraci v jednotlivých záložkách. Zvolený jízdní řád můžete editovat pomocí ikony vpravo.
+</div>

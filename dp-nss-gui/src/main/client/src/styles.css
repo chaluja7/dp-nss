@@ -91,3 +91,15 @@ ul.pagination li a {
 .sebm-google-map-container {
     height: 500px;
 }
+
+.loading-indicator {
+    width: 200px;
+    height: 100px;
+    text-align: center;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
