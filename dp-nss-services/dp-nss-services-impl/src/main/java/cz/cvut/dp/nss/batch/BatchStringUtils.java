@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.batch;
 import org.springframework.util.StringUtils;
 
 /**
+ * Utils pro import/export jizdnich radu.
+ *
  * @author jakubchalupa
  * @since 08.01.17
  */

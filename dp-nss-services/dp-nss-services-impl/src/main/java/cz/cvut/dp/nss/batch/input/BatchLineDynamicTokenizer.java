@@ -8,6 +8,8 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.file.transform.FieldSet;
 
 /**
+ * Vezme z kontextu radek csv zahlavi a rozparsuje jej do sloupcu.
+ *
  * @author jakubchalupa
  * @since 14.01.17
  */

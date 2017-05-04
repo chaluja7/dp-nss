@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * RowMapper exportu spoje.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.batch.output.route;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 
 /**
+ * Writer exportu spoje.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

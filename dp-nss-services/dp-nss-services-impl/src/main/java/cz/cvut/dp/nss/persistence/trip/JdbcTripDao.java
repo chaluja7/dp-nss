@@ -13,6 +13,8 @@ import java.sql.Timestamp;
 import java.util.*;
 
 /**
+ * Spring JDBC implementace repository jizdy.
+ *
  * @author jakubchalupa
  * @since 12.02.17
  */

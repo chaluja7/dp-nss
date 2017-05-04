@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.batch.output.calendarDate;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 
 /**
+ * Writer exportu vyjimky z intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

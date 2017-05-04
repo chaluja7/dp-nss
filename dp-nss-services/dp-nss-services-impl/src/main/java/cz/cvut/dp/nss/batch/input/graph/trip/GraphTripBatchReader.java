@@ -11,6 +11,8 @@ import org.springframework.util.ClassUtils;
 import java.util.Iterator;
 
 /**
+ * Reader importu jizdy do grafu.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */
@@ -19,7 +21,7 @@ import java.util.Iterator;
 public class GraphTripBatchReader extends AbstractItemCountingItemStreamItemReader<TripWrapper> {
 
     @Autowired
-    protected TripService tripService;
+    private TripService tripService;
 
     private Iterator<TripWrapper> trips;
 

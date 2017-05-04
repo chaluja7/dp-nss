@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * Writer importu intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

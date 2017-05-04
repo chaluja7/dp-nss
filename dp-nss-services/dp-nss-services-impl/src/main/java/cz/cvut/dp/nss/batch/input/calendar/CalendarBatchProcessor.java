@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.util.Properties;
 
 /**
+ * Processor importu intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

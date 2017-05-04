@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.batch.output.stopTime;
 import java.math.BigDecimal;
 
 /**
+ * Wrapper zastaveni pro export.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

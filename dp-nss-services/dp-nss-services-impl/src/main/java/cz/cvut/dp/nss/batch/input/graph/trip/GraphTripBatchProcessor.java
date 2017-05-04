@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Processor importu jizdy do grafu.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

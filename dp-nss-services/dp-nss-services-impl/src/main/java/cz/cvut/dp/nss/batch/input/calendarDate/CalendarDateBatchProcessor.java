@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.Properties;
 
 /**
+ * Processor importu vyjimky z intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

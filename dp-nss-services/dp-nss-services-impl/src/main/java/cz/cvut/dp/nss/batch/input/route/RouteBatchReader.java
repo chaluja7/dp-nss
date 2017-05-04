@@ -4,6 +4,8 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.transform.DefaultFieldSet;
 
 /**
+ * Reader importu spoje.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

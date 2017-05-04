@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * Writer importu vyjimky z intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */
@@ -16,7 +18,7 @@ import java.util.List;
 public class CalendarDateBatchWriter implements ItemWriter<CalendarDate> {
 
     @Autowired
-    protected CalendarDateService calendarDateService;
+    private CalendarDateService calendarDateService;
 
     @Override
     public void write(List<? extends CalendarDate> items) throws Exception {

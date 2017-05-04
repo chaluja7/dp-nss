@@ -85,11 +85,7 @@ public class StopServiceImpl extends AbstractEntityService<Stop, String, StopDao
     @Transactional(value = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean canBeDeleted(String id) {
         Stop stop = get(id);
-        if(stop != null) {
-            return !(stop.getChildStops().size() > 0 || stop.getStopTimes().size() > 0);
-        }
-
-        return false;
+        return stop != null && !(stop.getChildStops().size() > 0 || stop.getStopTimes().size() > 0);
     }
 
     @Override

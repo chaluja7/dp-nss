@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * RowMapper exportu dopravce.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

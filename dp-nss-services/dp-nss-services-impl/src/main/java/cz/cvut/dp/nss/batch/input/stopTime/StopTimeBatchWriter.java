@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * Writer importu zastaveni.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */
@@ -16,7 +18,7 @@ import java.util.List;
 public class StopTimeBatchWriter implements ItemWriter<StopTime> {
 
     @Autowired
-    protected StopTimeService stopTimeService;
+    private StopTimeService stopTimeService;
 
     @Override
     public void write(List<? extends StopTime> items) throws Exception {

@@ -7,6 +7,8 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
 /**
+ * Processor importu intervalu platnosti do grafu.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

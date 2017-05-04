@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
+ * Writer importu intervalu platnosti do grafu.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */
@@ -18,10 +20,10 @@ import java.util.List;
 public class GraphCalendarBatchWriter implements ItemWriter<CalendarNode> {
 
     @Autowired
-    protected CalendarNodeService calendarNodeService;
+    private CalendarNodeService calendarNodeService;
 
     @Autowired
-    protected Session session;
+    private Session session;
 
     @Override
     @Transactional("neo4jTransactionManager")

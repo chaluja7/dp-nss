@@ -13,6 +13,8 @@ import java.time.LocalTime;
 import java.util.Properties;
 
 /**
+ * Process importu zastaveni.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

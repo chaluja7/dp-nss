@@ -10,6 +10,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
+ * RowMapper pro export zastaveni.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

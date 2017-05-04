@@ -11,6 +11,8 @@ import org.springframework.util.ClassUtils;
 import java.util.Iterator;
 
 /**
+ * Reader importu intervalu platnosti do grafu.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

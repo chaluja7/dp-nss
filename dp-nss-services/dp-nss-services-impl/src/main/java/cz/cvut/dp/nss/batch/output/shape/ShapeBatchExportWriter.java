@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.batch.output.shape;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 
 /**
+ * Writer exportu prujezdniho bodu.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

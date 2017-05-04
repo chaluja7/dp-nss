@@ -5,6 +5,8 @@ import org.springframework.batch.item.file.transform.DefaultFieldSet;
 import org.springframework.core.io.Resource;
 
 /**
+ * Raeder importu intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

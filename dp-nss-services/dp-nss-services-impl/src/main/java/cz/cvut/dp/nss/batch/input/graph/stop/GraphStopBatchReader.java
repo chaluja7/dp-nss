@@ -14,6 +14,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
+ * Reader importu stanice do grafu.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

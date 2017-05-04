@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.batch.output.trip;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 
 /**
+ * Writer pro export jizdy.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

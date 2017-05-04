@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.batch.output.route;
 
 /**
+ * Wrapper spoje pro export.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

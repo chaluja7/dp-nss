@@ -13,6 +13,8 @@ import org.springframework.util.StringUtils;
 import java.util.Properties;
 
 /**
+ * Processor importu spoje.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

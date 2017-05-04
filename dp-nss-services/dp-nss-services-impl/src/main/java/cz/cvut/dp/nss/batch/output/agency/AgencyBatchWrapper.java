@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.batch.output.agency;
 
 /**
+ * Wrapper dopravce pro export.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

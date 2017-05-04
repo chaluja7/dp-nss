@@ -13,6 +13,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
+ * RowMapper exportu vyjimky z intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

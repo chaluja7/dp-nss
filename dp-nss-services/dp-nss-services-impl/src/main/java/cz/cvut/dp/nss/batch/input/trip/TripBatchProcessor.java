@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 import java.util.Properties;
 
 /**
+ * Processor importu jizdy.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

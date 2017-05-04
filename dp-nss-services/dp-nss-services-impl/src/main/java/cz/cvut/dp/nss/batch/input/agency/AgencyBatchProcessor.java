@@ -11,6 +11,8 @@ import java.util.Properties;
 import java.util.UUID;
 
 /**
+ * Processor importu dopravce.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

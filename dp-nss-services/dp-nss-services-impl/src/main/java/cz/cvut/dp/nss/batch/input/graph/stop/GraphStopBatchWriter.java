@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * Writer importu stanice do grafu.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */
@@ -15,7 +17,7 @@ import java.util.List;
 public class GraphStopBatchWriter implements ItemWriter<String> {
 
     @Autowired
-    protected StopTimeNodeService stopTimeNodeService;
+    private StopTimeNodeService stopTimeNodeService;
 
     @Override
     public void write(List<? extends String> items) throws Exception {

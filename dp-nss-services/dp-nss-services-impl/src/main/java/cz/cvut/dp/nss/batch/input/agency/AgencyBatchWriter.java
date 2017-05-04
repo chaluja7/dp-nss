@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * Writer importu dopravce.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */
@@ -16,7 +18,7 @@ import java.util.List;
 public class AgencyBatchWriter implements ItemWriter<Agency> {
 
     @Autowired
-    protected AgencyService agencyService;
+    private AgencyService agencyService;
 
     @Override
     public void write(List<? extends Agency> items) throws Exception {

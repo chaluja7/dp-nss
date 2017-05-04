@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * Writer importu prujezdniho bodu.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */
@@ -16,7 +18,7 @@ import java.util.List;
 public class ShapeBatchWriter implements ItemWriter<Shape> {
 
     @Autowired
-    protected ShapeService shapeService;
+    private ShapeService shapeService;
 
     @Override
     public void write(List<? extends Shape> items) throws Exception {

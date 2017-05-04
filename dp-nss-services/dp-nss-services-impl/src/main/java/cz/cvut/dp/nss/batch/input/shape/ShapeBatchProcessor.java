@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.Properties;
 
 /**
+ * Processor importu prujezdniho bodu.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

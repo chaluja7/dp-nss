@@ -11,6 +11,8 @@ import org.springframework.util.StringUtils;
 import java.util.Properties;
 
 /**
+ * Processor importu nadrazene stanice.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */

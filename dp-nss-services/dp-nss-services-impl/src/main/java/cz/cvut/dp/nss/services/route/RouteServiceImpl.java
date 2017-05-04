@@ -40,6 +40,7 @@ public class RouteServiceImpl extends AbstractEntityService<Route, String, Route
         if(searchQuery == null || searchQuery.length() < 1) return new ArrayList<>();
         List<Route> routes = dao.findRoutesBySearchQuery(searchQuery);
         for(Route route : routes) {
+            //lazy initialization
            if(route.getAgency() != null) route.getAgency().getId();
         }
 
@@ -52,6 +53,7 @@ public class RouteServiceImpl extends AbstractEntityService<Route, String, Route
         if(limit != null && limit <= 0) return new ArrayList<>();
         List<Route> routes = dao.getByFilter(filter, getOffsetOrDefault(offset), getLimitOrDefault(limit), orderColumn != null ? orderColumn : "", asc);
         for(Route route : routes) {
+            //lazy initialization
             if(route.getAgency() != null) route.getAgency().getId();
         }
 

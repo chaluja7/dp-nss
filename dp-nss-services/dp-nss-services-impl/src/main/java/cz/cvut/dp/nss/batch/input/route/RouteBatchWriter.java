@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * Writer importu spoje.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */
@@ -16,7 +18,7 @@ import java.util.List;
 public class RouteBatchWriter implements ItemWriter<Route> {
 
     @Autowired
-    protected RouteService routeService;
+    private RouteService routeService;
 
     @Override
     public void write(List<? extends Route> items) throws Exception {

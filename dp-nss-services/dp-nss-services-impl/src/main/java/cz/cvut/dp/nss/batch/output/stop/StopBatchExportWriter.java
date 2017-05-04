@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.batch.output.stop;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 
 /**
+ * Writer exportu stanice.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

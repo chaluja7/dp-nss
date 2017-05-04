@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * Writer importu jizdy.
+ *
  * @author jakubchalupa
  * @since 07.01.17
  */
@@ -16,7 +18,7 @@ import java.util.List;
 public class TripBatchWriter implements ItemWriter<Trip> {
 
     @Autowired
-    protected TripService tripService;
+    private TripService tripService;
 
     @Override
     public void write(List<? extends Trip> items) throws Exception {

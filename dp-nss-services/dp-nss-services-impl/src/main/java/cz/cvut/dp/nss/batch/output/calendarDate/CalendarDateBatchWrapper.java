@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.batch.output.calendarDate;
 import java.math.BigDecimal;
 
 /**
+ * Wrapper vyjimky z intervalu platnosti pro export.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

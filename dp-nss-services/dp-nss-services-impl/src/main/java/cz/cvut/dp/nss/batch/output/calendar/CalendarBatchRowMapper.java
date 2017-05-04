@@ -10,6 +10,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
+ * RowMapper pro export intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 18.03.17
  */

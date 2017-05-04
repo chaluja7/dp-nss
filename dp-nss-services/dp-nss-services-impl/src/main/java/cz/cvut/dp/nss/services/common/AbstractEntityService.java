@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * Abstraktni servisni trida obsahujici implementaci zakladnich CRUD operaci nad generickou entitou a repository.
+ *
  * @author jakubchalupa
  * @since 14.12.16
  */

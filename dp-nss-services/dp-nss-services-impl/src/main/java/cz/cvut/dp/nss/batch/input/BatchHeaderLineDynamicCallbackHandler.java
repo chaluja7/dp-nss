@@ -7,8 +7,9 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.file.LineCallbackHandler;
 
 
-
 /**
+ * Dynamicky callback pro zahlavi csv souboru.
+ *
  * @author jakubchalupa
  * @since 14.01.17
  */
