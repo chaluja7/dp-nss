@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.wrapper.output.stop;
 import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
 
 /**
+ * Objekt stanice.
+ *
  * @author jakubchalupa
  * @since 24.02.17
  */

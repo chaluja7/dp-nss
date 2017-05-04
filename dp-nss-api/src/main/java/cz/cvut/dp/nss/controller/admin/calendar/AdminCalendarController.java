@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Controller osluhujici intervaly platnosti.
+ *
  * @author jakubchalupa
  * @since 12.03.17
  */
@@ -113,6 +115,10 @@ public class AdminCalendarController extends AdminAbstractController {
         calendarService.delete(calendar.getId());
     }
 
+    /**
+     * @param calendar calendar entita
+     * @return calendar wrapper
+     */
     public static CalendarWrapper getCalendarWrapper(Calendar calendar) {
         if(calendar == null) return null;
 
@@ -143,6 +149,10 @@ public class AdminCalendarController extends AdminAbstractController {
         return wrapper;
     }
 
+    /**
+     * @param calendarDate calendar date entita
+     * @return calendar date wrapper
+     */
     private static CalendarDateWrapper getCalendarDateWrapper(CalendarDate calendarDate) {
         if(calendarDate == null) return null;
 
@@ -156,6 +166,10 @@ public class AdminCalendarController extends AdminAbstractController {
         return wrapper;
     }
 
+    /**
+     * @param wrapper calendar wrapper
+     * @return calendar entita
+     */
     private Calendar getCalendar(CalendarWrapper wrapper) {
         if(wrapper == null) return null;
 
@@ -184,6 +198,10 @@ public class AdminCalendarController extends AdminAbstractController {
         return calendar;
     }
 
+    /**
+     * @param wrapper calendar date wrapper
+     * @return calendar date entita
+     */
     private CalendarDate getCalendarDate(CalendarDateWrapper wrapper) {
         if(wrapper == null) return null;
 
@@ -199,6 +217,12 @@ public class AdminCalendarController extends AdminAbstractController {
         return calendarDate;
     }
 
+    /**
+     * @param id id
+     * @param startDate datum od
+     * @param endDate datum do
+     * @return filtr naplneny parametry
+     */
     private static CalendarFilter getFilterFromParams(String id, String startDate, String endDate) {
         CalendarFilter calendarFilter = new CalendarFilter();
         calendarFilter.setId(id);

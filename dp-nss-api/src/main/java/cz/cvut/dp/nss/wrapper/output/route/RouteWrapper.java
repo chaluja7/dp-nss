@@ -4,6 +4,8 @@ import cz.cvut.dp.nss.wrapper.output.agency.AgencyWrapper;
 import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
 
 /**
+ * Objekt spoje.
+ *
  * @author jakubchalupa
  * @since 25.02.17
  */

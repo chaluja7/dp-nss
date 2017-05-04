@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.wrapper.output.trip;
 import cz.cvut.dp.nss.wrapper.output.route.RouteWrapper;
 
 /**
+ * Objekt jizdy se spojem.
+ *
  * @author jakubchalupa
  * @since 25.02.17
  */

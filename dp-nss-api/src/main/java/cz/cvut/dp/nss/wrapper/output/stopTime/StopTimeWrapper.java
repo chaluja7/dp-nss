@@ -4,6 +4,8 @@ import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
 import cz.cvut.dp.nss.wrapper.output.stop.StopWrapper;
 
 /**
+ * Objekt zastaveni.
+ *
  * @author jakubchalupa
  * @since 16.03.17
  */

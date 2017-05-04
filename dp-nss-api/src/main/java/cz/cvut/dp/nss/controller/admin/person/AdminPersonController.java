@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 /**
+ * Controller obsluhujici spravu osob.
+ *
  * @author jakubchalupa
  * @since 23.04.17
  */
@@ -131,6 +133,10 @@ public class AdminPersonController extends AdminAbstractController {
         }
     }
 
+    /**
+     * @param person osoba entita
+     * @return osoba wrapper
+     */
     public static PersonWrapper getPersonWrapper(Person person) {
         if(person == null) return null;
 
@@ -158,6 +164,10 @@ public class AdminPersonController extends AdminAbstractController {
         return wrapper;
     }
 
+    /**
+     * @param wrapper osoba wrapper
+     * @return osoba entita
+     */
     private Person getPerson(PersonWrapper wrapper) {
         if(wrapper == null) return null;
 

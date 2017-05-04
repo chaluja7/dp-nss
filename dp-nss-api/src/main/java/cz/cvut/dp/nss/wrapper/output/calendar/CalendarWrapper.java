@@ -6,6 +6,8 @@ import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
 import java.util.List;
 
 /**
+ * Objekt intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 13.03.17
  */

@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.wrapper.output.person;
 import java.util.Set;
 
 /**
+ * Objekt osoby.
+ *
  * @author jakubchalupa
  * @since 06.03.17
  */

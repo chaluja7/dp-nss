@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Controller obsluhujici jizdy.
+ *
  * @author jakubchalupa
  * @since 16.03.17
  */
@@ -134,10 +136,23 @@ public class AdminTripController extends AdminAbstractController {
         tripService.delete(trip.getId());
     }
 
-    public static TripWrapper getTripWrapper(Trip trip, boolean withStopTimes, boolean withAgency) {
+    /**
+     * @param trip entita jizdy
+     * @param withStopTimes pokud true, tak se budou plnit i zastaveni
+     * @param withAgency pokud true, tak se bude plnit i dopravce
+     * @return wrapper jizdy
+     */
+    private static TripWrapper getTripWrapper(Trip trip, boolean withStopTimes, boolean withAgency) {
         return getTripWrapper(trip, withStopTimes, withAgency, null);
     }
 
+    /**
+     * @param trip entita jizdy
+     * @param withStopTimes pokud true, tak se budou plnit i zastaveni
+     * @param withAgency pokud true, tak se bude plnit i dopravce
+     * @param shapes list prujezdnich bodu
+     * @return wrapper jizdy
+     */
     public static TripWrapper getTripWrapper(Trip trip, boolean withStopTimes, boolean withAgency, List<Shape> shapes) {
         if(trip == null) return null;
 
@@ -174,6 +189,10 @@ public class AdminTripController extends AdminAbstractController {
         return wrapper;
     }
 
+    /**
+     * @param stopTime stop time entita
+     * @return stop time wrapper
+     */
     private static StopTimeWrapper getStopTimeWrapper(StopTime stopTime) {
         if(stopTime == null) return null;
 
@@ -197,6 +216,11 @@ public class AdminTripController extends AdminAbstractController {
         return wrapper;
     }
 
+    /**
+     * @param wrapper trip wrapper
+     * @return trip entita
+     * @throws BadRequestException pri spatnych parametrech tripWrapper
+     */
     private Trip getTrip(TripWrapper wrapper) throws BadRequestException {
         if(wrapper == null) return null;
 
@@ -255,6 +279,11 @@ public class AdminTripController extends AdminAbstractController {
         return trip;
     }
 
+    /**
+     * @param wrapper stop time wrapper
+     * @return stop time entita
+     * @throws BadRequestException pokud neexistuje stanice s danym id
+     */
     private StopTime getStopTime(StopTimeWrapper wrapper) throws BadRequestException {
         if(wrapper == null) return null;
 
@@ -281,6 +310,15 @@ public class AdminTripController extends AdminAbstractController {
         return stopTime;
     }
 
+    /**
+     * @param id id
+     * @param calendarId id intervalu platnosti
+     * @param shapeId id prujezdniho bodu
+     * @param headSign navestidlo
+     * @param routeShortName kratke oznaceni spoje
+     * @param wheelChairCode typ bezbarierovosti
+     * @return filtr s vyplnenymi parametry
+     */
     private static TripFilter getFilterFromParams(String id, String calendarId, String shapeId, String headSign, String routeShortName, Integer wheelChairCode) {
         TripFilter filter = new TripFilter();
         filter.setId(id);

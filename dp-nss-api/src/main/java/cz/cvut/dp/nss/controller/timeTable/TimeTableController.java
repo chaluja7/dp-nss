@@ -14,6 +14,8 @@ import java.util.List;
 
 
 /**
+ * Controller obsluhujici jizdni rady
+ *
  * @author jakubchalupa
  * @since 02.03.17
  */
@@ -35,6 +37,10 @@ public class TimeTableController extends AbstractController {
         return timeTableWrappers;
     }
 
+    /**
+     * @param timeTable jizdni rad entita
+     * @return jizdni rad wrapper
+     */
     public static TimeTableWrapper getTimeTableWrapper(TimeTable timeTable) {
         if(timeTable == null) return null;
 

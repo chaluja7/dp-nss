@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
+ * Filter, ktery precte vstupni URI a vytahne z neho ID jizdniho radu, pokud tam je. Toto ID ulozi do ThreadLocal.
+ * Nasledne posle pozadavek na cilovy controller.
+ *
  * @author jakubchalupa
  * @since 02.03.17
  */

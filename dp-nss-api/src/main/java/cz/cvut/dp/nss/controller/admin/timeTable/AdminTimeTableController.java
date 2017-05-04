@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Controller obsluhujici jizdni rady.
+ *
  * @author jakubchalupa
  * @since 06.03.17
  */
@@ -72,7 +74,11 @@ public class AdminTimeTableController extends AdminAbstractController {
         return TimeTableController.getTimeTableWrapper(timeTable);
     }
 
-    public static TimeTable getTimeTable(TimeTableWrapper wrapper) {
+    /**
+     * @param wrapper wrapper jizdniho radu
+     * @return entita jizdniho radu
+     */
+    private static TimeTable getTimeTable(TimeTableWrapper wrapper) {
         if(wrapper == null) return null;
 
         TimeTable timeTable = new TimeTable();

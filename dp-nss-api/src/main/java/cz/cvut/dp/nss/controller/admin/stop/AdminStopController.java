@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Controller obsluhujici stanice.
+ *
  * @author jakubchalupa
  * @since 06.03.17
  */
@@ -116,6 +118,10 @@ public class AdminStopController extends AdminAbstractController {
         stopService.delete(stop.getId());
     }
 
+    /**
+     * @param stop stop entita
+     * @return stop wrapper
+     */
     public static StopWrapper getStopWrapper(Stop stop) {
         if(stop == null) return null;
 
@@ -130,6 +136,11 @@ public class AdminStopController extends AdminAbstractController {
         return wrapper;
     }
 
+    /**
+     * @param wrapper stop wrapper
+     * @return stop entita
+     * @throws BadRequestException pokud neexistuje parent stop dle id
+     */
     private Stop getStop(StopWrapper wrapper) throws BadRequestException {
         if(wrapper == null) return null;
 
@@ -152,6 +163,15 @@ public class AdminStopController extends AdminAbstractController {
         return stop;
     }
 
+    /**
+     * @param id id
+     * @param name nazev
+     * @param lat zem. sirka
+     * @param lon zem. delka
+     * @param wheelChairCode typ bezbarierovosti
+     * @param parentStopId id nadrazene stanice
+     * @return filter naplneny parametry
+     */
     private static StopFilter getFilterFromParams(String id, String name, Double lat, Double lon, Integer wheelChairCode, String parentStopId) {
         StopFilter stopFilter = new StopFilter();
         stopFilter.setId(id);

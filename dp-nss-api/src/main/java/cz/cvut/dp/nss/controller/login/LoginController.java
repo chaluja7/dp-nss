@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * Controller obsluhujici prihlaseni a odhlaseni.
+ *
  * @author jakubchalupa
  * @since 06.03.17
  */

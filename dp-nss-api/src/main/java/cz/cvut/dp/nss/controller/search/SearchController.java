@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Controller obsluhujici vyhledavani spoju.
+ *
  * @author jakubchalupa
  * @since 22.10.16
  */
@@ -121,6 +123,12 @@ public class SearchController extends AbstractController {
         return searchResultWrappers;
     }
 
+    /**
+     * @param stopFrom stanice z
+     * @param stopTo stanice do
+     * @param stopThrough stanice pres
+     * @throws BadRequestException pokud se nektere stanice rovnaji
+     */
     private void checkStops(String stopFrom, String stopTo, String stopThrough) throws BadRequestException {
         if(stopFrom.equals(stopTo)) throw new BadRequestException("Výchozí a cílová stanice nemohou být shodné");
         if(stopThrough != null) {
@@ -129,6 +137,12 @@ public class SearchController extends AbstractController {
         }
     }
 
+    /**
+     * @param searchResult vysledek vyhledavani
+     * @param departureDateTime datum odjezdu/prijezdu
+     * @param byArrival pokud true, tak chci vratit vysledek dle data prijezdu
+     * @return wrapper vyhledavaciho pozadavku pro vraceni uzivateli
+     */
     private SearchResultWrapper getSearchResultWrapper(SearchResult searchResult, DateTime departureDateTime, boolean byArrival) {
         if(searchResult == null) return new SearchResultWrapper();
 
@@ -158,6 +172,10 @@ public class SearchController extends AbstractController {
         return wrapper;
     }
 
+    /**
+     * @param stopTime stop time entita
+     * @return stop time wrapper pro vyhledavani
+     */
     private SearchStopTimeWrapper getSearchStopTimeWrapper(StopTime stopTime) {
         if(stopTime == null) return null;
 
@@ -175,6 +193,10 @@ public class SearchController extends AbstractController {
         return wrapper;
     }
 
+    /**
+     * @param trip trip entita
+     * @return trip wrapper s jizdou
+     */
     private TripWithRouteWrapper getTripWithRouteWrapper(Trip trip) {
         if(trip == null) return null;
 

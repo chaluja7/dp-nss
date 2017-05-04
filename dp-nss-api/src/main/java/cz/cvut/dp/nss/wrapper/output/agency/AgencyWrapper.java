@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.wrapper.output.agency;
 import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
 
 /**
+ * Objekt dopravce.
+ *
  * @author jakubchalupa
  * @since 12.03.17
  */

@@ -5,6 +5,8 @@ import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
 import java.util.List;
 
 /**
+ * Objekt prujezdnich bodu.
+ *
  * @author jakubchalupa
  * @since 15.03.17
  */

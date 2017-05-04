@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Controller obsluhujici dopravce.
+ *
  * @author jakubchalupa
  * @since 12.03.17
  */
@@ -108,6 +110,10 @@ public class AdminAgencyController extends AdminAbstractController {
         agencyService.delete(agency.getId());
     }
 
+    /**
+     * @param agency agency entita
+     * @return agency wrapper
+     */
     public static AgencyWrapper getAgencyWrapper(Agency agency) {
         if(agency == null) return null;
 
@@ -120,6 +126,10 @@ public class AdminAgencyController extends AdminAbstractController {
         return wrapper;
     }
 
+    /**
+     * @param wrapper agency wrapper
+     * @return agency entita
+     */
     private Agency getAgency(AgencyWrapper wrapper) {
         if(wrapper == null) return null;
 
@@ -132,6 +142,13 @@ public class AdminAgencyController extends AdminAbstractController {
         return agency;
     }
 
+    /**
+     * @param id id
+     * @param name jmeno
+     * @param url url
+     * @param phone telefon
+     * @return filter naplneny parametry
+     */
     private static AgencyFilter getFilterFromParams(String id, String name, String url, String phone) {
         AgencyFilter agencyFilter = new AgencyFilter();
         agencyFilter.setId(id);

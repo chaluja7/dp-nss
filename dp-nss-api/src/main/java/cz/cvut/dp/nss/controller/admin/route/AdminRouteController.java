@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Controller obsluhujici spoje.
+ *
  * @author jakubchalupa
  * @since 12.03.17
  */
@@ -120,6 +122,11 @@ public class AdminRouteController extends AdminAbstractController {
         routeService.delete(route.getId());
     }
 
+    /**
+     * @param route route entita
+     * @param withAgency true, pokud chci plnit i dopravce
+     * @return route wrapper
+     */
     public static RouteWrapper getRouteWrapper(Route route, boolean withAgency) {
         if(route == null) return null;
 
@@ -138,6 +145,11 @@ public class AdminRouteController extends AdminAbstractController {
         return wrapper;
     }
 
+    /**
+     * @param wrapper route wrapper
+     * @return route entita
+     * @throws BadRequestException pokud neexistuje agency s danym id
+     */
     private Route getRoute(RouteWrapper wrapper) throws BadRequestException {
         if(wrapper == null) return null;
 
@@ -160,6 +172,15 @@ public class AdminRouteController extends AdminAbstractController {
         return route;
     }
 
+    /**
+     * @param id id
+     * @param shortName oznaceni
+     * @param longName nazev
+     * @param typeCode kod typu
+     * @param color barva
+     * @param agencyId id dopravce
+     * @return filtr naplneny parametry
+     */
     private static RouteFilter getFilterFromParams(String id, String shortName, String longName, Integer typeCode, String color, String agencyId) {
         RouteFilter routeFilter = new RouteFilter();
         routeFilter.setId(id);

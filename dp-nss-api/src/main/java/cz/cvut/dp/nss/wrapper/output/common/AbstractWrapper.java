@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.wrapper.output.common;
 import java.io.Serializable;
 
 /**
+ * Predek vsech wrapperu z a do aplikace pres REST api.
+ *
  * @author jakubchalupa
  * @since 12.03.17
  */

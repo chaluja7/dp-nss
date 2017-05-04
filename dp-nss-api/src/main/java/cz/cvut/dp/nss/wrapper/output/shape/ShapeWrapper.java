@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.wrapper.output.shape;
 
 /**
+ * Objekt prujezdniho bodu.
+ *
  * @author jakubchalupa
  * @since 15.03.17
  */

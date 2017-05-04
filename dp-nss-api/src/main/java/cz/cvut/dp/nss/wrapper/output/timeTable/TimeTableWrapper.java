@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.wrapper.output.timeTable;
 
 /**
+ * Objekt jizdniho radu.
+ *
  * @author jakubchalupa
  * @since 02.03.17
  */

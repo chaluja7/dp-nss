@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.wrapper.output.search;
 import java.util.List;
 
 /**
+ * Objekt vysledku vyhledavaciho pozadavku.
+ *
  * @author jakubchalupa
  * @since 24.02.17
  */

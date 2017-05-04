@@ -31,6 +31,8 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
+ * Controoler pro import a export jizdnich radu.
+ *
  * @author jakubchalupa
  * @since 17.03.17
  */
@@ -153,9 +155,6 @@ public class AdminGtfsController extends AdminAbstractController {
         return new ResponseEntity<>(streamingResponseBody, httpHeaders, HttpStatus.OK);
     }
 
-    /**
-     * Upload multiple file using Spring Controller
-     */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ResponseEntity<String> uploadMultipleFileHandler(@RequestParam("file") MultipartFile file) throws Throwable {
         final String schema = SchemaThreadLocal.get();

@@ -4,6 +4,8 @@ import cz.cvut.dp.nss.wrapper.output.stop.StopWrapper;
 import cz.cvut.dp.nss.wrapper.output.trip.TripWithRouteWrapper;
 
 /**
+ * Objekt vysledku vyhledavani - zastaveni.
+ *
  * @author jakubchalupa
  * @since 24.02.17
  */

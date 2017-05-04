@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Controller obsluhujici prujezdni body.
+ *
  * @author jakubchalupa
  * @since 12.03.17
  */
@@ -147,6 +149,10 @@ public class AdminShapeController extends AdminAbstractController {
         return wrappers;
     }
 
+    /**
+     * @param shape shape entita
+     * @return shape wrapper
+     */
     public static ShapeWrapper getShapeWrapper(Shape shape) {
         if(shape == null) return null;
 
@@ -158,7 +164,11 @@ public class AdminShapeController extends AdminAbstractController {
         return wrapper;
     }
 
-    private List<Shape> getShapes(ShapesWrapper wrapper) throws BadRequestException {
+    /**
+     * @param wrapper shapes wrapper
+     * @return list shape entit
+     */
+    private List<Shape> getShapes(ShapesWrapper wrapper) {
         if(wrapper == null) return null;
 
         List<Shape> shapes = new ArrayList<>();
@@ -169,6 +179,11 @@ public class AdminShapeController extends AdminAbstractController {
         return shapes;
     }
 
+    /**
+     * @param shapeId id prujezdniho bodu
+     * @param wrapper shape wrapper
+     * @return shape entita
+     */
     private Shape getShape(String shapeId, ShapeWrapper wrapper) {
         if(shapeId == null || wrapper == null) return null;
 
@@ -180,6 +195,10 @@ public class AdminShapeController extends AdminAbstractController {
         return shape;
     }
 
+    /**
+     * @param id id prujezdniho bodu
+     * @return filtr naplneny parametry
+     */
     private static ShapeFilter getFilterFromParams(String id) {
         ShapeFilter shapeFilter = new ShapeFilter();
         shapeFilter.setId(id);

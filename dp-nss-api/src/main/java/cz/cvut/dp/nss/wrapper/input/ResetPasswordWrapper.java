@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.wrapper.input;
 
 /**
+ * Objekt zmeny hesla uzivatele.
+ *
  * @author jakubchalupa
  * @since 08.03.17
  */

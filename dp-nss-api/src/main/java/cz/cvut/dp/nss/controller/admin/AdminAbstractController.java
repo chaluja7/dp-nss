@@ -5,12 +5,10 @@ import cz.cvut.dp.nss.controller.admin.wrapper.OrderWrapper;
 import cz.cvut.dp.nss.controller.interceptor.CheckAccess;
 import cz.cvut.dp.nss.exception.BadRequestException;
 import cz.cvut.dp.nss.services.person.Person;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
+ * Predek vsech administracnich controlleru (schovanych za /admin). Vsechny metody budou automaticky zabezpecene pro roli USER.
+ *
  * @author jakubchalupa
  * @since 06.03.17
  */
@@ -56,39 +54,13 @@ public abstract class AdminAbstractController extends AbstractController {
         return new OrderWrapper(orderColumn, asc);
     }
 
+    /**
+     * @param person osoba
+     * @param timeTableId id jizdniho radu
+     * @return true, pokud je osoba vlastnikem jizdniho radu. false jinak
+     */
     protected static boolean personOwnsTimeTable(Person person, String timeTableId) {
         return person != null && person.ownTimeTable(timeTableId);
-    }
-
-    protected static Map<String, String> getFiltersFromHeader(String xFilterHeader) throws BadRequestException {
-        Map<String, String> filtersMap = new HashMap<>();
-
-        if(!StringUtils.isBlank(xFilterHeader)) {
-            //rozsekam po strednicich na jednotlive filtry
-            String[] split;
-            if(xFilterHeader.contains(";")) {
-                split = xFilterHeader.split(";");
-            } else {
-                split = new String[1];
-                split[0] = xFilterHeader;
-            }
-
-            //a kazdy filtr by nyni mel byt ve tvaru field=value
-            for(String filter : split) {
-                if(filter.contains("=")) {
-                    String[] filterSplit = filter.split("=");
-                    if(filterSplit.length == 2) {
-                        filtersMap.put(filterSplit[0], filterSplit[1]);
-                    } else {
-                        throw new BadRequestException("invalid X-Filter header");
-                    }
-                } else {
-                    throw new BadRequestException("invalid X-Filter header");
-                }
-            }
-        }
-
-        return filtersMap;
     }
 
 }

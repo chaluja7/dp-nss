@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.exception;
 
 /**
+ * Spatny HTTP dotaz.
+ *
  * @author jakubchalupa
  * @since 22.10.16
  */

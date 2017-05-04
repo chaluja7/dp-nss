@@ -15,13 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 
 /**
+ * Implementace security interceptoru.
+ *
  * @author jakubchalupa
  * @since 06.03.17
  */
 public class SecurityInterceptor implements HandlerInterceptor {
 
     @Autowired
-    protected PersonService personService;
+    private PersonService personService;
 
     public static final String SECURITY_HEADER = "X-Auth";
 

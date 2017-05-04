@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.exception;
 
 /**
+ * Pristup zamitnut.
+ *
  * @author jakubchalupa
  * @since 22.10.16
  */

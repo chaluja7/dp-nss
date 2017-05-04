@@ -3,6 +3,8 @@ package cz.cvut.dp.nss.wrapper.output.calendarDate;
 import cz.cvut.dp.nss.wrapper.output.common.AbstractWrapper;
 
 /**
+ * Objekt vyjimky z intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 13.03.17
  */

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ * Controller obsluhujici jizdy.
+ *
  * @author jakubchalupa
  * @since 22.10.16
  */

@@ -17,6 +17,8 @@ import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
 
 /**
+ * Predek vsech controlleru (vsechny controllery by z neho mely dedit).
+ *
  * @author jakubchalupa
  * @since 24.02.17
  */
@@ -25,6 +27,11 @@ public abstract class AbstractController {
 
     private static final Logger LOGGER = LogManager.getLogger(AbstractController.class);
 
+    /**
+     * @param body telo odpovedi
+     * @param <T> trida odpovedi
+     * @return response entity se statusem CREATED
+     */
     protected <T> ResponseEntity<T> getResponseCreated(T body) {
         return new ResponseEntity<>(body, HttpStatus.CREATED);
     }

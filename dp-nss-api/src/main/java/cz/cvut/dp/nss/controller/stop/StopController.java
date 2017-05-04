@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 /**
+ * Controller obsluhujici stanice.
+ *
  * @author jakubchalupa
  * @since 02.03.17
  */

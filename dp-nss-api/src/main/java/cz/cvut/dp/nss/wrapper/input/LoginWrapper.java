@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.wrapper.input;
 
 /**
+ * Objekt prihlaseni uzivatele.
+ *
  * @author jakubchalupa
  * @since 08.03.17
  */

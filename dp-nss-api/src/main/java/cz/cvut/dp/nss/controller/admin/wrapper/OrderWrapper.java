@@ -1,6 +1,8 @@
 package cz.cvut.dp.nss.controller.admin.wrapper;
 
 /**
+ * Objekt pro uchovani informace o zvolenem razeni.
+ *
  * @author jakubchalupa
  * @since 09.03.17
  */

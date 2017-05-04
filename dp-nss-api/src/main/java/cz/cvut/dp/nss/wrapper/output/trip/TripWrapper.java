@@ -9,6 +9,8 @@ import cz.cvut.dp.nss.wrapper.output.stopTime.StopTimeWrapper;
 import java.util.List;
 
 /**
+ * Objekt jizdy.
+ *
  * @author jakubchalupa
  * @since 24.02.17
  */
