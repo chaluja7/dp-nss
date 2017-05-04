@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Implementace CalendarDateNodeService.
+ *
  * @author jakubchalupa
  * @since 11.02.17
  */

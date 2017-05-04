@@ -5,6 +5,8 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 
 /**
+ * Repository jizdy.
+ *
  * @author jakubchalupa
  * @since 18.01.17
  */

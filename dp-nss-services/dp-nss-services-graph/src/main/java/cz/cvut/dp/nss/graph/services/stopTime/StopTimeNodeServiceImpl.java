@@ -13,6 +13,8 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
+ * Implementace StopTimeNodeService.
+ *
  * @author jakubchalupa
  * @since 18.01.17
  */
@@ -25,7 +27,7 @@ public class StopTimeNodeServiceImpl extends AbstractNodeService<StopTimeNode, S
     }
 
     @Autowired
-    protected Session session;
+    private Session session;
 
     @Resource(name = "stopTimeNodeServiceImpl")
     private StopTimeNodeService stopTimeNodeService;

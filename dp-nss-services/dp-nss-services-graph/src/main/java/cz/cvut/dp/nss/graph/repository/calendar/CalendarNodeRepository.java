@@ -5,6 +5,8 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 
 /**
+ * Repository intervalu platnosti.
+ *
  * @author jakubchalupa
  * @since 11.02.17
  */

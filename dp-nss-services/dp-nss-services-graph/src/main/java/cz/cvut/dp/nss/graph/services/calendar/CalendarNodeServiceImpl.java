@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 
 /**
+ * Implementace calendarNodeService.
+ *
  * @author jakubchalupa
  * @since 11.02.17
  */
@@ -17,7 +19,7 @@ import java.util.HashMap;
 public class CalendarNodeServiceImpl extends AbstractNodeService<CalendarNode, CalendarNodeRepository> implements CalendarNodeService {
 
     @Autowired
-    protected Session session;
+    private Session session;
 
     @Autowired
     public CalendarNodeServiceImpl(CalendarNodeRepository repository) {

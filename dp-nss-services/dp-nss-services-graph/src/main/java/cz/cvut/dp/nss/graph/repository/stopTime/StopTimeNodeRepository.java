@@ -8,6 +8,8 @@ import org.springframework.data.neo4j.repository.GraphRepository;
 import java.util.List;
 
 /**
+ * Repository zastaveni.
+ *
  * @author jakubchalupa
  * @since 18.01.17
  */

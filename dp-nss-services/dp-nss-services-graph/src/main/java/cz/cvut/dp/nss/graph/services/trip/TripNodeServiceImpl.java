@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 /**
+ * Implementace TripNodeService.
+ *
  * @author jakubchalupa
  * @since 18.01.17
  */
@@ -17,7 +19,7 @@ import javax.annotation.Resource;
 public class TripNodeServiceImpl extends AbstractNodeService<TripNode, TripNodeRepository> implements TripNodeService {
 
     @Autowired
-    protected Session session;
+    private Session session;
 
     @Autowired
     public TripNodeServiceImpl(TripNodeRepository repository) {

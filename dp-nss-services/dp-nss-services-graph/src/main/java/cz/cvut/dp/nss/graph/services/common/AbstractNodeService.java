@@ -5,6 +5,8 @@ import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Abstraktni servisa obsahujici implementaci zakladnich CRUD operaci nad generickym repository.
+ *
  * @author jakubchalupa
  * @since 14.12.16
  */

@@ -16,6 +16,8 @@ import javax.annotation.Resource;
 import java.util.*;
 
 /**
+ * Implementace SearchService.
+ *
  * @author jakubchalupa
  * @since 11.02.17
  */
@@ -23,7 +25,7 @@ import java.util.*;
 public class SearchServiceImpl implements SearchService {
 
     @Autowired
-    protected Session session;
+    private Session session;
 
     @Resource(name = "searchServiceImpl")
     private SearchService searchService;
