@@ -1,33 +1,41 @@
 <div class="">
-  <div class="container">
-    <div id="myModal" class="modal show" *ngIf="http.numberOfPendingRequests > 0">
-      <div class="loading-overlay">
-        <md-progress-bar mode="indeterminate"></md-progress-bar>
-      </div>
-    </div>
-
-    <div class="col-md-12">
-      <nav>
-        <a [routerLink]="['/home']" routerLinkActive="active">Vyhledávač</a>
-
-        <div class="pull-right">
-          <a *ngIf="isLoggedIn() && hasPassword()" [routerLink]="['/timeTable']" routerLinkActive="active">Jízdní řády</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/agency']" routerLinkActive="active">Dopravci</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/route']" routerLinkActive="active">Spoje</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/stop']" routerLinkActive="active">Stanice</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/calendar']" routerLinkActive="active">Intervaly</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/shape']" routerLinkActive="active">Průjezdní body</a>
-          <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()" [routerLink]="['/trip']" routerLinkActive="active">Jízdy</a>
-          <a *ngIf="isAdminLoggedIn() && hasPassword()" [routerLink]="['/person']" routerLinkActive="active">Uživatelé</a>
-          <a *ngIf="isLoggedIn() && !isAdminLoggedIn()" [routerLink]="['/person', getLoggedUserId()]" routerLinkActive="active">Uživ. účet</a>
-          <a *ngIf="!isLoggedIn()" [routerLink]="['/login']" routerLinkActive="active">Administrace</a>
-          <a *ngIf="isLoggedIn()" [routerLink]="['/login']">Odhlásit</a>
+    <div class="container">
+        <div id="myModal" class="modal show" *ngIf="http.numberOfPendingRequests > 0">
+            <div class="loading-overlay">
+                <md-progress-bar mode="indeterminate"></md-progress-bar>
+            </div>
         </div>
-      </nav>
 
-      <div *ngIf="userService.msg" class="alert alert-success">{{userService.msg}}</div>
+        <div class="col-md-12">
+            <nav>
+                <a [routerLink]="['/home']" routerLinkActive="active">Vyhledávač</a>
 
-      <router-outlet></router-outlet>
+                <div class="pull-right">
+                    <a *ngIf="isLoggedIn() && hasPassword()" [routerLink]="['/timeTable']" routerLinkActive="active">Jízdní
+                        řády</a>
+                    <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()"
+                       [routerLink]="['/agency']" routerLinkActive="active">Dopravci</a>
+                    <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()"
+                       [routerLink]="['/route']" routerLinkActive="active">Spoje</a>
+                    <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()"
+                       [routerLink]="['/stop']" routerLinkActive="active">Stanice</a>
+                    <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()"
+                       [routerLink]="['/calendar']" routerLinkActive="active">Intervaly</a>
+                    <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()"
+                       [routerLink]="['/shape']" routerLinkActive="active">Průjezdní body</a>
+                    <a *ngIf="isLoggedIn() && isTimeTableSelected() && isSelectedTimeTableActive() && hasPassword()"
+                       [routerLink]="['/trip']" routerLinkActive="active">Jízdy</a>
+                    <a *ngIf="isAdminLoggedIn() && hasPassword()" [routerLink]="['/person']" routerLinkActive="active">Uživatelé</a>
+                    <a *ngIf="isLoggedIn() && !isAdminLoggedIn()" [routerLink]="['/person', getLoggedUserId()]"
+                       routerLinkActive="active">Uživ. účet</a>
+                    <a *ngIf="!isLoggedIn()" [routerLink]="['/login']" routerLinkActive="active">Administrace</a>
+                    <a *ngIf="isLoggedIn()" [routerLink]="['/login']">Odhlásit</a>
+                </div>
+            </nav>
+
+            <div *ngIf="userService.msg" class="alert alert-success">{{userService.msg}}</div>
+
+            <router-outlet></router-outlet>
+        </div>
     </div>
-  </div>
 </div>

@@ -3,11 +3,13 @@
     <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
             <label for="username">Uživatelské jméno:</label>
-            <input type="text" class="form-control" name="username" id="username" [(ngModel)]="model.username" #username="ngModel" required />
+            <input type="text" class="form-control" name="username" id="username" [(ngModel)]="model.username"
+                   #username="ngModel" required/>
         </div>
         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
             <label for="password">Heslo:</label>
-            <input type="password" class="form-control" name="password" id="password" [(ngModel)]="model.password" #password="ngModel" required />
+            <input type="password" class="form-control" name="password" id="password" [(ngModel)]="model.password"
+                   #password="ngModel" required/>
         </div>
         <div class="form-group">
             <button [disabled]="!f.form.valid || loading" class="btn btn-primary">Přihlásit</button>

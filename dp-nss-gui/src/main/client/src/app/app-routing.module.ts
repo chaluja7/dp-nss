@@ -34,39 +34,40 @@ import {PersonNewComponent} from "./_admin/person/person-new.component";
 import {AuthWithOneTimePwdGuard} from "./_guard/auth-with-one-time-pwd.guard";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'timeTable', component: TimeTablesComponent, canActivate: [AuthGuard] },
-  { path: 'timeTable/:id', component: TimeTableComponent, canActivate: [AuthGuard] },
-  { path: 'stop', component: StopsComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'stop/create', component: StopNewComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'stop/:id', component: StopComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'agency', component: AgenciesComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'agency/create', component: AgencyNewComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'agency/:id', component: AgencyComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'route', component: RoutesComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'route/create', component: RouteNewComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'route/:id', component: RouteComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'calendar', component: CalendarsComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'calendar/create', component: CalendarNewComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'calendar/:id', component: CalendarComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'shape', component: ShapesComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'shape/create', component: ShapeNewComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'shape/:id', component: ShapeComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'trip', component: TripsComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'trip/create', component: TripNewComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'trip/:id', component: TripComponent, canActivate: [AuthWithTimeTableGuard] },
-  { path: 'search-trip/:schema/:id', component: SearchTripComponent },
-  { path: 'search-trip-map/:schema/:id', component: SearchTripMapComponent },
-  { path: 'search-stop/:schema/:id', component: SearchStopComponent },
-  { path: 'person', component: PersonsComponent, canActivate: [AuthAdminGuard] },
-  { path: 'person/create', component: PersonNewComponent, canActivate: [AuthAdminGuard] },
-  { path: 'person/:id', component: PersonComponent, canActivate: [AuthWithOneTimePwdGuard] }
+    {path: '', redirectTo: '/home', pathMatch: 'full'},
+    {path: 'home', component: HomeComponent},
+    {path: 'login', component: LoginComponent},
+    {path: 'timeTable', component: TimeTablesComponent, canActivate: [AuthGuard]},
+    {path: 'timeTable/:id', component: TimeTableComponent, canActivate: [AuthGuard]},
+    {path: 'stop', component: StopsComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'stop/create', component: StopNewComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'stop/:id', component: StopComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'agency', component: AgenciesComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'agency/create', component: AgencyNewComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'agency/:id', component: AgencyComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'route', component: RoutesComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'route/create', component: RouteNewComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'route/:id', component: RouteComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'calendar', component: CalendarsComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'calendar/create', component: CalendarNewComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'calendar/:id', component: CalendarComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'shape', component: ShapesComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'shape/create', component: ShapeNewComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'shape/:id', component: ShapeComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'trip', component: TripsComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'trip/create', component: TripNewComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'trip/:id', component: TripComponent, canActivate: [AuthWithTimeTableGuard]},
+    {path: 'search-trip/:schema/:id', component: SearchTripComponent},
+    {path: 'search-trip-map/:schema/:id', component: SearchTripMapComponent},
+    {path: 'search-stop/:schema/:id', component: SearchStopComponent},
+    {path: 'person', component: PersonsComponent, canActivate: [AuthAdminGuard]},
+    {path: 'person/create', component: PersonNewComponent, canActivate: [AuthAdminGuard]},
+    {path: 'person/:id', component: PersonComponent, canActivate: [AuthWithOneTimePwdGuard]}
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes, {useHash: true}) ],
-  exports: [ RouterModule ]
+    imports: [RouterModule.forRoot(routes, {useHash: true})],
+    exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

@@ -3,10 +3,13 @@ import {ActivatedRoute, Params, Router, NavigationEnd} from "@angular/router";
 import {StopService} from "../../_service/stop.service";
 import {Stop} from "../../_model/search-result-model";
 
+/**
+ * Komponenta pro zobrazeni detailu stanice na mape.
+ */
 @Component({
-  moduleId: module.id,
-  selector: 'search-stop-component',
-  templateUrl: './search-stop.component.html'
+    moduleId: module.id,
+    selector: 'search-stop-component',
+    templateUrl: './search-stop.component.html'
 })
 export class SearchStopComponent {
 
@@ -21,19 +24,22 @@ export class SearchStopComponent {
             });
     }
 
-  search(): void {
-      this.error = null;
-      this.stop = null;
+    /**
+     * najde stanici dle jizdniho radu a id stanice
+     */
+    search(): void {
+        this.error = null;
+        this.stop = null;
 
-      this.route.params
-          .switchMap((params: Params) => this.stopService.getStop(params['schema'], params['id']))
-          .subscribe(stop => {
-                this.stop = stop;
-              },
-              err  => {
-                  this.error = 'Chyba při načítání stanice.';
-              });
+        this.route.params
+            .switchMap((params: Params) => this.stopService.getStop(params['schema'], params['id']))
+            .subscribe(stop => {
+                    this.stop = stop;
+                },
+                err => {
+                    this.error = 'Chyba při načítání stanice.';
+                });
 
-  }
+    }
 
 }

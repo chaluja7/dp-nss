@@ -4,7 +4,8 @@
         <form (ngSubmit)="onSubmit()" #searchForm="ngForm">
             <div class="form-group">
                 <label for="timeTable">Jízdní řád:</label>
-                <select class="form-control" id="timeTable" required [(ngModel)]="searchModel.timeTableId" name="timeTableId" (change)="onTimeTableChange()">
+                <select class="form-control" id="timeTable" required [(ngModel)]="searchModel.timeTableId"
+                        name="timeTableId" (change)="onTimeTableChange()">
                     <option *ngFor="let timeTable of timeTables" [value]="timeTable.id">{{timeTable.name}}</option>
                 </select>
             </div>
@@ -12,21 +13,28 @@
             <div class="row">
                 <div class="col-md-5 form-group">
                     <label for="stopFrom">Odkud:</label>
-                    <ng2-completer [(ngModel)]="searchModel.stopFrom" [datasource]="remoteStopsFrom" [minSearchLength]="3" id="stopFrom" name="stopFrom"
-                                   [placeholder]="'Odkud...'" [textSearching]="'Hledám...'" [textNoResults]="'Stanice nenalezena'"
+                    <ng2-completer [(ngModel)]="searchModel.stopFrom" [datasource]="remoteStopsFrom"
+                                   [minSearchLength]="3" id="stopFrom" name="stopFrom"
+                                   [placeholder]="'Odkud...'" [textSearching]="'Hledám...'"
+                                   [textNoResults]="'Stanice nenalezena'"
                                    [inputClass]="'form-control'" [autofocus]="true" [required]="true">
                     </ng2-completer>
                 </div>
 
                 <div class="col-md-2 form-group margin-top-25 padding-left-0 padding-right-0 align-center">
-                    <div class="btn btn-default max-width-47" (click)="swapFromAndTo()"><i class="fa fa-exchange" aria-hidden="true"></i></div>
-                    <div class="btn btn-default max-width-47" (click)="toogleThroughStop()"><i class="fa fa-plus-circle" aria-hidden="true"></i></div>
+                    <div class="btn btn-default max-width-47" (click)="swapFromAndTo()"><i class="fa fa-exchange"
+                                                                                           aria-hidden="true"></i></div>
+                    <div class="btn btn-default max-width-47" (click)="toogleThroughStop()"><i class="fa fa-plus-circle"
+                                                                                               aria-hidden="true"></i>
+                    </div>
                 </div>
 
                 <div class="col-md-5 form-group">
                     <label for="stopTo">Kam:</label>
-                    <ng2-completer [(ngModel)]="searchModel.stopTo" [datasource]="remoteStopsTo" [minSearchLength]="3" id="stopTo" name="stopTo"
-                                   [placeholder]="'Kam...'" [textSearching]="'Hledám...'" [textNoResults]="'Stanice nenalezena'"
+                    <ng2-completer [(ngModel)]="searchModel.stopTo" [datasource]="remoteStopsTo" [minSearchLength]="3"
+                                   id="stopTo" name="stopTo"
+                                   [placeholder]="'Kam...'" [textSearching]="'Hledám...'"
+                                   [textNoResults]="'Stanice nenalezena'"
                                    [inputClass]="'form-control'" [required]="true">
                     </ng2-completer>
                 </div>
@@ -34,8 +42,10 @@
 
             <div class="form-group" *ngIf="showThroughStop">
                 <label for="stopThrough">Přes:</label>
-                <ng2-completer [(ngModel)]="searchModel.stopThrough" [datasource]="remoteStopsThrough" [minSearchLength]="3" id="stopThrough" name="stopThrough"
-                               [placeholder]="'Přes...'" [textSearching]="'Hledám...'" [textNoResults]="'Stanice nenalezena'"
+                <ng2-completer [(ngModel)]="searchModel.stopThrough" [datasource]="remoteStopsThrough"
+                               [minSearchLength]="3" id="stopThrough" name="stopThrough"
+                               [placeholder]="'Přes...'" [textSearching]="'Hledám...'"
+                               [textNoResults]="'Stanice nenalezena'"
                                [inputClass]="'form-control'">
                 </ng2-completer>
             </div>
@@ -57,31 +67,38 @@
                 <div class="col-md-3 form-group">
                     <div class="searchRadios">
                         <label for="dateType">
-                            <input type="radio" [(ngModel)]="searchModel.dateType"  name="dateType" id="dateType" value="departure">
+                            <input type="radio" [(ngModel)]="searchModel.dateType" name="dateType" id="dateType"
+                                   value="departure">
                             <span>Odjezd</span>
                         </label>
-                        <br />
+                        <br/>
                         <label for="dateType2">
-                            <input type="radio" [(ngModel)]="searchModel.dateType"  name="dateType" id="dateType2" value="arrival">
+                            <input type="radio" [(ngModel)]="searchModel.dateType" name="dateType" id="dateType2"
+                                   value="arrival">
                             <span>Příjezd</span>
                         </label>
                     </div>
                 </div>
                 <div class="col-md-5 form-group">
                     <label for="maxNumOfTransfers">Max. počet přestupů:</label>
-                    <select class="form-control" id="maxNumOfTransfers" required [(ngModel)]="searchModel.maxNumOfTransfers" name="maxNumOfTransfers">
-                        <option *ngFor="let numOfTransfer of numOfTransfers" [value]="numOfTransfer">{{numOfTransfer}}</option>
+                    <select class="form-control" id="maxNumOfTransfers" required
+                            [(ngModel)]="searchModel.maxNumOfTransfers" name="maxNumOfTransfers">
+                        <option *ngFor="let numOfTransfer of numOfTransfers" [value]="numOfTransfer">{{numOfTransfer}}
+                        </option>
                     </select>
                 </div>
                 <div class="col-md-4 form-group">
                     <label for="wheelChair">Pouze bezbariérové:</label>
-                    <input type="checkbox" class="form-control" name="wheelChair" id="wheelChair" [(ngModel)]="searchModel.wheelChair" />
+                    <input type="checkbox" class="form-control" name="wheelChair" id="wheelChair"
+                           [(ngModel)]="searchModel.wheelChair"/>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12">
-                    <button type="submit" class="btn btn-success" style="width: 100%;" [disabled]="!searchForm.form.valid || submitted">Hledat</button>
+                    <button type="submit" class="btn btn-success" style="width: 100%;"
+                            [disabled]="!searchForm.form.valid || submitted">Hledat
+                    </button>
                 </div>
             </div>
         </form>
@@ -90,7 +107,6 @@
     </div>
 </div>
 
-<!-- TODO dat do nove komponenty! -->
 <div class="row">
     <hr/>
     <div *ngIf="searchResults">
@@ -101,12 +117,15 @@
         <div *ngIf="searchResults.length > 0" class="margin-bottom-20">
             <div class="row">
                 <div class="col-md-12">
-                    <button *ngIf="!noMorePrevResults" type="button" class="btn btn-success" style="width: 100%;" (click)="showPrevResults()" [disabled]="!searchForm.form.valid || submitted">
+                    <button *ngIf="!noMorePrevResults" type="button" class="btn btn-success" style="width: 100%;"
+                            (click)="showPrevResults()" [disabled]="!searchForm.form.valid || submitted">
                         <i class="fa fa-arrow-up" aria-hidden="true"></i>
                         Předchozí výsledky
                         <i class="fa fa-arrow-up" aria-hidden="true"></i>
                     </button>
-                    <div *ngIf="noMorePrevResults" class="alert alert-danger">Předchozí výsledky nejsou k dispozici. Změňte prosím parametry vyhledávání.</div>
+                    <div *ngIf="noMorePrevResults" class="alert alert-danger">Předchozí výsledky nejsou k dispozici.
+                        Změňte prosím parametry vyhledávání.
+                    </div>
                 </div>
             </div>
         </div>
@@ -126,7 +145,9 @@
                     <td *ngIf="last">{{searchResult.arrivalDate}}</td>
                     <td>
                         <span *ngIf="stopTime.stop.lat === null && stopTime.stop.lon === null">{{stopTime.stop.name}}</span>
-                        <a *ngIf="stopTime.stop.lat !== null && stopTime.stop.lon !== null" href="/#/search-stop/{{searchModelClone.timeTableId}}/{{stopTime.stop.id}}" target="search_stop">
+                        <a *ngIf="stopTime.stop.lat !== null && stopTime.stop.lon !== null"
+                           href="/#/search-stop/{{searchModelClone.timeTableId}}/{{stopTime.stop.id}}"
+                           target="search_stop">
                             {{stopTime.stop.name}}
                         </a>
                     </td>
@@ -134,7 +155,8 @@
                     <td><span *ngIf="even">{{stopTime.departure}}</span></td>
                     <td *ngIf="even" [attr.rowspan]="2" class="vertical-middle">
                         <route-img [routeType]="stopTime.trip.route.typeCode"></route-img>
-                        <a href="/#/search-trip/{{searchModelClone.timeTableId}}/{{stopTime.trip.id}}?firstStopTime={{stopTime.id}}&lastStopTime={{searchResult.stopTimes[i + 1].id}}" target="search_trip">{{stopTime.trip.route.shortName}}</a>
+                        <a href="/#/search-trip/{{searchModelClone.timeTableId}}/{{stopTime.trip.id}}?firstStopTime={{stopTime.id}}&lastStopTime={{searchResult.stopTimes[i + 1].id}}"
+                           target="search_trip">{{stopTime.trip.route.shortName}}</a>
                     </td>
                 </tr>
             </table>
@@ -146,12 +168,15 @@
         <div *ngIf="searchResults.length > 0">
             <div class="row">
                 <div class="col-md-12">
-                    <button *ngIf="!noMoreNextResults" type="button" class="btn btn-success" style="width: 100%;" (click)="showNextResults()" [disabled]="!searchForm.form.valid || submitted">
+                    <button *ngIf="!noMoreNextResults" type="button" class="btn btn-success" style="width: 100%;"
+                            (click)="showNextResults()" [disabled]="!searchForm.form.valid || submitted">
                         <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         Další výsledky
                         <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </button>
-                    <div *ngIf="noMoreNextResults" class="alert alert-danger">Další výsledky nejsou k dispozici. Změňte prosím parametry vyhledávání.</div>
+                    <div *ngIf="noMoreNextResults" class="alert alert-danger">Další výsledky nejsou k dispozici. Změňte
+                        prosím parametry vyhledávání.
+                    </div>
                 </div>
             </div>
         </div>

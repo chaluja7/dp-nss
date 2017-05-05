@@ -1,18 +1,24 @@
 import {Component, Input} from "@angular/core";
 
+/**
+ * Komponenta ikonky spoje dle typu
+ */
 @Component({
-  moduleId: module.id,
-  selector: 'route-img',
-  templateUrl: './route-img.component.html'
+    moduleId: module.id,
+    selector: 'route-img',
+    templateUrl: './route-img.component.html'
 })
 export class RouteImgComponent {
 
     @Input()
     routeType: number;
 
-    getImgSrc() {
+    /**
+     * @returns {string} cestu ke spravnemu obrazku spoje dle jeho typu
+     */
+    getImgSrc(): string {
         let path = "/assets/img/";
-        switch(this.routeType) {
+        switch (this.routeType) {
             case 0:
                 path += "tram_p";
                 break;

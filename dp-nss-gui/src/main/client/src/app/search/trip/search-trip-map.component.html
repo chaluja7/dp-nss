@@ -4,10 +4,12 @@
 <!-- TODO bylo by pekne pocitat zoom na zaklade delky tripu aby to bylo hezky odzoomovane-->
 <sebm-google-map *ngIf="trip && trip.shapes" [latitude]="mapCenterLat" [longitude]="mapCenterLon" [zoom]="13">
     <sebm-google-map-polyline [strokeColor]="trip.route?.color ? '#' + trip.route.color : ''">
-        <sebm-google-map-polyline-point *ngFor="let shape of trip.shapes" [latitude]="shape.lat" [longitude]="shape.lon">
+        <sebm-google-map-polyline-point *ngFor="let shape of trip.shapes" [latitude]="shape.lat"
+                                        [longitude]="shape.lon">
         </sebm-google-map-polyline-point>
     </sebm-google-map-polyline>
-    <sebm-google-map-marker *ngFor="let stopTime of trip.stopTimes" [latitude]="stopTime.stop?.lat" [longitude]="stopTime.stop?.lon"
+    <sebm-google-map-marker *ngFor="let stopTime of trip.stopTimes" [latitude]="stopTime.stop?.lat"
+                            [longitude]="stopTime.stop?.lon"
                             [opacity]="stopTime.id == firstStopTime || stopTime.id == lastStopTime ? 1 : 0.5"
                             [label]="stopTime.id == firstStopTime ? 'S' : stopTime.id == lastStopTime ? 'E' : ''"
                             (markerClick)="openSimple(stopTime.id)" [openInfoWindow]="false">
