@@ -5,14 +5,24 @@ import {HttpClient} from "./http-client";
 import {Observable} from "rxjs";
 import {URLSearchParams} from "@angular/http";
 
+/**
+ * Sprava jizd.
+ */
 @Injectable()
 export class TripService {
 
-    constructor(private http: HttpClient, private errorService: ErrorService) { }
+    constructor(private http: HttpClient, private errorService: ErrorService) {
+    }
 
+    /**
+     * @param schema id jizdniho radu
+     * @param id id jizdy
+     * @param withShapes true, pokud chci i prujezdni body
+     * @returns {Observable<any>} observable s nalezenou jizdou
+     */
     getTrip(schema: string, id: string, withShapes: boolean): Observable<any> {
         let params: URLSearchParams = new URLSearchParams();
-        if(withShapes) {
+        if (withShapes) {
             params.set('withShapes', 'true');
         }
 

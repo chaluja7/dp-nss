@@ -8,62 +8,74 @@ import {AppSettings} from "../../_common/app.settings";
 import {Response} from "@angular/http";
 import {UserService} from "../user.service";
 
+/**
+ * obsluha administrace jizdnich radu
+ */
 @Injectable()
 export class AdminTimeTableService {
 
-  private static TIME_TABLE_URL = 'admin/timeTable';
+    private static TIME_TABLE_URL = 'admin/timeTable';
 
-  constructor(private http: HttpClient, private errorService: ErrorService, private userService: UserService) { }
+    constructor(private http: HttpClient, private errorService: ErrorService, private userService: UserService) {
+    }
 
-  getTimeTables(): Observable<TimeTable[]> {
-      return this.http.get(AppSettings.API_ENDPOINT + AdminTimeTableService.TIME_TABLE_URL)
-          .map((response => response.json() as TimeTable[]))
-          .catch(err => this.errorService.handleServerError(err));
-  }
+    /**
+     * vrati jizdni rady ze serveru
+     * @returns {Observable<TimeTable[]>} observable s odpovedi ze serveru
+     */
+    getTimeTables(): Observable<TimeTable[]> {
+        return this.http.get(AppSettings.API_ENDPOINT + AdminTimeTableService.TIME_TABLE_URL)
+            .map((response => response.json() as TimeTable[]))
+            .catch(err => this.errorService.handleServerError(err));
+    }
 
-  getTimeTable(id: string): Observable<TimeTable> {
-    const url = AppSettings.API_ENDPOINT + `${AdminTimeTableService.TIME_TABLE_URL}/${id}`;
-    return this.http.get(url)
-        .map((response => response.json() as TimeTable))
-        .catch(err => this.errorService.handleServerError(err));
-  }
+    /**
+     * vrati jizdni rad ze serveru
+     * @param id id jizdniho radu
+     * @returns {Observable<TimeTable>} observable s odpovedi ze serveru
+     */
+    getTimeTable(id: string): Observable<TimeTable> {
+        const url = AppSettings.API_ENDPOINT + `${AdminTimeTableService.TIME_TABLE_URL}/${id}`;
+        return this.http.get(url)
+            .map((response => response.json() as TimeTable))
+            .catch(err => this.errorService.handleServerError(err));
+    }
 
-  update(timeTable: TimeTable): Observable<TimeTable> {
-    const url = AppSettings.API_ENDPOINT + `${AdminTimeTableService.TIME_TABLE_URL}/${timeTable.id}`;
-    return this.http.put(url, JSON.stringify(timeTable))
-        .map((response => response.json() as TimeTable))
-        .catch(err => this.errorService.handleServerError(err));
-  }
+    /**
+     * provede udpate jizdniho radu na serveru
+     * @param timeTable jizdni rad
+     * @returns {Observable<TimeTable>} observable s odpovedi ze serveru
+     */
+    update(timeTable: TimeTable): Observable<TimeTable> {
+        const url = AppSettings.API_ENDPOINT + `${AdminTimeTableService.TIME_TABLE_URL}/${timeTable.id}`;
+        return this.http.put(url, JSON.stringify(timeTable))
+            .map((response => response.json() as TimeTable))
+            .catch(err => this.errorService.handleServerError(err));
+    }
 
-  downloadFile(): Observable<Response> {
-    return this.http.get( this.userService.getApiPrefix() + 'admin/gtfs/download', null, null, true)
-        .map(response => response)
-        .catch(err => this.errorService.handleServerError(err));
-  }
+    /**
+     * stahne kompletni jizdni rad ze serveru
+     * @returns {Observable<Response>} observable s odpovedi ze serveru
+     */
+    downloadFile(): Observable<Response> {
+        return this.http.get(this.userService.getApiPrefix() + 'admin/gtfs/download', null, null, true)
+            .map(response => response)
+            .catch(err => this.errorService.handleServerError(err));
+    }
 
-  uploadFile(fileName: string, file: File): Observable<Response> {
-    let formData: FormData = new FormData();
-    formData.append(fileName, file, file.name);
+    /**
+     * nahraje kompletni jizdni rad na server
+     * @param fileName jmeno souboru
+     * @param file soubor jizdnich radu
+     * @returns {Observable<Response>} observable s odpovedi ze serveru
+     */
+    uploadFile(fileName: string, file: File): Observable<Response> {
+        let formData: FormData = new FormData();
+        formData.append(fileName, file, file.name);
 
-    return this.http.post(this.userService.getApiPrefix() + 'admin/gtfs/upload', formData, true)
-        .map(response => response)
-        .catch(err => this.errorService.handleServerError(err));
-  }
-
-  // create(timeTable: TimeTable): Promise<TimeTable> {
-  //   return this.http
-  //       .post(this.TIME_TABLE_URL, JSON.stringify(timeTable))
-  //       .toPromise()
-  //       .then(response => response.json() as TimeTable)
-  //       .catch(this.errorService.handleError);
-  // }
-  //
-  // delete(id: string): Promise<void> {
-  //   const url = `${this.TIME_TABLE_URL}/${id}`;
-  //   return this.http.delete(url)
-  //       .toPromise()
-  //       .then(() => null)
-  //       .catch(this.errorService.handleError);
-  // }
+        return this.http.post(this.userService.getApiPrefix() + 'admin/gtfs/upload', formData, true)
+            .map(response => response)
+            .catch(err => this.errorService.handleServerError(err));
+    }
 
 }
