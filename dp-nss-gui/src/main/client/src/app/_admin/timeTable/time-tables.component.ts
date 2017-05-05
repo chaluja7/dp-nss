@@ -4,74 +4,70 @@ import {AdminTimeTableService} from "../../_service/_admin/admin-time-table.serv
 import {Router} from "@angular/router";
 import {UserService} from "../../_service/user.service";
 
+/**
+ * Komponenta seznamu jizdnich radu
+ */
 @Component({
-  moduleId: module.id,
-  selector: 'time-tables-component',
-  templateUrl: './time-tables.component.html',
-  styleUrls: ['./time-tables.component.css']
+    moduleId: module.id,
+    selector: 'time-tables-component',
+    templateUrl: './time-tables.component.html',
+    styleUrls: ['./time-tables.component.css']
 })
 export class TimeTablesComponent implements OnInit {
 
-  timeTables: TimeTable[];
+    timeTables: TimeTable[];
 
-  selectedTimeTable: TimeTable;
+    selectedTimeTable: TimeTable;
 
-  constructor(private router: Router, private adminTimeTableService: AdminTimeTableService, private userService: UserService) { }
+    constructor(private router: Router, private adminTimeTableService: AdminTimeTableService, private userService: UserService) {
+    }
 
-  ngOnInit(): void {
-    this.getTimeTables();
-  }
+    ngOnInit(): void {
+        this.getTimeTables();
+    }
 
-  getTimeTables(): void {
-    this.adminTimeTableService.getTimeTables()
-        .subscribe(timeTables => {
-          this.timeTables = timeTables;
-          //a vyberu aktualni aktivni jizdni rad, pokud ho uzivatel ma
-          let currentTimeTable = this.userService.getSelectedTimeTable();
-          if(currentTimeTable) {
-            for(let timeTable of timeTables) {
-              if(timeTable.id === currentTimeTable) {
-                this.selectedTimeTable = timeTable;
-                break;
-              }
-            }
-          }
+    /**
+     * vrati jizdni rady
+     */
+    getTimeTables(): void {
+        this.adminTimeTableService.getTimeTables()
+            .subscribe(timeTables => {
+                this.timeTables = timeTables;
+                //a vyberu aktualni aktivni jizdni rad, pokud ho uzivatel ma
+                let currentTimeTable = this.userService.getSelectedTimeTable();
+                if (currentTimeTable) {
+                    for (let timeTable of timeTables) {
+                        if (timeTable.id === currentTimeTable) {
+                            this.selectedTimeTable = timeTable;
+                            break;
+                        }
+                    }
+                }
 
-          //pokud neni nyni zadny aktivni, tak udelam aktvni ten prvni
-          if(!this.selectedTimeTable && timeTables.length > 0) {
-            this.selectedTimeTable = timeTables[0];
-            this.userService.storeSelectedTimeTable(this.selectedTimeTable.id, !this.selectedTimeTable.synchronizing);
-          }
-        }, err  => {});
-  }
+                //pokud neni nyni zadny aktivni, tak udelam aktvni ten prvni
+                if (!this.selectedTimeTable && timeTables.length > 0) {
+                    this.selectedTimeTable = timeTables[0];
+                    this.userService.storeSelectedTimeTable(this.selectedTimeTable.id, !this.selectedTimeTable.synchronizing);
+                }
+            }, err => {
+            });
+    }
 
-  goToDetail(timeTable: TimeTable): void {
-    this.router.navigate(['/timeTable', timeTable.id]);
-  }
+    /**
+     * preskoci na detail jizdniho radu
+     * @param timeTable jizdni rad
+     */
+    goToDetail(timeTable: TimeTable): void {
+        this.router.navigate(['/timeTable', timeTable.id]);
+    }
 
-  onSelect(timeTable: TimeTable): void {
-    this.selectedTimeTable = timeTable;
-    this.userService.storeSelectedTimeTable(timeTable.id, !timeTable.synchronizing);
-  }
-
-  // add(): void {
-  //   this.newTimeTable.id = this.newTimeTable.id.trim();
-  //   this.newTimeTable.name = this.newTimeTable.name.trim();
-  //
-  //   if (!this.newTimeTable.id || !this.newTimeTable.name) { return; }
-  //   this.adminTimeTableService.create(this.newTimeTable)
-  //       .then(timeTable => {
-  //         this.timeTables.push(timeTable);
-  //         this.newTimeTable = new TimeTable;
-  //       });
-  // }
-  //
-  // delete(timeTable: TimeTable): void {
-  //   this.adminTimeTableService
-  //       .delete(timeTable.id)
-  //       .then(() => {
-  //         this.timeTables = this.timeTables.filter(t => t !== timeTable);
-  //       });
-  // }
+    /**
+     * chytne udalost zmeny vyberu jizdniho radu a ulozi jej do cookie
+     * @param timeTable jizdni rad
+     */
+    onSelect(timeTable: TimeTable): void {
+        this.selectedTimeTable = timeTable;
+        this.userService.storeSelectedTimeTable(timeTable.id, !timeTable.synchronizing);
+    }
 
 }

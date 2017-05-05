@@ -7,48 +7,60 @@ import {AbstractFilteringComponent} from "../filtering.component.ts/abstract-fil
 import {Trip} from "../../_model/trip";
 import {AdminTripService} from "../../_service/_admin/admin-trip.service";
 
+/**
+ * Komponenta seznamu jizd
+ */
 @Component({
-  moduleId: module.id,
-  selector: 'trips-component',
-  templateUrl: './trips.component.html'
+    moduleId: module.id,
+    selector: 'trips-component',
+    templateUrl: './trips.component.html'
 })
 export class TripsComponent extends AbstractFilteringComponent implements OnInit {
 
-  trips: Trip[];
+    trips: Trip[];
 
-  filter: Trip = new Trip();
+    filter: Trip = new Trip();
 
-  wheelChairOptions = AppSettings.getPossibleWheelChairOptions();
+    wheelChairOptions = AppSettings.getPossibleWheelChairOptions();
 
-  constructor(private router: Router, private adminTripService: AdminTripService, private pagerService: PagerService) {
-    super();
-  }
-
-  ngOnInit(): void {
-    this.setPage(1);
-  }
-
-  setPage(page: number) {
-    if(page < 1 || (page > 1 && page > this.pager.totalPages)) {
-      return;
+    constructor(private router: Router, private adminTripService: AdminTripService, private pagerService: PagerService) {
+        super();
     }
 
-    this.loading = true;
-    this.pager = this.pagerService.getPager(this.totalCount, page);
-    this.adminTripService.getTrips(this.filter, this.pager.startIndex ? this.pager.startIndex : 0,
-        this.pager.pageSize ? this.pager.pageSize : AppSettings.DEFAULT_PAGE_LIMIT, PagerService.getSortHeaderValue(this.orderColumn, this.orderAsc))
-        .subscribe(response => {
-          this.totalCount = +response.headers.get(AppSettings.TOTAL_COUNT_HEADER);
-          this.trips = response.json();
-          this.loading = false;
+    ngOnInit(): void {
+        this.setPage(1);
+    }
 
-          this.pager = this.pagerService.getPager(this.totalCount, page);
-        }, err  => {});
+    /**
+     * nastavi stranku a provede vyhledavani jizd
+     * @param page cislo stranky
+     */
+    setPage(page: number) {
+        if (page < 1 || (page > 1 && page > this.pager.totalPages)) {
+            return;
+        }
 
-  }
+        this.loading = true;
+        this.pager = this.pagerService.getPager(this.totalCount, page);
+        this.adminTripService.getTrips(this.filter, this.pager.startIndex ? this.pager.startIndex : 0,
+            this.pager.pageSize ? this.pager.pageSize : AppSettings.DEFAULT_PAGE_LIMIT, PagerService.getSortHeaderValue(this.orderColumn, this.orderAsc))
+            .subscribe(response => {
+                this.totalCount = +response.headers.get(AppSettings.TOTAL_COUNT_HEADER);
+                this.trips = response.json();
+                this.loading = false;
 
-  goToDetail(stop: Stop): void {
-    this.router.navigate(['/trip', stop.id]);
-  }
+                this.pager = this.pagerService.getPager(this.totalCount, page);
+            }, err => {
+            });
+
+    }
+
+    /**
+     * preskoci na detail jizdy
+     * @param stop jizda
+     */
+    goToDetail(stop: Stop): void {
+        this.router.navigate(['/trip', stop.id]);
+    }
 
 }

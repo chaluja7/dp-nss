@@ -3,77 +3,101 @@
         <h2 class="margin-top-0">Seznam stanic</h2>
     </div>
     <div class="col-md-2">
-        <a [routerLink]="['/stop/create']" class="btn btn-success pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i> Vložit</a>
+        <a [routerLink]="['/stop/create']" class="btn btn-success pull-right"><i class="fa fa-plus-circle"
+                                                                                 aria-hidden="true"></i> Vložit</a>
     </div>
 </div>
 
 <table class="table table-striped table-bordered">
     <thead class="sorting-head">
-        <tr>
-            <th>ID
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'id' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'id' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', false)"></i>
+    <tr>
+        <th>ID
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'id' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('id', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'id' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('id', false)"></i>
                 </span>
-            </th>
-            <th>Název
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'name' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('name', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'name' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('name', false)"></i>
+        </th>
+        <th>Název
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'name' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('name', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'name' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('name', false)"></i>
                 </span>
-            </th>
-            <th>Šířka
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'lat' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('lat', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'lat' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('lat', false)"></i>
+        </th>
+        <th>Šířka
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'lat' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('lat', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'lat' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('lat', false)"></i>
                 </span>
-            </th>
-            <th>Délka
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'lon' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('lon', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'lon' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('lon', false)"></i>
+        </th>
+        <th>Délka
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'lon' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('lon', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'lon' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('lon', false)"></i>
                 </span>
-            </th>
-            <th>Bezbar.
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'wheelChair' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('wheelChair', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'wheelChair' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('wheelChair', false)"></i>
+        </th>
+        <th>Bezbar.
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'wheelChair' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('wheelChair', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'wheelChair' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('wheelChair', false)"></i>
                 </span>
-            </th>
-            <th>Patří ke stanici
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'parentStopId' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('parentStopId', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'parentStopId' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('parentStopId', false)"></i>
+        </th>
+        <th>Patří ke stanici
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'parentStopId' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('parentStopId', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'parentStopId' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('parentStopId', false)"></i>
                 </span>
-            </th>
-            <th class="align-center">Akce</th>
-        </tr>
+        </th>
+        <th class="align-center">Akce</th>
+    </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..." (keyup.enter)="doFilter()"/></td>
-            <td><input type="text" class="form-control" name="name" id="name" [(ngModel)]="filter.name" placeholder="název..." (keyup.enter)="doFilter()"/></td>
-            <td><input type="number" class="form-control" name="lat" id="lat" [(ngModel)]="filter.lat" placeholder="šířka..."(keyup.enter)="doFilter()"/></td>
-            <td><input type="number" class="form-control" name="lon" id="lon" [(ngModel)]="filter.lon" placeholder="délka..." (keyup.enter)="doFilter()"/></td>
-            <td>
-                <select class="form-control" id="wheelChairCode" name="wheelChairCode" [(ngModel)]="filter.wheelChairCode" (keyup.enter)="doFilter()">
-                    <option [value]=""></option>
-                    <option *ngFor="let option of wheelChairOptions" [value]="option.code">{{option.title}}</option>
-                </select>
-            </td>
-            <td><input type="text" class="form-control" name="parentStopId" id="parentStopId" [(ngModel)]="filter.parentStopId"
-                       placeholder="id nadřazené stanice..." (keyup.enter)="doFilter()"/></td>
-            <td class="align-center"><button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i></button></td>
-        </tr>
-        <tr *ngFor="let stop of stops">
-            <td>{{stop.id}}</td>
-            <td>{{stop.name}}</td>
-            <td>{{stop.lat | csNumber: '1.6-6'}}</td>
-            <td>{{stop.lon | csNumber: '1.6-6'}}</td>
-            <td>{{stop.wheelChairCode | wheelChair}}</td>
-            <td>{{stop.parentStopId}}</td>
-            <td class="align-center"><button class="btn btn-warning" (click)="goToDetail(stop)"><i class="fa fa-pencil"></i></button></td>
-        </tr>
+    <tr>
+        <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..."
+                   (keyup.enter)="doFilter()"/></td>
+        <td><input type="text" class="form-control" name="name" id="name" [(ngModel)]="filter.name"
+                   placeholder="název..." (keyup.enter)="doFilter()"/></td>
+        <td><input type="number" class="form-control" name="lat" id="lat" [(ngModel)]="filter.lat"
+                   placeholder="šířka..." (keyup.enter)="doFilter()"/></td>
+        <td><input type="number" class="form-control" name="lon" id="lon" [(ngModel)]="filter.lon"
+                   placeholder="délka..." (keyup.enter)="doFilter()"/></td>
+        <td>
+            <select class="form-control" id="wheelChairCode" name="wheelChairCode" [(ngModel)]="filter.wheelChairCode"
+                    (keyup.enter)="doFilter()">
+                <option [value]=""></option>
+                <option *ngFor="let option of wheelChairOptions" [value]="option.code">{{option.title}}</option>
+            </select>
+        </td>
+        <td><input type="text" class="form-control" name="parentStopId" id="parentStopId"
+                   [(ngModel)]="filter.parentStopId"
+                   placeholder="id nadřazené stanice..." (keyup.enter)="doFilter()"/></td>
+        <td class="align-center">
+            <button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i>
+            </button>
+        </td>
+    </tr>
+    <tr *ngFor="let stop of stops">
+        <td>{{stop.id}}</td>
+        <td>{{stop.name}}</td>
+        <td>{{stop.lat | csNumber: '1.6-6'}}</td>
+        <td>{{stop.lon | csNumber: '1.6-6'}}</td>
+        <td>{{stop.wheelChairCode | wheelChair}}</td>
+        <td>{{stop.parentStopId}}</td>
+        <td class="align-center">
+            <button class="btn btn-warning" (click)="goToDetail(stop)"><i class="fa fa-pencil"></i></button>
+        </td>
+    </tr>
     </tbody>
 </table>
 

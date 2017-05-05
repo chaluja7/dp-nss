@@ -7,6 +7,10 @@ import {AdminTimeTableService} from "../../_service/_admin/admin-time-table.serv
 import {AppSettings} from "../../_common/app.settings";
 import {UserService} from "../../_service/user.service";
 import {HttpClient} from "../../_service/http-client";
+
+/**
+ * Komponenta editace jizdniho radu
+ */
 @Component({
     moduleId: module.id,
     selector: 'time-table-component',
@@ -33,6 +37,9 @@ export class TimeTableComponent implements OnInit {
             });
     }
 
+    /**
+     * odeslani formulare editace
+     */
     onSubmit(): void {
         this.loading = true;
         this.adminTimeTableService.update(this.timeTable)
@@ -46,10 +53,16 @@ export class TimeTableComponent implements OnInit {
                 });
     }
 
+    /**
+     * vrati se zpet v historii
+     */
     goBack(): void {
         this.location.back();
     }
 
+    /**
+     * provede stazeni jizdniho radu ve formatu GTFS
+     */
     downloadGtfs() {
         this.adminTimeTableService.downloadFile()
             .subscribe((response) => {
@@ -60,10 +73,13 @@ export class TimeTableComponent implements OnInit {
                 });
     }
 
+    /**
+     * nahraje jizdni rad ve formatu GTFS
+     */
     uploadGtfs() {
         this.fileError = null;
 
-        if(!this.file || !this.file.name.endsWith('.zip')) {
+        if (!this.file || !this.file.name.endsWith('.zip')) {
             this.fileError = 'Musíte zvolit .zip soubor s jízdními řády ve formátu GTFS.';
             return;
         }
@@ -78,11 +94,15 @@ export class TimeTableComponent implements OnInit {
                 });
     }
 
+    /**
+     * chytne event zmena nahraneho souboru
+     * @param event event
+     */
     fileChange(event) {
         this.file = null;
         this.fileError = null;
         let fileList: FileList = event.target.files;
-        if(fileList.length > 0) {
+        if (fileList.length > 0) {
             this.file = fileList[0];
         }
     }

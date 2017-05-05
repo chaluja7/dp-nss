@@ -8,56 +8,69 @@ import {AdminRouteService} from "../../_service/_admin/admin-route.service";
 import {Agency} from "../../_model/agency";
 import {AdminAgencyService} from "../../_service/_admin/admin-agency.service";
 
+/**
+ * Komponenta seznamu spoju
+ */
 @Component({
-  moduleId: module.id,
-  selector: 'routes-component',
-  templateUrl: './routes.component.html'
+    moduleId: module.id,
+    selector: 'routes-component',
+    templateUrl: './routes.component.html'
 })
 export class RoutesComponent extends AbstractFilteringComponent implements OnInit {
 
-  routes: Route[];
+    routes: Route[];
 
-  filter: Route = new Route();
+    filter: Route = new Route();
 
-  routeTypeOptions = AppSettings.getPossibleRouteTypesOptions();
+    routeTypeOptions = AppSettings.getPossibleRouteTypesOptions();
 
-  agenciesForSelectBox: Agency[];
+    agenciesForSelectBox: Agency[];
 
-  constructor(private router: Router, private adminRouteService: AdminRouteService, private pagerService: PagerService,
-              private adminAgencyService: AdminAgencyService) {
-    super();
-  }
-
-  ngOnInit(): void {
-    this.setPage(1);
-    this.adminAgencyService.getAgenciesForSelectBox()
-        .subscribe(agencies => {
-          this.agenciesForSelectBox = agencies;
-          this.agenciesForSelectBox.unshift(new Agency(null, null));
-        }, err => {});
-  }
-
-  setPage(page: number) {
-    if(page < 1 || (page > 1 && page > this.pager.totalPages)) {
-      return;
+    constructor(private router: Router, private adminRouteService: AdminRouteService, private pagerService: PagerService,
+                private adminAgencyService: AdminAgencyService) {
+        super();
     }
 
-    this.loading = true;
-    this.pager = this.pagerService.getPager(this.totalCount, page);
-    this.adminRouteService.getRoutes(this.filter, this.pager.startIndex ? this.pager.startIndex : 0,
-        this.pager.pageSize ? this.pager.pageSize : AppSettings.DEFAULT_PAGE_LIMIT, PagerService.getSortHeaderValue(this.orderColumn, this.orderAsc))
-        .subscribe(response => {
-          this.totalCount = +response.headers.get(AppSettings.TOTAL_COUNT_HEADER);
-          this.routes = response.json();
-          this.loading = false;
+    ngOnInit(): void {
+        this.setPage(1);
+        this.adminAgencyService.getAgenciesForSelectBox()
+            .subscribe(agencies => {
+                this.agenciesForSelectBox = agencies;
+                this.agenciesForSelectBox.unshift(new Agency(null, null));
+            }, err => {
+            });
+    }
 
-          this.pager = this.pagerService.getPager(this.totalCount, page);
-        }, err  => {});
+    /**
+     * nastavi stranku a provede vyhledavani
+     * @param page cislo stranky
+     */
+    setPage(page: number) {
+        if (page < 1 || (page > 1 && page > this.pager.totalPages)) {
+            return;
+        }
 
-  }
+        this.loading = true;
+        this.pager = this.pagerService.getPager(this.totalCount, page);
+        this.adminRouteService.getRoutes(this.filter, this.pager.startIndex ? this.pager.startIndex : 0,
+            this.pager.pageSize ? this.pager.pageSize : AppSettings.DEFAULT_PAGE_LIMIT, PagerService.getSortHeaderValue(this.orderColumn, this.orderAsc))
+            .subscribe(response => {
+                this.totalCount = +response.headers.get(AppSettings.TOTAL_COUNT_HEADER);
+                this.routes = response.json();
+                this.loading = false;
 
-  goToDetail(route: Route): void {
-    this.router.navigate(['/route', route.id]);
-  }
+                this.pager = this.pagerService.getPager(this.totalCount, page);
+            }, err => {
+            });
+
+    }
+
+    /**
+     * preskoci na detail
+     * @param route spoj
+     */
+    goToDetail(route: Route): void {
+        this.router.navigate(['/route', route.id]);
+    }
 
 }

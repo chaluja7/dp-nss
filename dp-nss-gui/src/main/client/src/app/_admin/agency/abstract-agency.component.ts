@@ -5,25 +5,39 @@ import {Location} from "@angular/common";
 import {UserService} from "../../_service/user.service";
 import {Agency} from "../../_model/agency";
 import {AdminAgencyService} from "../../_service/_admin/admin-agency.service";
+
+/**
+ * Komponenta administrace dopravcu
+ */
 @Component({
-  moduleId: module.id
+    moduleId: module.id
 })
 export abstract class AbstractAgencyComponent {
 
-  agency: Agency;
-  loading = false;
-  error = '';
-  abstract newRecord: boolean;
+    agency: Agency;
+    loading = false;
+    error = '';
+    abstract newRecord: boolean;
 
-  constructor(protected adminAgencyService: AdminAgencyService, protected route: ActivatedRoute, protected location: Location,
-              protected userService: UserService) {}
+    constructor(protected adminAgencyService: AdminAgencyService, protected route: ActivatedRoute, protected location: Location,
+                protected userService: UserService) {
+    }
 
-  abstract ngOnInit(): void;
+    /**
+     * vynuceni onInit na potomku
+     */
+    abstract ngOnInit(): void;
 
-  abstract onSubmit(): void;
+    /**
+     * obsluha odeslani formulare
+     */
+    abstract onSubmit(): void;
 
-  goBack(): void {
-    this.location.back();
-  }
+    /**
+     * vrati se zpet v historii
+     */
+    goBack(): void {
+        this.location.back();
+    }
 
 }

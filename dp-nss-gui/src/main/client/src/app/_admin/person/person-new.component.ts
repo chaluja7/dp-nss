@@ -3,6 +3,10 @@ import {Component, OnInit} from "@angular/core";
 import {AbstractPersonComponent} from "./abstract-person.component";
 import {Person} from "../../_model/person";
 import {AppSettings} from "../../_common/app.settings";
+
+/**
+ * Komponenta vytvoreni nove osoby
+ */
 @Component({
     moduleId: module.id,
     selector: 'person-new-component',
@@ -31,7 +35,7 @@ export class PersonNewComponent extends AbstractPersonComponent implements OnIni
                     this.userService.setMsg(AppSettings.SAVE_SUCCESS + ' Poznamenejte si jednorázové heslo.');
                     this.person = person;
                 },
-                err  => {
+                err => {
                     this.error = AppSettings.SAVE_ERROR + ' Neexistuje již uživatel se stejným uživatelským jménem?';
                     this.loading = false;
                 });

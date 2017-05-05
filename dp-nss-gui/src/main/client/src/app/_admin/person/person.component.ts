@@ -4,6 +4,10 @@ import {Params} from "@angular/router";
 import {ResetPassword} from "../../_model/reset-password";
 import {AppSettings} from "../../_common/app.settings";
 import {AbstractPersonComponent, StringValue} from "./abstract-person.component";
+
+/**
+ * Komponenta editace osoby
+ */
 @Component({
     moduleId: module.id,
     selector: 'person-component',
@@ -24,21 +28,25 @@ export class PersonComponent extends AbstractPersonComponent implements OnInit {
                 this.person = person;
                 this.canBeDeleted = this.getCurrentPerson().id !== person.id;
 
-                for(let role of person.roles) {
-                    if(role === 'ADMIN') {
+                for (let role of person.roles) {
+                    if (role === 'ADMIN') {
                         this.person.isAdmin = true;
                         break;
                     }
                 }
 
-                for(let timeTable of person.timeTables) {
+                for (let timeTable of person.timeTables) {
                     this.currentTimeTables.push(new StringValue(timeTable));
                 }
-            }, err => {});
+            }, err => {
+            });
     }
 
+    /**
+     * provede zmenu hesla osoby
+     */
     changePassword(): void {
-        if(this.resetPassword.newPassword !== this.resetPassword.newPasswordConfirmation) {
+        if (this.resetPassword.newPassword !== this.resetPassword.newPasswordConfirmation) {
             this.error = 'Hesla se neshodují';
             return;
         }
@@ -47,7 +55,7 @@ export class PersonComponent extends AbstractPersonComponent implements OnInit {
         this.loading = true;
         this.adminPersonService.changePassword(this.person.id, this.resetPassword)
             .subscribe(() => {
-                    if(this.person.passwordChangeRequired) {
+                    if (this.person.passwordChangeRequired) {
                         //musel si zmenit heslo, takze jej odhlasim aby se prihlasil s novym heslem
                         this.userService.setMsg('Heslo bylo úspěšně změněno. Přihlaste se prosím pomocí nového hesla.', true, true);
                         this.router.navigate(['/login']);
@@ -74,12 +82,15 @@ export class PersonComponent extends AbstractPersonComponent implements OnInit {
                     this.userService.setMsg(AppSettings.SAVE_SUCCESS);
                     this.goBack()
                 },
-                err  => {
+                err => {
                     this.error = AppSettings.SAVE_ERROR + err;
                     this.loading = false;
                 });
     }
 
+    /**
+     * smaze osobu
+     */
     doDelete(): void {
         this.adminPersonService.delete(this.person.id)
             .subscribe(() => {

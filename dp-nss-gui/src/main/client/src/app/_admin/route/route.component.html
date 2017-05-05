@@ -1,50 +1,55 @@
 <div class="col-md-6 col-md-offset-3" *ngIf="routeObject">
-  <div class="row padding-top-20">
-    <div class="col-md-10"><h2 class="margin-top-0">{{newRecord ? 'Vložení spoje' : 'Detail spoje'}}</h2></div>
-    <div class="col-md-2">
-      <button *ngIf="!newRecord" [disabled]="!routeObject?.canBeDeleted || loading" class="btn btn-danger pull-right"
-              (click)="confirm('Opravdu chcete smazat tuto položku?') ? doDelete() : 0"
-              title="{{!routeObject?.canBeDeleted ? 'Spoj není možné smazat, protože jsou na něj navázené existující tripy' : ''}}">
-        <i class="fa fa-trash" aria-hidden="true"></i> Smazat
-      </button>
+    <div class="row padding-top-20">
+        <div class="col-md-10"><h2 class="margin-top-0">{{newRecord ? 'Vložení spoje' : 'Detail spoje'}}</h2></div>
+        <div class="col-md-2">
+            <button *ngIf="!newRecord" [disabled]="!routeObject?.canBeDeleted || loading"
+                    class="btn btn-danger pull-right"
+                    (click)="confirm('Opravdu chcete smazat tuto položku?') ? doDelete() : 0"
+                    title="{{!routeObject?.canBeDeleted ? 'Spoj není možné smazat, protože jsou na něj navázené existující tripy' : ''}}">
+                <i class="fa fa-trash" aria-hidden="true"></i> Smazat
+            </button>
+        </div>
     </div>
-  </div>
-  <form (ngSubmit)="onSubmit()" #f="ngForm">
-    <div class="form-group">
-      <label for="id">ID:</label>
-      <input type="text" class="form-control" name="id" id="id" [(ngModel)]="routeObject.id" [disabled]="!newRecord" [required]="newRecord" />
-    </div>
-    <div class="form-group">
-      <label for="shortName">Název:</label>
-      <input type="text" class="form-control" name="shortName" id="shortName" [(ngModel)]="routeObject.shortName" required />
-    </div>
-    <div class="form-group">
-      <label for="longName">Označení:</label>
-      <input type="text" class="form-control" name="longName" id="longName" [(ngModel)]="routeObject.longName" />
-    </div>
-    <div class="form-group">
-      <label for="typeCode">Typ:</label>
-      <select class="form-control" id="typeCode" name="typeCode" [(ngModel)]="routeObject.typeCode" required>
-        <option [value]=""></option>
-        <option *ngFor="let option of routeTypeOptions" [value]="option.code">{{option.title}}</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="color">Barva:</label>
-      <input type="text" class="form-control" name="color" id="color" [(ngModel)]="routeObject.color" />
-    </div>
-    <div class="form-group">
-      <label for="agencyId">Dopravce:</label>
-      <select class="form-control" id="agencyId" name="agencyId" [(ngModel)]="routeObject.agencyId">
-        <option [value]=""></option>
-        <option *ngFor="let option of agenciesForSelectBox" [value]="option.id">{{option.name}}</option>
-      </select>
-    </div>
+    <form (ngSubmit)="onSubmit()" #f="ngForm">
+        <div class="form-group">
+            <label for="id">ID:</label>
+            <input type="text" class="form-control" name="id" id="id" [(ngModel)]="routeObject.id"
+                   [disabled]="!newRecord" [required]="newRecord"/>
+        </div>
+        <div class="form-group">
+            <label for="shortName">Název:</label>
+            <input type="text" class="form-control" name="shortName" id="shortName" [(ngModel)]="routeObject.shortName"
+                   required/>
+        </div>
+        <div class="form-group">
+            <label for="longName">Označení:</label>
+            <input type="text" class="form-control" name="longName" id="longName" [(ngModel)]="routeObject.longName"/>
+        </div>
+        <div class="form-group">
+            <label for="typeCode">Typ:</label>
+            <select class="form-control" id="typeCode" name="typeCode" [(ngModel)]="routeObject.typeCode" required>
+                <option [value]=""></option>
+                <option *ngFor="let option of routeTypeOptions" [value]="option.code">{{option.title}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="color">Barva:</label>
+            <input type="text" class="form-control" name="color" id="color" [(ngModel)]="routeObject.color"/>
+        </div>
+        <div class="form-group">
+            <label for="agencyId">Dopravce:</label>
+            <select class="form-control" id="agencyId" name="agencyId" [(ngModel)]="routeObject.agencyId">
+                <option [value]=""></option>
+                <option *ngFor="let option of agenciesForSelectBox" [value]="option.id">{{option.name}}</option>
+            </select>
+        </div>
 
-    <div class="form-group">
-      <button [disabled]="!f.form.valid || loading" class="btn btn-success pull-right" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Uložit</button>
-      <div class="clearfix"></div>
-    </div>
-    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-  </form>
+        <div class="form-group">
+            <button [disabled]="!f.form.valid || loading" class="btn btn-success pull-right" type="submit"><i
+                    class="fa fa-floppy-o" aria-hidden="true"></i> Uložit
+            </button>
+            <div class="clearfix"></div>
+        </div>
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    </form>
 </div>

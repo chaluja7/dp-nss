@@ -3,7 +3,8 @@
         <h2 class="margin-top-0">Seznam intervalů platnosti</h2>
     </div>
     <div class="col-md-2">
-        <a [routerLink]="['/calendar/create']" class="btn btn-success pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i> Vložit</a>
+        <a [routerLink]="['/calendar/create']" class="btn btn-success pull-right"><i class="fa fa-plus-circle"
+                                                                                     aria-hidden="true"></i> Vložit</a>
     </div>
 </div>
 
@@ -12,20 +13,26 @@
     <tr>
         <th>ID
             <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'id' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'id' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', false)"></i>
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'id' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('id', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'id' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('id', false)"></i>
             </span>
         </th>
         <th>Od
             <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'startDate' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('startDate', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'startDate' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('startDate', false)"></i>
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'startDate' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('startDate', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'startDate' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('startDate', false)"></i>
             </span>
         </th>
         <th>Do
             <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'endDate' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('endDate', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'endDate' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('endDate', false)"></i>
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'endDate' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('endDate', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'endDate' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('endDate', false)"></i>
             </span>
         </th>
         <th>Dny platnosti</th>
@@ -34,7 +41,8 @@
     </thead>
     <tbody>
     <tr>
-        <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..." (keyup.enter)="doFilter()"/></td>
+        <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..."
+                   (keyup.enter)="doFilter()"/></td>
         <td class="align-center">
             <datetime id="startDate" [(ngModel)]="filter.startDateObject" [datepicker]="dateService.datepickerOpts"
                       [timepicker]="false" name="startDate" class="width-100"></datetime>
@@ -44,14 +52,19 @@
                       [timepicker]="false" name="endDate" class="width-100"></datetime>
         </td>
         <td></td>
-        <td class="align-center"><button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i></button></td>
+        <td class="align-center">
+            <button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i>
+            </button>
+        </td>
     </tr>
     <tr *ngFor="let calendar of calendars">
         <td>{{calendar.id}}</td>
         <td>{{calendar.startDate}}</td>
         <td>{{calendar.endDate}}</td>
         <td>{{calendar | calendarDates}}</td>
-        <td class="align-center"><button class="btn btn-warning" (click)="goToDetail(calendar)"><i class="fa fa-pencil"></i></button></td>
+        <td class="align-center">
+            <button class="btn btn-warning" (click)="goToDetail(calendar)"><i class="fa fa-pencil"></i></button>
+        </td>
     </tr>
     </tbody>
 </table>

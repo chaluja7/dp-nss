@@ -1,34 +1,49 @@
 import {Component} from "@angular/core";
 import {Pager} from "../../_model/pager";
 
+/**
+ * Predek komponent s umoznenym filtrovanim zaznamu
+ */
 @Component({
-  moduleId: module.id
+    moduleId: module.id
 })
 export abstract class AbstractFilteringComponent {
 
-  loading: boolean;
+    loading: boolean;
 
-  orderColumn: string = 'id';
+    orderColumn: string = 'id';
 
-  orderAsc: boolean = true;
+    orderAsc: boolean = true;
 
-  pager: Pager = new Pager();
+    pager: Pager = new Pager();
 
-  totalCount: number;
+    totalCount: number;
 
-  abstract setPage(page: number);
+    abstract setPage(page: number);
 
-  doFilter() {
-    this.setPage(1);
-  }
+    /**
+     * inicialni filtrovani
+     */
+    doFilter() {
+        this.setPage(1);
+    }
 
-  setOrder(column: string, orderAsc: boolean) {
-    this.orderColumn = column;
-    this.orderAsc = orderAsc;
+    /**
+     * nastavi radici sloupec
+     * @param column sloupec
+     * @param orderAsc true, pokud se ma radit ascending, false jinak
+     */
+    setOrder(column: string, orderAsc: boolean) {
+        this.orderColumn = column;
+        this.orderAsc = orderAsc;
 
-    this.setPage(1);
-  }
+        this.setPage(1);
+    }
 
-  abstract goToDetail(entity: any): void;
+    /**
+     * vynuceni metody goToDetail
+     * @param entity entita k prechodu na detail
+     */
+    abstract goToDetail(entity: any): void;
 
 }

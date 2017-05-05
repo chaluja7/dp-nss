@@ -3,76 +3,100 @@
         <h2 class="margin-top-0">Seznam jízd</h2>
     </div>
     <div class="col-md-2">
-        <a [routerLink]="['/trip/create']" class="btn btn-success pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i> Vložit</a>
+        <a [routerLink]="['/trip/create']" class="btn btn-success pull-right"><i class="fa fa-plus-circle"
+                                                                                 aria-hidden="true"></i> Vložit</a>
     </div>
 </div>
 
 <table class="table table-striped table-bordered">
     <thead class="sorting-head">
-        <tr>
-            <th>ID
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'id' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'id' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', false)"></i>
+    <tr>
+        <th>ID
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'id' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('id', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'id' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('id', false)"></i>
                 </span>
-            </th>
-            <th>Návěstidlo
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'headSign' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('headSign', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'headSign' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('headSign', false)"></i>
+        </th>
+        <th>Návěstidlo
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'headSign' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('headSign', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'headSign' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('headSign', false)"></i>
                 </span>
-            </th>
-            <th>Bezbar.
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'wheelChairCode' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('wheelChairCode', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'wheelChairCode' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('wheelChairCode', false)"></i>
+        </th>
+        <th>Bezbar.
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'wheelChairCode' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('wheelChairCode', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'wheelChairCode' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('wheelChairCode', false)"></i>
                 </span>
-            </th>
-            <th>Název spoje
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'routeShortName' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('routeShortName', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'routeShortName' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('routeShortName', false)"></i>
+        </th>
+        <th>Název spoje
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'routeShortName' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('routeShortName', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'routeShortName' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('routeShortName', false)"></i>
                 </span>
-            </th>
-            <th>ID intervalu
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'calendarId' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('calendarId', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'calendarId' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('calendarId', false)"></i>
+        </th>
+        <th>ID intervalu
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'calendarId' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('calendarId', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'calendarId' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('calendarId', false)"></i>
                 </span>
-            </th>
-            <th>ID průj. bodu
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'shapeId' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('shapeId', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'shapeId' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('shapeId', false)"></i>
+        </th>
+        <th>ID průj. bodu
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'shapeId' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('shapeId', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'shapeId' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('shapeId', false)"></i>
                 </span>
-            </th>
-            <th class="align-center">Akce</th>
-        </tr>
+        </th>
+        <th class="align-center">Akce</th>
+    </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..." (keyup.enter)="doFilter()"/></td>
-            <td><input type="text" class="form-control" name="name" id="name" [(ngModel)]="filter.headSign" placeholder="návěstidlo..." (keyup.enter)="doFilter()"/></td>
-            <td>
-                <select class="form-control" id="wheelChairCode" name="wheelChairCode" [(ngModel)]="filter.wheelChairCode" (keyup.enter)="doFilter()">
-                    <option [value]=""></option>
-                    <option *ngFor="let option of wheelChairOptions" [value]="option.code">{{option.title}}</option>
-                </select>
-            </td>
-            <td><input type="text" class="form-control" name="routeShortName" id="routeShortName" [(ngModel)]="filter.routeShortName" placeholder="název spoje..." (keyup.enter)="doFilter()"/></td>
-            <td><input type="text" class="form-control" name="calendarId" id="calendarId" [(ngModel)]="filter.calendarId" placeholder="id intervalu..." (keyup.enter)="doFilter()"/></td>
-            <td><input type="text" class="form-control" name="shapeId" id="shapeId" [(ngModel)]="filter.shapeId" placeholder="id průj. bodu..." (keyup.enter)="doFilter()"/></td>
-            <td class="align-center"><button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i></button></td>
-        </tr>
-        <tr *ngFor="let trip of trips">
-            <td>{{trip.id}}</td>
-            <td>{{trip.headSign}}</td>
-            <td>{{trip.wheelChairCode | wheelChair}}</td>
-            <td>{{trip.routeShortName}}</td>
-            <td>{{trip.calendarId}}</td>
-            <td>{{trip.shapeId}}</td>
-            <td class="align-center"><button class="btn btn-warning" (click)="goToDetail(trip)"><i class="fa fa-pencil"></i></button></td>
-        </tr>
+    <tr>
+        <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..."
+                   (keyup.enter)="doFilter()"/></td>
+        <td><input type="text" class="form-control" name="name" id="name" [(ngModel)]="filter.headSign"
+                   placeholder="návěstidlo..." (keyup.enter)="doFilter()"/></td>
+        <td>
+            <select class="form-control" id="wheelChairCode" name="wheelChairCode" [(ngModel)]="filter.wheelChairCode"
+                    (keyup.enter)="doFilter()">
+                <option [value]=""></option>
+                <option *ngFor="let option of wheelChairOptions" [value]="option.code">{{option.title}}</option>
+            </select>
+        </td>
+        <td><input type="text" class="form-control" name="routeShortName" id="routeShortName"
+                   [(ngModel)]="filter.routeShortName" placeholder="název spoje..." (keyup.enter)="doFilter()"/></td>
+        <td><input type="text" class="form-control" name="calendarId" id="calendarId" [(ngModel)]="filter.calendarId"
+                   placeholder="id intervalu..." (keyup.enter)="doFilter()"/></td>
+        <td><input type="text" class="form-control" name="shapeId" id="shapeId" [(ngModel)]="filter.shapeId"
+                   placeholder="id průj. bodu..." (keyup.enter)="doFilter()"/></td>
+        <td class="align-center">
+            <button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i>
+            </button>
+        </td>
+    </tr>
+    <tr *ngFor="let trip of trips">
+        <td>{{trip.id}}</td>
+        <td>{{trip.headSign}}</td>
+        <td>{{trip.wheelChairCode | wheelChair}}</td>
+        <td>{{trip.routeShortName}}</td>
+        <td>{{trip.calendarId}}</td>
+        <td>{{trip.shapeId}}</td>
+        <td class="align-center">
+            <button class="btn btn-warning" (click)="goToDetail(trip)"><i class="fa fa-pencil"></i></button>
+        </td>
+    </tr>
     </tbody>
 </table>
 

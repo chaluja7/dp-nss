@@ -6,46 +6,58 @@ import {AbstractFilteringComponent} from "../filtering.component.ts/abstract-fil
 import {Agency} from "../../_model/agency";
 import {AdminAgencyService} from "../../_service/_admin/admin-agency.service";
 
+/**
+ * Komponenta seznamu dopravcu
+ */
 @Component({
-  moduleId: module.id,
-  selector: 'agencies-component',
-  templateUrl: './agencies.component.html'
+    moduleId: module.id,
+    selector: 'agencies-component',
+    templateUrl: './agencies.component.html'
 })
 export class AgenciesComponent extends AbstractFilteringComponent implements OnInit {
 
-  agencies: Agency[];
+    agencies: Agency[];
 
-  filter: Agency = new Agency();
+    filter: Agency = new Agency();
 
-  constructor(private router: Router, private adminAgencyService: AdminAgencyService, private pagerService: PagerService) {
-    super();
-  }
-
-  ngOnInit(): void {
-    this.setPage(1);
-  }
-
-  setPage(page: number) {
-    if(page < 1 || (page > 1 && page > this.pager.totalPages)) {
-      return;
+    constructor(private router: Router, private adminAgencyService: AdminAgencyService, private pagerService: PagerService) {
+        super();
     }
 
-    this.loading = true;
-    this.pager = this.pagerService.getPager(this.totalCount, page);
-    this.adminAgencyService.getAgencies(this.filter, this.pager.startIndex ? this.pager.startIndex : 0,
-        this.pager.pageSize ? this.pager.pageSize : AppSettings.DEFAULT_PAGE_LIMIT, PagerService.getSortHeaderValue(this.orderColumn, this.orderAsc))
-        .subscribe(response => {
-          this.totalCount = +response.headers.get(AppSettings.TOTAL_COUNT_HEADER);
-          this.agencies = response.json();
-          this.loading = false;
+    ngOnInit(): void {
+        this.setPage(1);
+    }
 
-          this.pager = this.pagerService.getPager(this.totalCount, page);
-        }, err  => {});
+    /**
+     * nastavi stranku a provede vyhledavani
+     * @param page cislo stranky
+     */
+    setPage(page: number) {
+        if (page < 1 || (page > 1 && page > this.pager.totalPages)) {
+            return;
+        }
 
-  }
+        this.loading = true;
+        this.pager = this.pagerService.getPager(this.totalCount, page);
+        this.adminAgencyService.getAgencies(this.filter, this.pager.startIndex ? this.pager.startIndex : 0,
+            this.pager.pageSize ? this.pager.pageSize : AppSettings.DEFAULT_PAGE_LIMIT, PagerService.getSortHeaderValue(this.orderColumn, this.orderAsc))
+            .subscribe(response => {
+                this.totalCount = +response.headers.get(AppSettings.TOTAL_COUNT_HEADER);
+                this.agencies = response.json();
+                this.loading = false;
 
-  goToDetail(agency: Agency): void {
-    this.router.navigate(['/agency', agency.id]);
-  }
+                this.pager = this.pagerService.getPager(this.totalCount, page);
+            }, err => {
+            });
+
+    }
+
+    /**
+     * prejde na detail dopravce
+     * @param agency dopravce
+     */
+    goToDetail(agency: Agency): void {
+        this.router.navigate(['/agency', agency.id]);
+    }
 
 }

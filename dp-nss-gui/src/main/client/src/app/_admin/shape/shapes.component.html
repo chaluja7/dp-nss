@@ -3,31 +3,40 @@
         <h2 class="margin-top-0">Seznam průjezdních bodů</h2>
     </div>
     <div class="col-md-2">
-        <a [routerLink]="['/shape/create']" class="btn btn-success pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i> Vložit</a>
+        <a [routerLink]="['/shape/create']" class="btn btn-success pull-right"><i class="fa fa-plus-circle"
+                                                                                  aria-hidden="true"></i> Vložit</a>
     </div>
 </div>
 
 <table class="table table-striped table-bordered">
     <thead class="sorting-head">
-        <tr>
-            <th>ID
-                <span class="sort-icon pull-right">
-                    <i class="fa fa-sort-amount-asc{{orderColumn === 'id' && orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', true)"></i>
-                    <i class="fa fa-sort-amount-desc{{orderColumn === 'id' && !orderAsc ? ' bold' : ''}}" aria-hidden="true" (click)="setOrder('id', false)"></i>
+    <tr>
+        <th>ID
+            <span class="sort-icon pull-right">
+                    <i class="fa fa-sort-amount-asc{{orderColumn === 'id' && orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('id', true)"></i>
+                    <i class="fa fa-sort-amount-desc{{orderColumn === 'id' && !orderAsc ? ' bold' : ''}}"
+                       aria-hidden="true" (click)="setOrder('id', false)"></i>
                 </span>
-            </th>
-            <th class="align-center">Akce</th>
-        </tr>
+        </th>
+        <th class="align-center">Akce</th>
+    </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..." (keyup.enter)="doFilter()"/></td>
-            <td class="align-center"><button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i></button></td>
-        </tr>
-        <tr *ngFor="let shape of shapes">
-            <td>{{shape.id}}</td>
-            <td class="align-center"><button class="btn btn-warning" (click)="goToDetail(shape)"><i class="fa fa-pencil"></i></button></td>
-        </tr>
+    <tr>
+        <td><input type="text" class="form-control" name="id" id="id" [(ngModel)]="filter.id" placeholder="id..."
+                   (keyup.enter)="doFilter()"/></td>
+        <td class="align-center">
+            <button class="btn btn-warning" (click)="doFilter()"><i class="fa fa-filter" aria-hidden="true"></i>
+            </button>
+        </td>
+    </tr>
+    <tr *ngFor="let shape of shapes">
+        <td>{{shape.id}}</td>
+        <td class="align-center">
+            <button class="btn btn-warning" (click)="goToDetail(shape)"><i class="fa fa-pencil"></i></button>
+        </td>
+    </tr>
     </tbody>
 </table>
 

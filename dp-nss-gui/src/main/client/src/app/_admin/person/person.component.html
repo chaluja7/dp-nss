@@ -1,108 +1,123 @@
 <div class="col-md-6 col-md-offset-3" *ngIf="person">
-  <div class="row padding-top-20">
-    <div class="col-md-10"><h2 class="margin-top-0">{{newRecord ? 'Vytvoření uživatele' : 'Detail uživatele'}}</h2></div>
-    <div class="col-md-2">
-      <button *ngIf="!newRecord" [disabled]="!canBeDeleted || loading" class="btn btn-danger pull-right"
-              (click)="confirm('Opravdu chcete smazat tohoto uživatele?') ? doDelete() : 0"
-              title="{{!canBeDeleted ? 'Nemůžete smazat sám sebe' : ''}}">
-        <i class="fa fa-trash" aria-hidden="true"></i> Smazat
-      </button>
-    </div>
-  </div>
-
-  <div *ngIf="getCurrentPerson().passwordChangeRequired" class="alert alert-danger">
-      Před umožněním správy jízdních řádů si musíte změnit heslo. Minimální délka je 8 znaků.
-  </div>
-
-  <form (ngSubmit)="onSubmit()" #fx="ngForm">
-    <div class="form-group">
-      <label for="username">Uživatelské jméno:</label>
-      <input *ngIf="newRecord" type="text" class="form-control" name="username" id="username" [(ngModel)]="person.username" minlength="3" required />
-      <div *ngIf="!newRecord" id="username" class="margin-left-10">{{person.username}}</div>
+    <div class="row padding-top-20">
+        <div class="col-md-10"><h2 class="margin-top-0">{{newRecord ? 'Vytvoření uživatele' : 'Detail uživatele'}}</h2>
+        </div>
+        <div class="col-md-2">
+            <button *ngIf="!newRecord" [disabled]="!canBeDeleted || loading" class="btn btn-danger pull-right"
+                    (click)="confirm('Opravdu chcete smazat tohoto uživatele?') ? doDelete() : 0"
+                    title="{{!canBeDeleted ? 'Nemůžete smazat sám sebe' : ''}}">
+                <i class="fa fa-trash" aria-hidden="true"></i> Smazat
+            </button>
+        </div>
     </div>
 
-    <div *ngIf="person.oneTimePassword" class="form-group">
-      <label for="oneTimePwd">Jednorázové heslo:</label>
-      <div id="oneTimePwd" class="margin-left-10">{{person.oneTimePassword}}</div>
+    <div *ngIf="getCurrentPerson().passwordChangeRequired" class="alert alert-danger">
+        Před umožněním správy jízdních řádů si musíte změnit heslo. Minimální délka je 8 znaků.
     </div>
 
-    <div class="form-group">
-      <label for="roles">Role:</label>
-      <div id="roles" class="margin-left-10">
+    <form (ngSubmit)="onSubmit()" #fx="ngForm">
+        <div class="form-group">
+            <label for="username">Uživatelské jméno:</label>
+            <input *ngIf="newRecord" type="text" class="form-control" name="username" id="username"
+                   [(ngModel)]="person.username" minlength="3" required/>
+            <div *ngIf="!newRecord" id="username" class="margin-left-10">{{person.username}}</div>
+        </div>
+
+        <div *ngIf="person.oneTimePassword" class="form-group">
+            <label for="oneTimePwd">Jednorázové heslo:</label>
+            <div id="oneTimePwd" class="margin-left-10">{{person.oneTimePassword}}</div>
+        </div>
+
+        <div class="form-group">
+            <label for="roles">Role:</label>
+            <div id="roles" class="margin-left-10">
           <span *ngFor="let role of person.roles">
             {{role}}
         </span>
-      </div>
-    </div>
-
-    <div *ngIf="!person.isAdmin && getCurrentPerson().isAdmin">
-      <div class="row padding-top-20 margin-bottom-10">
-        <div class="col-md-10"><h3 class="margin-top-0">Přiřazené jízdní řády</h3></div>
-        <div class="col-md-2">
-          <button type="button" class="btn btn-success pull-right" (click)="addNewTimeTable()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Přidat</button>
+            </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <table *ngIf="currentTimeTables && currentTimeTables.length > 0" class="table table-striped table-bordered">
-            <thead>
-            <tr>
-              <th>Jízdní řád</th>
-              <th class="align-center">Akce</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let timeTable of currentTimeTables; let i = index">
-              <td>
-                <select class="form-control" id="timeTable{{i}}" name="timeTable{{i}}" [(ngModel)]="timeTable.value">
-                  <option [value]=""></option>
-                  <option *ngFor="let option of availableTimeTables" [value]="option">{{option}}</option>
-                </select>
-              </td>
-              <td class="align-center">
-                <button type="button" class="btn btn-danger" (click)="confirm('Opravdu chcete smazat tuto položku?') ? deleteTimeTableItem(i) : false">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
+
+        <div *ngIf="!person.isAdmin && getCurrentPerson().isAdmin">
+            <div class="row padding-top-20 margin-bottom-10">
+                <div class="col-md-10"><h3 class="margin-top-0">Přiřazené jízdní řády</h3></div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-success pull-right" (click)="addNewTimeTable()"><i
+                            class="fa fa-plus-circle" aria-hidden="true"></i> Přidat
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table *ngIf="currentTimeTables && currentTimeTables.length > 0"
+                           class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Jízdní řád</th>
+                            <th class="align-center">Akce</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let timeTable of currentTimeTables; let i = index">
+                            <td>
+                                <select class="form-control" id="timeTable{{i}}" name="timeTable{{i}}"
+                                        [(ngModel)]="timeTable.value">
+                                    <option [value]=""></option>
+                                    <option *ngFor="let option of availableTimeTables" [value]="option">{{option}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td class="align-center">
+                                <button type="button" class="btn btn-danger"
+                                        (click)="confirm('Opravdu chcete smazat tuto položku?') ? deleteTimeTableItem(i) : false">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="!currentTimeTables || currentTimeTables.length == 0" class="alert alert-info">
+                        Uživatel nemá přiřazené žádné jízdní řády.
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button [disabled]="!fx.form.valid || loading" class="btn btn-success pull-right" type="submit"><i
+                        class="fa fa-floppy-o" aria-hidden="true"></i> Uložit
                 </button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <div *ngIf="!currentTimeTables || currentTimeTables.length == 0" class="alert alert-info">
-            Uživatel nemá přiřazené žádné jízdní řády.
-          </div>
+                <div class="clearfix"></div>
+            </div>
+            <div *ngIf="error" class="alert alert-danger">{{error}}</div>
         </div>
-      </div>
-
-      <div class="form-group">
-        <button [disabled]="!fx.form.valid || loading" class="btn btn-success pull-right" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Uložit</button>
-        <div class="clearfix"></div>
-      </div>
-      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-    </div>
-  </form>
-
-  <div *ngIf="getCurrentPerson().id === person.id">
-    <h3 class="margin-top-50">Změna hesla</h3>
-    <form (ngSubmit)="changePassword()" #f="ngForm">
-      <div class="form-group">
-        <label for="oldPassword">Současné heslo:</label>
-        <input type="password" class="form-control" name="oldPassword" id="oldPassword" [(ngModel)]="resetPassword.oldPassword" required />
-      </div>
-      <div class="form-group">
-        <label for="newPassword">Nové heslo:</label>
-        <input type="password" class="form-control" name="newPassword" id="newPassword" [(ngModel)]="resetPassword.newPassword" required minlength="8"/>
-      </div>
-      <div class="form-group">
-        <label for="newPasswordConfirmation">Potvrzení nového hesla:</label>
-        <input type="password" class="form-control" name="newPasswordConfirmation" id="newPasswordConfirmation" [(ngModel)]="resetPassword.newPasswordConfirmation" required minlength="8" />
-      </div>
-      <div class="form-group">
-        <button [disabled]="!f.form.valid || loading" class="btn btn-success pull-right" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Změnit heslo</button>
-        <div class="clearfix"></div>
-      </div>
-      <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-      <div *ngIf="ok" class="alert alert-success">{{ok}}</div>
     </form>
-  </div>
+
+    <div *ngIf="getCurrentPerson().id === person.id">
+        <h3 class="margin-top-50">Změna hesla</h3>
+        <form (ngSubmit)="changePassword()" #f="ngForm">
+            <div class="form-group">
+                <label for="oldPassword">Současné heslo:</label>
+                <input type="password" class="form-control" name="oldPassword" id="oldPassword"
+                       [(ngModel)]="resetPassword.oldPassword" required/>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">Nové heslo:</label>
+                <input type="password" class="form-control" name="newPassword" id="newPassword"
+                       [(ngModel)]="resetPassword.newPassword" required minlength="8"/>
+            </div>
+            <div class="form-group">
+                <label for="newPasswordConfirmation">Potvrzení nového hesla:</label>
+                <input type="password" class="form-control" name="newPasswordConfirmation" id="newPasswordConfirmation"
+                       [(ngModel)]="resetPassword.newPasswordConfirmation" required minlength="8"/>
+            </div>
+            <div class="form-group">
+                <button [disabled]="!f.form.valid || loading" class="btn btn-success pull-right" type="submit"><i
+                        class="fa fa-floppy-o" aria-hidden="true"></i> Změnit heslo
+                </button>
+                <div class="clearfix"></div>
+            </div>
+            <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+            <div *ngIf="ok" class="alert alert-success">{{ok}}</div>
+        </form>
+    </div>
 
 </div>

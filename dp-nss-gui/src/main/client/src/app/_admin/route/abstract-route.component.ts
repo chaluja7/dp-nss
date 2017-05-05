@@ -8,35 +8,50 @@ import {UserService} from "../../_service/user.service";
 import {AdminRouteService} from "../../_service/_admin/admin-route.service";
 import {Agency} from "../../_model/agency";
 import {AdminAgencyService} from "../../_service/_admin/admin-agency.service";
+
+/**
+ * Komponenta administrace spoje
+ */
 @Component({
-  moduleId: module.id
+    moduleId: module.id
 })
 export abstract class AbstractRouteComponent {
 
-  routeObject: Route;
-  loading = false;
-  error = '';
-  routeTypeOptions = AppSettings.getPossibleRouteTypesOptions();
-  agenciesForSelectBox: Agency[];
-  abstract newRecord: boolean;
+    routeObject: Route;
+    loading = false;
+    error = '';
+    routeTypeOptions = AppSettings.getPossibleRouteTypesOptions();
+    agenciesForSelectBox: Agency[];
+    abstract newRecord: boolean;
 
-  constructor(protected adminRouteService: AdminRouteService, protected route: ActivatedRoute, protected location: Location,
-              protected userService: UserService, protected adminAgencyService: AdminAgencyService) {}
+    constructor(protected adminRouteService: AdminRouteService, protected route: ActivatedRoute, protected location: Location,
+                protected userService: UserService, protected adminAgencyService: AdminAgencyService) {
+    }
 
-  //musi zavolat extendujici trida!
-  onInit() {
-    this.adminAgencyService.getAgenciesForSelectBox()
-        .subscribe(agencies => {
-          this.agenciesForSelectBox = agencies;
-        }, err => {});
-  }
+    //musi zavolat extendujici trida!
+    onInit() {
+        this.adminAgencyService.getAgenciesForSelectBox()
+            .subscribe(agencies => {
+                this.agenciesForSelectBox = agencies;
+            }, err => {
+            });
+    }
 
-  abstract ngOnInit(): void;
+    /**
+     * vynuceni onInit na potomku
+     */
+    abstract ngOnInit(): void;
 
-  abstract onSubmit(): void;
+    /**
+     * obsluha odeslani formulare
+     */
+    abstract onSubmit(): void;
 
-  goBack(): void {
-    this.location.back();
-  }
+    /**
+     * vrati se zpet v historii
+     */
+    goBack(): void {
+        this.location.back();
+    }
 
 }
