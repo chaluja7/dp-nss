@@ -2,13 +2,17 @@ import {Injectable} from "@angular/core";
 import {Router, CanActivate} from "@angular/router";
 import {UserService} from "../_service/user.service";
 
+/**
+ * Guard vyzadujici prihlaseneho uzivatele ktery ma jiz zmenene heslo
+ */
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-    constructor(private router: Router, private userService: UserService) { }
+    constructor(private router: Router, private userService: UserService) {
+    }
 
     canActivate() {
-        if(this.userService.isLoggedIn() && !this.userService.getLoggedUser().passwordChangeRequired) {
+        if (this.userService.isLoggedIn() && !this.userService.getLoggedUser().passwordChangeRequired) {
             return true;
         }
 

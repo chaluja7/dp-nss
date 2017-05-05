@@ -1,6 +1,9 @@
 import {Pipe, PipeTransform} from "@angular/core";
 import {AppSettings} from "../_common/app.settings";
 
+/**
+ * Formatter vyjimky z intervalu platnosti
+ */
 @Pipe({name: 'calendarExceptionType'})
 export class CalendarExceptionTypePipe implements PipeTransform {
 

@@ -1,4 +1,8 @@
 import {EnumModel} from "../_model/enum-model";
+
+/**
+ * Pomocna trida aplikace
+ */
 export class AppSettings {
 
     public static API_ENDPOINT = '/api/v1/';
@@ -31,10 +35,14 @@ export class AppSettings {
         return AppSettings.SCHEMA_URL_PREFIX + schema;
     }
 
+    /**
+     * @param code kod typu bezbarierovosti
+     * @returns {string} text typu bezbarierovosti
+     */
     public static getWheelChairText(code: number): string {
-        if(code === null) return null;
+        if (code === null) return null;
 
-        switch(code) {
+        switch (code) {
             case 0:
                 return '?';
             case 1:
@@ -46,6 +54,9 @@ export class AppSettings {
         }
     }
 
+    /**
+     * @returns {EnumModel[]} moznosti bezbarierovosti spoje a stanice
+     */
     public static getPossibleWheelChairOptions(): EnumModel[] {
         let list: EnumModel[] = [];
         list.push(new EnumModel(0, '?'));
@@ -55,10 +66,14 @@ export class AppSettings {
         return list;
     }
 
+    /**
+     * @param code kod typu spoje
+     * @returns {string} nazev typu spoje
+     */
     public static getRouteTypeText(code: number): string {
-        if(code === null) return null;
+        if (code === null) return null;
 
-        switch(code) {
+        switch (code) {
             case 0:
                 return 'TRAM';
             case 1:
@@ -80,6 +95,9 @@ export class AppSettings {
         }
     }
 
+    /**
+     * @returns {EnumModel[]} vsechny moznosti typu spoje
+     */
     public static getPossibleRouteTypesOptions(): EnumModel[] {
         let list: EnumModel[] = [];
         list.push(new EnumModel(0, 'TRAM'));
@@ -94,10 +112,14 @@ export class AppSettings {
         return list;
     }
 
+    /**
+     * @param code kod typu vyjimky z intervalu platnosti
+     * @returns {string} nazev typu vyjimky z intervalu platnosti
+     */
     public static getExceptionTypeText(code: number): string {
-        if(code === null) return null;
+        if (code === null) return null;
 
-        switch(code) {
+        switch (code) {
             case 1:
                 return 'Jede';
             case 2:
@@ -107,6 +129,9 @@ export class AppSettings {
         }
     }
 
+    /**
+     * @returns {EnumModel[]} vsechny moznosti typu vyjimek z intervalu platnosti
+     */
     public static getPossibleExceptionTypeOptions(): EnumModel[] {
         let list: EnumModel[] = [];
         list.push(new EnumModel(1, 'Jede'));

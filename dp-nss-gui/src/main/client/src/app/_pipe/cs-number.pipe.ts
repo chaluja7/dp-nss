@@ -1,12 +1,15 @@
 import {Pipe, PipeTransform} from "@angular/core";
 
+/**
+ * Formater cisla v locale cs_CZ
+ */
 @Pipe({name: 'csNumber'})
 export class CsNumberPipe implements PipeTransform {
 
     transform(value: number, ...args: any[]): string {
-        if(!isNaN(value)) {
+        if (!isNaN(value)) {
             let options = new MyOptions();
-            if(args && args.length > 0) {
+            if (args && args.length > 0) {
                 //1.6-6
                 let arg: string = args[0];
                 let split: string[] = arg.split('.');
