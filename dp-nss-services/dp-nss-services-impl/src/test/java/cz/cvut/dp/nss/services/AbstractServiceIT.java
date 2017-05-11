@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -21,9 +22,11 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:spring-context.xml"})
 public abstract class AbstractServiceIT {
 
-    protected static final String GTFS_IN_LOCATION = "/Users/jakubchalupa/Documents/FEL/MGR/DP/gtfs/test/annapolis-transit_20150811_1647";
-//    protected static final String GTFS_IN_LOCATION = "/Users/jakubchalupa/Documents/FEL/MGR/DP/gtfs/pid2017/jrdata";
-    protected static final String GTFS_OUT_LOCATION = "/tmp/testExportGtfs";
+    @Value("${gtfs.test.in.location}")
+    protected String GTFS_IN_LOCATION;
+
+    @Value("${gtfs.test.out.location}")
+    protected String GTFS_OUT_LOCATION;
 
     @Before
     public void before() {
