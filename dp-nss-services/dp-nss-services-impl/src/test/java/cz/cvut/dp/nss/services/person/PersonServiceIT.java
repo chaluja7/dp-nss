@@ -185,11 +185,11 @@ public class PersonServiceIT extends AbstractServiceIT {
     @Test
     public void updateTimeTables() {
         Set<String> set = new HashSet<>();
-        set.add("annapolis");
+        set.add("vedouci");
         personService.updateTimeTables(1L, set);
 
         Person person = personService.get(1L);
-        Assert.assertTrue(person.getTimeTables().contains(new TimeTable("annapolis")));
+        Assert.assertTrue(person.getTimeTables().contains(new TimeTable("vedouci")));
 
         set = new HashSet<>();
         set.add("pid");
@@ -197,7 +197,7 @@ public class PersonServiceIT extends AbstractServiceIT {
 
         person = personService.get(1L);
         Assert.assertTrue(person.getTimeTables().contains(new TimeTable("pid")));
-        Assert.assertFalse(person.getTimeTables().contains(new TimeTable("annapolis")));
+        Assert.assertFalse(person.getTimeTables().contains(new TimeTable("vedouci")));
     }
 
     public static Person getPerson(String username, String password) {

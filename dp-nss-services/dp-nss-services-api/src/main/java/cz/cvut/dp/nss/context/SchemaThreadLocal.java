@@ -37,13 +37,16 @@ public class SchemaThreadLocal {
 
     public static final String SCHEMA_PID = "pid";
 
-    public static final String SCHEMA_ANNAPOLIS = "annapolis";
+    public static final String SCHEMA_VEDOUCI = "vedouci";
+
+    public static final String SCHEMA_OPONENT = "oponent";
 
     static {
         Set<String> set = new HashSet<>();
         set.add(SCHEMA_DEFAULT);
         set.add(SCHEMA_PID);
-        set.add(SCHEMA_ANNAPOLIS);
+        set.add(SCHEMA_VEDOUCI);
+        set.add(SCHEMA_OPONENT);
 
         AVAILABLE_SCHEMAS = Collections.unmodifiableSet(set);
     }

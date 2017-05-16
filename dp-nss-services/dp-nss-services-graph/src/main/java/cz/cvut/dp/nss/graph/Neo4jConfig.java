@@ -37,8 +37,11 @@ public class Neo4jConfig extends Neo4jConfiguration {
     @Value("${neo4j.bolt.pid}")
     private String boltPidConnector;
 
-    @Value("${neo4j.bolt.annapolis}")
-    private String boltAnnapolisConnector;
+    @Value("${neo4j.bolt.vedouci}")
+    private String boltVedouciConnector;
+
+    @Value("${neo4j.bolt.oponent}")
+    private String boltOponentConnector;
 
     @Bean
     public Map<String, Configuration> getConfigurationMap() {
@@ -47,14 +50,20 @@ public class Neo4jConfig extends Neo4jConfiguration {
             .setDriverClassName(BOLT_DRIVER_CLASS)
             .setURI(boltPidConnector);
 
-        Configuration configAnnapolis = new Configuration();
-        configAnnapolis.driverConfiguration()
+        Configuration configVedouci = new Configuration();
+        configVedouci.driverConfiguration()
             .setDriverClassName(BOLT_DRIVER_CLASS)
-            .setURI(boltAnnapolisConnector);
+            .setURI(boltVedouciConnector);
+
+        Configuration configOponent = new Configuration();
+        configOponent.driverConfiguration()
+            .setDriverClassName(BOLT_DRIVER_CLASS)
+            .setURI(boltOponentConnector);
 
         Map<String, Configuration> map = new HashMap<>();
-        map.put(SchemaThreadLocal.SCHEMA_ANNAPOLIS, configAnnapolis);
         map.put(SchemaThreadLocal.SCHEMA_PID, configPid);
+        map.put(SchemaThreadLocal.SCHEMA_VEDOUCI, configVedouci);
+        map.put(SchemaThreadLocal.SCHEMA_OPONENT, configOponent);
         //mapa nemusi byt synchronized - je definovana jako static final a nikdy se do ni uz nebude zapisovat
         return Collections.unmodifiableMap(map);
     }
