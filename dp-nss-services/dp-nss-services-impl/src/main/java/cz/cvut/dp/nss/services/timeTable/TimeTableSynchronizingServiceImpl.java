@@ -1,6 +1,7 @@
 package cz.cvut.dp.nss.services.timeTable;
 
 import cz.cvut.dp.nss.context.SchemaThreadLocal;
+import cz.cvut.dp.nss.context.ThreadScope;
 import cz.cvut.dp.nss.graph.services.calendar.CalendarNodeService;
 import cz.cvut.dp.nss.graph.services.calendarDate.CalendarDateNodeService;
 import cz.cvut.dp.nss.graph.services.stopTime.StopTimeNodeService;
@@ -147,6 +148,9 @@ public class TimeTableSynchronizingServiceImpl implements TimeTableSynchronizing
     @Qualifier(value = "graphConnectStopBatchJob")
     private Job graphConnectStopBatchJob;
 
+    @Autowired
+    private ThreadScope threadScope;
+
     @Async
     @Override
     public void generateTimeTableToDatabases(String schema, String folder) throws Throwable {
@@ -223,20 +227,24 @@ public class TimeTableSynchronizingServiceImpl implements TimeTableSynchronizing
             LOGGER.error("", t);
             throwable = t;
         } finally {
-            String msg = null;
-            if(throwable != null) {
-                msg = throwable.getMessage();
-                if (msg.length() > 4096) msg = msg.substring(0, 4096);
-            }
+            try {
+                String msg = null;
+                if (throwable != null) {
+                    msg = throwable.getMessage();
+                    if (msg != null && msg.length() > 4096) msg = msg.substring(0, 4096);
+                }
 
-            timeTable = timeTableService.get(schema);
-            timeTable.setSynchronizing(false);
-            timeTable.setSynchronizingFailMessage(msg);
-            timeTableService.update(timeTable);
-            SchemaThreadLocal.unset();
+                timeTable = timeTableService.get(schema);
+                timeTable.setSynchronizing(false);
+                timeTable.setSynchronizingFailMessage(msg);
+                timeTableService.update(timeTable);
+            } finally {
+                SchemaThreadLocal.unset();
+                threadScope.cleanUpThreadScopedBeans();
 
-            if(throwable != null) {
-                throw(throwable);
+                if(throwable != null) {
+                    throw(throwable);
+                }
             }
         }
 

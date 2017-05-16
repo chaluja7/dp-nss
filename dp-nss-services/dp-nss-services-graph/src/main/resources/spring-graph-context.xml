@@ -11,12 +11,11 @@
 
     <context:component-scan base-package="cz.cvut.dp.nss.graph.services" />
 
+    <bean id="threadScope" class="cz.cvut.dp.nss.context.ThreadScope"/>
     <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
         <property name="scopes">
             <map>
-                <entry key="thread">
-                    <bean class="org.springframework.context.support.SimpleThreadScope"/>
-                </entry>
+                <entry key="thread" value-ref="threadScope"/>
             </map>
         </property>
     </bean>

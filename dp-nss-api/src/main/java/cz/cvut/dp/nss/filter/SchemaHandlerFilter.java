@@ -1,6 +1,7 @@
 package cz.cvut.dp.nss.filter;
 
 import cz.cvut.dp.nss.context.SchemaThreadLocal;
+import cz.cvut.dp.nss.context.ThreadScope;
 import cz.cvut.dp.nss.services.timeTable.TimeTable;
 import cz.cvut.dp.nss.services.timeTable.TimeTableService;
 import org.apache.commons.lang.ArrayUtils;
@@ -24,6 +25,8 @@ public class SchemaHandlerFilter implements Filter {
     private String apiPath;
 
     private TimeTableService timeTableService;
+
+    private ThreadScope threadScope;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -69,6 +72,7 @@ public class SchemaHandlerFilter implements Filter {
 
                     //po provedeni requestu nezapomenu schema smazat z threadLocal!!!
                     SchemaThreadLocal.unset();
+                    threadScope.cleanUpThreadScopedBeans();
                     return;
                 }
             }
@@ -76,6 +80,7 @@ public class SchemaHandlerFilter implements Filter {
 
         //pokud nedoslo k presmerovani tak necham request dobehnout tak, jak prisel
         chain.doFilter(request, response);
+        threadScope.cleanUpThreadScopedBeans();
     }
 
     @Override
@@ -86,6 +91,11 @@ public class SchemaHandlerFilter implements Filter {
     @Required
     public void setTimeTableService(TimeTableService timeTableService) {
         this.timeTableService = timeTableService;
+    }
+
+    @Required
+    public void setThreadScope(ThreadScope threadScope) {
+        this.threadScope = threadScope;
     }
 
     @Required

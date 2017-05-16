@@ -5,6 +5,7 @@
 
     <bean id="schemaHandlerFilter" class="cz.cvut.dp.nss.filter.SchemaHandlerFilter">
         <property name="timeTableService" ref="timeTableServiceImpl"/>
+        <property name="threadScope" ref="threadScope"/>
         <property name="apiPath" value="/api/v1/"/>
     </bean>
 
